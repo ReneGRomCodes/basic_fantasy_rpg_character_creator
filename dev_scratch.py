@@ -2,61 +2,65 @@
 import random
 
 
-# Dice roll.
-def dice_roll(n):
-    """Roll an n-sided dice and return the result."""
-    return random.randint(1, n)
+# Races.
+race_template = {
+    "Race": 0,
+    "Ability Requirements": 0,
+    "Classes": 0,
+    "Hit Die": 0,
+    "Weapons": 0,
+    "Special": 0,
+    "Save Bonuses": 0,
+    "Languages": 0,
+    "Description": 0,
+}
 
+dwarves = {
+    "Race": "Dwarf",
+    "Ability Requirements": "CON 9 or higher, CHA 17 or lower.",
+    "Classes": "Cleric, Fighter, Thief",
+    "Hit Die": "Any",
+    "Weapons": "Large weapons require two hands."
+               "No 2-handed swords, pole-arms or longbows.",
+    "Special": "Darkvision 60'."
+               "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6.",
+    "Save Bonuses": "+4 vs Death Ray or Poison,"
+                    "+4 vs Magic Wands,"
+                    "+4 vs Paralysis,"
+                    "+3 vs Dragon Breath,"
+                    "+4 vs Spells",
+    "Languages": "Common, Dwarvish."
+                 "+1 Point of INT bonus.",
+    "Description": "Typically about 4' tall, stocky, lifespan of 300-400 years. Thick hair and beards.",
+}
 
-# Character creation:
-def get_ability_score():
-    """Generate random value for ability score, apply bonus/penalty and return the value."""
-    base_score = dice_roll(18)
-    if base_score <= 3:
-        return base_score - 3
-    elif base_score <= 5:
-        return base_score - 2
-    elif base_score <= 8:
-        return base_score - 1
-    elif base_score <= 12:
-        return base_score
-    elif base_score <= 15:
-        return base_score + 1
-    elif base_score <= 17:
-        return base_score + 2
-    else:
-        return base_score + 3
+# Character classes.
+class_template = {
+    "Class": 0,
+    "Prime Requisite": 0,
+    "Hit Dice": 0,
+    "Weapons": 0,
+    "Armor": 0,
+    "XP for 2nd level": 0,
+    "Spells": 0,
+    "Specials": 0,
+    "Saving Throws at 1st level": 0,
+}
 
-
-strength = get_ability_score()
-dexterity = get_ability_score()
-constitution = get_ability_score()
-intelligence = get_ability_score()
-wisdom = get_ability_score()
-charisma = get_ability_score()
-
-player_name = "Adventurer"
-player_race = "Human"
-player_class = "Fighter"
-player_level = 1
-player_xp = 0
-xp_next_level = 2000
-armor_class = 11 + dexterity  # No armor
-player_hp = dice_roll(8) + constitution
-attack_bonus = 1
-starting_money = dice_roll(18) * 10
-
-
-# Character Sheet:
-print(f"{player_name.upper()}                   XP: {player_xp}")
-print()
-print(f"Race: {player_race}    Class: {player_class}\nLevel: {player_level}       XP for next level: {xp_next_level}")
-print()
-print(f"Strength:       {strength}")
-print(f"Dexterity:      {dexterity}")
-print(f"Constitution:   {constitution}")
-print(f"Intelligence:   {intelligence}")
-print(f"Wisdom:         {wisdom}")
-print(f"Charisma:       {charisma}")
-print()
-print(f"Money:          {starting_money}")
+cleric = {
+    "Class": "Cleric",
+    "Prime Requisite": "WIS (must be 9+)",
+    "Hit Dice": "D6",
+    "Weapons": "Blunt weapons only.",
+    "Armor": "Any, shields allowed.",
+    "XP for 2nd level": 1500,
+    "Spells": "None at first level.",
+    "Specials": "Turn the undead (Clerics may be able to turn the undead or drive away undead monsters by means of faith"
+                "alone. The Cleric brandishes their holy symbol and calls upon the power of their divine patron. The"
+                "player rolls 1d20 and tells the GM the result).",
+    "Saving Throws at 1st level": "Death Ray or Poison: 11"
+                                  "Magic Wands: 12"
+                                  "Paralysis or Petrify: 14"
+                                  "Dragon Breath: 16"
+                                  "Spells: 15",
+}
