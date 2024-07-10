@@ -26,7 +26,7 @@ def get_ability_score():
 
 
 def decide_race(con, cha, int, dex, str):
-    """Check character ability score values for possible races to choose and return them in list 'possible_races'."""
+    """Check character ability values for possible races to choose and return them in list 'possible_races'."""
     possible_races = []
 
     if con >= 9 and cha <= 17:
@@ -39,3 +39,19 @@ def decide_race(con, cha, int, dex, str):
         possible_races.append("Human")
 
     return possible_races
+
+
+def decide_class(wis, str, int, dex):
+    """Check character ability values for possible classes to choose and return them in list 'possible_classes'."""
+    possible_classes = []
+
+    if wis >= 9:
+        possible_classes.append("Cleric")
+    if str >= 9:
+        possible_classes.append("Fighter")
+    if int >= 9:
+        possible_classes.append("Magic-User")
+    if dex >= 9:
+        possible_classes.append("Thief")
+
+    return possible_classes
