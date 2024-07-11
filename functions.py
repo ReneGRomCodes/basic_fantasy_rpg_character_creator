@@ -1,4 +1,5 @@
 import random
+"""Functions for character creation."""
 
 
 def dice_roll(n):
@@ -25,9 +26,9 @@ def get_ability_score():
         return base_score + 3
 
 
-def decide_race(con, cha, int, dex, str):
+def check_race(con, cha, int, dex, str):
     """Check character ability values for possible races to choose and return them in list 'possible_races'."""
-    possible_races = []
+    possible_races = ["Human"]
 
     if con >= 9 and cha <= 17:
         possible_races.append("Dwarf")
@@ -35,13 +36,11 @@ def decide_race(con, cha, int, dex, str):
         possible_races.append("Elf")
     if dex >= 9 and str <= 17:
         possible_races.append("Halfling")
-    else:
-        possible_races.append("Human")
 
     return possible_races
 
 
-def decide_class(wis, str, int, dex):
+def check_class(wis, str, int, dex):
     """Check character ability values for possible classes to choose and return them in list 'possible_classes'."""
     possible_classes = []
 
