@@ -35,6 +35,12 @@ while True:
     wis = func.get_ability_score()
     cha = func.get_ability_score()
 
+    # Check if abilities allow for valid race-class combinations.
+    race_list = func.check_race(con, cha, int, dex, str)
+    class_list = func.check_class(wis, str, int, dex)
+    if not func.check_valid_race_class(race_list, class_list):
+        continue
+
     print(f"\nABILITIES:\n")
     print(f"Strength:       {str}")
     print(f"Dexterity:      {dex}")
@@ -58,9 +64,6 @@ os.system('cls')
 
 
 # Race and class selection.
-race_list = func.check_race(con, cha, int, dex, str)
-class_list = func.check_class(wis, str, int, dex)
-
 print("\nBased on your scores you can choose from the following races and classes:")
 print("\nRACE:")
 for i in race_list:
