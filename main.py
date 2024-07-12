@@ -18,6 +18,7 @@ while True:
     if name_proceed.lower() == "y":
         break
     else:
+        os.system('cls')
         continue
 
 
@@ -25,7 +26,7 @@ os.system('cls')
 
 
 # Get ability scores.
-print(f"\nLet's roll the dice for {player_name}!")
+print(f"Let's roll the dice for {player_name}!")
 
 while True:
     str = func.get_ability_score()
@@ -57,6 +58,7 @@ while True:
     if ability_proceed.lower() == "y":
         break
     else:
+        os.system('cls')
         continue
 
 
