@@ -58,14 +58,12 @@ def check_class(wis, str, int, dex):
 
 def check_valid_race_class(race_list, class_list):
     """Check if 'class_list' is empty, return 'False' if so. If not check for valid race-class combinations and return
-    valid 'race_list' or 'False' if 'race_list' is emptied after check."""
+    valid 'race_list'."""
     if not class_list:
         return False
     if class_list == ["Magic-User"] and "Dwarf" in race_list:
         race_list.remove("Dwarf")
     if class_list == ["Magic-User"] and "Halfling" in race_list:
         race_list.remove("Halfling")
-    if not race_list:
-        return False
 
     return race_list
