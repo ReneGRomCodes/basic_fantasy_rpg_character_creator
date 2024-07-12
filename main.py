@@ -2,14 +2,21 @@ import os
 import functions as func
 
 
+# Tuple to check for valid user input in loops.
+yes_no = ("y", "n")
+
+
 # Name the character.
-name_flag = False
-while not name_flag:
+while True:
     player_name = input("Enter character name: ")
-    name_proceed = input(f"Do you want your character to be named {player_name}? (Y/N) ")
+    name_proceed = input(f"Do you want your character to be named '{player_name}'? (Y/N) ")
+
+    while name_proceed.lower() not in yes_no:
+        name_proceed = input(f"Do you want your character to be named '{player_name}'? (Y/N) ")
+        continue
 
     if name_proceed.lower() == "y":
-        name_flag = True
+        break
     else:
         continue
 
@@ -20,9 +27,7 @@ os.system('cls')
 # Get ability scores.
 print(f"\nLet's roll the dice for {player_name}!")
 
-
-ability_flag = False
-while not ability_flag:
+while True:
     str = func.get_ability_score()
     dex = func.get_ability_score()
     con = func.get_ability_score()
@@ -37,10 +42,14 @@ while not ability_flag:
     print(f"Intelligence:   {int}")
     print(f"Wisdom:         {wis}")
     print(f"Charisma:       {cha}")
-    ability_proceed = input(f"\nKeep these scores and proceed to choose your race? (Y/N) ")
+    ability_proceed = input("\nKeep these scores and proceed to choose your race? (Y/N) ")
+
+    while ability_proceed.lower() not in yes_no:
+        ability_proceed = input("Keep these scores and proceed to choose your race? (Y/N) ")
+        continue
 
     if ability_proceed.lower() == "y":
-        ability_flag = True
+        break
     else:
         continue
 
@@ -48,7 +57,7 @@ while not ability_flag:
 os.system('cls')
 
 
-# Race selection.
+# Race and class selection.
 race_list = func.check_race(con, cha, int, dex, str)
 class_list = func.check_class(wis, str, int, dex)
 
@@ -60,6 +69,11 @@ for i in race_list:
 print("\nCLASS:")
 for i in class_list:
     print("-", i)
+
+input()
+
+
+os.system('cls')
 
 
 player_race = "Human"
@@ -74,18 +88,16 @@ starting_money = func.dice_roll(18) * 10
 
 
 # Character Sheet:
-#print(f"{player_name.upper()}                   XP: {player_xp}")
-#print()
-#print(f"Race: {player_race}    Class: {player_class}\nLevel: {player_level}       XP for next level: {xp_next_level}")
-#print()
-#print(f"Strength:       {str}")
-#print(f"Dexterity:      {dex}")
-#print(f"Constitution:   {con}")
-#print(f"Intelligence:   {int}")
-#print(f"Wisdom:         {wis}")
-#print(f"Charisma:       {cha}")
-#print()
-#print(f"Money:          {starting_money}")
+print(f"{player_name.upper()}                   XP: {player_xp}")
+print()
+print(f"Race: {player_race}    Class: {player_class}\nLevel: {player_level}       XP for next level: {xp_next_level}")
+print(f"\nStrength:       {str}")
+print(f"Dexterity:      {dex}")
+print(f"Constitution:   {con}")
+print(f"Intelligence:   {int}")
+print(f"Wisdom:         {wis}")
+print(f"Charisma:       {cha}")
+print(f"\nMoney:          {starting_money}")
 
 
 stop = input()

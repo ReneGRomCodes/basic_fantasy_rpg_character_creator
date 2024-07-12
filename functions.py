@@ -28,7 +28,7 @@ def get_ability_score():
 
 def check_race(con, cha, int, dex, str):
     """Check character ability values for possible races to choose and return them in list 'possible_races'."""
-    possible_races = ["Human"]
+    possible_races = ["Humans"]  # Humans have no minimum requirements.
 
     if con >= 9 and cha <= 17:
         possible_races.append("Dwarf")
