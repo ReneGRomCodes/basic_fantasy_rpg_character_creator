@@ -29,19 +29,13 @@ def get_ability_score():
 
 def build_ability_dict():
     """Build and return dictionary for character abilities"""
-    abilities = {
-        "str": 0,
-        "dex": 0,
-        "con": 0,
-        "int": 0,
-        "wis": 0,
-        "cha": 0,
-    }
+    abilities = ["str", "dex", "con", "int", "wis", "cha"]
+    abilities_dict = {}
 
-    for key in abilities:
-        abilities[key] = get_ability_score()
+    for item in abilities:
+        abilities_dict[item] = get_ability_score()
 
-    return abilities
+    return abilities_dict
 
 
 def check_race(dict):
