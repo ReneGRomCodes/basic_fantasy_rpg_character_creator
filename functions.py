@@ -1,3 +1,4 @@
+import os
 import random
 """Functions for character creation."""
 
@@ -26,31 +27,48 @@ def get_ability_score():
         return base_score + 3
 
 
-def check_race(con, cha, int, dex, str):
+def build_ability_dict():
+    """Build and return dictionary for character abilities"""
+    abilities = {
+        "str": 0,
+        "dex": 0,
+        "con": 0,
+        "int": 0,
+        "wis": 0,
+        "cha": 0,
+    }
+
+    for key in abilities:
+        abilities[key] = get_ability_score()
+
+    return abilities
+
+
+def check_race(dict):
     """Check character ability values for possible races to choose and return them in list 'possible_races'."""
     possible_races = ["Humans"]  # Humans have no minimum requirements.
 
-    if con >= 9 and cha <= 17:
+    if dict["con"] >= 9 and dict["cha"] <= 17:
         possible_races.append("Dwarf")
-    if int >= 9 and con <= 17:
+    if dict["int"] >= 9 and dict["con"] <= 17:
         possible_races.append("Elf")
-    if dex >= 9 and str <= 17:
+    if dict["dex"] >= 9 and dict["str"] <= 17:
         possible_races.append("Halfling")
 
     return possible_races
 
 
-def check_class(wis, str, int, dex):
+def check_class(dict):
     """Check character ability values for possible classes to choose and return them in list 'possible_classes'."""
     possible_classes = []
 
-    if wis >= 9:
+    if dict["wis"] >= 9:
         possible_classes.append("Cleric")
-    if str >= 9:
+    if dict["str"] >= 9:
         possible_classes.append("Fighter")
-    if int >= 9:
+    if dict["int"] >= 9:
         possible_classes.append("Magic-User")
-    if dex >= 9:
+    if dict["dex"] >= 9:
         possible_classes.append("Thief")
 
     return possible_classes
@@ -67,3 +85,19 @@ def check_valid_race_class(race_list, class_list):
         race_list.remove("Halfling")
 
     return race_list
+
+
+def check_yes_no(user_input, prompt):
+    """Take string 'user_input' and check for y/n answer. Return 'True' for y, 'False' for n or prompt the user for new
+    input if any other character is given."""
+    yes_no = ["y", "n"]
+
+    while user_input.lower() not in yes_no:
+        user_input = input(prompt)
+        continue
+
+    if user_input.lower() == "y":
+        return True
+    else:
+        os.system('cls')
+        return False

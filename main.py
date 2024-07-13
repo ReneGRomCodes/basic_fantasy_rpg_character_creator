@@ -2,23 +2,16 @@ import os
 import functions as func
 
 
-# Tuple to check for valid user input in loops.
-yes_no = ("y", "n")
-
-
 # Name the character.
 while True:
     player_name = input("Enter character name: ")
-    name_proceed = input(f"Do you want your character to be named '{player_name}'? (Y/N) ")
 
-    while name_proceed.lower() not in yes_no:
-        name_proceed = input(f"Do you want your character to be named '{player_name}'? (Y/N) ")
-        continue
+    name_prompt = f"Do you want your character to be named '{player_name}'? (Y/N) "
+    name_proceed = input(name_prompt)
 
-    if name_proceed.lower() == "y":
+    if func.check_yes_no(name_proceed, name_prompt):
         break
     else:
-        os.system('cls')
         continue
 
 
@@ -29,36 +22,29 @@ os.system('cls')
 print(f"Let's roll the dice for {player_name}!")
 
 while True:
-    str = func.get_ability_score()
-    dex = func.get_ability_score()
-    con = func.get_ability_score()
-    int = func.get_ability_score()
-    wis = func.get_ability_score()
-    cha = func.get_ability_score()
+    # Generate dictionary for character abilities.
+    ability_scores = func.build_ability_dict()
 
     # Check if abilities allow for valid race-class combinations.
-    race_list = func.check_race(con, cha, int, dex, str)
-    class_list = func.check_class(wis, str, int, dex)
+    race_list = func.check_race(ability_scores)
+    class_list = func.check_class(ability_scores)
     if not func.check_valid_race_class(race_list, class_list):
         continue
 
     print(f"\nABILITIES:\n")
-    print(f"Strength:       {str}")
-    print(f"Dexterity:      {dex}")
-    print(f"Constitution:   {con}")
-    print(f"Intelligence:   {int}")
-    print(f"Wisdom:         {wis}")
-    print(f"Charisma:       {cha}")
-    ability_proceed = input("\nKeep these scores and proceed to choose your race? (Y/N) ")
+    print(f"Strength:       {ability_scores["str"]}")
+    print(f"Dexterity:      {ability_scores["dex"]}")
+    print(f"Constitution:   {ability_scores["con"]}")
+    print(f"Intelligence:   {ability_scores["int"]}")
+    print(f"Wisdom:         {ability_scores["wis"]}")
+    print(f"Charisma:       {ability_scores["cha"]}")
 
-    while ability_proceed.lower() not in yes_no:
-        ability_proceed = input("Keep these scores and proceed to choose your race? (Y/N) ")
-        continue
+    ability_prompt = "Keep these scores and proceed to choose your race? (Y/N) "
+    ability_proceed = input("\n" + ability_prompt)
 
-    if ability_proceed.lower() == "y":
+    if func.check_yes_no(ability_proceed, ability_prompt):
         break
     else:
-        os.system('cls')
         continue
 
 
@@ -81,6 +67,7 @@ input()
 os.system('cls')
 
 
+"""
 player_race = "Human"
 player_class = "Fighter"
 player_level = 1
@@ -103,6 +90,6 @@ print(f"Intelligence:   {int}")
 print(f"Wisdom:         {wis}")
 print(f"Charisma:       {cha}")
 print(f"\nMoney:          {starting_money}")
-
+"""
 
 stop = input()
