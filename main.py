@@ -32,12 +32,12 @@ while True:
         continue
 
     print(f"\nABILITIES:\n")
-    print(f"Strength:       {ability_scores["str"]}")
-    print(f"Dexterity:      {ability_scores["dex"]}")
-    print(f"Constitution:   {ability_scores["con"]}")
-    print(f"Intelligence:   {ability_scores["int"]}")
-    print(f"Wisdom:         {ability_scores["wis"]}")
-    print(f"Charisma:       {ability_scores["cha"]}")
+    print(f"Strength: {ability_scores["str"]}")
+    print(f"Dexterity: {ability_scores["dex"]}")
+    print(f"Constitution: {ability_scores["con"]}")
+    print(f"Intelligence: {ability_scores["int"]}")
+    print(f"Wisdom: {ability_scores["wis"]}")
+    print(f"Charisma: {ability_scores["cha"]}")
 
     ability_prompt = "Keep these scores and proceed to choose your race? (Y/N) "
     ability_proceed = input("\n" + ability_prompt)
@@ -52,14 +52,19 @@ os.system('cls')
 
 
 # Race and class selection.
-print("\nBased on your scores you can choose from the following races and classes:")
-print("\nRACE:")
-for i in race_list:
-    print("-", i)
+print("Based on your scores you can choose from the following race-class combinations:\n")
+possible_characters = []
 
-print("\nCLASS:")
-for i in class_list:
-    print("-", i)
+for player_race in race_list:
+    for player_class in class_list:
+        if (player_race == "Dwarf" or player_race == "Halfling") and player_class == "Magic-User":
+            pass
+        else:
+            race_class = player_race + " " + player_class
+            possible_characters.append(race_class)
+
+for character in possible_characters:
+    print("-", character)
 
 input()
 

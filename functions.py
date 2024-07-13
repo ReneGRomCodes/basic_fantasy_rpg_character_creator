@@ -40,7 +40,7 @@ def build_ability_dict():
 
 def check_race(dict):
     """Check character ability values for possible races to choose and return them in list 'possible_races'."""
-    possible_races = ["Humans"]  # Humans have no minimum requirements.
+    possible_races = ["Human"]  # Humans have no minimum requirements.
 
     if dict["con"] >= 9 and dict["cha"] <= 17:
         possible_races.append("Dwarf")
@@ -71,8 +71,12 @@ def check_class(dict):
 def check_valid_race_class(race_list, class_list):
     """Check if 'class_list' is empty, return 'False' if so. If not check for valid race-class combinations and return
     valid 'race_list'."""
+
+    # Check if class list is empty.
     if not class_list:
         return False
+
+    # Check if 'Magic-User' is the only class available, therefor excluding Dwarves and Halflings from race selection.
     if class_list == ["Magic-User"] and "Dwarf" in race_list:
         race_list.remove("Dwarf")
     if class_list == ["Magic-User"] and "Halfling" in race_list:
