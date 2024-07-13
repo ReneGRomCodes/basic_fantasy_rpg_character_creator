@@ -53,9 +53,15 @@ os.system('cls')
 
 # Race and class selection.
 possible_characters = func.build_race_class_list(race_list, class_list)
+selection_counter = 1
 
 for character in possible_characters:
-    print("-", character)
+    print(selection_counter, "-", character)
+    selection_counter += 1
+
+character_selection = int(input("\nSelect your character: "))
+character = possible_characters[character_selection - 1]
+print(f"\n{player_name} will be a {character}.")
 
 input()
 
@@ -63,14 +69,13 @@ input()
 os.system('cls')
 
 
-"""
-player_race = "Human"
-player_class = "Fighter"
+player_race = character.split(" ")[0]
+player_class = character.split(" ")[1]
 player_level = 1
 player_xp = 0
-xp_next_level = 2000
-armor_class = 11 + dex  # No armor
-player_hp = func.dice_roll(8) + con
+xp_next_level = None
+armor_class = None
+player_hp = None
 attack_bonus = 1
 starting_money = func.dice_roll(18) * 10
 
@@ -79,13 +84,13 @@ starting_money = func.dice_roll(18) * 10
 print(f"{player_name.upper()}                   XP: {player_xp}")
 print()
 print(f"Race: {player_race}    Class: {player_class}\nLevel: {player_level}       XP for next level: {xp_next_level}")
-print(f"\nStrength:       {str}")
-print(f"Dexterity:      {dex}")
-print(f"Constitution:   {con}")
-print(f"Intelligence:   {int}")
-print(f"Wisdom:         {wis}")
-print(f"Charisma:       {cha}")
+print(f"\nStrength:       {ability_scores["str"]}")
+print(f"Dexterity:      {ability_scores["dex"]}")
+print(f"Constitution:   {ability_scores["con"]}")
+print(f"Intelligence:   {ability_scores["int"]}")
+print(f"Wisdom:         {ability_scores["wis"]}")
+print(f"Charisma:       {ability_scores["cha"]}")
 print(f"\nMoney:          {starting_money}")
-"""
 
-stop = input()
+
+input()
