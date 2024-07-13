@@ -99,3 +99,19 @@ def check_yes_no(user_input, prompt):
     else:
         os.system('cls')
         return False
+
+
+def build_race_class_list(race_list, class_list):
+    possible_characters = []
+    print("Based on your scores you can choose from the following race-class combinations:\n")
+
+    for player_race in race_list:
+        for player_class in class_list:
+            # Exclude Dwarves and Halflings from class 'Magic-User'.
+            if (player_race == "Dwarf" or player_race == "Halfling") and player_class == "Magic-User":
+                pass
+            else:
+                race_class = player_race + " " + player_class
+                possible_characters.append(race_class)
+
+    return possible_characters

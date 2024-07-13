@@ -52,16 +52,7 @@ os.system('cls')
 
 
 # Race and class selection.
-print("Based on your scores you can choose from the following race-class combinations:\n")
-possible_characters = []
-
-for player_race in race_list:
-    for player_class in class_list:
-        if (player_race == "Dwarf" or player_race == "Halfling") and player_class == "Magic-User":
-            pass
-        else:
-            race_class = player_race + " " + player_class
-            possible_characters.append(race_class)
+possible_characters = func.build_race_class_list(race_list, class_list)
 
 for character in possible_characters:
     print("-", character)
