@@ -8,6 +8,22 @@ def dice_roll(n):
     return random.randint(1, n)
 
 
+def check_yes_no(user_input, prompt):
+    """Take string 'user_input' and check for y/n answer. Return 'True' for y, 'False' for n or prompt the user for new
+    input if any other character is given."""
+    yes_no = ["y", "n"]
+
+    while user_input.lower() not in yes_no:
+        user_input = input(prompt)
+        continue
+
+    if user_input.lower() == "y":
+        return True
+    else:
+        os.system('cls')
+        return False
+
+
 def get_ability_score():
     """Generate random value for ability score, apply bonus/penalty and return the value."""
     base_score = dice_roll(18)
@@ -85,33 +101,43 @@ def check_valid_race_class(race_list, class_list):
     return race_list
 
 
-def check_yes_no(user_input, prompt):
-    """Take string 'user_input' and check for y/n answer. Return 'True' for y, 'False' for n or prompt the user for new
-    input if any other character is given."""
-    yes_no = ["y", "n"]
-
-    while user_input.lower() not in yes_no:
-        user_input = input(prompt)
-        continue
-
-    if user_input.lower() == "y":
-        return True
-    else:
-        os.system('cls')
-        return False
-
-
 def build_race_class_list(race_list, class_list):
+    """Take lists of possible races and classes and return list 'possible_characters' with valid race-class
+    combinations."""
     possible_characters = []
     print("Based on your scores you can choose from the following race-class combinations:\n")
 
-    for player_race in race_list:
-        for player_class in class_list:
+    for char_race in race_list:
+        for char_class in class_list:
             # Exclude Dwarves and Halflings from class 'Magic-User'.
-            if (player_race == "Dwarf" or player_race == "Halfling") and player_class == "Magic-User":
+            if (char_race == "Dwarf" or char_race == "Halfling") and char_class == "Magic-User":
                 pass
             else:
-                race_class = player_race + " " + player_class
+                race_class = char_race + " " + char_class
                 possible_characters.append(race_class)
 
     return possible_characters
+
+
+def select_character(char_list):
+    """Take list of possible race-class combinations 'char_list' and let user choose a character and return choice
+    'character' as string variable."""
+    selection_counter = 1
+
+    for char in char_list:
+        print(selection_counter, "-", char)
+        selection_counter += 1
+
+    while True:
+        try:
+            character_selection = int(input("\nSelect your character: "))
+            character = char_list[character_selection - 1]
+            break
+        except IndexError:
+            print(f"Invalid input. Choose a number between 1 and {selection_counter - 1}.")
+            continue
+        except ValueError:
+            print(f"Invalid input. Choose a number between 1 and {selection_counter - 1}.")
+            continue
+
+    return character

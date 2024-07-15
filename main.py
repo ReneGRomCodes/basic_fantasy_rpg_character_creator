@@ -4,9 +4,9 @@ import functions as func
 
 # Name the character.
 while True:
-    player_name = input("Enter character name: ")
+    char_name = input("Enter character name: ")
 
-    name_prompt = f"Do you want your character to be named '{player_name}'? (Y/N) "
+    name_prompt = f"Do you want your character to be named '{char_name}'? (Y/N) "
     name_proceed = input(name_prompt)
 
     if func.check_yes_no(name_proceed, name_prompt):
@@ -19,7 +19,7 @@ os.system('cls')
 
 
 # Get ability scores.
-print(f"Let's roll the dice for {player_name}!")
+print(f"Let's roll the dice for {char_name}!")
 
 while True:
     # Generate dictionary for character abilities.
@@ -53,26 +53,19 @@ os.system('cls')
 
 # Race and class selection.
 possible_characters = func.build_race_class_list(race_list, class_list)
-selection_counter = 1
+character = func.select_character(possible_characters)
+print(f"\n{char_name} will be a {character}.")
 
-for character in possible_characters:
-    print(selection_counter, "-", character)
-    selection_counter += 1
-
-character_selection = int(input("\nSelect your character: "))
-character = possible_characters[character_selection - 1]
-print(f"\n{player_name} will be a {character}.")
-
-input()
+input("\nPress Enter to continue")
 
 
 os.system('cls')
 
 
-player_race = character.split(" ")[0]
-player_class = character.split(" ")[1]
-player_level = 1
-player_xp = 0
+char_race = character.split(" ")[0]
+char_class = character.split(" ")[1]
+char_level = 1
+char_xp = 0
 xp_next_level = None
 armor_class = None
 player_hp = None
@@ -81,9 +74,9 @@ starting_money = func.dice_roll(18) * 10
 
 
 # Character Sheet:
-print(f"{player_name.upper()}                   XP: {player_xp}")
+print(f"{char_name.upper()}                   XP: {char_xp}")
 print()
-print(f"Race: {player_race}    Class: {player_class}\nLevel: {player_level}       XP for next level: {xp_next_level}")
+print(f"Race: {char_race}    Class: {char_class}\nLevel: {char_level}       XP for next level: {xp_next_level}")
 print(f"\nStrength:       {ability_scores["str"]}")
 print(f"Dexterity:      {ability_scores["dex"]}")
 print(f"Constitution:   {ability_scores["con"]}")
@@ -93,4 +86,4 @@ print(f"Charisma:       {ability_scores["cha"]}")
 print(f"\nMoney:          {starting_money}")
 
 
-input()
+input("\nPress Enter to continue")
