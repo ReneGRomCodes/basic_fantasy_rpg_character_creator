@@ -39,7 +39,7 @@ while True:
     print(f"Wisdom: {ability_scores["wis"]}")
     print(f"Charisma: {ability_scores["cha"]}")
 
-    ability_prompt = "Keep these scores and proceed to choose your race? (Y/N) "
+    ability_prompt = "Keep these scores and proceed to choose your race and class? (Y/N) "
     ability_proceed = input("\n" + ability_prompt)
 
     if func.check_yes_no(ability_proceed, ability_prompt):
@@ -52,11 +52,17 @@ os.system('cls')
 
 
 # Race and class selection.
-possible_characters = func.build_race_class_list(race_list, class_list)
-character = func.select_character(possible_characters)
-print(f"\n{char_name} will be a {character}.")
+while True:
+    possible_characters = func.build_race_class_list(race_list, class_list)
+    character = func.select_character(possible_characters)
 
-input("\nPress Enter to continue")
+    char_prompt = f"Are you sure you want {char_name} to be a {character}? (Y/N) "
+    char_proceed = input("\n" + char_prompt)
+
+    if func.check_yes_no(char_proceed, char_prompt):
+        break
+    else:
+        continue
 
 
 os.system('cls')
