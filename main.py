@@ -15,13 +15,10 @@ while True:
         continue
 
 
-os.system('cls')
-
-
 # Get ability scores.
-print(f"Let's roll the dice for {char_name}!")
-
 while True:
+    print(f"Let's roll the dice for {char_name}!")
+
     # Generate dictionary for character abilities.
     ability_scores = func.build_ability_dict()
 
@@ -48,9 +45,6 @@ while True:
         continue
 
 
-os.system('cls')
-
-
 # Race and class selection.
 while True:
     possible_characters = func.build_race_class_list(race_list, class_list)
@@ -65,16 +59,14 @@ while True:
         continue
 
 
-os.system('cls')
-
-
+# Character variables.
 char_race = character.split(" ")[0]
 char_class = character.split(" ")[1]
 char_level = 1
 char_xp = 0
 xp_next_level = None
 armor_class = None
-player_hp = None
+char_hp = None
 attack_bonus = 1
 starting_money = func.dice_roll(18) * 10
 
@@ -82,8 +74,8 @@ starting_money = func.dice_roll(18) * 10
 # Character Sheet:
 print(f"{char_name.upper()}                   XP: {char_xp}")
 print()
-print(f"Race: {char_race}    Class: {char_class}\nLevel: {char_level}       XP for next level: {xp_next_level}")
-print(f"\nStrength:       {ability_scores["str"]}")
+print(f"Race: {char_race}    Class: {char_class}\nLevel: {char_level}       XP for next level: {xp_next_level}\n")
+print(f"Strength:       {ability_scores["str"]}")
 print(f"Dexterity:      {ability_scores["dex"]}")
 print(f"Constitution:   {ability_scores["con"]}")
 print(f"Intelligence:   {ability_scores["int"]}")

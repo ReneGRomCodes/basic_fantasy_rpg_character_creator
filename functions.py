@@ -18,6 +18,7 @@ def check_yes_no(user_input, prompt):
         continue
 
     if user_input.lower() == "y":
+        os.system('cls')
         return True
     else:
         os.system('cls')
