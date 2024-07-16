@@ -70,31 +70,33 @@ def show_ability_scores(abilities_dict):
         print(f"{abilities_name:<15} {abilities_dict[key]:>2}")
 
 
-def check_race(dict):
-    """Check character ability values for possible races to choose and return them in list 'possible_races'."""
+def check_race(abilities_dict):
+    """Check character ability values from 'abilities_dict' for possible races to choose and return them in list
+    'possible_races'."""
     possible_races = ["Human"]  # Humans have no minimum requirements.
 
-    if dict["con"] >= 9 and dict["cha"] <= 17:
+    if abilities_dict["con"] >= 9 and abilities_dict["cha"] <= 17:
         possible_races.append("Dwarf")
-    if dict["int"] >= 9 and dict["con"] <= 17:
+    if abilities_dict["int"] >= 9 and abilities_dict["con"] <= 17:
         possible_races.append("Elf")
-    if dict["dex"] >= 9 and dict["str"] <= 17:
+    if abilities_dict["dex"] >= 9 and abilities_dict["str"] <= 17:
         possible_races.append("Halfling")
 
     return possible_races
 
 
-def check_class(dict):
-    """Check character ability values for possible classes to choose and return them in list 'possible_classes'."""
+def check_class(abilities_dict):
+    """Check character ability values from 'abilities_dict' for possible classes to choose and return them in list
+    'possible_classes'."""
     possible_classes = []
 
-    if dict["wis"] >= 9:
+    if abilities_dict["wis"] >= 9:
         possible_classes.append("Cleric")
-    if dict["str"] >= 9:
+    if abilities_dict["str"] >= 9:
         possible_classes.append("Fighter")
-    if dict["int"] >= 9:
+    if abilities_dict["int"] >= 9:
         possible_classes.append("Magic-User")
-    if dict["dex"] >= 9:
+    if abilities_dict["dex"] >= 9:
         possible_classes.append("Thief")
 
     return possible_classes
