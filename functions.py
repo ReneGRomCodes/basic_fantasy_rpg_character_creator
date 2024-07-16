@@ -60,6 +60,16 @@ def build_ability_dict():
     return abilities_dict
 
 
+def show_ability_scores(abilities_dict):
+    """Print formatted table of abilities and corresponding scores from dictionary 'abilities_dict'."""
+    abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
+
+    for ability, key in zip(abilities, abilities_dict):
+        # 'Pre-formatting' ability name for clean left-alignment in print-statement.
+        abilities_name = f"{ability}:"
+        print(f"{abilities_name:<15} {abilities_dict[key]:>2}")
+
+
 def check_race(dict):
     """Check character ability values for possible races to choose and return them in list 'possible_races'."""
     possible_races = ["Human"]  # Humans have no minimum requirements.

@@ -8,7 +8,7 @@ race_template = {
     "Race": 0,
     "Ability Requirements": 0,
     "Classes": 0,
-    "Hit Die": 0,
+    "Hit Dice": 0,
     "Weapons": 0,
     "Special": 0,
     "Save Bonuses": 0,
