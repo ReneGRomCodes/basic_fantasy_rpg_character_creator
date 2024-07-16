@@ -1,4 +1,3 @@
-import os
 import functions as func
 
 
@@ -68,7 +67,7 @@ xp_next_level = None
 armor_class = None
 char_hp = None
 attack_bonus = 1
-starting_money = func.dice_roll(18) * 10
+starting_money = func.dice_roll(3, 6) * 10
 
 
 # Character Sheet:

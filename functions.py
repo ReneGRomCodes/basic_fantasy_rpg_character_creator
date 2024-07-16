@@ -3,9 +3,14 @@ import random
 """Functions for character creation."""
 
 
-def dice_roll(n):
-    """Roll an n-sided dice and return the result."""
-    return random.randint(1, n)
+def dice_roll(n, m):
+    """Roll an n number of m-sided dice and return the result."""
+    result = 0
+
+    for i in range(n):
+        result += random.randint(1, m)
+
+    return result
 
 
 def check_yes_no(user_input, prompt):
@@ -27,7 +32,7 @@ def check_yes_no(user_input, prompt):
 
 def get_ability_score():
     """Generate random value for ability score, apply bonus/penalty and return the value."""
-    base_score = dice_roll(18)
+    base_score = dice_roll(3, 6)
     if base_score <= 3:
         return base_score - 3
     elif base_score <= 5:
