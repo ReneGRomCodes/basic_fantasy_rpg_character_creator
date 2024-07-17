@@ -73,9 +73,20 @@ def show_ability_scores(abilities_dict):
     abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
 
     for ability, key in zip(abilities, abilities_dict):
-        # 'Pre-formatting' ability name for clean left-alignment in print-statement.
+        # 'Pre-formatting' ability name and bonus/penalty for cleaner output in print-statement.
         abilities_name = f"{ability}:"
-        print(f"{abilities_name:<17} {abilities_dict[key][0]:>2} {abilities_dict[key][1]:>4}")
+        bonus_penalty = f"{abilities_dict[key][1]}"
+
+        # Check bonus/penalty for positive or negative value to apply correct prefix in output or give out an empty
+        # string if bonus_penalty is 0.
+        if abilities_dict[key][1] > 0:
+            bonus_penalty = f"+{bonus_penalty}"
+        elif abilities_dict[key][1] == 0:
+            bonus_penalty = ""
+        else:
+            pass
+
+        print(f"{abilities_name:<17} {abilities_dict[key][0]:>2} {bonus_penalty:>4}")
 
 
 def check_race(abilities_dict):

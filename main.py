@@ -3,7 +3,7 @@ import functions as func
 
 # Get ability scores.
 while True:
-    print(f"Let's roll the dice!")
+    print("Let's roll the dice!\n")
 
     # Generate dictionary for character abilities.
     ability_scores = func.build_ability_dict()
@@ -15,7 +15,6 @@ while True:
         continue
 
     # Print ability scores.
-    print(f"\nABILITIES:")
     func.show_ability_scores(ability_scores)
 
     ability_prompt = "Keep these scores and proceed to choose your race and class? (Y/N) "
@@ -66,7 +65,7 @@ starting_money = func.dice_roll(3, 6) * 10
 
 # Character Sheet:
 print(f"{char_name.upper()}                Level: 1")
-print(f"Race: {char_race}    Class: {char_class}\nXP: 0       XP for next level: {xp_next_level}\n")
+print(f"Race: {char_race}    Class: {char_class}\nXP: 0       XP for next level: {xp_next_level}")
 func.show_ability_scores(ability_scores)
 print(f"\nMoney:          {starting_money}")
 
