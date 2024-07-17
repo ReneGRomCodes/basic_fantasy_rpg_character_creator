@@ -32,7 +32,7 @@ while True:
     possible_characters = func.build_race_class_list(race_list, class_list)
     character = func.select_character(possible_characters)
 
-    char_prompt = f"Are you sure you want to be a {character}? (Y/N) "
+    char_prompt = f"Are you sure you want to be a {character.lower()}? (Y/N) "
     char_proceed = input("\n" + char_prompt)
 
     if func.check_yes_no(char_proceed, char_prompt):
@@ -57,8 +57,6 @@ while True:
 # Character variables.
 char_race = character.split(" ")[0]
 char_class = character.split(" ")[1]
-char_level = 1
-char_xp = 0
 xp_next_level = None
 armor_class = None
 char_hp = None
@@ -67,9 +65,8 @@ starting_money = func.dice_roll(3, 6) * 10
 
 
 # Character Sheet:
-print(f"{char_name.upper()}                   XP: {char_xp}")
-print()
-print(f"Race: {char_race}    Class: {char_class}\nLevel: {char_level}       XP for next level: {xp_next_level}\n")
+print(f"{char_name.upper()}                Level: 1")
+print(f"Race: {char_race}    Class: {char_class}\nXP: 0       XP for next level: {xp_next_level}\n")
 func.show_ability_scores(ability_scores)
 print(f"\nMoney:          {starting_money}")
 

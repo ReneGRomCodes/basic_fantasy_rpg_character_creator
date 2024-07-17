@@ -31,22 +31,30 @@ def check_yes_no(user_input, prompt):
 
 
 def get_ability_score():
-    """Generate random value for ability score, apply bonus/penalty and return the value."""
-    base_score = dice_roll(3, 6)
-    if base_score <= 3:
-        return base_score - 3
-    elif base_score <= 5:
-        return base_score - 2
-    elif base_score <= 8:
-        return base_score - 1
-    elif base_score <= 12:
-        return base_score
-    elif base_score <= 15:
-        return base_score + 1
-    elif base_score <= 17:
-        return base_score + 2
+    """Generate random value for ability score, apply bonus/penalty and return both values in list
+    'ability_score' with the base score at index 0 and the bonus/penalty at index 1."""
+    ability_score = [dice_roll(3, 6)]
+    if ability_score[0] <= 3:
+        ability_score.append(-3)
+        return ability_score
+    elif ability_score[0] <= 5:
+        ability_score.append(-2)
+        return ability_score
+    elif ability_score[0] <= 8:
+        ability_score.append(-1)
+        return ability_score
+    elif ability_score[0] <= 12:
+        ability_score.append(0)
+        return ability_score
+    elif ability_score[0] <= 15:
+        ability_score.append(1)
+        return ability_score
+    elif ability_score[0] <= 17:
+        ability_score.append(2)
+        return ability_score
     else:
-        return base_score + 3
+        ability_score.append(3)
+        return ability_score
 
 
 def build_ability_dict():
@@ -67,7 +75,7 @@ def show_ability_scores(abilities_dict):
     for ability, key in zip(abilities, abilities_dict):
         # 'Pre-formatting' ability name for clean left-alignment in print-statement.
         abilities_name = f"{ability}:"
-        print(f"{abilities_name:<15} {abilities_dict[key]:>2}")
+        print(f"{abilities_name:<17} {abilities_dict[key][0]:>2} {abilities_dict[key][1]:>4}")
 
 
 def check_race(abilities_dict):
@@ -75,11 +83,11 @@ def check_race(abilities_dict):
     'possible_races'."""
     possible_races = ["Human"]  # Humans have no minimum requirements.
 
-    if abilities_dict["con"] >= 9 and abilities_dict["cha"] <= 17:
+    if abilities_dict["con"][0] >= 9 and abilities_dict["cha"][0] <= 17:
         possible_races.append("Dwarf")
-    if abilities_dict["int"] >= 9 and abilities_dict["con"] <= 17:
+    if abilities_dict["int"][0] >= 9 and abilities_dict["con"][0] <= 17:
         possible_races.append("Elf")
-    if abilities_dict["dex"] >= 9 and abilities_dict["str"] <= 17:
+    if abilities_dict["dex"][0] >= 9 and abilities_dict["str"][0] <= 17:
         possible_races.append("Halfling")
 
     return possible_races
@@ -90,13 +98,13 @@ def check_class(abilities_dict):
     'possible_classes'."""
     possible_classes = []
 
-    if abilities_dict["wis"] >= 9:
+    if abilities_dict["wis"][0] >= 9:
         possible_classes.append("Cleric")
-    if abilities_dict["str"] >= 9:
+    if abilities_dict["str"][0] >= 9:
         possible_classes.append("Fighter")
-    if abilities_dict["int"] >= 9:
+    if abilities_dict["int"][0] >= 9:
         possible_classes.append("Magic-User")
-    if abilities_dict["dex"] >= 9:
+    if abilities_dict["dex"][0] >= 9:
         possible_classes.append("Thief")
 
     return possible_classes
