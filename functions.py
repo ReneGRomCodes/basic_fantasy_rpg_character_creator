@@ -34,6 +34,7 @@ def get_ability_score():
     """Generate random value for ability score, apply bonus/penalty and return both values in list
     'ability_score' with the base score at index 0 and the bonus/penalty at index 1."""
     ability_score = [dice_roll(3, 6)]
+
     if ability_score[0] <= 3:
         ability_score.append(-3)
         return ability_score
@@ -73,7 +74,7 @@ def show_ability_scores(abilities_dict):
     abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
 
     for ability, key in zip(abilities, abilities_dict):
-        # 'Pre-formatting' ability name and bonus/penalty for cleaner output in print-statement.
+        # 'Pre-formatting' ability name and bonus/penalty for better code-readability further down in print-statement.
         abilities_name = f"{ability}:"
         bonus_penalty = f"{abilities_dict[key][1]}"
 
@@ -123,7 +124,7 @@ def check_class(abilities_dict):
 
 def check_valid_race_class(race_list, class_list):
     """Check if 'class_list' is empty, return 'False' if so. If not check for valid race-class combinations and return
-    valid 'race_list'."""
+    valid 'race_list'. NOTE: returned list can be empty at after this function executes."""
 
     # Check if class list is empty.
     if not class_list:
