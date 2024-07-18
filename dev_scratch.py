@@ -5,10 +5,7 @@ import functions as func
 
 # Races.
 race_template = {
-    "Race": 0,
-    "Ability Requirements": 0,
-    "Classes": 0,
-    "Hit Dice": 0,
+    "Hit Die": 0,
     "Weapons": 0,
     "Special": 0,
     "Save Bonuses": 0,
@@ -17,9 +14,6 @@ race_template = {
 }
 
 dwarves = {
-    "Race": "Dwarf",
-    "Ability Requirements": "CON 9 or higher, CHA 17 or lower.",
-    "Classes": "Cleric, Fighter, Thief",
     "Hit Die": "Any",
     "Weapons": "Large weapons require two hands."
                "No 2-handed swords, pole-arms or longbows.",
@@ -37,9 +31,7 @@ dwarves = {
 
 # Character classes.
 class_template = {
-    "Class": 0,
-    "Prime Requisite": 0,
-    "Hit Dice": 0,
+    "Hit Die": 0,
     "Weapons": 0,
     "Armor": 0,
     "XP for 2nd level": 0,
@@ -49,9 +41,7 @@ class_template = {
 }
 
 cleric = {
-    "Class": "Cleric",
-    "Prime Requisite": "WIS (must be 9+)",
-    "Hit Dice": "D6",
+    "Hit Die": "D6",
     "Weapons": "Blunt weapons only.",
     "Armor": "Any, shields allowed.",
     "XP for 2nd level": 1500,
