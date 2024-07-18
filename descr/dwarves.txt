@@ -1,27 +1,28 @@
 DWARVES
 
-Description: Dwarves are a short, stocky race; both
-male and female Dwarves stand around four feet tall
-and typically weigh around 120 pounds. Their long
-hair and thick beards are dark brown, gray or black.
-They take great pride in their beards, sometimes
-braiding or forking them. They have a fair to ruddy
-complexion. Dwarves have stout frames and a strong,
-muscular build. They are rugged and resilient, with the
-capacity to endure great hardships. Dwarves are
-typically practical, stubborn and courageous. They can
-also be introspective, suspicious and possessive. They
-have a lifespan of three to four centuries.
 
-Restrictions: Dwarves may become Clerics, Fighters,
-or Thieves. They are required to have a minimum
-Constitution of 9. Due to their generally dour
-dispositions, they may not have a Charisma higher than
-17. They may not employ Large weapons more than
-four feet in length (specifically, two-handed swords,
-polearms, and longbows).
-
-Special Abilities: All Dwarves have Darkvision with a
+Description: Dwarves are a short, stocky race; both			Ability Requirements		CON 9 or higher, CHA 17 or lower
+male and female Dwarves stand around four feet tall			--------------------------------------------------------------------------
+and typically weigh around 120 pounds. Their long			Classes				Cleric, Fighter, Thief
+hair and thick beards are dark brown, gray or black.			--------------------------------------------------------------------------
+They take great pride in their beards, sometimes			Hit Die				Any
+braiding or forking them. They have a fair to ruddy			--------------------------------------------------------------------------
+complexion. Dwarves have stout frames and a strong,			Weapons				Large weapons require two hands.
+muscular build. They are rugged and resilient, with the							No 2-handed swords, pole-arms, or
+capacity to endure great hardships. Dwarves are								longbows.
+typically practical, stubborn and courageous. They can			--------------------------------------------------------------------------
+also be introspective, suspicious and possessive. They			Special				- Darkvision 60'
+have a lifespan of three to four centuries.								- Detect new construction, shifting walls,
+													  slanting passages, traps w/ 1-2 on d6
+Restrictions: Dwarves may become Clerics, Fighters,			--------------------------------------------------------------------------
+or Thieves. They are required to have a minimum				Save Bonuses			- +4 vs. Death Ray or Poison
+Constitution of 9. Due to their generally dour								- +4 vs. Magic Wands
+dispositions, they may not have a Charisma higher than							- +4 vs. Paralysis or Petrify
+17. They may not employ Large weapons more than								- +3 vs. Dragon Breath
+four feet in length (specifically, two-handed swords,							- +4 vs. Spells
+polearms, and longbows).						--------------------------------------------------------------------------
+									Languages			- Common, Dwarvish
+Special Abilities: All Dwarves have Darkvision with a							- +1 / point of INT bonus
 60' range, and are able to detect slanting passages,
 stonework traps, shifting walls and new construction
 on a roll of 1-2 on 1d6; a search must be performed

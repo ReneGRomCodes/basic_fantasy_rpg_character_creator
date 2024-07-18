@@ -1,28 +1,29 @@
 ELVES
 
-Description: Elves are a slender race, with both males
-and females standing around five feet tall and weighing
-around 130 pounds. Most have dark hair, with little or
-no body or facial hair. Their skin is pale, and they have
-pointed ears and delicate features. Elves are lithe and
-graceful. They have keen eyesight and hearing. Elves
-are typically inquisitive, passionate, self-assured, and
-sometimes haughty. Their typical lifespan is a dozen
-centuries or more.
 
-Restrictions: Elves may become Clerics, Fighters,
-Magic-Users or Thieves; they are also allowed to
-combine the classes of Fighter and Magic-User, and of
-Magic-User and Thief. They are required to have a minimum
-Intelligence of 9. Due to their generally delicate nature,
-they may not have a Constitution higher than 17. Elves
-never roll larger than six-sided dice (d6) for hit points.
-
-Special Abilities: All Elves have Darkvision with a
-60' range. They are able to find secret doors
-more often than normal (1-2 on 1d6 rather than the
-usual 1 on 1d6). An Elf is so observant that one has a
-1 on 1d6 chance to find a secret door with a cursory
+Description: Elves are a slender race, with both males			Ability Requirements		INT 9 or higher, CON 17 or lower
+and females standing around five feet tall and weighing			--------------------------------------------------------------------------
+around 130 pounds. Most have dark hair, with little or			Classes				Any single class as well as Fighter/Magic-
+no body or facial hair. Their skin is pale, and they have						User and Magic-User/Thief
+pointed ears and delicate features. Elves are lithe and			--------------------------------------------------------------------------
+graceful. They have keen eyesight and hearing. Elves			Hit Die				d6 maximum
+are typically inquisitive, passionate, self-assured, and		--------------------------------------------------------------------------
+sometimes haughty. Their typical lifespan is a dozen			Weapons				Large weapons require two hands.
+centuries or more.							--------------------------------------------------------------------------
+									Special				- Darkvision (60' range)
+Restrictions: Elves may become Clerics, Fighters,							- Detect secret doors (1-2 on 1d6; 1 on
+Magic-Users or Thieves; they are also allowed to							  1d6 with a cursory look)
+combine the classes of Fighter and Magic-User, and of							- Immune to the paralyzing attack of
+Magic-User and Thief. They are required to have a minimum						  ghouls
+Intelligence of 9. Due to their generally delicate nature,						- Range reduction by one for surprise
+they may not have a Constitution higher than 17. Elves							  checks
+never roll larger than six-sided dice (d6) for hit points.		--------------------------------------------------------------------------
+									Save Bonuses			- +2 vs. Magic Wands
+Special Abilities: All Elves have Darkvision with a							- +1 vs. Paralysis or Petrify
+60' range. They are able to find secret doors								- +2 vs. Spells
+more often than normal (1-2 on 1d6 rather than the			--------------------------------------------------------------------------
+usual 1 on 1d6). An Elf is so observant that one has a			Languages			- Common, Elvish
+1 on 1d6 chance to find a secret door with a cursory							- +1 / point of INT bonus
 look. Elves are immune to the paralyzing attack of
 ghouls. Also, they are less likely to be surprised in
 combat, reducing the chance of surprise by 1 in 1d6.

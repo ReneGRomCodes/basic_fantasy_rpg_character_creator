@@ -193,11 +193,12 @@ def show_race_descriptions():
                 output_text = line.rstrip()
                 print(output_text)
 
+            # Print page count and input message with different message on last page.
             if page == 4:
-                input("\n\nPRESS ENTER TO RETURN TO CHARACTER SELECTION.")
+                input("\n\n\nPRESS ENTER TO RETURN TO CHARACTER SELECTION.")
                 os.system('cls')
             else:
-                input(f"\n\nPAGE {page}/4 - PRESS ENTER TO GO TO NEXT PAGE.")
+                input(f"\n\n\nPAGE {page}/4 - PRESS ENTER TO GO TO NEXT PAGE.")
                 os.system('cls')
                 page += 1
 
