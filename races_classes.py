@@ -4,8 +4,8 @@ def show_race_descriptions():
     file = "races_description.txt"
     with open(file) as f:
         for line in f:
-            f.readline()
-            print(line)
+            output_line = line.rstrip()
+            print(output_line)
 
 
 # Class descriptions.
@@ -14,5 +14,5 @@ def show_class_descriptions():
     file = "classes_description.txt"
     with open(file) as f:
         for line in f:
-            f.readline()
-            print(line)
+            output_line = line.rstrip()
+            print(output_line)
