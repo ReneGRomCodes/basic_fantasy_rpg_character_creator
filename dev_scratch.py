@@ -55,3 +55,5 @@ cleric = {
                                   "Dragon Breath: 16"
                                   "Spells: 15",
 }
+
+func.show_race_descriptions()
