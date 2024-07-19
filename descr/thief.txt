@@ -1,0 +1,44 @@
+THIEF
+
+
+Thieves are those who take what they want or need by			Prime Requisite			DEX (Must be 9+)					Level	       XP     Hit Dice
+stealth, disarming traps and picking locks to get to the		---------------------------------------------------------------------			______________________________
+gold they crave; or "borrowing" money from pockets,			Hit Dice			d4							 1 		0 	   1d4
+beltpouches, etc. right under the nose of the "mark"			---------------------------------------------------------------------			 2 	    1,250 	   2d4
+without the victim ever knowing.					Weapons				Any							 3 	    2,500 	   3d4
+									---------------------------------------------------------------------			 4 	    5,000 	   4d4
+Thieves fight better than Magic-Users but not as well as		Armor				Leather, no shield					------------------------------
+Fighters. Avoidance of honest work leads Thieves to be			---------------------------------------------------------------------			 5         10,000 	   5d4
+less hardy than the other classes, though they do pull			XP for 2nd Level		1,250							 6         20,000 	   6d4
+ahead of the Magic-Users at higher levels.				---------------------------------------------------------------------			 7         40,000 	   7d4
+									Spells				None							 8         75,000 	   8d4
+The Prime Requisite for Thieves is Dexterity; a				---------------------------------------------------------------------			------------------------------
+character must have a Dexterity score of 9 or higher to			Special				- Sneak attack (see below)				 9	  150,000 	   9d4
+become a Thief. They may use any weapon, but may							- See the 'Thief Abilities' below			10	  225,000        9d4+2
+not wear metal armor as it interferes with stealthy			---------------------------------------------------------------------			11	  300,000        9d4+4
+activities, nor may they use shields of any sort. Leather		Saving Throws at 1st Level	- Death Ray or Poison: 13				12	  375,000        9d4+6
+armor is acceptable, however.										- Magic Wands: 14					------------------------------
+													- Paralysis or Petrify: 13				13	  450,000        9d4+8
+Thieves have a number of special abilities, described							- Dragon Breath: 16					14	  525,000       9d4+10
+below. One turn (ten minutes) must usually be spent to							- Spells: 15						15	  600,000       9d4+12
+use any of these abilities, as determined by the GM.														16	  675,000       9d4+14
+The GM may choose to make any of these rolls on				Sneak Attack:										------------------------------
+behalf of the player to help maintain the proper state of		 - +4 attack bonus and does double damage if it is					17	  750,000       9d4+16
+uncertainty. Also note that the GM may apply				   successful. The attack must be from behind (may require				18	  825,000       9d4+18
+situational adjustments (plus or minus percentage			   a Move Silently and/or Hide roll).							19	  900,000       9d4+20
+points) as they see fit; for instance, it's obviously harder		 - Can't be performed on the same opponent more than					20	  975,000       9d4+22
+to climb a wall slick with slime than one that is dry, so		   once in any given combat.
+the GM might apply a penalty of 20% for the slimy wall.			 - Can also be performed bare-handed and with the "flat of
+									   the blade" (+0 attack bonus and does normal damage).
+									   In both cases subduing damage is done.
+
+
+									Thief Abilities at First Level:
+									 - Open Locks 25%	 - Climb Walls 80%
+									 - Remove Traps 20%	 - Hide* 10%
+									 - Pick Pockets 30%	 - Listen 30%
+									 - Move Silently 25%
+
+									*Halflings should use the special Halfling ability to hide
+									instead, which gives them only a 10% chance of being
+									detected in forested terrain and 30% anywhere else.

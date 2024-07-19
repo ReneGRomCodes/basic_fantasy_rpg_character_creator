@@ -31,8 +31,9 @@ while True:
     possible_characters = func.build_race_class_list(race_list, class_list)
     character = func.select_character(possible_characters)
     func.show_char_race_descr(character)
+    func.show_char_class_descr(character)
 
-    char_prompt = f"Are you sure you want to be a '{character}'? (Y/N) "
+    char_prompt = f"\n\n\n\n\tDO YOU WANT TO BE A '{character}'? (Y/N) "
     char_proceed = input("\n" + char_prompt)
 
     if func.check_yes_no(char_proceed, char_prompt):

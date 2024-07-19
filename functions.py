@@ -168,7 +168,7 @@ def select_character(char_list):
 
     while True:
         try:
-            character_selection = int(input("\nSelect your character: "))
+            character_selection = int(input("\nSelect a character to show race and class description: "))
             character = char_list[character_selection - 1]
             break
         except IndexError:
@@ -197,14 +197,23 @@ def show_char_race_descr(character):
             output_text = line.rstrip()
             print(output_text)
 
-    input("\n\n\nPress Enter to proceed.")
+    input(f"\n\n\n\n\tPRESS ENTER TO SHOW '{character.split(" ")[1]}' CLASS.")
 
 
-def show_class_descriptions():
-    """Print detailed description of playable classes from 'classes_description'.txt."""
-    file = "descr/classes_description.txt"
-    with open(file) as f:
+def show_char_class_descr(character):
+    """Take 'character' returned by 'select_character()' function and print detailed description of character class."""
+    # Dict of txt files with class descriptions
+    class_files = {"Cleric": "descr/cleric.txt",
+                   "Fighter": "descr/fighter.txt",
+                   "Magic-User": "descr/magic-user.txt",
+                   "Thief": "descr/thief.txt",
+                   }
+
+    os.system('cls')
+
+    with open(class_files[character.split(" ")[1]]) as f:
         for line in f:
             output_text = line.rstrip()
             print(output_text)
-            input()
+
+    input("\n\n\n\n\tPRESS ENTER TO CONTINUE.")

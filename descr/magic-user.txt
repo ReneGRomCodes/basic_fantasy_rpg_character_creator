@@ -1,0 +1,36 @@
+MAGIC-USER
+
+										     		    												     Spells
+Magic-Users are those who seek and use knowledge of			Prime Requisite			INT (Must be 9+)					Level	       XP     Hit Dice	  1 2 3 4 5 6
+the arcane. They do magic not as the Cleric does, by			---------------------------------------------------------------------			_____________________________________________
+faith in a greater power, but rather through insight and		Hit Dice			d4							 1 		0 	   1d4 	  1 - - - - -
+understanding.								---------------------------------------------------------------------			 2 	    2,500 	   2d4    2 - - - - -
+		 							Weapons				Cudgel, dagger, walking staff				 3 	    5,000 	   3d4    2 1 - - - -
+Magic-Users are the worst of all the classes at fighting;		---------------------------------------------------------------------			 4 	   10,000 	   4d4    2 2 - - - -
+hours spent studying massive tomes of magic do not			Armor				None							---------------------------------------------
+lead a character to become strong or adept with				---------------------------------------------------------------------			 5 	   20,000 	   5d4    2 2 1 - - -
+weapons. They are the least hardy, equal to Thieves at			XP for 2nd Level		2,500							 6 	   40,000 	   6d4    3 2 2 - - -
+lower levels but quickly falling behind.				---------------------------------------------------------------------			 7 	   80,000 	   7d4    3 2 2 1 - -
+		 							Spells				1 first-level spell (see below)				 8 	  150,000 	   8d4    3 3 2 2 - -
+The Prime Requisite for Magic-Users is Intelligence; a			---------------------------------------------------------------------			---------------------------------------------
+character must have an Intelligence score of 9 or higher		Special				None							 9 	  300,000 	   9d4    3 3 2 2 1 -
+to become a Magic-User. The only weapons they				---------------------------------------------------------------------			10 	  450,000 	 9d4+1    4 3 3 2 2 -
+become proficient with are the dagger and the walking			Saving Throws at 1st Level	- Death Ray or Poison: 13				11 	  600,000 	 9d4+2    4 4 3 2 2 1
+staff (or cudgel). Magic-Users may not wear armor of							- Magic Wands: 14					12 	  750,000 	 9d4+3    4 4 3 3 2 2
+any sort nor use a shield as such things interfere with							- Paralysis or Petrify: 13				---------------------------------------------
+spellcasting.												- Dragon Breath: 16					13 	  900,000 	 9d4+4    4 4 4 3 2 2
+													- Spells: 15						14 	1,050,000 	 9d4+5    4 4 4 3 3 2
+A first level Magic-User begins play knowing read														15 	1,200,000 	 9d4+6    5 4 4 3 3 2
+magic and one other spell of first level. These spells are		First Level Magic-User Spells:								16 	1,350,000 	 9d4+7    5 5 4 3 3 2
+written in a spellbook provided by their master. The			 - Charm Person										---------------------------------------------
+GM may roll for the spell, assign it as they see fit, or		 - Detect Magic										17 	1,500,000 	 9d4+8    5 5 4 4 3 3
+allow the player to choose it, at their option.				 - Floating Disc									18 	1,650,000 	 9d4+9    6 5 4 4 3 3
+									 - Hold Portal										19 	1,800,000 	9d4+10    6 5 5 4 3 3
+									 - Light										20 	1,950,000 	9d4+11    6 5 5 4 4 3
+									 - Magic Missile
+									 - Magic Mouth
+									 - Protection from Evil
+									 - Read Languages
+									 - Shield
+									 - Sleep
+									 - Ventriloquism
