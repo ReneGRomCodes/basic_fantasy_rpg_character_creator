@@ -181,26 +181,23 @@ def select_character(char_list):
     return character
 
 
-def show_race_descriptions():
-    """Print detailed description of playable races from 'races_description.txt'."""
-    race_files = ["descr/dwarves.txt", "descr/elves.txt", "descr/halflings.txt", "descr/humans.txt"]
-    # Page counter for 'book feeling' of race description output.
-    page = 1
+def show_char_race_descr(character):
+    """Take 'character' returned by 'select_character()' function and print detailed description of character race."""
+    # Dict of txt files with race descriptions.
+    race_files = {"Dwarf": "descr/dwarves.txt",
+                  "Elf": "descr/elves.txt",
+                  "Halfling": "descr/halflings.txt",
+                  "Human": "descr/humans.txt",
+                  }
 
-    for race in race_files:
-        with open(race) as f:
-            for line in f:
-                output_text = line.rstrip()
-                print(output_text)
+    os.system('cls')
 
-            # Print page count and input message with different message on last page.
-            if page == 4:
-                input("\n\n\nPRESS ENTER TO RETURN TO CHARACTER SELECTION.")
-                os.system('cls')
-            else:
-                input(f"\n\n\nPAGE {page}/4 - PRESS ENTER TO GO TO NEXT PAGE.")
-                os.system('cls')
-                page += 1
+    with open(race_files[character.split(" ")[0]]) as f:
+        for line in f:
+            output_text = line.rstrip()
+            print(output_text)
+
+    input("\n\n\nPress Enter to proceed.")
 
 
 def show_class_descriptions():

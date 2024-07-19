@@ -56,4 +56,3 @@ cleric = {
                                   "Spells: 15",
 }
 
-func.show_race_descriptions()
