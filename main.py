@@ -34,8 +34,13 @@ while True:
     func.show_char_race_descr(character)
     func.show_char_class_descr(character)
 
-    char_prompt = f"\n\n\n\n\tDO YOU WANT TO BE A '{character}'? (Y/N) "
-    char_proceed = input("\n" + char_prompt)
+    # if-else block to assure grammatically correct prompt... because it would bother me to no end.
+    if character.split(" ")[0] == "Elf":
+        char_prompt = f"\n\n\n\n\tDO YOU WANT TO BE AN '{character}'? (Y/N) "
+        char_proceed = input("\n" + char_prompt)
+    else:
+        char_prompt = f"\n\n\n\n\tDO YOU WANT TO BE A '{character}'? (Y/N) "
+        char_proceed = input("\n" + char_prompt)
 
     if func.check_yes_no(char_proceed, char_prompt):
         break
