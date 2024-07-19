@@ -30,6 +30,7 @@ while True:
 while True:
     possible_characters = func.build_race_class_list(race_list, class_list)
     character = func.select_character(possible_characters)
+    # Show description of selected race and class.
     func.show_char_race_descr(character)
     func.show_char_class_descr(character)
 

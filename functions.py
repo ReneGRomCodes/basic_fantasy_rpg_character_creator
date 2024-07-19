@@ -192,7 +192,7 @@ def show_char_race_descr(character):
 
     os.system('cls')
 
-    with open(race_files[character.split(" ")[0]]) as f:
+    with open(race_files[character.split(" ")[0]]) as f:  # Splitting race from string 'character'.
         for line in f:
             output_text = line.rstrip()
             print(output_text)
@@ -211,7 +211,7 @@ def show_char_class_descr(character):
 
     os.system('cls')
 
-    with open(class_files[character.split(" ")[1]]) as f:
+    with open(class_files[character.split(" ")[1]]) as f:  # Splitting class from string 'character'.
         for line in f:
             output_text = line.rstrip()
             print(output_text)

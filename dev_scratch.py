@@ -4,14 +4,7 @@ import functions as func
 
 
 # Races.
-race_template = {
-    "Hit Die": 0,
-    "Weapons": 0,
-    "Special": 0,
-    "Save Bonuses": 0,
-    "Languages": 0,
-    "Description": 0,
-}
+
 
 dwarves = {
     "Hit Die": "Any",
@@ -30,15 +23,7 @@ dwarves = {
 }
 
 # Character classes.
-class_template = {
-    "Hit Die": 0,
-    "Weapons": 0,
-    "Armor": 0,
-    "XP for 2nd level": 0,
-    "Spells": 0,
-    "Specials": 0,
-    "Saving Throws at 1st level": 0,
-}
+
 
 cleric = {
     "Hit Die": "D6",
