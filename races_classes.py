@@ -1,9 +1,8 @@
-"""Dictionaries on races and classes for use in character sheet and to check for allowed armor/weapon."""
+"""Dictionaries on races and classes to check for allowed armor/weapon."""
 
 
 # Race descriptions.
 dwarves = {
-    "Hit Die": 8,
     "Weapons": {
         "Large Weapons": "two hands",
         "2-Handed Sword": False,
@@ -24,7 +23,6 @@ dwarves = {
 
 
 elves = {
-    "Hit Die": 6,
     "Weapons": {
         "Large Weapons": "two hands",
     },
@@ -42,7 +40,6 @@ elves = {
 
 
 halflings = {
-    "Hit Die": 6,
     "Weapons": {
         "Large Weapons": False,
         "Medium Weapons": "two hands",
@@ -63,7 +60,6 @@ halflings = {
 
 
 humans = {
-    "Hit Die": 8,
     "Weapons": {
         "Large Weapons": "two hands",
     },
@@ -75,7 +71,6 @@ humans = {
 
 # Class descriptions.
 cleric = {
-    "Hit Die": 6,
     "Weapons": ["Club",
                 "Mace",
                 "Maul",
@@ -83,7 +78,6 @@ cleric = {
                 "Sling",
                 "Warhammer"],
     "Armor": ["Any"],
-    "XP for 2nd level": 1500,
     "Spells": False,
     "Special": ["Turn the Undead"],
     "Saving Throws at 1st level": {
@@ -97,12 +91,10 @@ cleric = {
 
 
 magic_user = {
-    "Hit Die": 4,
     "Weapons": ["Cudgel",
                 "Dagger",
                 "Walking Staff"],
     "Armor": [False],
-    "XP for 2nd level": 2500,
     "Spells": "1 first-level spell",
     "Special": [False],
     "Saving Throws at 1st level": {
@@ -116,10 +108,8 @@ magic_user = {
 
 
 fighter = {
-    "Hit Die": 8,
     "Weapons": ["Any"],
     "Armor": ["Any"],
-    "XP for 2nd level": 2000,
     "Spells": False,
     "Special": [False],
     "Saving Throws at 1st level": {
@@ -133,11 +123,9 @@ fighter = {
 
 
 thief = {
-    "Hit Die": 4,
     "Weapons": ["Any"],
     "Armor": ["Leather",
               "No Shield"],
-    "XP for 2nd level": 1250,
     "Spells": False,
     "Special": ["Sneak Attack",
                 "Thief Abilities"],

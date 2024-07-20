@@ -65,17 +65,19 @@ while True:
         continue
 
 
-# Character variables.
-xp_next_level = None
-armor_class = None
-char_hp = None
-attack_bonus = 1
+# Remaining character variables.
+xp_next_level = func.get_next_level_xp(char_class)
+armor_class = None  # Value changes with ARMOR after implementation of the shop.
+char_hp = func.get_hp(char_race, char_class)
+attack_bonus = 1  # Default for level 1 characters. Value changes with WEAPON after implementation of the shop.
 starting_money = func.dice_roll(3, 6) * 10
 
 
 # Character Sheet:
-print(f"{char_name.upper()}                Level: 1")
-print(f"Race: {char_race}    Class: {char_class}\nXP: 0       XP for next level: {xp_next_level}")
+print(f"{char_name.upper()}                XP: 0")
+print(f"Race: {char_race}    Class: {char_class}")
+print(f"\nLevel: 1       XP for next level: {xp_next_level}")
+print(f"\nArmor Class: {armor_class}      HP: {char_hp}       Attack Bonus: {attack_bonus}")
 func.show_ability_scores(ability_scores)
 print(f"\nMoney:          {starting_money}")
 
