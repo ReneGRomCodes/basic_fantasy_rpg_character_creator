@@ -30,12 +30,16 @@ while True:
 while True:
     possible_characters = func.build_race_class_list(race_list, class_list)
     character = func.select_character(possible_characters)
+
+    # Split selected 'character' into variables for race and class.
+    char_race = character.split(" ")[0]
+    char_class = character.split(" ")[1]
     # Show description of selected race and class.
-    func.show_char_race_descr(character)
-    func.show_char_class_descr(character)
+    func.show_char_race_descr(char_race)
+    func.show_char_class_descr(char_class)
 
     # if-else block to assure grammatically correct prompt... because it would bother me to no end.
-    if character.split(" ")[0] == "Elf":
+    if char_race == "Elf":
         char_prompt = f"\n\n\n\n\tDO YOU WANT TO BE AN '{character}'? (Y/N) "
         char_proceed = input("\n" + char_prompt)
     else:
@@ -62,8 +66,6 @@ while True:
 
 
 # Character variables.
-char_race = character.split(" ")[0]
-char_class = character.split(" ")[1]
 xp_next_level = None
 armor_class = None
 char_hp = None
