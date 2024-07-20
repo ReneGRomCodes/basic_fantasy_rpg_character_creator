@@ -1,6 +1,6 @@
 import os
 import random
-"""Functions for character creation."""
+"""Helper functions for use in 'main_functions' module."""
 
 
 def dice_roll(n, m):
@@ -217,28 +217,3 @@ def show_char_class_descr(char_class):
             print(output_text)
 
     input("\n\n\n\n\tPRESS ENTER TO CONTINUE.")
-
-
-def get_next_level_xp(char_class):
-    """Return XP value of 'char_class' for use on character sheet."""
-    if char_class == "Cleric":
-        return 1500
-    elif char_class == "Fighter":
-        return 2000
-    elif char_class == "Magic-User":
-        return 2500
-    else:
-        return 1250
-
-
-def get_hp(char_race, char_class):
-    """Return HP value based on 'char_race' and 'char_class' for use on character sheet."""
-    if char_class == "Cleric":
-        return dice_roll(1, 6)
-    elif char_class == "Fighter":
-        if char_race == "Elf" or char_race == "Halfling":
-            return dice_roll(1, 6)
-        else:
-            return dice_roll(1, 8)
-    elif char_class == "Magic-User" or char_class == "Thief":
-        return dice_roll(1, 4)
