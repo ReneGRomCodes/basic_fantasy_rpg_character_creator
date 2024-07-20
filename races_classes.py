@@ -1,3 +1,6 @@
+"""Dictionaries on races and classes for use in character sheet and to check for allowed armor/weapon."""
+
+
 # Race descriptions.
 dwarves = {
     "Hit Die": 8,
@@ -71,12 +74,78 @@ humans = {
 
 
 # Class descriptions.
-class_template = {
-    "Hit Die": 0,
-    "Weapons": 0,
-    "Armor": 0,
-    "XP for 2nd level": 0,
-    "Spells": 0,
-    "Specials": 0,
-    "Saving Throws at 1st level": 0,
+cleric = {
+    "Hit Die": 6,
+    "Weapons": ["Club",
+                "Mace",
+                "Maul",
+                "Quarterstaff",
+                "Sling",
+                "Warhammer"],
+    "Armor": ["Any"],
+    "XP for 2nd level": 1500,
+    "Spells": False,
+    "Special": ["Turn the Undead"],
+    "Saving Throws at 1st level": {
+        "Death Ray or Poison": 11,
+        "Magic Wands": 12,
+        "Paralysis or Petrify": 14,
+        "Dragon Breath": 16,
+        "Spells": 15,
+    },
+}
+
+
+magic_user = {
+    "Hit Die": 4,
+    "Weapons": ["Cudgel",
+                "Dagger",
+                "Walking Staff"],
+    "Armor": [False],
+    "XP for 2nd level": 2500,
+    "Spells": "1 first-level spell",
+    "Special": [False],
+    "Saving Throws at 1st level": {
+        "Death Ray or Poison": 13,
+        "Magic Wands": 14,
+        "Paralysis or Petrify": 13,
+        "Dragon Breath": 16,
+        "Spells": 15,
+    },
+}
+
+
+fighter = {
+    "Hit Die": 8,
+    "Weapons": ["Any"],
+    "Armor": ["Any"],
+    "XP for 2nd level": 2000,
+    "Spells": False,
+    "Special": [False],
+    "Saving Throws at 1st level": {
+        "Death Ray or Poison": 12,
+        "Magic Wands": 13,
+        "Paralysis or Petrify": 14,
+        "Dragon Breath": 15,
+        "Spells": 17,
+    },
+}
+
+
+thief = {
+    "Hit Die": 4,
+    "Weapons": ["Any"],
+    "Armor": ["Leather",
+              "No Shield"],
+    "XP for 2nd level": 1250,
+    "Spells": False,
+    "Special": ["Sneak Attack",
+                "Thief Abilities"],
+    "Saving Throws at 1st level": {
+        "Death Ray or Poison": 13,
+        "Magic Wands": 14,
+        "Paralysis or Petrify": 13,
+        "Dragon Breath": 16,
+        "Spells": 15,
+    },
 }
