@@ -64,7 +64,12 @@ def build_ability_dict():
     abilities_dict = {}
 
     for item in abilities:
-        abilities_dict[item] = get_ability_score()
+        # Adding default INT bonus of +1.
+        if item == "int":
+            abilities_dict[item] = get_ability_score()
+            abilities_dict[item][1] += 1
+        else:
+            abilities_dict[item] = get_ability_score()
 
     return abilities_dict
 
