@@ -83,17 +83,26 @@ def get_next_level_xp(char_class):
         return 1250
 
 
-def get_hp(char_race, char_class):
-    """Return HP value based on 'char_race' and 'char_class' for use on character sheet."""
+def get_hp(char_race, char_class, ability_scores):
+    """Return HP value based on 'char_race' and 'char_class' and adds constitution bonus/penalty from dict
+    'ability_scores'."""
+    # Constitution bonus/penalty.
+    bonus_penalty = ability_scores["con"][1]
+
     if char_class == "Cleric":
-        return func.dice_roll(1, 6)
+        hp = func.dice_roll(1, 6) + bonus_penalty
     elif char_class == "Fighter":
         if char_race == "Elf" or char_race == "Halfling":
-            return func.dice_roll(1, 6)
+            hp = func.dice_roll(1, 6) + bonus_penalty
         else:
-            return func.dice_roll(1, 8)
+            hp = func.dice_roll(1, 8) + bonus_penalty
     else:
-        return func.dice_roll(1, 4)
+        hp = func.dice_roll(1, 4) + bonus_penalty
+
+    if hp < 1:
+        return 1
+    else:
+        return hp
 
 
 def build_character_sheet(char_class, char_race, char_name, ability_scores):
@@ -107,6 +116,6 @@ def build_character_sheet(char_class, char_race, char_name, ability_scores):
     print(f"{char_name.upper()}                XP: 0")
     print(f"Race: {char_race}    Class: {char_class}")
     print(f"\nLevel: 1       XP for next level: {get_next_level_xp(char_class)}")
-    print(f"\nArmor Class: {armor_class}      HP: {get_hp(char_race, char_class)}       Attack Bonus: {attack_bonus}")
+    print(f"\nArmor Class: {armor_class}      HP: {get_hp(char_race, char_class, ability_scores)}       Attack Bonus: {attack_bonus}")
     func.show_ability_scores(ability_scores)
     print(f"\nMoney:          {func.dice_roll(3, 6) * 10}")
