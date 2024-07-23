@@ -224,6 +224,41 @@ def show_char_class_descr(char_class):
     input("\n\n\n\n\tPRESS ENTER TO CONTINUE.")
 
 
+# Functions directly used in creation of the character sheet.
+def get_next_level_xp(char_class):
+    """Return XP value of 'char_class' for use on character sheet."""
+    if char_class == "Cleric":
+        return 1500
+    elif char_class == "Fighter":
+        return 2000
+    elif char_class == "Magic-User":
+        return 2500
+    else:
+        return 1250
+
+
+def get_hp(char_race, char_class, ability_scores):
+    """Return HP value based on 'char_race' and 'char_class' and adds constitution bonus/penalty from dict
+    'ability_scores'."""
+    # Constitution bonus/penalty.
+    bonus_penalty = ability_scores["con"][1]
+
+    if char_class == "Cleric":
+        hp = dice_roll(1, 6) + bonus_penalty
+    elif char_class == "Fighter":
+        if char_race == "Elf" or char_race == "Halfling":
+            hp = dice_roll(1, 6) + bonus_penalty
+        else:
+            hp = dice_roll(1, 8) + bonus_penalty
+    else:
+        hp = dice_roll(1, 4) + bonus_penalty
+
+    if hp < 1:
+        return 1
+    else:
+        return hp
+
+
 def get_saving_throws(char_race, char_class):
     """Take strings 'char_race' and 'char_class', get saving throw values and return them in dictionary
     'saving_throws'."""
