@@ -222,3 +222,28 @@ def show_char_class_descr(char_class):
             print(output_text)
 
     input("\n\n\n\n\tPRESS ENTER TO CONTINUE.")
+
+
+def get_saving_throws(char_race, char_class):
+    # List of bonus throws.
+    bonus_list = ["Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"]
+    # Dict of race bonuses. Values in same order as 'bonus_list'.
+    race_bonuses = {"Dwarf": [4, 4, 4, 3, 4],
+                    "Elf": [0, 2, 1, 0, 2],
+                    "Halfling": [4, 4, 4, 3, 4],
+                    "Human": [0, 0, 0, 0, 0],
+                    }
+    # Dict of class bonuses. Values in same order as 'bonus_list'.
+    class_bonuses = {"Cleric": [11, 12, 14, 16, 15],
+                     "Fighter": [12, 13, 14, 15, 17],
+                     "Magic-User": [13, 14, 13, 16, 15],
+                     "Thief": [13, 14, 13, 16, 15],
+                     }
+
+    saving_throws = {}
+
+    for item in bonus_list:
+        index = bonus_list.index(item)
+        saving_throws[item] = race_bonuses[char_race][index] + class_bonuses[char_class][index]
+
+    return saving_throws
