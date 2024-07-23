@@ -225,6 +225,8 @@ def show_char_class_descr(char_class):
 
 
 def get_saving_throws(char_race, char_class):
+    """Take strings 'char_race' and 'char_class', get saving throw values and return them in dictionary
+    'saving_throws'."""
     # List of bonus throws.
     bonus_list = ["Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"]
     # Dict of race bonuses. Values in same order as 'bonus_list'.
