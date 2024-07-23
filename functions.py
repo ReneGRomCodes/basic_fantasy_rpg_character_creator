@@ -259,9 +259,9 @@ def get_hp(char_race, char_class, ability_scores):
         return hp
 
 
-def get_saving_throws(char_race, char_class):
-    """Take strings 'char_race' and 'char_class', get saving throw values and return them in dictionary
-    'saving_throws'."""
+def show_saving_throws(char_race, char_class):
+    """Take strings 'char_race' and 'char_class', get saving throw values, add them to dict 'saving_throws' and print
+    dict in formatted output."""
     # List of bonus throws.
     bonus_list = ["Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"]
     # Dict of race bonuses. Values in same order as 'bonus_list'.
@@ -283,4 +283,5 @@ def get_saving_throws(char_race, char_class):
         index = bonus_list.index(item)
         saving_throws[item] = race_bonuses[char_race][index] + class_bonuses[char_class][index]
 
-    return saving_throws
+    for k, v in saving_throws.items():
+        print(f"{k:<22} +{v:>2}")

@@ -85,4 +85,5 @@ def build_character_sheet(char_class, char_race, char_name, ability_scores):
     print(f"\nArmor Class: {armor_class}      HP: {func.get_hp(char_race, char_class, ability_scores)}"
           f"       Attack Bonus: {attack_bonus}")
     func.show_ability_scores(ability_scores)
+    func.show_saving_throws(char_race, char_class)
     print(f"\nMoney:          {func.dice_roll(3, 6) * 10}")
