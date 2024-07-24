@@ -288,6 +288,8 @@ def show_saving_throws(char_race, char_class):
 
 
 def show_special_abilities(char_race, char_class):
+    """Create list 'specials_character' based on strings 'char_race' and 'char_class', and print it in formatted
+    output."""
     # Special abilities by race.
     specials_race = {"Dwarf":
                          ["Darkvision 60'",

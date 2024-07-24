@@ -1,4 +1,5 @@
 import functions as func
+import random
 """Main functions for character creation used in 'main.py'."""
 
 
@@ -69,6 +70,25 @@ def name_character():
             return char_name
         else:
             continue
+
+
+def random_character_generator():
+    """Create random character."""
+    while True:
+        # Generate dictionary for character abilities.
+        ability_scores = func.build_ability_dict()
+
+        # Check if abilities allow for valid race-class combinations.
+        race_list = func.check_race(ability_scores)
+        class_list = func.check_class(ability_scores)
+        if not func.check_valid_race_class(race_list, class_list):
+            continue
+
+        char_race = race_list[random.randint(0, (len(race_list)-1))]
+        char_class = class_list[random.randint(0, (len(class_list)-1))]
+        char_name = "ADVENTURER"  # Default RPG character name.
+
+        return ability_scores, char_race, char_class, char_name
 
 
 def build_character_sheet(char_class, char_race, char_name, ability_scores):
