@@ -14,4 +14,4 @@ char_name = mf.name_character()
 mf.build_character_sheet(char_class, char_race, char_name, ability_scores)
 
 
-input("\nPress Enter to continue")
+input("\nPress Enter to exit")

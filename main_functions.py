@@ -87,5 +87,7 @@ def build_character_sheet(char_class, char_race, char_name, ability_scores):
     func.show_ability_scores(ability_scores)
     print("\nSaving Throws:")
     func.show_saving_throws(char_race, char_class)
+    print("\nSpecial Abilities:")
+    func.show_special_abilities(char_race, char_class)
     print(f"\nMoney: {func.dice_roll(3, 6) * 10}")
     print(f"Equipment:")

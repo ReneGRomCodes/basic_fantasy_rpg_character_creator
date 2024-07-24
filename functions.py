@@ -285,3 +285,47 @@ def show_saving_throws(char_race, char_class):
 
     for k, v in saving_throws.items():
         print(f"{k:<22} +{v:>2}")
+
+
+def show_special_abilities(char_race, char_class):
+    # Special abilities by race.
+    specials_race = {"Dwarf":
+                         ["Darkvision 60'",
+                          "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"],
+                     "Elf":
+                         ["Darkvision 60'",
+                          "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
+                          "Immune to paralyzing attack from ghouls",
+                          "Range reduction by 1 for surprise checks"],
+                     "Halfling": ["+1 attack bonus on ranged weapons",
+                                  "+2 bonus to AC when attacked in melee by creatures larger than man-sized",
+                                  "+1 to initiative die rolls",
+                                  "Hide (10% change to be detected outdoors, 30% chance to be detected indoors"],
+                     "Human": ["+10% to all earned XP"],
+                     }
+
+    # Special abilities by class.
+    specials_class = {"Cleric":
+                          ["Turn the Undead"],
+                      "Magic-User": [False],
+                      "Fighter": [False],
+                      "Thief": ["Sneak Attack",
+                                "Thief Abilities"],
+                      }
+
+    specials_character = []
+
+    for v in specials_race[char_race]:
+        if not v:
+            pass
+        else:
+            specials_character.append(v)
+
+    for v in specials_class[char_class]:
+        if not v:
+            pass
+        else:
+            specials_character.append(v)
+
+    for special in specials_character:
+        print(f" - {special}")
