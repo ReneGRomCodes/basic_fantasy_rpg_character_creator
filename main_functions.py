@@ -76,14 +76,16 @@ def build_character_sheet(char_class, char_race, char_name, ability_scores):
     and print character sheet."""
     # Get remaining character variables.
     armor_class = 0  # Value changes with ARMOR after implementation of the shop.
-    attack_bonus = 1  # Default for level 1 characters. Value changes with WEAPON after implementation of the shop.
+    attack_bonus = 1  # Default for level 1 characters.
 
     # Build Character Sheet.
-    print(f"{char_name.upper()}                XP: 0")
-    print(f"Race: {char_race}    Class: {char_class}")
-    print(f"\nLevel: 1       XP for next level: {func.get_next_level_xp(char_class)}")
-    print(f"\nArmor Class: {armor_class}      HP: {func.get_hp(char_race, char_class, ability_scores)}"
-          f"       Attack Bonus: {attack_bonus}")
+    print(f"{char_name.upper():<15}Level: 1")
+    print(f"{char_race} {char_class:<15}XP: 0 ({func.get_next_level_xp(char_class)})")
+    print(f"\nArmor Class: {armor_class:<8}HP: {func.get_hp(char_race, char_class, ability_scores):<8}"
+          f"Attack Bonus: {attack_bonus}")
+    print("\nAbilities:")
     func.show_ability_scores(ability_scores)
+    print("\nSaving Throws:")
     func.show_saving_throws(char_race, char_class)
-    print(f"\nMoney:          {func.dice_roll(3, 6) * 10}")
+    print(f"\nMoney: {func.dice_roll(3, 6) * 10}")
+    print(f"Equipment:")

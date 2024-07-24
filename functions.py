@@ -92,7 +92,7 @@ def show_ability_scores(abilities_dict):
         else:
             pass
 
-        print(f"{abilities_name:<17} {abilities_dict[key][0]:>2} {bonus_penalty:>4}")
+        print(f"{abilities_name:<23} {abilities_dict[key][0]:>2} {bonus_penalty:>4}")
 
 
 def check_race(abilities_dict):
