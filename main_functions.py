@@ -3,6 +3,10 @@ import random
 """Main functions for character creation used in 'main.py'."""
 
 
+def main_menu():
+    pass
+
+
 def ability_score():
     """Generate dictionary 'ability_scores', ask for user confirmation and return 'ability_scores', list 'race_list' and
      list 'class_list'."""
@@ -73,7 +77,7 @@ def name_character():
 
 
 def random_character_generator():
-    """Create random character."""
+    """Create random character and return 'ability_scores', 'char_race', 'char_class' and default 'char_name'."""
     while True:
         # Generate dictionary for character abilities.
         ability_scores = func.build_ability_dict()
@@ -84,6 +88,7 @@ def random_character_generator():
         if not func.check_valid_race_class(race_list, class_list):
             continue
 
+        # Choose random race and class and assign default character name "ADVENTURER".
         char_race = race_list[random.randint(0, (len(race_list)-1))]
         char_class = class_list[random.randint(0, (len(class_list)-1))]
         char_name = "ADVENTURER"  # Default RPG character name.
@@ -102,7 +107,7 @@ def build_character_sheet(char_class, char_race, char_name, ability_scores):
     print(f"{char_name.upper():<15}Level: 1")
     print(f"{char_race} {char_class:<15}XP: 0 ({func.get_next_level_xp(char_class)})")
     print(f"\nArmor Class: {armor_class:<8}HP: {func.get_hp(char_race, char_class, ability_scores):<8}"
-          f"Attack Bonus: {attack_bonus}")
+          f"Attack Bonus: +{attack_bonus}")
     print("\nAbilities:")
     func.show_ability_scores(ability_scores)
     print("\nSaving Throws:")
