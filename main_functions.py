@@ -3,6 +3,20 @@ import random
 """Main functions for character creation used in 'main.py'."""
 
 
+def show_menu():
+    """Print string 'menu' and return string 'menu_prompt'."""
+    menu = ("- BASIC FANTASY RPG CHARACTER CREATOR - \n\n"
+            "Do you want to customize your character or generate a random character?\n"
+            "1 - Custom Character\n"
+            "2 - Random Character\n\n")
+    menu_prompt = "Please enter '1' or '2': "
+
+    print(menu)
+
+    # Return 'menu_prompt' for use in 'run_character_creator()' in 'main.py'
+    return menu_prompt
+
+
 def ability_score():
     """Generate dictionary 'ability_scores', ask for user confirmation and return 'ability_scores', list 'race_list' and
      list 'class_list'."""
@@ -100,7 +114,7 @@ def build_character_sheet(char_class, char_race, char_name, ability_scores):
     attack_bonus = 1  # Default for level 1 characters.
 
     # Build Character Sheet.
-    print(f"{char_name.upper():<15}Level: 1")
+    print(f"{char_name.upper():<25}Level: 1")
     print(f"{char_race} {char_class:<15}XP: 0 ({func.get_next_level_xp(char_class)})")
     print(f"\nArmor Class: {armor_class:<8}HP: {func.get_hp(char_race, char_class, ability_scores):<8}"
           f"Attack Bonus: +{attack_bonus}")
