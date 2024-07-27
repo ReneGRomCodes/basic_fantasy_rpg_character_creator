@@ -3,10 +3,6 @@ import random
 """Main functions for character creation used in 'main.py'."""
 
 
-def main_menu():
-    pass
-
-
 def ability_score():
     """Generate dictionary 'ability_scores', ask for user confirmation and return 'ability_scores', list 'race_list' and
      list 'class_list'."""
@@ -62,10 +58,10 @@ def race_class_selection(race_list, class_list):
             continue
 
 
-def name_character():
+def name_character(prompt="Name your character: "):
     """Prompt user to name character and return string 'char_name'."""
     while True:
-        char_name = input("Enter character name: ")
+        char_name = input(prompt)
 
         name_prompt = f"Do you want your character to be named '{char_name}'? (Y/N) "
         name_proceed = input(name_prompt)
@@ -91,9 +87,9 @@ def random_character_generator():
         # Choose random race and class and assign default character name "ADVENTURER".
         char_race = race_list[random.randint(0, (len(race_list)-1))]
         char_class = class_list[random.randint(0, (len(class_list)-1))]
-        char_name = "ADVENTURER"  # Default RPG character name.
+        char_name = name_character(f"Name your {char_race} {char_class}: ")
 
-        return ability_scores, char_race, char_class, char_name
+        return char_class, char_race, char_name, ability_scores
 
 
 def build_character_sheet(char_class, char_race, char_name, ability_scores):

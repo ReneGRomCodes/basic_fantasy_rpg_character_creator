@@ -291,14 +291,11 @@ def show_special_abilities(char_race, char_class):
     """Create list 'specials_character' based on strings 'char_race' and 'char_class', and print it in formatted
     output."""
     # Special abilities by race.
-    specials_race = {"Dwarf":
-                         ["Darkvision 60'",
-                          "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"],
-                     "Elf":
-                         ["Darkvision 60'",
-                          "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
-                          "Immune to paralyzing attack from ghouls",
-                          "Range reduction by 1 for surprise checks"],
+    specials_race = {"Dwarf": ["Darkvision 60'",
+                               "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"],
+                     "Elf": ["Darkvision 60'",
+                             "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
+                             "Range reduction by 1 for surprise checks"],
                      "Halfling": ["+1 attack bonus on ranged weapons",
                                   "+2 bonus to AC when attacked in melee by creatures larger than man-sized",
                                   "+1 to initiative die rolls",
@@ -307,8 +304,7 @@ def show_special_abilities(char_race, char_class):
                      }
 
     # Special abilities by class.
-    specials_class = {"Cleric":
-                          ["Turn the Undead"],
+    specials_class = {"Cleric": ["Turn the Undead"],
                       "Magic-User": [False],
                       "Fighter": [False],
                       "Thief": ["Sneak Attack",
