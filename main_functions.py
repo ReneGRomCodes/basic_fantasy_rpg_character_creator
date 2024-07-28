@@ -87,7 +87,8 @@ def name_character(prompt="Name your character: "):
 
 
 def random_character_generator():
-    """Create random character and return 'ability_scores', 'char_race', 'char_class' and default 'char_name'."""
+    """Create random character, prompt user for 'char_name' and return 'ability_scores', 'char_race', 'char_class' and
+    'char_name'."""
     while True:
         # Generate dictionary for character abilities.
         ability_scores = func.build_ability_dict()

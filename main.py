@@ -1,9 +1,14 @@
 import main_functions as mf
+import functions as func
 import os
+"""Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
+It initializes the program and starts the main functionality."""
 
 
 def run_character_creator():
+    """Initialize main loop for character creation."""
     menu_prompt = mf.show_menu()
+    another_character_prompt = "\n\nDO YOU WANT TO CREATE ANOTHER CHARACTER (Y/N)? "
 
     while True:
         try:
@@ -21,7 +26,14 @@ def run_character_creator():
 
                 # Build character sheet.
                 mf.build_character_sheet(char_class, char_race, char_name, ability_scores)
-                break
+
+                # Prompt user to create another character or exit.
+                another_character = input(another_character_prompt)
+                if func.check_yes_no(another_character, another_character_prompt):
+                    mf.show_menu()
+                    continue
+                else:
+                    break
 
             elif user_input == 2:
                 os.system('cls')
@@ -30,12 +42,19 @@ def run_character_creator():
 
                 # Build character sheet.
                 mf.build_character_sheet(char_class, char_race, char_name, ability_scores)
-                break
+
+                # Prompt user to create another character or exit.
+                another_character = input(another_character_prompt)
+                if func.check_yes_no(another_character, another_character_prompt):
+                    mf.show_menu()
+                    continue
+                else:
+                    break
 
         except ValueError:
             continue
 
-    input("\nPress Enter to exit")
+    input("Press Enter to exit")
 
 
 run_character_creator()
