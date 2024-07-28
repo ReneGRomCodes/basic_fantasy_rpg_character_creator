@@ -186,7 +186,7 @@ def select_character(char_list):
     return character
 
 
-def show_char_race_descr(char_race):
+def show_char_race_descr(char_race, char_class):
     """Take 'character' returned by 'select_character()' function and print detailed description of character race."""
     # Dict of txt files with race descriptions.
     race_files = {"Dwarf": "descr/dwarves.txt",
@@ -202,7 +202,7 @@ def show_char_race_descr(char_race):
             output_text = line.rstrip()
             print(output_text)
 
-    input(f"\n\n\n\n\tPRESS ENTER TO SHOW '{char_race}' CLASS.")
+    input(f"\n\n\n\n\tPRESS ENTER TO SHOW '{char_class}' CLASS.")
 
 
 def show_char_class_descr(char_class):

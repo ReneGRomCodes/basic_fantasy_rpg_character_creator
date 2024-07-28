@@ -55,7 +55,7 @@ def race_class_selection(race_list, class_list):
         char_race = character.split(" ")[0]
         char_class = character.split(" ")[1]
         # Show description of selected race and class.
-        func.show_char_race_descr(char_race)
+        func.show_char_race_descr(char_race, char_class)
         func.show_char_class_descr(char_class)
 
         # if-else block to assure grammatically correct prompt... because it would bother me to no end.
