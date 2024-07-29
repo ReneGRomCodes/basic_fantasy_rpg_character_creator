@@ -15,14 +15,14 @@ class CharacterRace:
     def set_race(self, char_race):
         """Set race-specific values based on chosen race."""
         if char_race == "Dwarf":
-            self.race_name = "Dwarves"
+            self.race_name = "Dwarf"
             self.description = "descr/dwarves.txt"
             self.max_hit_die = False
             self.specials = ["Darkvision 60'",
                              "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"]
             self.bonuses = [4, 4, 4, 3, 4]
         elif char_race == "Elf":
-            self.race_name = "Elves"
+            self.race_name = "Elf"
             self.description = "descr/elves.txt"
             self.max_hit_die = 6
             self.specials = ["Darkvision 60'"
@@ -30,7 +30,7 @@ class CharacterRace:
                              "Range reduction by 1 for surprise checks"]
             self.bonuses = [0, 2, 1, 0, 2]
         elif char_race == "Halfling":
-            self.race_name = "Halflings"
+            self.race_name = "Halfling"
             self.description = "descr/halflings.txt"
             self.max_hit_die = 6
             self.specials = ["+1 attack bonus on ranged weapons",
@@ -38,7 +38,7 @@ class CharacterRace:
                              "Hide (10% chance to be detected outdoors, 30% chance to be detected indoors"]
             self.bonuses = [4, 4, 4, 3, 4]
         elif char_race == "Human":
-            self.race_name = "Humans"
+            self.race_name = "Human"
             self.description = "descr/humans.txt"
             self.max_hit_die = False
             self.specials = ["+10% to all earned XP"]
