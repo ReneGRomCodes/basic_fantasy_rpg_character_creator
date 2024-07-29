@@ -305,8 +305,8 @@ def show_special_abilities(char_race, char_class):
 
     # Special abilities by class.
     specials_class = {"Cleric": ["Turn the Undead"],
-                      "Magic-User": [False],
                       "Fighter": [False],
+                      "Magic-User": [False],
                       "Thief": ["Sneak Attack",
                                 "Thief Abilities"],
                       }
