@@ -1,5 +1,6 @@
 import main_functions as mf
-import functions as func
+from functions import check_yes_no as yes_no
+import races_classes as rc
 import os
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
 It initializes the program and starts the main functionality."""
@@ -7,6 +8,11 @@ It initializes the program and starts the main functionality."""
 
 def run_character_creator():
     """Initialize main loop for character creation."""
+
+    # Instances of CharacterRace and CharacterClass to set and store values.
+    char_race = rc.CharacterRace()
+    char_class = rc.CharacterClass()
+
     menu_prompt = mf.show_menu()
     another_character_prompt = "\n\nDO YOU WANT TO CREATE ANOTHER CHARACTER (Y/N)? "
 
@@ -19,17 +25,17 @@ def run_character_creator():
                 ability_scores, race_list, class_list = mf.ability_score()
 
                 # Race and class selection.
-                char_race, char_class = mf.race_class_selection(race_list, class_list)
+                mf.race_class_selection(char_race, char_class, race_list, class_list)
 
                 # Name the character.
                 char_name = mf.name_character()
 
                 # Build character sheet.
-                mf.build_character_sheet(char_class, char_race, char_name, ability_scores)
+                mf.build_character_sheet(char_race, char_class, char_name, ability_scores)
 
                 # Prompt user to create another character or exit.
                 another_character = input(another_character_prompt)
-                if func.check_yes_no(another_character, another_character_prompt):
+                if yes_no(another_character, another_character_prompt):
                     mf.show_menu()
                     continue
                 else:
@@ -38,14 +44,14 @@ def run_character_creator():
             elif user_input == 2:
                 os.system('cls')
                 # Get random class, race, name and ability scores.
-                char_class, char_race, char_name, ability_scores = mf.random_character_generator()
+                char_name, ability_scores = mf.random_character_generator(char_race, char_class)
 
                 # Build character sheet.
-                mf.build_character_sheet(char_class, char_race, char_name, ability_scores)
+                mf.build_character_sheet(char_race, char_class, char_name, ability_scores)
 
                 # Prompt user to create another character or exit.
                 another_character = input(another_character_prompt)
-                if func.check_yes_no(another_character, another_character_prompt):
+                if yes_no(another_character, another_character_prompt):
                     mf.show_menu()
                     continue
                 else:

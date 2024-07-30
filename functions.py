@@ -164,7 +164,7 @@ def build_race_class_list(race_list, class_list):
 
 def select_character(char_list):
     """Take list of possible race-class combinations 'char_list', print them out, let user choose a character and return
-    choice 'character' as string variable."""
+    choice 'character' as string."""
     selection_counter = 1
 
     for char in char_list:
@@ -187,36 +187,22 @@ def select_character(char_list):
 
 
 def show_char_race_descr(char_race, char_class):
-    """Take 'character' returned by 'select_character()' function and print detailed description of character race."""
-    # Dict of txt files with race descriptions.
-    race_files = {"Dwarf": "descr/dwarves.txt",
-                  "Elf": "descr/elves.txt",
-                  "Halfling": "descr/halflings.txt",
-                  "Human": "descr/humans.txt",
-                  }
-
+    """Take instances 'char_race' and 'char_class' and print detailed description of character race."""
     os.system('cls')
 
-    with open(race_files[char_race]) as f:  # Splitting race from string 'character'.
+    with open(char_race.description) as f:
         for line in f:
             output_text = line.rstrip()
             print(output_text)
 
-    input(f"\n\n\n\n\tPRESS ENTER TO SHOW '{char_class}' CLASS.")
+    input(f"\n\n\n\n\tPRESS ENTER TO SHOW '{char_class.class_name}' CLASS.")
 
 
 def show_char_class_descr(char_class):
-    """Take 'character' returned by 'select_character()' function and print detailed description of character class."""
-    # Dict of txt files with class descriptions
-    class_files = {"Cleric": "descr/cleric.txt",
-                   "Fighter": "descr/fighter.txt",
-                   "Magic-User": "descr/magic-user.txt",
-                   "Thief": "descr/thief.txt",
-                   }
-
+    """Take instance 'char_class' and print detailed description of character class."""
     os.system('cls')
 
-    with open(class_files[char_class]) as f:  # Splitting class from string 'character'.
+    with open(char_class.description) as f:
         for line in f:
             output_text = line.rstrip()
             print(output_text)
@@ -225,28 +211,16 @@ def show_char_class_descr(char_class):
 
 
 # Functions directly used in creation of the character sheet.
-def get_next_level_xp(char_class):
-    """Return XP value of 'char_class' for use on character sheet."""
-    if char_class == "Cleric":
-        return 1500
-    elif char_class == "Fighter":
-        return 2000
-    elif char_class == "Magic-User":
-        return 2500
-    else:
-        return 1250
-
-
 def get_hp(char_race, char_class, ability_scores):
-    """Return HP value based on 'char_race' and 'char_class' and adds constitution bonus/penalty from dict
+    """Return HP value based on instances 'char_race' and 'char_class' and adds constitution bonus/penalty from dict
     'ability_scores'."""
     # Constitution bonus/penalty.
     bonus_penalty = ability_scores["con"][1]
 
-    if char_class == "Cleric":
+    if char_class.class_name == "Cleric":
         hp = dice_roll(1, 6) + bonus_penalty
-    elif char_class == "Fighter":
-        if char_race == "Elf" or char_race == "Halfling":
+    elif char_class.class_name == "Fighter":
+        if char_race.race_name == "Elf" or char_race.race_name == "Halfling":
             hp = dice_roll(1, 6) + bonus_penalty
         else:
             hp = dice_roll(1, 8) + bonus_penalty
@@ -260,66 +234,34 @@ def get_hp(char_race, char_class, ability_scores):
 
 
 def show_saving_throws(char_race, char_class):
-    """Take strings 'char_race' and 'char_class', get saving throw values, add them to dict 'saving_throws' and print
+    """Take instances 'char_race' and 'char_class', get saving throw values, add them to dict 'saving_throws' and print
     dict in formatted output."""
     # List of bonus throws.
     bonus_list = ["Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"]
-    # Dict of race bonuses. Values in same order as 'bonus_list'.
-    race_bonuses = {"Dwarf": [4, 4, 4, 3, 4],
-                    "Elf": [0, 2, 1, 0, 2],
-                    "Halfling": [4, 4, 4, 3, 4],
-                    "Human": [0, 0, 0, 0, 0],
-                    }
-    # Dict of class bonuses. Values in same order as 'bonus_list'.
-    class_bonuses = {"Cleric": [11, 12, 14, 16, 15],
-                     "Fighter": [12, 13, 14, 15, 17],
-                     "Magic-User": [13, 14, 13, 16, 15],
-                     "Thief": [13, 14, 13, 16, 15],
-                     }
 
     saving_throws = {}
 
     for item in bonus_list:
         index = bonus_list.index(item)
-        saving_throws[item] = race_bonuses[char_race][index] + class_bonuses[char_class][index]
+        saving_throws[item] = char_race.bonuses[index] + char_class.saving_throws[index]
 
     for k, v in saving_throws.items():
         print(f"{k:<22} +{v:>2}")
 
 
 def show_special_abilities(char_race, char_class):
-    """Create list 'specials_character' based on strings 'char_race' and 'char_class', and print it in formatted
+    """Create list 'specials_character' based on instances 'char_race' and 'char_class', and print it in formatted
     output."""
-    # Special abilities by race.
-    specials_race = {"Dwarf": ["Darkvision 60'",
-                               "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"],
-                     "Elf": ["Darkvision 60'",
-                             "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
-                             "Range reduction by 1 for surprise checks"],
-                     "Halfling": ["+1 attack bonus on ranged weapons",
-                                  "+2 bonus to AC when attacked in melee by creatures larger than man-sized",
-                                  "+1 to initiative die rolls",
-                                  "Hide (10% change to be detected outdoors, 30% chance to be detected indoors"],
-                     "Human": ["+10% to all earned XP"],
-                     }
-
-    # Special abilities by class.
-    specials_class = {"Cleric": ["Turn the Undead"],
-                      "Fighter": [False],
-                      "Magic-User": [False],
-                      "Thief": ["Sneak Attack",
-                                "Thief Abilities"],
-                      }
 
     specials_character = []
 
-    for v in specials_race[char_race]:
+    for v in char_race.specials:
         if not v:
             pass
         else:
             specials_character.append(v)
 
-    for v in specials_class[char_class]:
+    for v in char_class.specials:
         if not v:
             pass
         else:
