@@ -13,13 +13,13 @@ def dice_roll(n, m):
     return result
 
 
-def check_yes_no(user_input, prompt):
-    """Take string 'user_input' and check for y/n answer. Return 'True' for y, 'False' for n or prompt the user for new
-    input if any other character is given."""
+def check_yes_no(user_input, alt_prompt):
+    """Take string 'user_input' and alternative prompt 'alt_prompt' and check for y/n answer. Return 'True' for y, 'False'
+    for n or prompt the user for new input if any other character is given."""
     yes_no = ["y", "n"]
 
     while user_input.lower() not in yes_no:
-        user_input = input(prompt)
+        user_input = input(alt_prompt)
         continue
 
     if user_input.lower() == "y":
@@ -236,13 +236,13 @@ def get_hp(char_race, char_class, ability_scores):
 def show_saving_throws(char_race, char_class):
     """Take instances 'char_race' and 'char_class', get saving throw values, add them to dict 'saving_throws' and print
     dict in formatted output."""
-    # List of bonus throws.
-    bonus_list = ["Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"]
+    # List of saving throws.
+    throws_list = ["Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"]
 
     saving_throws = {}
 
-    for item in bonus_list:
-        index = bonus_list.index(item)
+    for item in throws_list:
+        index = throws_list.index(item)
         saving_throws[item] = char_race.bonuses[index] + char_class.saving_throws[index]
 
     for k, v in saving_throws.items():
