@@ -21,10 +21,7 @@ def ability_score():
         # Print ability scores.
         func.show_ability_scores(ability_scores)
 
-        ability_prompt = "Keep these scores and proceed to choose your race and class? (Y/N) "
-        ability_proceed = input("\n" + ability_prompt)
-
-        if func.check_yes_no(ability_proceed, ability_prompt):
+        if func.check_yes_no("\nKeep these scores and proceed to choose your race and class? (Y/N) "):
             return ability_scores, race_list, class_list
         else:
             continue
@@ -47,27 +44,23 @@ def race_class_selection(char_race, char_class, race_list, class_list):
 
         # if-else block to assure grammatically correct prompt... because it would bother me to no end.
         if char_race.race_name == "Elf":
-            char_prompt = f"\n\n\n\n\tDO YOU WANT TO BE AN '{character}'? (Y/N) "
-            char_proceed = input("\n" + char_prompt)
+            if func.check_yes_no(f"\n\n\n\n\n\tDO YOU WANT TO BE AN '{character}'? (Y/N) "):
+                return char_race, char_class
+            else:
+                continue
         else:
-            char_prompt = f"\n\n\n\n\tDO YOU WANT TO BE A '{character}'? (Y/N) "
-            char_proceed = input("\n" + char_prompt)
-
-        if func.check_yes_no(char_proceed, char_prompt):
-            return
-        else:
-            continue
+            if func.check_yes_no(f"\n\n\n\n\n\tDO YOU WANT TO BE A '{character}'? (Y/N) "):
+                return char_race, char_class
+            else:
+                continue
 
 
-def name_character(prompt="Name your character: "):
+def name_character(char_race, char_class):
     """Prompt user to name character and return string 'char_name'."""
     while True:
-        char_name = input(prompt)
+        char_name = input(f"Name your {char_race.race_name} {char_class.class_name}: ")
 
-        name_prompt = f"Do you want your character to be named '{char_name}'? (Y/N) "
-        name_proceed = input(name_prompt)
-
-        if func.check_yes_no(name_proceed, name_prompt):
+        if func.check_yes_no(f"Do you want your character to be named '{char_name}'? (Y/N) "):
             return char_name
         else:
             continue
@@ -147,7 +140,7 @@ def random_character_generator(char_race, char_class):
         # Choose random race and class and prompt user for name.
         char_race.set_race(race_list[random.randint(0, (len(race_list)-1))])
         char_class.set_class(class_list[random.randint(0, (len(class_list)-1))])
-        char_name = name_character(f"Name your {char_race.race_name} {char_class.class_name}: ")
+        char_name = name_character(char_race, char_class)
 
         return char_name, ability_scores
 

@@ -13,7 +13,6 @@ def run_character_creator():
     char_class = rc.CharacterClass()
 
     menu_prompt = mf.show_menu()
-    another_character_prompt = "\n\nDO YOU WANT TO CREATE ANOTHER CHARACTER (Y/N)? "
 
     while True:
         try:
@@ -24,8 +23,7 @@ def run_character_creator():
                 mf.custom_character(char_race, char_class)
 
                 # Prompt user to create another character or exit.
-                another_character = input(another_character_prompt)
-                if yes_no(another_character, another_character_prompt):
+                if yes_no("\n\nDO YOU WANT TO CREATE ANOTHER CHARACTER (Y/N)? "):
                     mf.show_menu()
                     continue
                 else:
@@ -36,8 +34,7 @@ def run_character_creator():
                 mf.random_character(char_race, char_class)
 
                 # Prompt user to create another character or exit.
-                another_character = input(another_character_prompt)
-                if yes_no(another_character, another_character_prompt):
+                if yes_no("\n\nDO YOU WANT TO CREATE ANOTHER CHARACTER (Y/N)? "):
                     mf.show_menu()
                     continue
                 else:

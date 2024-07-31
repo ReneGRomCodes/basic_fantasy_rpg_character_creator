@@ -27,7 +27,7 @@ def custom_character(char_race, char_class):
     cf.race_class_selection(char_race, char_class, race_list, class_list)
 
     # Name the character.
-    char_name = cf.name_character()
+    char_name = cf.name_character(char_race, char_class)
 
     # Build character sheet.
     cf.build_character_sheet(char_race, char_class, char_name, ability_scores)
