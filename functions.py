@@ -1,6 +1,6 @@
 import os
 import random
-"""Helper functions for use in 'main_functions' module."""
+"""Helper functions."""
 
 
 def dice_roll(n, m):
@@ -208,64 +208,3 @@ def show_char_class_descr(char_class):
             print(output_text)
 
     input("\n\n\n\n\tPRESS ENTER TO CONTINUE.")
-
-
-# Functions directly used in creation of the character sheet.
-def get_hp(char_race, char_class, ability_scores):
-    """Return HP value based on instances 'char_race' and 'char_class' and adds constitution bonus/penalty from dict
-    'ability_scores'."""
-    # Constitution bonus/penalty.
-    bonus_penalty = ability_scores["con"][1]
-
-    if char_class.class_name == "Cleric":
-        hp = dice_roll(1, 6) + bonus_penalty
-    elif char_class.class_name == "Fighter":
-        if char_race.race_name == "Elf" or char_race.race_name == "Halfling":
-            hp = dice_roll(1, 6) + bonus_penalty
-        else:
-            hp = dice_roll(1, 8) + bonus_penalty
-    else:
-        hp = dice_roll(1, 4) + bonus_penalty
-
-    if hp < 1:
-        return 1
-    else:
-        return hp
-
-
-def show_saving_throws(char_race, char_class):
-    """Take instances 'char_race' and 'char_class', get saving throw values, add them to dict 'saving_throws' and print
-    dict in formatted output."""
-    # List of saving throws.
-    throws_list = ["Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"]
-
-    saving_throws = {}
-
-    for item in throws_list:
-        index = throws_list.index(item)
-        saving_throws[item] = char_race.bonuses[index] + char_class.saving_throws[index]
-
-    for k, v in saving_throws.items():
-        print(f"{k:<22} +{v:>2}")
-
-
-def show_special_abilities(char_race, char_class):
-    """Create list 'specials_character' based on instances 'char_race' and 'char_class', and print it in formatted
-    output."""
-
-    specials_character = []
-
-    for v in char_race.specials:
-        if not v:
-            pass
-        else:
-            specials_character.append(v)
-
-    for v in char_class.specials:
-        if not v:
-            pass
-        else:
-            specials_character.append(v)
-
-    for special in specials_character:
-        print(f" - {special}")

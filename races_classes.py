@@ -75,7 +75,7 @@ class CharacterClass:
             self.specials = [False]
             self.saving_throws = [12, 13, 14, 15, 17]
 
-        elif class_selection == "Magic_User":
+        elif class_selection == "Magic-User":
             self.class_name = "Magic-User"
             self.description = "descr/magic-user.txt"
             self.hit_die = 4
