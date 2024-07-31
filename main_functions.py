@@ -18,7 +18,7 @@ def show_menu():
 
 
 def custom_character(char_race, char_class):
-    """Create custom character with user input."""
+    """Create custom character with user input and print character sheet."""
     os.system('cls')
     # Get ability scores and lists with available races and classes.
     ability_scores, race_list, class_list = cf.ability_score()
@@ -34,7 +34,7 @@ def custom_character(char_race, char_class):
 
 
 def random_character(char_race, char_class):
-    """Create character with random values."""
+    """Create character with random values and print character sheet."""
     os.system('cls')
     # Get random class, race, name and ability scores.
     char_name, ability_scores = cf.random_character_generator(char_race, char_class)
