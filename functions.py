@@ -13,13 +13,13 @@ def dice_roll(n, m):
     return result
 
 
-def check_yes_no(user_input, alt_prompt):
-    """Take string 'user_input' and alternative prompt 'alt_prompt' and check for y/n answer. Return 'True' for y, 'False'
-    for n or prompt the user for new input if any other character is given."""
+def check_yes_no(user_input, prompt):
+    """Take string 'user_input' and (alternative) prompt 'prompt' and check for y/n answer. Return 'True' for y, 'False'
+    for n or prompt the user again if any other character is given."""
     yes_no = ["y", "n"]
 
     while user_input.lower() not in yes_no:
-        user_input = input(alt_prompt)
+        user_input = input(prompt)  # possibility of using alternative prompt if user isn't entering 'y' or 'n'.
         continue
 
     if user_input.lower() == "y":
