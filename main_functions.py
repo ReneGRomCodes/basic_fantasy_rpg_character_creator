@@ -21,7 +21,7 @@ def custom_character(character):
     """Create custom character with user input and print character sheet."""
     os.system('cls')
     # Get ability scores and lists with available races and classes.
-    ability_scores, race_list, class_list = cf.ability_score()
+    ability_scores, race_list, class_list = cf.get_ability_score()
 
     # Race and class selection.
     cf.race_class_selection(character, race_list, class_list)

@@ -3,7 +3,7 @@ import random
 """Functions used to set race/class and build the character sheet."""
 
 
-def ability_score():
+def get_ability_score():
     """Generate dictionary 'ability_scores', ask for user confirmation and return 'ability_scores', list 'race_list' and
      list 'class_list'."""
     while True:
