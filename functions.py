@@ -175,7 +175,7 @@ def select_character(char_list):
     while True:
         try:
             character_selection = int(input("\nSelect a character to show race and class description: "))
-            character = char_list[character_selection - 1]
+            selected_character = char_list[character_selection - 1]
             break
         except IndexError:
             print(f"Invalid input. Choose a number between 1 and {selection_counter - 1}.")
@@ -184,26 +184,26 @@ def select_character(char_list):
             print(f"Invalid input. Choose a number between 1 and {selection_counter - 1}.")
             continue
 
-    return character
+    return selected_character
 
 
-def show_char_race_descr(char_race, char_class):
-    """Take instances 'char_race' and 'char_class' and print detailed description of character race."""
+def show_char_race_descr(character):
+    """Take instance 'character' and print detailed description of character race."""
     os.system('cls')
 
-    with open(char_race.description) as f:
+    with open(character.race_description) as f:
         for line in f:
             output_text = line.rstrip()
             print(output_text)
 
-    input(f"\n\n\n\n\tPRESS ENTER TO SHOW '{char_class.class_name}' CLASS.")
+    input(f"\n\n\n\n\tPRESS ENTER TO SHOW '{character.class_name}' CLASS.")
 
 
-def show_char_class_descr(char_class):
-    """Take instance 'char_class' and print detailed description of character class."""
+def show_char_class_descr(character):
+    """Take instance 'character' and print detailed description of character class."""
     os.system('cls')
 
-    with open(char_class.description) as f:
+    with open(character.class_description) as f:
         for line in f:
             output_text = line.rstrip()
             print(output_text)

@@ -17,27 +17,31 @@ def show_menu():
     return menu_prompt
 
 
-def custom_character(char_race, char_class):
+def custom_character(character):
     """Create custom character with user input and print character sheet."""
     os.system('cls')
     # Get ability scores and lists with available races and classes.
     ability_scores, race_list, class_list = cf.ability_score()
 
     # Race and class selection.
-    cf.race_class_selection(char_race, char_class, race_list, class_list)
+    cf.race_class_selection(character, race_list, class_list)
+
+    # Set values in character instance based on race and class.
+    character.set_saving_throws()
+    character.set_specials()
 
     # Name the character.
-    char_name = cf.name_character(char_race, char_class)
+    char_name = cf.name_character(character)
 
     # Build character sheet.
-    cf.build_character_sheet(char_race, char_class, char_name, ability_scores)
+    cf.build_character_sheet(character, char_name, ability_scores)
 
 
-def random_character(char_race, char_class):
+def random_character(character):
     """Create character with random values and print character sheet."""
     os.system('cls')
     # Get random class, race, name and ability scores.
-    char_name, ability_scores = cf.random_character_generator(char_race, char_class)
+    char_name, ability_scores = cf.random_character_generator(character)
 
     # Build character sheet.
-    cf.build_character_sheet(char_race, char_class, char_name, ability_scores)
+    cf.build_character_sheet(character, char_name, ability_scores)
