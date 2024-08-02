@@ -27,6 +27,7 @@ class Character:
         self.specials = []
         self.saving_throws = {}
         self.hp = 0
+        self.starting_money = 0
 
 
     def set_race(self, race_selection):
@@ -139,3 +140,7 @@ class Character:
 
         # Adding constitution bonus/penalty to HP:
         self.hp += ability_scores["con"][1]
+
+
+    def set_starting_money(self):
+        self.starting_money = dice_roll(3, 6) * 10

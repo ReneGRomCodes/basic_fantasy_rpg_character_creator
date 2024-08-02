@@ -96,6 +96,7 @@ def random_character_generator(character):
         character.set_saving_throws()
         character.set_specials()
         character.set_hp(ability_scores)
+        character.set_starting_money()
 
         # prompt user for name.
         char_name = name_character(character)
@@ -121,5 +122,5 @@ def build_character_sheet(character, char_name, ability_scores):
     show_saving_throws(character)
     print("\nSpecial Abilities:")
     show_special_abilities(character)
-    print(f"\nMoney: {func.dice_roll(3, 6) * 10}")
+    print(f"\nMoney: {character.starting_money}")
     print(f"Equipment:")
