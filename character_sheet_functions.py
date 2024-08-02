@@ -66,27 +66,6 @@ def name_character(character):
             continue
 
 
-def get_hp(character, ability_scores):
-    """Return HP value based on instance 'character' and adds constitution bonus/penalty from dict
-    'ability_scores'."""
-
-    if not character.max_hit_die:
-        hp = func.dice_roll(1, character.class_hit_die)
-    else:
-        if character.max_hit_die >= character.class_hit_die:
-            hp = func.dice_roll(1, character.class_hit_die)
-        else:
-            hp = func.dice_roll(1, character.max_hit_die)
-
-    # Adding constitution bonus/penalty to HP:
-    hp += ability_scores["con"][1]
-
-    if hp < 1:
-        return 1
-    else:
-        return hp
-
-
 def show_saving_throws(character):
     """Print formatted output of dict 'saving_throws' from instance 'character'."""
     for k, v in character.saving_throws.items():
@@ -116,6 +95,7 @@ def random_character_generator(character):
         character.set_class(class_list[random.randint(0, (len(class_list)-1))])
         character.set_saving_throws()
         character.set_specials()
+        character.set_hp(ability_scores)
 
         # prompt user for name.
         char_name = name_character(character)
@@ -133,7 +113,7 @@ def build_character_sheet(character, char_name, ability_scores):
     # Build Character Sheet.
     print(f"{char_name.upper():<25}Level: 1")
     print(f"{character.race_name} {character.class_name:<15}XP: 0 ({character.next_level_xp})")
-    print(f"\nArmor Class: {armor_class:<8}HP: {get_hp(character, ability_scores):<8}"
+    print(f"\nArmor Class: {armor_class:<8}HP: {character.hp:<8}"
           f"Attack Bonus: +{attack_bonus}")
     print("\nAbilities:")
     func.show_ability_scores(ability_scores)

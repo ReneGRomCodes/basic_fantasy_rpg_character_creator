@@ -1,3 +1,4 @@
+from functions import dice_roll
 """Class for character."""
 
 
@@ -25,6 +26,7 @@ class Character:
         self.next_level_xp = 0
         self.specials = []
         self.saving_throws = {}
+        self.hp = 0
 
 
     def set_race(self, race_selection):
@@ -96,7 +98,7 @@ class Character:
 
 
     def set_specials(self):
-        """Set special abilities based on character race and class and add them to list 'self.specials'."""
+        """Get special abilities and add them to list 'self.specials'."""
 
         # Set list to empty to not contain any values if previous characters have been created.
         self.specials = []
@@ -115,10 +117,25 @@ class Character:
 
 
     def set_saving_throws(self):
-        """Set saving throw values based on character race and class and add them to dict 'self.saving_throws'."""
+        """Get saving throw values and add them to dict 'self.saving_throws'."""
         # List of saving throws.
         throws_list = ["Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"]
 
         for item in throws_list:
             index = throws_list.index(item)
             self.saving_throws[item] = self.bonuses[index] + self.class_saving_throws[index]
+
+
+    def set_hp(self, ability_scores):
+        """Set HP and adds constitution bonus/penalty from dict 'ability_scores'."""
+
+        if not self.max_hit_die:
+            self.hp = dice_roll(1, self.class_hit_die)
+        else:
+            if self.max_hit_die >= self.class_hit_die:
+                self.hp = dice_roll(1, self.class_hit_die)
+            else:
+                self.hp = dice_roll(1, self.max_hit_die)
+
+        # Adding constitution bonus/penalty to HP:
+        self.hp += ability_scores["con"][1]

@@ -29,6 +29,7 @@ def custom_character(character):
     # Set values in character instance based on race and class.
     character.set_saving_throws()
     character.set_specials()
+    character.set_hp(ability_scores)
 
     # Name the character.
     char_name = cf.name_character(character)
