@@ -33,10 +33,10 @@ def custom_character(character):
     character.set_starting_money()
 
     # Name the character.
-    char_name = cf.name_character(character)
+    cf.name_character(character)
 
     # Build character sheet.
-    cf.build_character_sheet(character, char_name)
+    cf.build_character_sheet(character)
 
 
 def random_character(character):
@@ -46,4 +46,4 @@ def random_character(character):
     char_name = cf.random_character_generator(character)
 
     # Build character sheet.
-    cf.build_character_sheet(character, char_name)
+    cf.build_character_sheet(character)

@@ -21,6 +21,7 @@ class Character:
         self.class_saving_throws = []
 
         # Final Character values based on race and class.
+        self.name = None
         self.abilities = {}
         self.armor_class = 0  # Value changes with ARMOR after implementation of the shop.
         self.attack_bonus = 1  # Default for level 1 characters.
@@ -99,6 +100,11 @@ class Character:
             self.next_level_xp = 1250
             self.class_specials = ["Sneak Attack", "Thief Abilities"]
             self.class_saving_throws = [13, 14, 13, 16, 15]
+
+
+    def set_name(self, char_name):
+        """Set name for character."""
+        self.name = char_name
 
 
     def build_ability_dict(self):

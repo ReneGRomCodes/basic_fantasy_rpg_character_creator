@@ -56,12 +56,13 @@ def race_class_selection(character, race_list, class_list):
 
 
 def name_character(character):
-    """Prompt user to name character and return string 'char_name'."""
+    """Prompt user to name character and set 'character.name'."""
     while True:
         char_name = input(f"Name your {character.race_name} {character.class_name}: ")
 
         if func.check_yes_no(f"Do you want your character to be named '{char_name}'? (Y/N) "):
-            return char_name
+            character.set_name(char_name)
+            break
         else:
             continue
 
@@ -79,7 +80,7 @@ def show_special_abilities(character):
 
 
 def random_character_generator(character):
-    """Create random character, prompt user for 'char_name' and return 'ability_scores' and 'char_name'."""
+    """Create random character, prompt user for 'char_name' and set values for Character instance."""
     while True:
 
         # Generate dictionary for character abilities.
@@ -100,15 +101,14 @@ def random_character_generator(character):
         character.set_starting_money()
 
         # prompt user for name.
-        char_name = name_character(character)
+        name_character(character)
+        break
 
-        return char_name
 
-
-def build_character_sheet(character, char_name):
+def build_character_sheet(character):
     """Take instance 'character' and string 'char_name' and print character sheet."""
 
-    print(f"{char_name.upper():<25}Level: 1")
+    print(f"{character.name.upper():<25}Level: 1")
     print(f"{character.race_name} {character.class_name:<15}XP: 0 ({character.next_level_xp})")
     print(f"\nArmor Class: {character.armor_class:<8}HP: {character.hp:<8}"
           f"Attack Bonus: +{character.attack_bonus}")

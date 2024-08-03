@@ -1,6 +1,6 @@
 import os
 import random
-"""Helper functions."""
+"""Helper and check value functions."""
 
 
 def dice_roll(n, m):
@@ -148,7 +148,7 @@ def build_race_class_list(race_list, class_list):
 
 def select_character(char_list):
     """Take list of possible race-class combinations 'char_list', print them out, let user choose a character and return
-    choice 'character' as string."""
+    choice 'selected_character' as string."""
     selection_counter = 1
 
     for char in char_list:
