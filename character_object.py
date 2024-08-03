@@ -1,4 +1,4 @@
-from functions import dice_roll
+from functions import dice_roll, get_ability_score
 """Class for character."""
 
 
@@ -21,13 +21,16 @@ class Character:
         self.class_saving_throws = []
 
         # Final Character values based on race and class.
+        self.abilities = {}
+        self.armor_class = 0  # Value changes with ARMOR after implementation of the shop.
+        self.attack_bonus = 1  # Default for level 1 characters.
         self.specials = []
         self.hit_die = 0
         self.next_level_xp = 0
         self.specials = []
         self.saving_throws = {}
         self.hp = 0
-        self.starting_money = 0
+        self.money = 0
 
 
     def set_race(self, race_selection):
@@ -98,6 +101,19 @@ class Character:
             self.class_saving_throws = [13, 14, 13, 16, 15]
 
 
+    def build_ability_dict(self):
+        """Build dictionary 'self.abilities' for character abilities."""
+        ability_names = ["str", "dex", "con", "int", "wis", "cha"]
+
+        for item in ability_names:
+            # Adding default INT bonus of +1.
+            if item == "int":
+                self.abilities[item] = get_ability_score()
+                self.abilities[item][1] += 1
+            else:
+                self.abilities[item] = get_ability_score()
+
+
     def set_specials(self):
         """Get special abilities and add them to list 'self.specials'."""
 
@@ -127,8 +143,8 @@ class Character:
             self.saving_throws[item] = self.bonuses[index] + self.class_saving_throws[index]
 
 
-    def set_hp(self, ability_scores):
-        """Set HP and adds constitution bonus/penalty from dict 'ability_scores'."""
+    def set_hp(self):
+        """Set HP and adds constitution bonus/penalty."""
 
         if not self.max_hit_die:
             self.hp = dice_roll(1, self.class_hit_die)
@@ -139,7 +155,7 @@ class Character:
                 self.hp = dice_roll(1, self.max_hit_die)
 
         # Adding constitution bonus/penalty to HP:
-        self.hp += ability_scores["con"][1]
+        self.hp += self.abilities["con"][1]
 
 
     def set_starting_money(self):

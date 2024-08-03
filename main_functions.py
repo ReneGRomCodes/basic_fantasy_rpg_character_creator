@@ -21,7 +21,7 @@ def custom_character(character):
     """Create custom character with user input and print character sheet."""
     os.system('cls')
     # Get ability scores and lists with available races and classes.
-    ability_scores, race_list, class_list = cf.get_ability_score()
+    race_list, class_list = cf.get_ability_race_class(character)
 
     # Race and class selection.
     cf.race_class_selection(character, race_list, class_list)
@@ -29,21 +29,21 @@ def custom_character(character):
     # Set values in character instance based on race and class.
     character.set_saving_throws()
     character.set_specials()
-    character.set_hp(ability_scores)
+    character.set_hp()
     character.set_starting_money()
 
     # Name the character.
     char_name = cf.name_character(character)
 
     # Build character sheet.
-    cf.build_character_sheet(character, char_name, ability_scores)
+    cf.build_character_sheet(character, char_name)
 
 
 def random_character(character):
     """Create character with random values and print character sheet."""
     os.system('cls')
     # Get random class, race, name and ability scores.
-    char_name, ability_scores = cf.random_character_generator(character)
+    char_name = cf.random_character_generator(character)
 
     # Build character sheet.
-    cf.build_character_sheet(character, char_name, ability_scores)
+    cf.build_character_sheet(character, char_name)

@@ -3,26 +3,26 @@ import random
 """Functions used to set race/class and build the character sheet."""
 
 
-def get_ability_score():
-    """Generate dictionary 'ability_scores', ask for user confirmation and return 'ability_scores', list 'race_list' and
-     list 'class_list'."""
+def get_ability_race_class(character):
+    """Generate abilities for instance 'character', ask for user confirmation and return list 'race_list' and list
+    'class_list'."""
     while True:
         print("Let's roll the dice!\n")
 
         # Generate dictionary for character abilities.
-        ability_scores = func.build_ability_dict()
+        character.build_ability_dict()
 
         # Check if abilities allow for valid race-class combinations.
-        race_list = func.check_race(ability_scores)
-        class_list = func.check_class(ability_scores)
+        race_list = func.check_race(character)
+        class_list = func.check_class(character)
         if not func.check_valid_race_class(race_list, class_list):
             continue
 
         # Print ability scores.
-        func.show_ability_scores(ability_scores)
+        func.show_ability_scores(character)
 
         if func.check_yes_no("\nKeep these scores and proceed to choose your race and class? (Y/N) "):
-            return ability_scores, race_list, class_list
+            return race_list, class_list
         else:
             continue
 
@@ -81,12 +81,13 @@ def show_special_abilities(character):
 def random_character_generator(character):
     """Create random character, prompt user for 'char_name' and return 'ability_scores' and 'char_name'."""
     while True:
+
         # Generate dictionary for character abilities.
-        ability_scores = func.build_ability_dict()
+        character.build_ability_dict()
 
         # Check if abilities allow for valid race-class combinations.
-        race_list = func.check_race(ability_scores)
-        class_list = func.check_class(ability_scores)
+        race_list = func.check_race(character)
+        class_list = func.check_class(character)
         if not func.check_valid_race_class(race_list, class_list):
             continue
 
@@ -95,32 +96,27 @@ def random_character_generator(character):
         character.set_class(class_list[random.randint(0, (len(class_list)-1))])
         character.set_saving_throws()
         character.set_specials()
-        character.set_hp(ability_scores)
+        character.set_hp()
         character.set_starting_money()
 
         # prompt user for name.
         char_name = name_character(character)
 
-        return char_name, ability_scores
+        return char_name
 
 
-def build_character_sheet(character, char_name, ability_scores):
-    """Take instance 'character', string 'char_name' and dictionary 'ability_scores', define remaining variables and
-    print character sheet."""
-    # Get remaining character variables.
-    armor_class = 0  # Value changes with ARMOR after implementation of the shop.
-    attack_bonus = 1  # Default for level 1 characters.
+def build_character_sheet(character, char_name):
+    """Take instance 'character' and string 'char_name' and print character sheet."""
 
-    # Build Character Sheet.
     print(f"{char_name.upper():<25}Level: 1")
     print(f"{character.race_name} {character.class_name:<15}XP: 0 ({character.next_level_xp})")
-    print(f"\nArmor Class: {armor_class:<8}HP: {character.hp:<8}"
-          f"Attack Bonus: +{attack_bonus}")
+    print(f"\nArmor Class: {character.armor_class:<8}HP: {character.hp:<8}"
+          f"Attack Bonus: +{character.attack_bonus}")
     print("\nAbilities:")
-    func.show_ability_scores(ability_scores)
+    func.show_ability_scores(character)
     print("\nSaving Throws:")
     show_saving_throws(character)
     print("\nSpecial Abilities:")
     show_special_abilities(character)
-    print(f"\nMoney: {character.starting_money}")
+    print(f"\nMoney: {character.money}")
     print(f"Equipment:")

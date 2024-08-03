@@ -59,70 +59,53 @@ def get_ability_score():
         return ability_score
 
 
-def build_ability_dict():
-    """Build and return dictionary for character abilities"""
-    abilities = ["str", "dex", "con", "int", "wis", "cha"]
-    abilities_dict = {}
-
-    for item in abilities:
-        # Adding default INT bonus of +1.
-        if item == "int":
-            abilities_dict[item] = get_ability_score()
-            abilities_dict[item][1] += 1
-        else:
-            abilities_dict[item] = get_ability_score()
-
-    return abilities_dict
-
-
-def show_ability_scores(abilities_dict):
-    """Print formatted table of abilities and corresponding scores from dictionary 'abilities_dict'."""
+def show_ability_scores(character):
+    """Print formatted table of abilities from instance 'character'."""
     abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
 
-    for ability, key in zip(abilities, abilities_dict):
+    for ability, key in zip(abilities, character.abilities):
         # 'Pre-formatting' ability name and bonus/penalty for better code-readability further down in print-statement.
         abilities_name = f"{ability}:"
-        bonus_penalty = f"{abilities_dict[key][1]}"
+        bonus_penalty = f"{character.abilities[key][1]}"
 
         # Check bonus/penalty for positive or negative value to apply correct prefix in output or give out an empty
         # string if bonus_penalty is 0.
-        if abilities_dict[key][1] > 0:
+        if character.abilities[key][1] > 0:
             bonus_penalty = f"+{bonus_penalty}"
-        elif abilities_dict[key][1] == 0:
+        elif character.abilities[key][1] == 0:
             bonus_penalty = ""
         else:
             pass
 
-        print(f"{abilities_name:<23} {abilities_dict[key][0]:>2} {bonus_penalty:>4}")
+        print(f"{abilities_name:<23} {character.abilities[key][0]:>2} {bonus_penalty:>4}")
 
 
-def check_race(abilities_dict):
-    """Check character ability values from 'abilities_dict' for possible races to choose and return them in list
-    'possible_races'."""
+def check_race(character):
+    """Check instance 'character' abilities for possible races to choose and return them in list 'possible_races'."""
     possible_races = ["Human"]  # Humans have no minimum requirements.
 
-    if abilities_dict["con"][0] >= 9 and abilities_dict["cha"][0] <= 17:
+    if character.abilities["con"][0] >= 9 and character.abilities["cha"][0] <= 17:
         possible_races.append("Dwarf")
-    if abilities_dict["int"][0] >= 9 and abilities_dict["con"][0] <= 17:
+    if character.abilities["int"][0] >= 9 and character.abilities["con"][0] <= 17:
         possible_races.append("Elf")
-    if abilities_dict["dex"][0] >= 9 and abilities_dict["str"][0] <= 17:
+    if character.abilities["dex"][0] >= 9 and character.abilities["str"][0] <= 17:
         possible_races.append("Halfling")
 
     return possible_races
 
 
-def check_class(abilities_dict):
-    """Check character ability values from 'abilities_dict' for possible classes to choose and return them in list
+def check_class(character):
+    """Check abilities from instance 'character' for possible classes to choose and return them in list
     'possible_classes'."""
     possible_classes = []
 
-    if abilities_dict["wis"][0] >= 9:
+    if character.abilities["wis"][0] >= 9:
         possible_classes.append("Cleric")
-    if abilities_dict["str"][0] >= 9:
+    if character.abilities["str"][0] >= 9:
         possible_classes.append("Fighter")
-    if abilities_dict["int"][0] >= 9:
+    if character.abilities["int"][0] >= 9:
         possible_classes.append("Magic-User")
-    if abilities_dict["dex"][0] >= 9:
+    if character.abilities["dex"][0] >= 9:
         possible_classes.append("Thief")
 
     return possible_classes
