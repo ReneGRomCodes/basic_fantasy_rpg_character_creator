@@ -106,7 +106,7 @@ def random_character_generator(character):
 
 
 def build_character_sheet(character):
-    """Take instance 'character' and string 'char_name' and print character sheet."""
+    """Take instance 'character' and print character sheet."""
 
     print(f"{character.name.upper():<25}Level: 1")
     print(f"{character.race_name} {character.class_name:<15}XP: 0 ({character.next_level_xp})")

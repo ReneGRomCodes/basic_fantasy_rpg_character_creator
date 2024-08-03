@@ -43,7 +43,7 @@ def random_character(character):
     """Create character with random values and print character sheet."""
     os.system('cls')
     # Get random class, race, name and ability scores.
-    char_name = cf.random_character_generator(character)
+    cf.random_character_generator(character)
 
     # Build character sheet.
     cf.build_character_sheet(character)
