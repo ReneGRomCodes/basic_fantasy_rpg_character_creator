@@ -3,24 +3,24 @@ from functions import dice_roll, get_ability_score
 
 
 class Character:
-    """Set and store race and class specific values as well as final character values."""
+    """Set and store race, class and character specific attributes as well as final character values."""
 
     def __init__(self):
-        """Set race and class specific values and set character values based on race and class."""
-        # Race specific values.
+        """Set race and class specific attributes and set character values based on race and class."""
+        # Race specific attributes.
         self.race_name = None
         self.race_description = None
         self.max_hit_die = False
         self.race_specials = []
         self.bonuses = []
-        # Class specific values.
+        # Class specific attributes.
         self.class_name = None
         self.class_description = None
         self.class_hit_die = 0
         self.class_specials = []
         self.class_saving_throws = []
 
-        # Final Character values based on race and class.
+        # Character attributes. Values set based on race and class.
         self.name = None
         self.abilities = {}
         self.armor_class = 0  # Value changes with ARMOR after implementation of the shop.
@@ -108,7 +108,7 @@ class Character:
 
 
     def build_ability_dict(self):
-        """Build dictionary 'self.abilities' for character abilities."""
+        """Build attribute dictionary 'self.abilities' for character abilities."""
         ability_names = ["str", "dex", "con", "int", "wis", "cha"]
 
         for item in ability_names:
@@ -121,7 +121,7 @@ class Character:
 
 
     def set_specials(self):
-        """Get special abilities and add them to list 'self.specials'."""
+        """Get special abilities and add them to attribute list 'self.specials'."""
 
         # Set list to empty to not contain any values if previous characters have been created.
         self.specials = []
@@ -140,7 +140,7 @@ class Character:
 
 
     def set_saving_throws(self):
-        """Get saving throw values and add them to dict 'self.saving_throws'."""
+        """Get saving throw values and add them to attribute dict 'self.saving_throws'."""
         # List of saving throws.
         throws_list = ["Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"]
 
@@ -165,4 +165,5 @@ class Character:
 
 
     def set_starting_money(self):
+        # Set starting value for attribute 'self.money'
         self.starting_money = dice_roll(3, 6) * 10
