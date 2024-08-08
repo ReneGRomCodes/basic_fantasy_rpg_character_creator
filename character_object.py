@@ -23,7 +23,7 @@ class Character:
         # Character attributes. Values set based on race and class.
         self.name = None
         self.abilities = {}
-        self.armor_class = 0  # Value changes with ARMOR after implementation of the shop.
+        self.armor_class = 11  # Default for no armor.
         self.attack_bonus = 1  # Default for level 1 characters.
         self.specials = []
         self.hit_die = 0
