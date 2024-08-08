@@ -250,5 +250,5 @@ class Character:
 
 
     def set_starting_money(self):
-        # Set starting value for attribute 'self.money'
+        """Set starting value for attribute 'self.money'"""
         self.money = dice_roll(3, 6) * 10

@@ -79,6 +79,15 @@ def show_special_abilities(character):
         print(f" - {special}")
 
 
+def set_character_values(character):
+    """Set values for instance 'character' of class 'Character'."""
+    character.set_saving_throws()
+    character.set_specials()
+    character.set_hp()
+    character.set_carrying_capacity()
+    character.set_starting_money()
+
+
 def random_character_generator(character):
     """Create random character, prompt user for 'char_name' and set values for Character instance."""
     while True:
@@ -95,11 +104,7 @@ def random_character_generator(character):
         # Choose random character and set values.
         character.set_race(race_list[random.randint(0, (len(race_list)-1))])
         character.set_class(class_list[random.randint(0, (len(class_list)-1))])
-        character.set_saving_throws()
-        character.set_specials()
-        character.set_hp()
-        character.set_carrying_capacity()
-        character.set_starting_money()
+        set_character_values(character)
 
         # prompt user for name.
         name_character(character)
