@@ -91,7 +91,7 @@ def name_character(character):
 def show_saving_throws(character):
     """Print formatted output of dict 'saving_throws' from instance 'character'."""
     for k, v in character.saving_throws.items():
-        print(f"{k:<22} +{v:>2}")
+        print(f" - {k:<22} +{v:>2}")
 
 
 def show_special_abilities(character):
@@ -110,13 +110,9 @@ def set_character_values(character):
 
 
 def show_carrying_capacity(character):
-    """Get key-value pairs from dict carrying_capacity in instance 'character' and return formatted string
-    'capacity'."""
-    capacity = ""
+    """Print formatted output of dict 'carrying_capacity' from instance 'character'."""
     for k, v in character.carrying_capacity.items():
-        capacity += f" - {k}: {v:>3} pounds\n"
-
-    return capacity
+        print(f" - {k}: {v:>3} pounds")
 
 
 def random_character_generator(character):
@@ -156,5 +152,6 @@ def build_character_sheet(character):
     print("\nSpecial Abilities:")
     show_special_abilities(character)
     print(f"\nMoney: {character.money}")
-    print(f"\nCarrying Capacity:\n{show_carrying_capacity(character)}")
-    print(f"Equipment:")
+    print("\nCarrying Capacity:")
+    show_carrying_capacity(character)
+    print("\nEquipment:")
