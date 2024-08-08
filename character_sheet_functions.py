@@ -19,7 +19,7 @@ def get_ability_race_class(character):
             continue
 
         # Print ability scores.
-        func.show_ability_scores(character)
+        show_ability_scores(character)
 
         if func.check_yes_no("\nKeep these scores and proceed to choose your race and class? (Y/N) "):
             return race_list, class_list
@@ -53,6 +53,27 @@ def race_class_selection(character, race_list, class_list):
                 break
             else:
                 continue
+
+
+def show_ability_scores(character):
+    """Print formatted table of abilities from instance 'character'."""
+    abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
+
+    for ability, key in zip(abilities, character.abilities):
+        # 'Pre-formatting' ability name and bonus/penalty for better code-readability further down in print-statement.
+        abilities_name = f"{ability}:"
+        bonus_penalty = f"{character.abilities[key][1]}"
+
+        # Check bonus/penalty for positive or negative value to apply correct prefix in output or give out an empty
+        # string if bonus_penalty is 0.
+        if character.abilities[key][1] > 0:
+            bonus_penalty = f"+{bonus_penalty}"
+        elif character.abilities[key][1] == 0:
+            bonus_penalty = ""
+        else:
+            pass
+
+        print(f"{abilities_name:<23} {character.abilities[key][0]:>2} {bonus_penalty:>4}")
 
 
 def name_character(character):
@@ -129,7 +150,7 @@ def build_character_sheet(character):
     print(f"\nArmor Class: {character.armor_class:<8}HP: {character.hp:<8}"
           f"Attack Bonus: +{character.attack_bonus}")
     print("\nAbilities:")
-    func.show_ability_scores(character)
+    show_ability_scores(character)
     print("\nSaving Throws:")
     show_saving_throws(character)
     print("\nSpecial Abilities:")

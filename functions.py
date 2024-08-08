@@ -59,27 +59,6 @@ def get_ability_score():
         return ability_score
 
 
-def show_ability_scores(character):
-    """Print formatted table of abilities from instance 'character'."""
-    abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
-
-    for ability, key in zip(abilities, character.abilities):
-        # 'Pre-formatting' ability name and bonus/penalty for better code-readability further down in print-statement.
-        abilities_name = f"{ability}:"
-        bonus_penalty = f"{character.abilities[key][1]}"
-
-        # Check bonus/penalty for positive or negative value to apply correct prefix in output or give out an empty
-        # string if bonus_penalty is 0.
-        if character.abilities[key][1] > 0:
-            bonus_penalty = f"+{bonus_penalty}"
-        elif character.abilities[key][1] == 0:
-            bonus_penalty = ""
-        else:
-            pass
-
-        print(f"{abilities_name:<23} {character.abilities[key][0]:>2} {bonus_penalty:>4}")
-
-
 def check_race(character):
     """Check instance 'character' abilities for possible races to choose and return them in list 'possible_races'."""
     possible_races = ["Human"]  # Humans have no minimum requirements.
