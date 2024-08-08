@@ -89,6 +89,8 @@ def set_character_values(character):
 
 
 def show_carrying_capacity(character):
+    """Get key-value pairs from dict carrying_capacity in instance 'character' and return formatted string
+    'capacity'."""
     capacity = ""
     for k, v in character.carrying_capacity.items():
         capacity += f" - {k}: {v:>3} pounds\n"
