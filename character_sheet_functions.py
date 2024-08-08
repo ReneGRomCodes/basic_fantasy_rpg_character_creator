@@ -98,6 +98,7 @@ def random_character_generator(character):
         character.set_saving_throws()
         character.set_specials()
         character.set_hp()
+        character.set_carrying_capacity()
         character.set_starting_money()
 
         # prompt user for name.
@@ -120,3 +121,4 @@ def build_character_sheet(character):
     show_special_abilities(character)
     print(f"\nMoney: {character.money}")
     print(f"Equipment:")
+    print(character.carrying_capacity)

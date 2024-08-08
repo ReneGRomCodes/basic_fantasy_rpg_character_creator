@@ -30,6 +30,7 @@ def custom_character(character):
     character.set_saving_throws()
     character.set_specials()
     character.set_hp()
+    character.set_carrying_capacity()
     character.set_starting_money()
 
     # Name the character.
