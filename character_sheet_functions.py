@@ -88,6 +88,14 @@ def set_character_values(character):
     character.set_starting_money()
 
 
+def show_carrying_capacity(character):
+    capacity = ""
+    for k, v in character.carrying_capacity.items():
+        capacity += f" - {k}: {v:>3} pounds\n"
+
+    return capacity
+
+
 def random_character_generator(character):
     """Create random character, prompt user for 'char_name' and set values for Character instance."""
     while True:
@@ -125,5 +133,5 @@ def build_character_sheet(character):
     print("\nSpecial Abilities:")
     show_special_abilities(character)
     print(f"\nMoney: {character.money}")
+    print(f"\nCarrying Capacity:\n{show_carrying_capacity(character)}")
     print(f"Equipment:")
-    print(character.carrying_capacity)
