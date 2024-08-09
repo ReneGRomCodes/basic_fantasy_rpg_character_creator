@@ -161,92 +161,54 @@ class Character:
             else:
                 self.hp = dice_roll(1, self.max_hit_die)
 
-        # Adding constitution bonus/penalty to HP:
-        self.hp += self.abilities["con"][1]
+        # Adding constitution bonus/penalty to HP or set to minimum value of 1:
+        if self.hp + self.abilities["con"][1] < 1:
+            self.hp = 1
+        else:
+            self.hp += self.abilities["con"][1]
 
 
     def set_carrying_capacity(self):
-        """Set dict 'self.carrying_capacity' based on ability score for "str" and race."""
-        check_str = self.abilities["str"][0]
+        """Set dict 'self.carrying_capacity' based on race and ability score and bonus for "strength"."""
+        strength = self.abilities["str"][0]
+
         # Keys for 'self.carrying_capacity'
         cap_light_key = "Light Load"
         cap_heavy_key = "Heavy Load"
 
         # Basic carrying capacities for Halflings.
         if self.race_name == "Halfling":
-            if check_str <= 3:
-                self.carrying_capacity = {
-                    cap_light_key: 20,
-                    cap_heavy_key: 40,
-                }
-            elif check_str <= 5:
-                self.carrying_capacity = {
-                    cap_light_key: 30,
-                    cap_heavy_key: 60,
-                }
-            elif check_str <= 8:
-                self.carrying_capacity = {
-                    cap_light_key: 40,
-                    cap_heavy_key: 80,
-                }
-            elif check_str <= 12:
-                self.carrying_capacity = {
-                    cap_light_key: 50,
-                    cap_heavy_key: 100,
-                }
-            elif check_str <= 15:
-                self.carrying_capacity = {
-                    cap_light_key: 55,
-                    cap_heavy_key: 110,
-                }
-            elif check_str <= 17:
-                self.carrying_capacity = {
-                    cap_light_key: 60,
-                    cap_heavy_key: 120,
-                }
+            if strength <= 3:
+                self.carrying_capacity = {cap_light_key: 20, cap_heavy_key: 40, }
+            elif strength <= 5:
+                self.carrying_capacity = {cap_light_key: 30, cap_heavy_key: 60, }
+            elif strength <= 8:
+                self.carrying_capacity = {cap_light_key: 40, cap_heavy_key: 80, }
+            elif strength <= 12:
+                self.carrying_capacity = {cap_light_key: 50, cap_heavy_key: 100, }
+            elif strength <= 15:
+                self.carrying_capacity = {cap_light_key: 55, cap_heavy_key: 110, }
+            elif strength <= 17:
+                self.carrying_capacity = {cap_light_key: 60, cap_heavy_key: 120, }
             else:
-                self.carrying_capacity = {
-                    cap_light_key: 65,
-                    cap_heavy_key: 130,
-                }
+                self.carrying_capacity = {cap_light_key: 65, cap_heavy_key: 130, }
 
         # Basic carrying capacity for all other races:
         else:
-            if check_str <= 3:
-                self.carrying_capacity = {
-                    cap_light_key: 25,
-                    cap_heavy_key: 60,
-                }
-            elif check_str <= 5:
-                self.carrying_capacity = {
-                    cap_light_key: 35,
-                    cap_heavy_key: 90,
-                }
-            elif check_str <= 8:
-                self.carrying_capacity = {
-                    cap_light_key: 50,
-                    cap_heavy_key: 120,
-                }
-            elif check_str <= 12:
-                self.carrying_capacity = {
-                    cap_light_key: 60,
-                    cap_heavy_key: 150,
-                }
-            elif check_str <= 15:
-                self.carrying_capacity = {
-                    cap_light_key: 65,
-                    cap_heavy_key: 165,
-                }
-            elif check_str <= 17:
-                self.carrying_capacity = {
-                    cap_light_key: 70,
-                    cap_heavy_key: 180,
-                }
+            if strength <= 3:
+                self.carrying_capacity = {cap_light_key: 25, cap_heavy_key: 60, }
+            elif strength <= 5:
+                self.carrying_capacity = {cap_light_key: 35, cap_heavy_key: 90, }
+            elif strength <= 8:
+                self.carrying_capacity = {cap_light_key: 50, cap_heavy_key: 120, }
+            elif strength <= 12:
+                self.carrying_capacity = {cap_light_key: 60, cap_heavy_key: 150, }
+            elif strength <= 15:
+                self.carrying_capacity = {cap_light_key: 65, cap_heavy_key: 165, }
+            elif strength <= 17:
+                self.carrying_capacity = {cap_light_key: 70, cap_heavy_key: 180, }
             else:
-                self.carrying_capacity = {
-                    cap_light_key: 80,
-                    cap_heavy_key: 195,
-                }
+                self.carrying_capacity = {cap_light_key: 80, cap_heavy_key: 195, }
 
 
     def set_starting_money(self):
