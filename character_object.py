@@ -105,6 +105,25 @@ class Character:
             self.class_specials = ["Sneak Attack", "Thief Abilities"]
             self.class_saving_throws = [13, 14, 13, 16, 15]
 
+        # Elf specific combination classes.
+        elif class_selection == "Fighter/Magic-User":
+            self.class_name = "Fighter/Magic-User"
+            self.class_description = False
+            self.class_hit_die = 6
+            self.next_level_xp = 4500
+            self.class_specials = [False]
+            self.class_saving_throws = [13, 14, 14, 16, 17]
+            self.spells = "Read Magic"
+
+        elif class_selection == "Magic-User/Thief":
+            self.class_name = "Magic-User/Thief"
+            self.class_description = False
+            self.class_hit_die = 4
+            self.next_level_xp = 3750
+            self.class_specials = ["Sneak Attack", "Thief Abilities"]
+            self.class_saving_throws = [13, 14, 13, 16, 15]
+            self.spells = "Read Magic"
+
 
     def set_name(self, char_name):
         """Set name for character."""

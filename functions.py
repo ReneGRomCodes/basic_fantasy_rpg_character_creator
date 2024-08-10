@@ -82,8 +82,12 @@ def check_class(character):
         possible_classes.append("Cleric")
     if character.abilities["str"][0] >= 9:
         possible_classes.append("Fighter")
+        if character.abilities["int"][0] >= 9:
+            possible_classes.append("Fighter/Magic-User")
     if character.abilities["int"][0] >= 9:
         possible_classes.append("Magic-User")
+        if character.abilities["dex"][0] >= 9:
+            possible_classes.append("Magic-User/Thief")
     if character.abilities["dex"][0] >= 9:
         possible_classes.append("Thief")
 
@@ -118,6 +122,9 @@ def build_race_class_list(race_list, class_list):
             # Exclude Dwarves and Halflings from class 'Magic-User'.
             if (char_race == "Dwarf" or char_race == "Halfling") and char_class == "Magic-User":
                 pass
+            # Assure that combination classes are only shown for Elves.
+            if char_race != "Elf" and (char_class == "Fighter/Magic-User" or char_class == "Magic-User/Thief"):
+                pass
             else:
                 race_class = char_race + " " + char_class
                 possible_characters.append(race_class)
@@ -131,7 +138,7 @@ def select_character(char_list):
     selection_counter = 1
 
     for char in char_list:
-        print(selection_counter, "-", char)
+        print(f"{selection_counter:>2} - {char}")
         selection_counter += 1
 
     while True:
@@ -165,9 +172,13 @@ def show_char_class_descr(character):
     """Take instance 'character' and print detailed description of character class."""
     os.system('cls')
 
-    with open(character.class_description) as f:
-        for line in f:
-            output_text = line.rstrip()
-            print(output_text)
+    # TODO remove if-else statement when combination class descriptions are done.
+    if character.class_description:
+        with open(character.class_description) as f:
+            for line in f:
+                output_text = line.rstrip()
+                print(output_text)
+    else:
+        pass
 
     input("\n\n\n\n\tPRESS ENTER TO CONTINUE.")
