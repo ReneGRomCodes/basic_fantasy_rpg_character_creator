@@ -151,6 +151,12 @@ def build_character_sheet(character):
     show_saving_throws(character)
     print("\nSpecial Abilities:")
     show_special_abilities(character)
+
+    # Add spells section if class is 'Magic-User' or 'Cleric'.
+    if character.spells:
+        print("\nSpells:")
+        print(f" - {character.spells}")
+
     print(f"\nMoney: {character.money}")
     print("\nCarrying Capacity:")
     show_carrying_capacity(character)

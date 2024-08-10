@@ -30,6 +30,7 @@ class Character:
         self.next_level_xp = 0
         self.specials = []
         self.saving_throws = {}
+        self.spells = False
         self.hp = 0
         self.carrying_capacity = {}
         self.money = 0
@@ -77,6 +78,7 @@ class Character:
             self.next_level_xp = 1500
             self.class_specials = ["Turn the Undead"]
             self.class_saving_throws = [11, 12, 14, 16, 15]
+            self.spells = "None"
 
         elif class_selection == "Fighter":
             self.class_name = "Fighter"
@@ -93,6 +95,7 @@ class Character:
             self.next_level_xp = 2500
             self.class_specials = [False]
             self.class_saving_throws = [13, 14, 13, 16, 15]
+            self.spells = "Read Magic"
 
         elif class_selection == "Thief":
             self.class_name = "Thief"
