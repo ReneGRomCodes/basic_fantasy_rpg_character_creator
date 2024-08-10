@@ -152,7 +152,7 @@ def build_character_sheet(character):
     print("\nSpecial Abilities:")
     show_special_abilities(character)
 
-    # Add spells section if class is 'Magic-User' or 'Cleric'.
+    # Add spells section if class is 'Magic-User', 'Cleric' or combination class.
     if character.spells:
         print("\nSpells:")
         print(f" - {character.spells}")
