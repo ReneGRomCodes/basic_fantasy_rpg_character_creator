@@ -1,6 +1,6 @@
 import main_functions as mf
 from functions import check_yes_no
-import character_object as char
+import character_model as char
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
 It initializes the program and starts the main functionality."""
 
