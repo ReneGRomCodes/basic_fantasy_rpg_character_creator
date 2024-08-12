@@ -3,10 +3,10 @@ from functions import dice_roll, get_ability_score
 
 
 class Character:
-    """Set and store race, class and character specific attributes as well as final character values."""
+    """Represent a character."""
 
     def __init__(self):
-        """Set race and class specific attributes and set character values based on race and class."""
+        """Initialize race and class specific attributes and character values."""
         # Race specific attributes.
         self.race_name = None
         self.race_description = None
@@ -34,7 +34,6 @@ class Character:
         self.hp = 0
         self.carrying_capacity = {}
         self.money = 0
-
 
     def set_race(self, race_selection):
         """Set race-specific values based on chosen race."""
@@ -67,7 +66,6 @@ class Character:
             self.max_hit_die = False
             self.race_specials = ["+10% to all earned XP"]
             self.bonuses = [0, 0, 0, 0, 0]
-
 
     def set_class(self, class_selection):
         """Set class-specific values based on chosen class."""
@@ -124,11 +122,9 @@ class Character:
             self.class_saving_throws = [13, 14, 13, 16, 15]
             self.spells = "Read Magic"
 
-
     def set_name(self, char_name):
         """Set name for character."""
         self.name = char_name
-
 
     def build_ability_dict(self):
         """Build attribute dictionary 'self.abilities' for character abilities."""
@@ -141,7 +137,6 @@ class Character:
                 self.abilities[item][1] += 1
             else:
                 self.abilities[item] = get_ability_score()
-
 
     def set_specials(self):
         """Get special abilities and add them to attribute list 'self.specials'."""
@@ -161,7 +156,6 @@ class Character:
             else:
                 self.specials.append(v)
 
-
     def set_saving_throws(self):
         """Get saving throw values and add them to attribute dict 'self.saving_throws'."""
         # List of saving throws.
@@ -170,7 +164,6 @@ class Character:
         for item in throws_list:
             index = throws_list.index(item)
             self.saving_throws[item] = self.bonuses[index] + self.class_saving_throws[index]
-
 
     def set_hp(self):
         """Set HP and adds constitution bonus/penalty."""
@@ -188,7 +181,6 @@ class Character:
             self.hp = 1
         else:
             self.hp += self.abilities["con"][1]
-
 
     def set_carrying_capacity(self):
         """Set dict 'self.carrying_capacity' based on race and ability score and bonus for "strength"."""
@@ -231,7 +223,6 @@ class Character:
                 self.carrying_capacity = {cap_light_key: 70, cap_heavy_key: 180, }
             else:
                 self.carrying_capacity = {cap_light_key: 80, cap_heavy_key: 195, }
-
 
     def set_starting_money(self):
         """Set starting value for attribute 'self.money'"""
