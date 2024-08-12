@@ -56,3 +56,19 @@ winter_blanket = item.Item("Winter blanket", 1, 3)
 hand_axe = item.Weapon("Hand Axe", 4, 5, "S", 6)
 battle_axe = item.Weapon("Battle Axe", 7, 7, "M", 8)
 great_axe = item.Weapon("Great Axe", 14, 15, "L", 10)
+
+# Ranged weapons. Note that damage is calculated through the projectile, therefor damage for weapon itself is '0'.
+shortbow = item.Weapon("Shortbow", 25, 2, "M", 0)
+longbow = item.Weapon("Longbow", 60, 3, "L", 0)
+crossbow_light = item.Weapon("Light Crossbow", 30, 7, "M", 0)
+crossbow_heavy = item.Weapon("Heavy Crossbow", 50, 14, "L", 0)
+
+# Daggers.
+dagger = item.Weapon("Dagger", 2, 1, "S", 4)
+dagger_silver = item.Weapon("Silver Dagger", 25, 1, "S", 4)
+
+# Swords. Note that Longsword and Scimitar have the same stats, but I decided to treat them as different for RP reasons.
+shortsword = item.Weapon("Shortsword", 6, 3, "S", 6)
+longsword = item.Weapon("Longsword", 10, 4, "M", 8)
+scimitar = item.Weapon("Scimitar", 10, 4, "M", 8)
+two_handed_sword = item.Weapon("Two-Handed Sword", 18, 10, "L", 10)
