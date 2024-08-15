@@ -115,6 +115,12 @@ def show_carrying_capacity(character):
         print(f" - {k}: {v:>3} pounds")
 
 
+def show_inventory(character):
+    """Print formatted output of list 'items' from instance 'character'."""
+    for item in character.items:
+        print(f" - {item.name}")
+
+
 def random_character_generator(character):
     """Create random character, prompt user for 'char_name' and set values for Character instance."""
     while True:
@@ -160,4 +166,7 @@ def build_character_sheet(character):
     print(f"\nMoney: {character.money}")
     print("\nCarrying Capacity:")
     show_carrying_capacity(character)
-    print("\nEquipment:")
+
+    if character.items:
+        print("\nInventory:")
+        show_inventory(character)
