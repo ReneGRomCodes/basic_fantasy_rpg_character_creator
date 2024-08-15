@@ -98,21 +98,32 @@ shield = item.Armor("Shield", 7, 5, 1)  # Shield AC is added to overall AC when 
 
 # Projectiles for ranged weapons (args = "name, cost, weight, damage, range_list")
 arrow_shortbow = item.Projectile("Shortbow Arrow", 0.1, 0.1, 6, [50, 100, 150])
-arrow_shortbow_silver = item.Projectile("Silver Shortbow Arrow", 2, 0.1, 6, [50, 100, 150])
+arrow_shortbow_silver = item.Projectile("Shortbow Arrow (Silver)", 2, 0.1, 6, [50, 100, 150])
 arrow_longbow = item.Projectile("Longbow Arrow", 0.2, 0.1, 8, [70, 140, 210])
-arrow_longbow_silver = item.Projectile("Silver Longbow Arrow", 4, 0.1, 8, [70, 140, 210])
+arrow_longbow_silver = item.Projectile("Longbow Arrow (Silver)", 4, 0.1, 8, [70, 140, 210])
 quarrel_light = item.Projectile("Light Quarrel", 0.2, 0.1, 6, [60, 120, 180])
-quarrel_light_silver = item.Projectile("Silver Light Quarrel", 5, 0.1, 6, [60, 120, 180])
+quarrel_light_silver = item.Projectile("Light Quarrel (Silver)", 5, 0.1, 6, [60, 120, 180])
 quarrel_heavy = item.Projectile("Heavy Quarrel", 0.4, 0.1, 8, [80, 160, 240])
-quarrel_heavy_silver = item.Projectile("Silver Heavy Quarrel", 10, 0.1, 8, [80, 160, 240])
+quarrel_heavy_silver = item.Projectile("Heavy Quarrel (Silver)", 10, 0.1, 8, [80, 160, 240])
 bullet_sling = item.Projectile("Bullet", 0.1, 0.1, 4, [30, 60, 90])
 stone_sling = item.Projectile("Stone", 0, 0.1, 3, [30, 60, 90])
 
 
 # Lists of instances.
-basic_items = [backpack, belt_pouch, bit_and_bridle]
-weapons = [hand_axe, shortbow, dagger, shortsword, warhammer, club]
-projectiles = [arrow_shortbow, arrow_shortbow_silver]
-armors = [leather_armor, chain_mail, plate_mail, shield]
+basic_items = [
+    backpack, belt_pouch, belt_pouch, candles_12, chalk, cloak, clothing_common
+]
+weapons = [
+    hand_axe, battle_axe, great_axe, shortbow, longbow, crossbow_light, crossbow_heavy, sling, dagger, dagger_silver,
+    shortsword, longsword, scimitar, two_handed_sword, warhammer, mace, maul, club, cudgel, walking_staff, quarterstaff,
+    pole_arm
+]
+projectiles = [
+    arrow_shortbow, arrow_shortbow_silver, arrow_longbow, arrow_longbow_silver, quarrel_light, quarrel_light_silver,
+    quarrel_heavy, quarrel_heavy_silver, bullet_sling, stone_sling
+]
+armors = [
+    leather_armor, chain_mail, plate_mail, shield
+]
 
 # TODO implement items and weapons that can be thrown, e.g. 'Warhammer' or 'Holy Water', but have already instances.

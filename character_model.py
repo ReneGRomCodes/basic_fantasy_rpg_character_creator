@@ -38,7 +38,7 @@ class Character:
         self.weight_carried = 0
         self.money = 0
         self.items = []
-        self.armor = None
+        self.armor = item_inst.no_armor
         self.weapon = None
 
     def set_race(self, race_selection):
