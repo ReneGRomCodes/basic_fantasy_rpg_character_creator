@@ -108,4 +108,11 @@ quarrel_heavy_silver = item.Projectile("Silver Heavy Quarrel", 10, 0.1, 8, [80, 
 bullet_sling = item.Projectile("Bullet", 0.1, 0.1, 4, [30, 60, 90])
 stone_sling = item.Projectile("Stone", 0, 0.1, 3, [30, 60, 90])
 
+
+# Lists of instances.
+basic_items = [backpack, belt_pouch, bit_and_bridle]
+weapons = [hand_axe, shortbow, dagger, shortsword, warhammer, club]
+projectiles = [arrow_shortbow, arrow_shortbow_silver]
+armors = [leather_armor, chain_mail, plate_mail, shield]
+
 # TODO implement items and weapons that can be thrown, e.g. 'Warhammer' or 'Holy Water', but have already instances.
