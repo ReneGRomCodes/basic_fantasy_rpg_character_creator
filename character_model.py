@@ -35,11 +35,11 @@ class Character:
         self.hp = 0
         # Attributes related to inventory.
         self.carrying_capacity = {}
+        self.weight_carried = 0
         self.money = 0
         self.items = []
         self.armor = None
         self.weapon = None
-
 
     def set_race(self, race_selection):
         """Set race-specific values based on chosen race."""
@@ -101,6 +101,7 @@ class Character:
             self.class_saving_throws = [13, 14, 13, 16, 15]
             self.spells = "Read Magic"
             self.items.append(item_inst.spellbook)
+            self.weight_carried += item_inst.spellbook.weight
 
         elif class_selection == "Thief":
             self.class_name = "Thief"
@@ -120,6 +121,7 @@ class Character:
             self.class_saving_throws = [13, 14, 14, 16, 17]
             self.spells = "Read Magic"
             self.items.append(item_inst.spellbook)
+            self.weight_carried += item_inst.spellbook.weight
 
         elif class_selection == "Magic-User/Thief":
             self.class_name = "Magic-User/Thief"
@@ -130,6 +132,7 @@ class Character:
             self.class_saving_throws = [13, 14, 13, 16, 15]
             self.spells = "Read Magic"
             self.items.append(item_inst.spellbook)
+            self.weight_carried += item_inst.spellbook.weight
 
     def set_name(self, char_name):
         """Set name for character."""
@@ -246,9 +249,11 @@ class Character:
             print(insufficient_money)
         else:
             self.items.append(item)
+            self.weight_carried += item.weight
             self.money = money
 
     def sell_item(self, item):
         """Sell instance 'item' of a class from 'item_model' module."""
         self.items.remove(item)
+        self.weight_carried -= item.weight
         self.money += item.cost
