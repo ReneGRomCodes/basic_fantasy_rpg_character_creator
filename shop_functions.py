@@ -20,5 +20,5 @@ def show_shop():
         print(f" - {armor.name}")
 
 
-show_shop()
-input()
+# show_shop()
+# input()

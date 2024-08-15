@@ -1,4 +1,5 @@
 import main_functions as mf
+import shop_functions as sf
 from functions import check_yes_no
 import character_model as char
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
@@ -22,7 +23,7 @@ def run_character_creator():
                 mf.custom_character(character)
 
                 # Prompt user to create another character or exit.
-                if check_yes_no("\n\nDO YOU WANT TO CREATE ANOTHER CHARACTER (Y/N)? "):
+                if not check_yes_no("\n\nDO YOU WANT TO KEEP THIS CHARACTER AND PROCEED TO THE SHOP (Y/N)? "):
                     mf.show_menu()
                     continue
                 else:
@@ -33,7 +34,7 @@ def run_character_creator():
                 mf.random_character(character)
 
                 # Prompt user to create another character or exit.
-                if check_yes_no("\n\nDO YOU WANT TO CREATE ANOTHER CHARACTER (Y/N)? "):
+                if not check_yes_no("\n\nDO YOU WANT TO KEEP THIS CHARACTER AND PROCEED TO THE SHOP (Y/N)? "):
                     mf.show_menu()
                     continue
                 else:
@@ -42,7 +43,8 @@ def run_character_creator():
         except ValueError:
             continue
 
-    input("Press Enter to exit")
+    sf.show_shop()
+    input("\nPress Enter to exit")
 
 
 run_character_creator()
