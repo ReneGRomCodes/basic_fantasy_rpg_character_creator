@@ -121,15 +121,19 @@ shield = item.Armor("Shield", 7, 5, 1)  # Shield AC is added to overall AC when 
 general_items = [
     backpack, belt_pouch, belt_pouch, candles_12, chalk, cloak, clothing_common
 ]
-weapons = [
-    hand_axe, battle_axe, great_axe, shortbow, longbow, crossbow_light, crossbow_heavy, sling, dagger, dagger_silver,
-    shortsword, longsword, scimitar, two_handed_sword, warhammer, mace, maul, club, cudgel, walking_staff, quarterstaff,
-    pole_arm
-]
+
+weapons = {
+    "Axes": [hand_axe, battle_axe, great_axe],
+    "Swords": [shortsword, longsword, scimitar, two_handed_sword],
+    "Daggers": [dagger, dagger_silver],
+    "Hammers and Maces": [warhammer, mace, maul],
+    "Ranged Weapons": [shortbow, longbow, crossbow_light, crossbow_heavy, sling],
+    "Other Weapons": [club, cudgel, walking_staff, quarterstaff, pole_arm],
+}
+
 projectiles = [
     arrow_shortbow, arrow_shortbow_silver, arrow_longbow, arrow_longbow_silver, quarrel_light, quarrel_light_silver,
     quarrel_heavy, quarrel_heavy_silver, bullet_sling, stone_sling
 ]
-armors = [
-    leather_armor, chain_mail, plate_mail, shield
-]
+
+armors = [leather_armor, chain_mail, plate_mail, shield]
