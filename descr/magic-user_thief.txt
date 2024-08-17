@@ -1,5 +1,29 @@
-The Magic-User/Thief is a cunning and elusive character, merging the arcane arts with the skills of subterfuge and stealth. These individuals use their magical knowledge to enhance their thieving capabilities, making them unpredictable and dangerous in a world that underestimates them.
+MAGIC-USER/THIEF
 
-Magic-User/Thieves are proficient in casting spells while wearing leather armor, enabling them to maintain some protection without sacrificing their magical abilities. This makes them more resilient than pure Magic-Users, though they remain less hardy than Fighters. Their magical skills can be used to supplement their thievery, whether by disarming traps with a mystical touch, charming their marks, or becoming invisible to evade capture.
-
-The Prime Requisites for Magic-User/Thieves are Intelligence and Dexterity; a character must have an Intelligence score of 9 or higher and a Dexterity score of 9 or higher to pursue this class. They may use any weapon and wear leather armor, but like pure Magic-Users, they may not don metal armor or use shields. A first-level Magic-User/Thief begins with a spellbook containing read magic and one additional first-level spell, allowing them to embark on their adventures with both magical and practical tools at their disposal.
+										     		    												     Spells
+The Magic-User/Thief is a cunning and elusive character,		Prime Requisite			STR and DEX (Both must be 9+)				Level	       XP     Hit Dice	  1 2 3 4 5 6
+merging the arcane arts with the skills of subterfuge and		---------------------------------------------------------------------			_____________________________________________
+stealth. These individuals use their magical knowledge to		Hit Dice			d4							 1 	        0 	   1d4 	  1 - - - - -
+enhance their thieving capabilities, making them			---------------------------------------------------------------------			 2 	    2,000 	   2d4    2 - - - - -
+unpredictable and dangerous in a world that underestimates		Weapons				Any							 3 	    4,000 	   3d4    2 1 - - - -
+them.									---------------------------------------------------------------------			 4 	    8,000 	   4d4    2 2 - - - -
+									Armor				Leather, no shield					---------------------------------------------
+Magic-User/Thieves are proficient in casting spells while		---------------------------------------------------------------------			 5	   16,000 	   5d4    2 2 1 - - -
+wearing leather armor, enabling them to maintain some			XP for 2nd Level		3,750							 6	   32,000 	   6d4    3 2 2 - - -
+protection without sacrificing their magical abilities.			---------------------------------------------------------------------			 7	   64,000 	   7d4    3 2 2 1 - -
+This makes them more resilient than pure Magic-Users,			Spells				1 first-level spell (see below)				 8 	  150,000 	   8d4    3 3 2 2 - -
+though they remain less hardy than Fighters. Their magical		---------------------------------------------------------------------			---------------------------------------------
+skills can be used to supplement their thievery, whether		Special				- Sneak attack (see below)				 9	  150,000 	   9d4    3 3 2 2 1 -
+by disarming traps with a mystical touch, charming their						- See the 'Thief Abilities' below			10	  225,000        9d4+2    4 3 3 2 2 -
+marks, or becoming invisible to evade capture.				---------------------------------------------------------------------			11	  300,000        9d4+4    4 4 3 2 2 1
+									Saving Throws at 1st Level	- Death Ray or Poison: 13				12 	  750,000 	 9d4+6    4 4 3 3 2 2
+The Prime Requisites for Magic-User/Thieves are								- Magic Wands: 14					---------------------------------------------
+Intelligence and Dexterity; a character must have an							- Paralysis or Petrify: 13				13 	  900,000 	 9d4+8    4 4 4 3 2 2
+Intelligence score of 9 or higher and a Dexterity score							- Dragon Breath: 16					14 	1,050,000 	9d4+12    4 4 4 3 3 2
+of 9 or higher to pursue this class. They may use any							- Spells: 15						15 	1,200,000 	9d4+14    5 4 4 3 3 2
+weapon and wear leather armor, but like pure Magic-Users,
+they may not don metal armor or use shields. A first-level
+Magic-User/Thief begins with a spellbook containing read
+magic and one additional first-level spell, allowing them
+to embark on their adventures with both magical and
+practical tools at their disposal.
