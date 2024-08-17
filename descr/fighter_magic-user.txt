@@ -1,0 +1,5 @@
+The Fighter/Magic-User is a rare blend of martial prowess and arcane mastery, combining the battlefield prowess of a Fighter with the spellcasting abilities of a Magic-User. These versatile combatants can face enemies with both sword and spell, making them formidable opponents in any situation.
+
+Fighter/Magic-Users are capable of donning armor and wielding weapons while still being able to cast their spells, an ability unique to this combination class. This grants them a significant advantage over pure Magic-Users, who must forgo such protection to weave their magic. While they are not as hardy as pure Fighters nor as proficient in magic as dedicated Magic-Users, their ability to mix both disciplines allows them to adapt to a variety of challenges.
+
+The Prime Requisites for Fighter/Magic-Users are both Strength and Intelligence; a character must have a Strength score of 9 or higher and an Intelligence score of 9 or higher to pursue this path. They may wear any armor and use any weapon, and they start their journey with a spellbook containing read magic and one additional spell of first level, similar to the Magic-User.

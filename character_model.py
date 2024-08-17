@@ -114,7 +114,7 @@ class Character:
         # Elf specific combination classes.
         elif class_selection == "Fighter/Magic-User":
             self.class_name = "Fighter/Magic-User"
-            self.class_description = False
+            self.class_description = "descr/fighter_magic-user.txt"
             self.class_hit_die = 6
             self.next_level_xp = 4500
             self.class_specials = [False]
@@ -125,7 +125,7 @@ class Character:
 
         elif class_selection == "Magic-User/Thief":
             self.class_name = "Magic-User/Thief"
-            self.class_description = False
+            self.class_description = "descr/magic-user_thief.txt"
             self.class_hit_die = 4
             self.next_level_xp = 3750
             self.class_specials = ["Sneak Attack", "Thief Abilities"]

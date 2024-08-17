@@ -172,13 +172,9 @@ def show_char_class_descr(character):
     """Take instance 'character' and print detailed description of character class."""
     os.system('cls')
 
-    # TODO remove if-else statement when combination class descriptions are done.
-    if character.class_description:
-        with open(character.class_description) as f:
-            for line in f:
-                output_text = line.rstrip()
-                print(output_text)
-    else:
-        pass
+    with open(character.class_description) as f:
+        for line in f:
+            output_text = line.rstrip()
+            print(output_text)
 
     input("\n\n\n\n\tPRESS ENTER TO CONTINUE.")
