@@ -4,7 +4,7 @@ import item_instances
 
 def show_shop():
     print("Basic Items:")
-    for item in item_instances.basic_items:
+    for item in item_instances.general_items:
         print(f" - {item.name:<25} {item.weight:>5} lbs {item.cost:>5} gp")
 
     print("\nWeapons:")

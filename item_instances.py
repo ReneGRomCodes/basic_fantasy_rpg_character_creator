@@ -53,39 +53,60 @@ winter_blanket = item.Item("Winter blanket", 1, 3)
 
 # Weapons (args = "name, cost, weight, size, damage").
 # Axes.
-hand_axe = item.Weapon("Hand Axe", 4, 5, "S", 6)
 battle_axe = item.Weapon("Battle Axe", 7, 7, "M", 8)
 great_axe = item.Weapon("Great Axe", 14, 15, "L", 10)
 
-# Ranged weapons. Note: damage is calculated through the projectile, therefor damage for weapon itself is '0'.
-shortbow = item.Weapon("Shortbow", 25, 2, "M", 0)
-longbow = item.Weapon("Longbow", 60, 3, "L", 0)
-crossbow_light = item.Weapon("Light Crossbow", 30, 7, "M", 0)
-crossbow_heavy = item.Weapon("Heavy Crossbow", 50, 14, "L", 0)
-sling = item.Weapon("Sling", 1, 0.1, "S", 0)
-
-# Daggers.
-dagger = item.Weapon("Dagger", 2, 1, "S", 4)
-dagger_silver = item.Weapon("Silver Dagger", 25, 1, "S", 4)
-
-# Swords. Note: Longsword and Scimitar have the same stats, but are split here for RP reasons.
+# Swords.
 shortsword = item.Weapon("Shortsword", 6, 3, "S", 6)
 longsword = item.Weapon("Longsword", 10, 4, "M", 8)
 scimitar = item.Weapon("Scimitar", 10, 4, "M", 8)
 two_handed_sword = item.Weapon("Two-Handed Sword", 18, 10, "L", 10)
 
 # Hammers and Maces.
-warhammer = item.Weapon("Warhammer", 4, 6, "S", 6)
 mace = item.Weapon("Mace", 6, 10, "M", 8)
 maul = item.Weapon("Maul", 10, 16, "L", 10)
 
-# Other weapons. Note: Club, Cudgel and Walking Staff have the same stats, but are split here for RP reasons.
+# Other weapons.
 club = item.Weapon("Club", 0.5, 1, "M", 4)
 cudgel = item.Weapon("Cudgel", 0.5, 1, "M", 4)
 walking_staff = item.Weapon("Walking Staff", 0.5, 1, "M", 4)
 quarterstaff = item.Weapon("Quartestaff", 2, 4, "L", 6)
 pole_arm = item.Weapon("Pole Arm", 9, 15, "L", 10)
-#spear = item.Weapon("Spear", 5, 5, "M", None)  # TODO figure out how to implement different attacks with spear.
+# spear = item.Weapon("Spear", 5, 5, "M", None)  # TODO figure out how to implement different attacks with spear.
+
+
+# Projectiles for ranged weapons (args = "name, cost, weight, damage")
+arrow_shortbow = item.Projectile("Shortbow Arrow", 0.1, 0.1, 6)
+arrow_shortbow_silver = item.Projectile("Shortbow Arrow (Silver)", 2, 0.1, 6)
+arrow_longbow = item.Projectile("Longbow Arrow", 0.2, 0.1, 8)
+arrow_longbow_silver = item.Projectile("Longbow Arrow (Silver)", 4, 0.1, 8)
+quarrel_light = item.Projectile("Light Quarrel", 0.2, 0.1, 6)
+quarrel_light_silver = item.Projectile("Light Quarrel (Silver)", 5, 0.1, 6)
+quarrel_heavy = item.Projectile("Heavy Quarrel", 0.4, 0.1, 8)
+quarrel_heavy_silver = item.Projectile("Heavy Quarrel (Silver)", 10, 0.1, 8)
+bullet_sling = item.Projectile("Bullet", 0.1, 0.1, 4)
+stone_sling = item.Projectile("Stone", 0, 0.1, 3)
+
+
+# Ranged weapons (args = "name, cost, weight, size, damage, range_list, ammo=False, throw=False").
+# Note that bows and crossbows need projectiles to do damage, therefor damage for them is '0'. Throwable weapons and
+# items include daggers, certain small melee weapons and general items and are later included in their respective
+# instances lists 'general_items' or 'weapons'.
+shortbow = item.RangedWeapon("Shortbow", 25, 2, "M", 0, [50, 100, 150],
+                             ammo=[arrow_shortbow, arrow_shortbow_silver])
+longbow = item.RangedWeapon("Longbow", 60, 3, "L", 0, [70, 140, 210],
+                            ammo=[arrow_longbow, arrow_longbow_silver])
+crossbow_light = item.RangedWeapon("Light Crossbow", 30, 7, "M", 0, [60, 120, 180],
+                                   ammo=[quarrel_light, quarrel_light_silver])
+crossbow_heavy = item.RangedWeapon("Heavy Crossbow", 50, 14, "L", 0, [80, 160, 240],
+                                   ammo=[quarrel_heavy, quarrel_heavy_silver])
+sling = item.RangedWeapon("Sling", 1, 0.1, "S", 0, [30, 60, 90],
+                          ammo=[bullet_sling, stone_sling])
+# Throwable weapons and items.
+dagger = item.RangedWeapon("Dagger", 2, 1, "S", 4, [10, 20, 30], throw=True)
+dagger_silver = item.RangedWeapon("Silver Dagger", 25, 1, "S", 4, [10, 20, 30], throw=True)
+warhammer = item.RangedWeapon("Warhammer", 4, 6, "S", 6, [10, 20, 30], throw=True)
+hand_axe = item.RangedWeapon("Hand Axe", 4, 5, "S", 6, [10, 20, 30], throw=True)
 
 
 # Armor (args = "name, cost, weight, armor_class").
@@ -96,21 +117,8 @@ plate_mail = item.Armor("Plate Mail", 300, 50, 17)
 shield = item.Armor("Shield", 7, 5, 1)  # Shield AC is added to overall AC when carried.
 
 
-# Projectiles for ranged weapons (args = "name, cost, weight, damage, range_list")
-arrow_shortbow = item.Projectile("Shortbow Arrow", 0.1, 0.1, 6, [50, 100, 150])
-arrow_shortbow_silver = item.Projectile("Shortbow Arrow (Silver)", 2, 0.1, 6, [50, 100, 150])
-arrow_longbow = item.Projectile("Longbow Arrow", 0.2, 0.1, 8, [70, 140, 210])
-arrow_longbow_silver = item.Projectile("Longbow Arrow (Silver)", 4, 0.1, 8, [70, 140, 210])
-quarrel_light = item.Projectile("Light Quarrel", 0.2, 0.1, 6, [60, 120, 180])
-quarrel_light_silver = item.Projectile("Light Quarrel (Silver)", 5, 0.1, 6, [60, 120, 180])
-quarrel_heavy = item.Projectile("Heavy Quarrel", 0.4, 0.1, 8, [80, 160, 240])
-quarrel_heavy_silver = item.Projectile("Heavy Quarrel (Silver)", 10, 0.1, 8, [80, 160, 240])
-bullet_sling = item.Projectile("Bullet", 0.1, 0.1, 4, [30, 60, 90])
-stone_sling = item.Projectile("Stone", 0, 0.1, 3, [30, 60, 90])
-
-
 # Lists of instances.
-basic_items = [
+general_items = [
     backpack, belt_pouch, belt_pouch, candles_12, chalk, cloak, clothing_common
 ]
 weapons = [
@@ -125,5 +133,3 @@ projectiles = [
 armors = [
     leather_armor, chain_mail, plate_mail, shield
 ]
-
-# TODO implement items and weapons that can be thrown, e.g. 'Warhammer' or 'Holy Water', but have already instances.

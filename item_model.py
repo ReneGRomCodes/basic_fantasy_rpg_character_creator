@@ -6,7 +6,7 @@ class Item:
     """Represent basic items."""
 
     def __init__(self, name, cost, weight):
-        """Initialize attributes 'name', 'cost' in gp (gold pieces) and 'weight' in pounds."""
+        """Initialize attributes string 'name', int 'cost' in gp (gold pieces) and int 'weight' in pounds."""
         self.name = name
         self.cost = cost
         self.weight = weight
@@ -23,21 +23,39 @@ class Weapon(Item):
         self.damage = damage
 
 
+class RangedWeapon(Weapon):
+    """Child class of 'Weapon' to represent ranged and throwable weapons."""
+
+    def __init__(self, name, cost, weight, size, damage, range_list, ammo=False, throw=False):
+        """Initialize attributes from parent class 'Weapons'.
+        ARGS:
+        cost: int
+        size: string "S", "M" or "L"
+        damage: int for number of sides on the die for the dice roll. NOTE: 0 for weapons that need ammo.
+        range_list: list of ints for short, medium and long range
+        ammo: list of projectile instances for the weapon if needed. Default = False
+        throw: boolean if weapon is throwable. Default = False
+        """
+        super().__init__(name, cost, weight, size, damage)
+        self.range_list = range_list
+        self.ammo = ammo
+        self.throw = throw
+
+
 class Projectile(Item):
     """Child class to represent projectiles for ranged weapons."""
     
-    def __init__(self, name, cost, weight, damage, range_list):
-        """Initialize attributes from parent class 'Items', size (string "S", "M" or "L"), 'damage' (int for number of
-        sides on the die for the dice roll) and list of ranges (int for short, medium and long range)."""
+    def __init__(self, name, cost, weight, damage):
+        """Initialize attributes from parent class 'Items', size (string "S", "M" or "L") and 'damage' (int for number
+        of sides on the die for the dice roll)"""
         super().__init__(name, cost, weight)
         self.damage = damage
-        self.range_list = range_list  # List for short, medium and long ranges.
 
 
 class Armor(Item):
     """Child class to represent armor."""
 
     def __init__(self, name, cost, weight, armor_class):
-        """Initialize attributes from parent class 'Items' and 'armor_class'."""
+        """Initialize attributes from parent class 'Items' and int attribute 'armor_class'."""
         super().__init__(name, cost, weight)
         self.armor_class = armor_class
