@@ -13,7 +13,6 @@ clothing_common = item.Item("Clothing, common outfit", 4, 1)
 glass_bottle_vial = item.Item("Glass bottle or vial", 1, 0.1)
 grappling_hook = item.Item("Grappling Hook", 2, 4)
 holy_symbol = item.Item("Holy Symbol", 25, 0.1)
-holy_water = item.Item("Holy Water, per vial", 10, 0.1)
 horseshoes = item.Item("Horseshoes & shoeing", 1, 10)
 ink_jar = item.Item("Ink, per jar", 8, 0.5)
 iron_spikes_12 = item.Item("Iron Spikes, 12", 1, 1)
@@ -24,7 +23,6 @@ lantern_hooded = item.Item("Lantern, Hooded", 8, 2)
 manacles = item.Item("Manacles, without padlock", 6, 4)
 map_scroll_case = item.Item("Map or scroll case", 1, 0.5)
 mirror_small = item.Item("Mirror, small metal", 7, 0.1)
-oil_flask = item.Item("Oil, per flask", 1, 1)
 padlock = item.Item("Padlock, with 2 keys", 12, 1)
 paper_sheet = item.Item("Paper, per sheet", 1, 0)
 pole_wood = item.Item("Pole, 10 ft. wooden", 1, 10)
@@ -75,7 +73,8 @@ pole_arm = item.Weapon("Pole Arm", 9, 15, "L", 10)
 # spear = item.Weapon("Spear", 5, 5, "M", None)  # TODO figure out how to implement different attacks with spear.
 
 
-# Projectiles for ranged weapons (args = "name, cost, weight, damage")
+# Projectiles for ranged weapons and grenade-like items.
+# (args = "name, cost, weight, damage, splash_damage=False, range_list=False, throw=False")
 arrow_shortbow = item.Projectile("Shortbow Arrow", 0.1, 0.1, 6)
 arrow_shortbow_silver = item.Projectile("Shortbow Arrow (Silver)", 2, 0.1, 6)
 arrow_longbow = item.Projectile("Longbow Arrow", 0.2, 0.1, 8)
@@ -86,12 +85,13 @@ quarrel_heavy = item.Projectile("Heavy Quarrel", 0.4, 0.1, 8)
 quarrel_heavy_silver = item.Projectile("Heavy Quarrel (Silver)", 10, 0.1, 8)
 bullet_sling = item.Projectile("Bullet", 0.1, 0.1, 4)
 stone_sling = item.Projectile("Stone", 0, 0.1, 3)
+# Grenade-like items. 'holy_water' and 'oil_flask' are listed in 'general_items'.
+holy_water = item.Projectile("Holy Water, per vial", 10, 0.1, 8, 6, [10, 30, 50], throw=True)
+oil_flask = item.Projectile("Oil, per flask", 1, 1, 8, 6, [10, 30, 50], throw=True)
 
 
 # Ranged weapons (args = "name, cost, weight, size, damage, range_list, ammo=False, throw=False").
-# Note that bows and crossbows need projectiles to do damage, therefor damage for them is '0'. Throwable weapons and
-# items include daggers, certain small melee weapons and general items and are later included in their respective
-# instances lists 'general_items' or 'weapons'.
+# Note that bows and crossbows need projectiles to do damage, therefor damage for them is '0'.
 shortbow = item.RangedWeapon("Shortbow", 25, 2, "M", 0, [50, 100, 150],
                              ammo=[arrow_shortbow, arrow_shortbow_silver])
 longbow = item.RangedWeapon("Longbow", 60, 3, "L", 0, [70, 140, 210],
@@ -102,7 +102,7 @@ crossbow_heavy = item.RangedWeapon("Heavy Crossbow", 50, 14, "L", 0, [80, 160, 2
                                    ammo=[quarrel_heavy, quarrel_heavy_silver])
 sling = item.RangedWeapon("Sling", 1, 0.1, "S", 0, [30, 60, 90],
                           ammo=[bullet_sling, stone_sling])
-# Throwable weapons and items.
+# Throwable weapons. Listed under their respective key in dict 'weapons'.
 dagger = item.RangedWeapon("Dagger", 2, 1, "S", 4, [10, 20, 30], throw=True)
 dagger_silver = item.RangedWeapon("Silver Dagger", 25, 1, "S", 4, [10, 20, 30], throw=True)
 warhammer = item.RangedWeapon("Warhammer", 4, 6, "S", 6, [10, 20, 30], throw=True)
@@ -117,9 +117,9 @@ plate_mail = item.Armor("Plate Mail", 300, 50, 17)
 shield = item.Armor("Shield", 7, 5, 1)  # Shield AC is added to overall AC when carried.
 
 
-# Lists of instances.
+# Lists/dicts of instances.
 general_items = [
-    backpack, belt_pouch, belt_pouch, candles_12, chalk, cloak, clothing_common
+    backpack, belt_pouch, belt_pouch, candles_12, chalk, cloak, clothing_common, holy_water, oil_flask
 ]
 
 weapons = {
