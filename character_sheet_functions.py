@@ -107,7 +107,20 @@ def set_character_values(character):
     character.set_specials()
     character.set_hp()
     character.set_carrying_capacity()
-    character.set_starting_money()
+
+
+def starting_money(character):
+    money_options = ["Roll the dice for your starting money (3d6 x 10)", "Choose your own amount of gold pieces"]
+    print("- STARTING MONEY -\n")
+
+    selection = func.select_from_list(money_options, "\nYour choice: ")
+
+    if selection == money_options[0]:
+        character.set_starting_money()
+        print(f"\n\tYou receive {character.money} pieces of gold!\n\nPress ENTER to continue.")
+        input()
+    else:
+        character.money = int(input("How much many gold pieces do you want to give yourself? "))
 
 
 def show_carrying_capacity(character):
@@ -135,9 +148,10 @@ def random_character_generator(character):
         if not func.check_valid_race_class(race_list, class_list):
             continue
 
-        # Choose random character and set values.
+        # Generate random character and set values.
         character.set_race(race_list[random.randint(0, (len(race_list)-1))])
         character.set_class(class_list[random.randint(0, (len(class_list)-1))])
+        character.set_starting_money()
         set_character_values(character)
 
         # prompt user for name.

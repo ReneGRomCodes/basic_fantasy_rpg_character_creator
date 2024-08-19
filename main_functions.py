@@ -5,7 +5,7 @@ import character_sheet_functions as cf
 
 def show_menu():
     """Print string 'menu' and return string 'menu_prompt'."""
-    menu = ("- BASIC FANTASY RPG CHARACTER CREATOR - \n\n"
+    menu = ("- BASIC FANTASY RPG CHARACTER CREATOR -\n\n"
             "Do you want to customize your character or generate a random character?\n"
             "1 - Custom Character\n"
             "2 - Random Character\n\n")
@@ -31,6 +31,10 @@ def custom_character(character):
 
     # Name the character.
     cf.name_character(character)
+
+    # Set amount of starting money.
+    cf.starting_money(character)
+    os.system('cls')
 
     # Build character sheet.
     cf.build_character_sheet(character)
