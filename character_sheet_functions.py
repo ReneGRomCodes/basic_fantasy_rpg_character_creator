@@ -117,10 +117,16 @@ def starting_money(character):
 
     if selection == money_options[0]:
         character.set_starting_money()
-        print(f"\n\tYou receive {character.money} pieces of gold!\n\nPress ENTER to continue.")
+        print(f"\n\n\tYou receive {character.money} pieces of gold!\n\n\nPress ENTER to continue.")
         input()
     else:
-        character.money = int(input("How much many gold pieces do you want to give yourself? "))
+        while True:
+            character.money = int(input("\nHow much many gold pieces do you want to give yourself? "))
+
+            if func.check_yes_no(f"\nDo you want to start your adventure with {character.money} gold pieces (Y/N): "):
+                break
+            else:
+                continue
 
 
 def show_carrying_capacity(character):
@@ -178,7 +184,7 @@ def build_character_sheet(character):
         print("\nSpells:")
         print(f" - {character.spells}")
 
-    print(f"\nMoney: {character.money}")
+    print(f"\nMoney: {character.money} gold pieces")
     print("\nCarrying Capacity:")
     show_carrying_capacity(character)
     print("\nWeight Carried:")
