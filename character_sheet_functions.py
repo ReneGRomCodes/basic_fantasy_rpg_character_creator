@@ -80,6 +80,7 @@ def show_ability_scores(character):
 def name_character(character):
     """Prompt user to name character and set 'character.name'."""
     while True:
+        print("- CHARACTER NAME -\n")
         char_name = input(f"Name your {character.race_name} {character.class_name}: ")
 
         if func.check_yes_no(f"Do you want your character to be named '{char_name}'? (Y/N) "):
@@ -109,24 +110,31 @@ def set_character_values(character):
     character.set_carrying_capacity()
 
 
-def starting_money(character):
+def set_starting_money(character):
+    """Prompt user to set starting money for instance of class 'character'."""
     money_options = ["Roll the dice for your starting money (3d6 x 10)", "Choose your own amount of gold pieces"]
-    print("- STARTING MONEY -\n")
 
-    selection = func.select_from_list(money_options, "\nYour choice: ")
+    while True:
+        print("- STARTING MONEY -\n")
+        selection = func.select_from_list(money_options, "\nYour choice: ")
 
-    if selection == money_options[0]:
-        character.set_starting_money()
-        print(f"\n\n\tYou receive {character.money} pieces of gold!\n\n\nPress ENTER to continue.")
-        input()
-    else:
-        while True:
-            character.money = int(input("\nHow much many gold pieces do you want to give yourself? "))
+        if selection == money_options[0]:
+            character.money = func.dice_roll(3, 6) * 10
+            print(f"\n\n\tYou receive {character.money} pieces of gold!\n\n\nPress ENTER to continue.")
+            input()
+            break
+        else:
+            while True:
+                try:
+                    character.money = int(input("\nHow many gold pieces do you want to give yourself? "))
+                except ValueError:
+                    continue
+                break
 
             if func.check_yes_no(f"\nDo you want to start your adventure with {character.money} gold pieces (Y/N): "):
                 break
-            else:
-                continue
+
+            continue
 
 
 def show_carrying_capacity(character):
@@ -157,7 +165,7 @@ def random_character_generator(character):
         # Generate random character and set values.
         character.set_race(race_list[random.randint(0, (len(race_list)-1))])
         character.set_class(class_list[random.randint(0, (len(class_list)-1))])
-        character.set_starting_money()
+        character.money = func.dice_roll(3, 6) * 10
         set_character_values(character)
 
         # prompt user for name.

@@ -236,10 +236,6 @@ class Character:
             else:
                 self.carrying_capacity = {cap_light_key: 80, cap_heavy_key: 195, }
 
-    def set_starting_money(self):
-        """Set starting value for attribute 'self.money'"""
-        self.money = dice_roll(3, 6) * 10
-
     # Inventory and trade related methods.
     def buy_item(self, item):
         """Buy instance 'item' of a class from 'item_model' module."""

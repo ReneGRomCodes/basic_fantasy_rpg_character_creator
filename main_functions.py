@@ -33,7 +33,11 @@ def custom_character(character):
     cf.name_character(character)
 
     # Set amount of starting money.
-    cf.starting_money(character)
+    cf.set_starting_money(character)
+    os.system('cls')
+
+    print("\n\n\t\tCharacter creation complete. Press ENTER to show character sheet.")
+    input()
     os.system('cls')
 
     # Build character sheet.
@@ -45,6 +49,10 @@ def random_character(character):
     os.system('cls')
     # Get random class, race, name and ability scores.
     cf.random_character_generator(character)
+
+    print("\n\n\t\tCharacter creation complete. Press ENTER to show character sheet.")
+    input()
+    os.system('cls')
 
     # Build character sheet.
     cf.build_character_sheet(character)
