@@ -1,5 +1,6 @@
 import item_model as item
-"""Initialize instances of classes from 'item_model.py'."""
+"""Initialize instances of classes from 'item_model.py'.
+Instances are sorted into lists/dicts at the end of this file for use in other modules."""
 
 
 # General Equipment (args = "name, cost, weight").
@@ -119,7 +120,12 @@ shield = item.Armor("Shield", 7, 5, 1)  # Shield AC is added to overall AC when 
 
 # Lists/dicts of instances.
 general_items = [
-    backpack, belt_pouch, belt_pouch, candles_12, chalk, cloak, clothing_common, holy_water, oil_flask
+    backpack, belt_pouch, belt_pouch, candles_12, chalk, cloak, clothing_common, glass_bottle_vial, grappling_hook,
+    holy_symbol, holy_water, horseshoes, ink_jar, iron_spikes_12, ladder_10ft, lantern, lantern_bullseye,
+    lantern_hooded, manacles, map_scroll_case, mirror_small, oil_flask, padlock, paper_sheet, pole_wood, quill,
+    quill_knife, quiver_bolt_case, dry_rations_week, rope_hemp, rope_silk, sack_large, sack_small, saddle_pack,
+    saddle_riding, saddlebags_pair, spellbook, tent_large, tent_small, thieves_tools, tinderbox, torches_6, whetstone,
+    whistle, skin_wine_water, winter_blanket
 ]
 
 weapons = {
