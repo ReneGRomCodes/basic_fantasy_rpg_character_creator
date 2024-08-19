@@ -32,7 +32,8 @@ def race_class_selection(character, race_list, class_list):
     choose a race/class combination and set race and class in instance 'character'."""
     while True:
         possible_characters = func.build_race_class_list(race_list, class_list)
-        selected_character = func.select_character(possible_characters)
+        selected_character = func.select_from_list(possible_characters,
+                                                   "\nSelect a character to show race and class description: ")
 
         # Split selected 'character' into variables for race and class and call class methods 'set_race()' and
         # 'set_class()'.

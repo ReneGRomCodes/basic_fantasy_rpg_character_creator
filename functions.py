@@ -132,19 +132,19 @@ def build_race_class_list(race_list, class_list):
     return possible_characters
 
 
-def select_character(char_list):
-    """Take list of possible race-class combinations 'char_list', print them out, let user choose a character and return
-    choice 'selected_character' as string."""
+def select_from_list(list, prompt):
+    """Print out items from list 'list' in numbered and formatted output, prompts for input via string 'prompt' and
+    return 'selected_item'."""
     selection_counter = 1
 
-    for char in char_list:
-        print(f"{selection_counter:>2} - {char}")
+    for item in list:
+        print(f"{selection_counter:>2} - {item}")
         selection_counter += 1
 
     while True:
         try:
-            character_selection = int(input("\nSelect a character to show race and class description: "))
-            selected_character = char_list[character_selection - 1]
+            selection = int(input(prompt))
+            selected_item = list[selection - 1]
             break
         except IndexError:
             print(f"Invalid input. Choose a number between 1 and {selection_counter - 1}.")
@@ -153,7 +153,7 @@ def select_character(char_list):
             print(f"Invalid input. Choose a number between 1 and {selection_counter - 1}.")
             continue
 
-    return selected_character
+    return selected_item
 
 
 def show_char_race_descr(character):
