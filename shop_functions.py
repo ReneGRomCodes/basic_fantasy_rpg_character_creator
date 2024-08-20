@@ -5,13 +5,17 @@ import item_instances
 def show_shop():
     print("General Items:")
     for item in item_instances.general_items:
-        print(f" - {item.name:<25} {item.weight:>5} lbs {item.cost:>5} gp")
+        print(f" - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}")
 
     print("\nWeapons:")
     for k, v in item_instances.weapons.items():
         print(k)
-        for item in v:
-            print(f" - {item.name:<15} {item.size} {item.weight:>5} lbs       1d{item.damage} {item.cost:>5} gp")
+        if k == "Ranged Weapons":
+            for item in v:
+                print(f" - {item.name:<20}{item.size}{f"{item.weight} lbs":>10}{item.cost:>18} gp")
+        else:
+            for item in v:
+                print(f" - {item.name:<20}{item.size}{f"{item.weight} lbs":>10}{f"1d{item.damage}":>8}{item.cost:>10} gp")
 
     print("\nProjectiles:")
     for projectile in item_instances.projectiles:
