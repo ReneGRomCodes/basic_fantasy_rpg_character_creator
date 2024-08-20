@@ -83,7 +83,6 @@ class Character:
             self.class_specials = ["Turn the Undead"]
             self.class_saving_throws = [11, 12, 14, 16, 15]
             self.spells = "None"
-            self.items = []
         elif class_selection == "Fighter":
             self.class_name = "Fighter"
             self.class_description = "descr/fighter.txt"
@@ -91,8 +90,6 @@ class Character:
             self.next_level_xp = 2000
             self.class_specials = [False]
             self.class_saving_throws = [12, 13, 14, 15, 17]
-            self.spells = False
-            self.items = []
         elif class_selection == "Magic-User":
             self.class_name = "Magic-User"
             self.class_description = "descr/magic-user.txt"
@@ -110,8 +107,6 @@ class Character:
             self.next_level_xp = 1250
             self.class_specials = ["Sneak Attack", "Thief Abilities"]
             self.class_saving_throws = [13, 14, 13, 16, 15]
-            self.spells = False
-            self.items = []
         # Elf specific combination classes.
         elif class_selection == "Fighter/Magic-User":
             self.class_name = "Fighter/Magic-User"
@@ -133,6 +128,12 @@ class Character:
             self.spells = "Read Magic"
             self.items.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
+
+    def reset_character(self):
+        """Reset values that may not be overwritten when creating a new character."""
+        self.spells = False
+        self.items = []
+        self.weight_carried = 0
 
     def set_name(self, char_name):
         """Set name for character."""

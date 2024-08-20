@@ -24,6 +24,7 @@ def run_character_creator():
 
                 # Prompt user to create another character or exit.
                 if not check_yes_no("\n\nDO YOU WANT TO KEEP THIS CHARACTER AND PROCEED TO THE SHOP (Y/N)? "):
+                    character.reset_character()
                     mf.show_menu()
                     continue
                 else:
@@ -35,6 +36,7 @@ def run_character_creator():
 
                 # Prompt user to create another character or exit.
                 if not check_yes_no("\n\nDO YOU WANT TO KEEP THIS CHARACTER AND PROCEED TO THE SHOP (Y/N)? "):
+                    character.reset_character()
                     mf.show_menu()
                     continue
                 else:
