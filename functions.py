@@ -115,7 +115,6 @@ def build_race_class_list(race_list, class_list):
     """Take lists of possible races and classes and return list 'possible_characters' with valid race-class
     combinations."""
     possible_characters = []
-    print("Based on your scores you can choose from the following race-class combinations:\n")
 
     for char_race in race_list:
         for char_class in class_list:

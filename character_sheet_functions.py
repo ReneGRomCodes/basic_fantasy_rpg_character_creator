@@ -31,6 +31,8 @@ def race_class_selection(character, race_list, class_list):
     """Take lists of possible races and classes, 'race_list' and 'class_list', check for allowed combination, let user
     choose a race/class combination and set race and class in instance 'character'."""
     while True:
+        print("Based on your scores you can choose from the following race-class combinations:\n")
+
         possible_characters = func.build_race_class_list(race_list, class_list)
         selected_character = func.select_from_list(possible_characters,
                                                    "\nSelect a character to show race and class description: ")
@@ -161,10 +163,12 @@ def random_character_generator(character):
         class_list = func.check_class(character)
         if not func.check_valid_race_class(race_list, class_list):
             continue
+        race_class_list = func.build_race_class_list(race_list, class_list)
 
         # Generate random character and set values.
-        character.set_race(race_list[random.randint(0, (len(race_list)-1))])
-        character.set_class(class_list[random.randint(0, (len(class_list)-1))])
+        character_race_class = race_class_list[random.randint(0, (len(race_list)-1))]
+        character.set_race(character_race_class.split(" ")[0])
+        character.set_class(character_race_class.split(" ")[1])
         character.money = func.dice_roll(3, 6) * 10
         set_character_values(character)
 
