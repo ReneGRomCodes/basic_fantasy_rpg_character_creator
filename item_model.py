@@ -60,9 +60,9 @@ class Projectile(Item):
         """
         super().__init__(name, cost, weight)
         self.damage = damage
-        self.range_list = range_list
         # Attributes specific for grenade-like items.
         self.splash_damage = splash_damage
+        self.range_list = range_list
         self.throw = throw
 
 
