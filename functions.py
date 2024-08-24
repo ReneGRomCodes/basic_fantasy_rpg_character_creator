@@ -17,16 +17,15 @@ def check_yes_no(prompt):
     """Take string 'prompt' for user input and check for y/n answer. Return 'True' for y, 'False'
     for n or prompt the user again if any other character is given."""
     user_input = input(prompt)
-    yes_no = ["y", "n"]
 
-    while user_input.lower() not in yes_no:
+    while user_input.lower() != "y" and user_input.lower() != "n":
         user_input = input(prompt)
         continue
 
     if user_input.lower() == "y":
         os.system('cls')
         return True
-    else:
+    elif user_input.lower() == "n":
         os.system('cls')
         return False
 

@@ -1,5 +1,7 @@
 import os
 import character_sheet_functions as cf
+from functions import select_from_list as func_select
+import shop_functions as sf
 """Main functions used in 'main.py'."""
 
 
@@ -56,3 +58,24 @@ def random_character(character):
 
     # Build character sheet.
     cf.build_character_sheet(character)
+
+
+def show_shop():
+    """Main loop for shop 'main menu'."""
+    shop_sections = ["General Items", "Weapons", "Projectiles", "Armor", "EXIT"]
+
+    while True:
+        print(" - SHOP -\n")
+        shop_section = func_select(shop_sections, "\nWhat items do you want to buy? ")
+        os.system('cls')
+
+        if shop_section == "General Items":
+            sf.show_general_items()
+        elif shop_section == "Weapons":
+            sf.show_weapons()
+        elif shop_section == "Projectiles":
+            sf.show_projectiles()
+        elif shop_section == "Armor":
+            sf.show_armor()
+        else:
+            break

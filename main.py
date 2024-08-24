@@ -1,5 +1,4 @@
 import main_functions as mf
-import shop_functions as sf
 from functions import check_yes_no
 import character_model as char
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
@@ -45,7 +44,7 @@ def run_character_creator():
         except ValueError:
             continue
 
-    sf.show_shop()
+    mf.show_shop()
     input("\nPress Enter to exit")
 
 

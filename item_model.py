@@ -1,5 +1,7 @@
-"""Classes for equipment. Parent class 'Items' for items with basic attributes (name, cost, weight) and collection of
-child classes items with specialized attributes (weapons, armor, etc.)."""
+"""
+Classes for equipment. Parent class 'Items' for items with basic attributes (name, cost, weight) and collection of
+child classes items with specialized attributes (weapons, armor, etc.). Items are instantiated in 'item_instances.py'.
+"""
 
 
 class Item:
