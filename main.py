@@ -44,7 +44,7 @@ def run_character_creator():
         except ValueError:
             continue
 
-    mf.show_shop()
+    mf.show_shop(character)
     input("\nPress Enter to exit")
 
 

@@ -60,9 +60,9 @@ def random_character(character):
     cf.build_character_sheet(character)
 
 
-def show_shop():
+def show_shop(character):
     """Main loop for shop 'main menu'."""
-    shop_sections = ["General Items", "Weapons", "Projectiles", "Armor", "EXIT"]
+    shop_sections = ["General Items", "Weapons", "Projectiles", "Armor", "Inventory / Sell Item", "EXIT"]
 
     while True:
         print(" - SHOP -\n")
@@ -70,12 +70,14 @@ def show_shop():
         os.system('cls')
 
         if shop_section == "General Items":
-            sf.show_general_items()
+            sf.show_general_items(character)
         elif shop_section == "Weapons":
-            sf.show_weapons()
+            sf.show_weapons(character)
         elif shop_section == "Projectiles":
-            sf.show_projectiles()
+            sf.show_projectiles(character)
         elif shop_section == "Armor":
-            sf.show_armor()
+            sf.show_armor(character)
+        elif shop_section == "Inventory / Sell Item":
+            sf.show_inventory(character)
         else:
             break

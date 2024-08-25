@@ -3,7 +3,7 @@ import os
 """Functions used for the item shop."""
 
 
-def show_general_items():
+def show_general_items(character):
     """Print items in list 'general_items' from module 'item_instances' in formatted string output."""
     shop_counter = 1
 
@@ -13,11 +13,14 @@ def show_general_items():
         print(f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}")
         shop_counter += 1
 
+    buy_item = int(input("\nWhich item do you want to buy? ")) - 1
+    character.buy_item(item_instances.general_items[buy_item])
+
     input("\nPress enter to return to shop")
     os.system('cls')
 
 
-def show_weapons():
+def show_weapons(character):
     """Print items in list 'weapons' from module 'item_instances' in formatted string output."""
     shop_counter = 1
 
@@ -45,7 +48,7 @@ def show_weapons():
     os.system('cls')
 
 
-def show_projectiles():
+def show_projectiles(character):
     """Print items in list 'projectiles' from module 'item_instances' in formatted string output."""
     shop_counter = 1
 
@@ -60,7 +63,7 @@ def show_projectiles():
     os.system('cls')
 
 
-def show_armor():
+def show_armor(character):
     """Print items in list 'armor' from module 'item_instances' in formatted string output."""
     shop_counter = 1
 
@@ -69,6 +72,20 @@ def show_armor():
     for armor in item_instances.armors:
         print(f"{shop_counter:>2} - {armor.name:<15}{f"{armor.weight} lbs":>10}{armor.armor_class:>10}"
               f"{f"{armor.cost} gp":>10}")
+        shop_counter += 1
+
+    input("\nPress enter to return to shop")
+    os.system('cls')
+
+
+def show_inventory(character):
+    """Print formatted output of items in attribute list 'items' from class 'Character' in 'character_model.py'."""
+    shop_counter = 1
+
+    print("INVENTORY:")
+    print(f"{"Weight":>42}{"Cost":>10}")
+    for item in character.items:
+        print(f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}")
         shop_counter += 1
 
     input("\nPress enter to return to shop")
