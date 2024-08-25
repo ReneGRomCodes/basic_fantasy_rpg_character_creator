@@ -23,12 +23,15 @@ def show_weapons():
 
     print("WEAPONS:")
     for k, v in item_instances.weapons.items():
-        print("\n" + k)
+        print("\n\n" + k)
 
         if k == "Ranged Weapons":
-            print(f"{"size":>27}{"weight":>9}{"cost":>18}")
+            print(f"{"Range":>50}")
+            print(f"{"size":>27}{"weight":>9}{"S    M    L":^23}{"cost":>8}")
             for item in v:
-                print(f"{shop_counter:>2} - {item.name:<20}{item.size}{f"{item.weight} lbs":>10}{f"{item.cost} gp":>18}")
+                ranges = f"{item.range_list[0]:>3}, {item.range_list[1]:>3}, {item.range_list[2]:>3}"
+                print(f"{shop_counter:>2} - {item.name:<20}{item.size}{f"{item.weight} lbs":>10}{ranges:^23}"
+                      f"{f"{item.cost} gp":>8}")
                 shop_counter += 1
 
         else:
