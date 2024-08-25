@@ -105,7 +105,7 @@ sling = item.RangedWeapon("Sling", 1, 0.1, "S", 0, [30, 60, 90],
                           ammo=[bullet_sling, stone_sling])
 # Throwable weapons. Listed under their respective key in dict 'weapons'.
 dagger = item.RangedWeapon("Dagger", 2, 1, "S", 4, [10, 20, 30], throw=True)
-dagger_silver = item.RangedWeapon("Silver Dagger", 25, 1, "S", 4, [10, 20, 30], throw=True)
+dagger_silver = item.RangedWeapon("Dagger (Silver)", 25, 1, "S", 4, [10, 20, 30], throw=True)
 warhammer = item.RangedWeapon("Warhammer", 4, 6, "S", 6, [10, 20, 30], throw=True)
 hand_axe = item.RangedWeapon("Hand Axe", 4, 5, "S", 6, [10, 20, 30], throw=True)
 

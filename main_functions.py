@@ -1,6 +1,6 @@
 import os
 import character_sheet_functions as cf
-from functions import select_from_list as func_select
+import functions as func
 import shop_functions as sf
 """Main functions used in 'main.py'."""
 
@@ -66,7 +66,7 @@ def show_shop():
 
     while True:
         print(" - SHOP -\n")
-        shop_section = func_select(shop_sections, "\nWhat items do you want to buy? ")
+        shop_section = func.select_from_list(shop_sections, "\nWhat items do you want to buy? ")
         os.system('cls')
 
         if shop_section == "General Items":
