@@ -120,7 +120,7 @@ shield = item.Armor("Shield", 7, 5, 1)  # Shield AC is added to overall AC when 
 
 # Lists/dicts of instances.
 general_items = [
-    backpack, belt_pouch, belt_pouch, candles_12, chalk, cloak, clothing_common, glass_bottle_vial, grappling_hook,
+    backpack, belt_pouch, bit_and_bridle, candles_12, chalk, cloak, clothing_common, glass_bottle_vial, grappling_hook,
     holy_symbol, holy_water, horseshoes, ink_jar, iron_spikes_12, ladder_10ft, lantern, lantern_bullseye,
     lantern_hooded, manacles, map_scroll_case, mirror_small, oil_flask, padlock, paper_sheet, pole_wood, quill,
     quill_knife, quiver_bolt_case, dry_rations_week, rope_hemp, rope_silk, sack_large, sack_small, saddle_pack,

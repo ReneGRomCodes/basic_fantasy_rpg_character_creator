@@ -1,36 +1,52 @@
 import item_instances
 import os
+import functions as func
 """Functions used for the item shop."""
 
 
 def show_general_items(character):
     """Print items in list 'general_items' from module 'item_instances' in formatted string output."""
-    shop_counter = 1
-
-    print("GENERAL ITEMS:")
-    print(f"{"Weight":>42}{"Cost":>10}{"Inventory":>12}")
-    for item in item_instances.general_items:
-        item_listing = f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}"
-        if item in character.items:
-            print(item_listing)  # TODO add counter for items in inventory.
-            shop_counter += 1
-        else:
-            print(item_listing)
-            shop_counter += 1
 
     while True:
-        buy_item = input("\nChoose item to buy or press Enter to return: ")
+        shop_counter = 1
+
+        print("GENERAL ITEMS:")
+        print(f"{"Weight":>42}{"Cost":>10}{"Inventory":>12}")
+
+        for item in item_instances.general_items:
+            item_listing = f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}"
+            if item in character.items:
+                inventory = character.items.count(item)
+                print(item_listing + f"{inventory:>6}")
+                shop_counter += 1
+            else:
+                print(item_listing)
+                shop_counter += 1
+
+        buy_item = input("\nChoose item to buy or press 'Enter' to return to shop menu: ")
+
         if not buy_item:
             os.system('cls')
             break
         else:
             try:
-                character.buy_item(item_instances.general_items[int(buy_item) - 1])
+                selected_item = item_instances.general_items[int(buy_item) - 1]
+
+                if func.check_yes_no(f"Are you sure you want to buy {selected_item.name} (Y/N)? "):
+                    character.buy_item(selected_item)
+                    input(f"\n\t{selected_item.name} added to your inventory. Press 'Enter' to continue.")
+                    os.system('cls')
+                    continue
+                else:
+                    continue
+
             except IndexError:
-                print(f"Invalid input. Choose a number between 1 and {shop_counter - 1}.")
+                input(f"\n\tInvalid input. Choose a number between 1 and {shop_counter - 1}. Press 'Enter' to continue.")
+                os.system('cls')
                 continue
             except ValueError:
-                print(f"Invalid input. Choose a number between 1 and {shop_counter - 1}.")
+                input(f"\n\tInvalid input. Choose a number between 1 and {shop_counter - 1}. Press 'Enter' to continue.")
+                os.system('cls')
                 continue
 
 
