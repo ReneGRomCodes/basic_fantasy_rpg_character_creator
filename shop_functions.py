@@ -8,16 +8,30 @@ def show_general_items(character):
     shop_counter = 1
 
     print("GENERAL ITEMS:")
-    print(f"{"Weight":>42}{"Cost":>10}")
+    print(f"{"Weight":>42}{"Cost":>10}{"Inventory":>12}")
     for item in item_instances.general_items:
-        print(f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}")
-        shop_counter += 1
+        item_listing = f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}"
+        if item in character.items:
+            print(item_listing)  # TODO add counter for items in inventory.
+            shop_counter += 1
+        else:
+            print(item_listing)
+            shop_counter += 1
 
-    buy_item = int(input("\nWhich item do you want to buy? ")) - 1
-    character.buy_item(item_instances.general_items[buy_item])
-
-    input("\nPress enter to return to shop")
-    os.system('cls')
+    while True:
+        buy_item = input("\nChoose item to buy or press Enter to return: ")
+        if not buy_item:
+            os.system('cls')
+            break
+        else:
+            try:
+                character.buy_item(item_instances.general_items[int(buy_item) - 1])
+            except IndexError:
+                print(f"Invalid input. Choose a number between 1 and {shop_counter - 1}.")
+                continue
+            except ValueError:
+                print(f"Invalid input. Choose a number between 1 and {shop_counter - 1}.")
+                continue
 
 
 def show_weapons(character):
