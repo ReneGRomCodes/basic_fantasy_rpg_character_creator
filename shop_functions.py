@@ -65,10 +65,13 @@ def trade_items(character, instance_list, shop_name, table_header):
                 selected_item = instance_list[int(trade_item) - 1]
 
                 if func.check_yes_no(f"Are you sure you want to buy {selected_item.name} (Y/N)? "):
-                    character.buy_item(selected_item)
-                    input(f"\n\t{selected_item.name} added to your inventory. Press 'Enter' to continue.")
-                    os.system('cls')
-                    continue
+                    if character.buy_item(selected_item):
+                        input(f"\n\t{selected_item.name} added to your inventory. Press 'Enter' to continue.")
+                        os.system('cls')
+                        continue
+                    else:
+                        input()
+                        os.system('cls')
                 else:
                     continue
 
@@ -91,7 +94,7 @@ def general_items_shop(character):
     shop_name = "GENERAL ITEMS"
     table_header = f"{"Weight":>42}{"Cost":>10}{"Inventory":>12}"
 
-    trade_items(character, instance_list,shop_name, table_header)
+    trade_items(character, instance_list, shop_name, table_header)
 
 
 def weapons_shop(character):

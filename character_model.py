@@ -239,15 +239,18 @@ class Character:
 
     # Inventory and trade related methods.
     def buy_item(self, item):
-        """Buy instance 'item' of a class from 'item_model' module."""
+        """Buy instance 'item' of a class from 'item_model' module and return 'True' if trade was successful, 'False'
+        otherwise."""
         money = self.money - item.cost
-        insufficient_money = f"You do not have enough money to buy '{item.name}'."
+        insufficient_money = f"\n\tYou do not have enough money to buy '{item.name}'"
         if money < 0:
             print(insufficient_money)
+            return False
         else:
             self.items.append(item)
             self.weight_carried += item.weight
             self.money = money
+            return True
 
     def sell_item(self, item):
         """Sell instance 'item' of a class from 'item_model' module."""
