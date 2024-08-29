@@ -59,7 +59,8 @@ def choose_buy_sell(character, selected_item):
 
         # Show buy and sell options if item is in inventory.
         if func.select_from_list(buy_sell_list, prompt) == buy_sell_list[0]:
-            if func.check_yes_no(f"Are you sure you want to buy '{selected_item.name}' (Y/N)? "):
+            if func.check_yes_no(f"\nAre you sure you want to buy '{selected_item.name}' for {selected_item.cost} gp "
+                                 f"(Y/N)? "):
                 if character.buy_item(selected_item):
                     input(f"\n\t'{selected_item.name}' added to your inventory. Press 'Enter' to continue.")
                     os.system('cls')
@@ -67,7 +68,8 @@ def choose_buy_sell(character, selected_item):
                     input()
                     os.system('cls')
         else:
-            if func.check_yes_no(f"Are you sure you want to sell '{selected_item.name}' (Y/N)? "):
+            if func.check_yes_no(f"\nAre you sure you want to sell '{selected_item.name}' for {selected_item.cost} gp "
+                                 f"(Y/N)? "):
                 character.sell_item(selected_item)
                 input(f"\n\t'{selected_item.name}' sold. Press 'Enter' to continue.")
                 os.system('cls')
@@ -76,7 +78,8 @@ def choose_buy_sell(character, selected_item):
 
     # Show buy option only if item is not in characters inventory.
     else:
-        if func.check_yes_no(f"Are you sure you want to buy {selected_item.name} (Y/N)? "):
+        if func.check_yes_no(f"\nAre you sure you want to buy '{selected_item.name}' for {selected_item.cost} gp "
+                             f"(Y/N)? "):
             if character.buy_item(selected_item):
                 input(f"\n\t{selected_item.name} added to your inventory. Press 'Enter' to continue.")
                 os.system('cls')
@@ -177,13 +180,19 @@ def armor_shop(character):
 
 def show_inventory(character):
     """Print formatted output of items in attribute list 'items' from class 'Character' in 'character_model.py'."""
-    shop_counter = 1
+    # Check if inventory is empty.
+    if character.items:
+        shop_counter = 1
 
-    print("INVENTORY:")
-    print(f"{"Weight":>42}{"Cost":>10}")
-    for item in character.items:
-        print(f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}")
-        shop_counter += 1
+        print("INVENTORY:")
+        print(f"{"Weight":>42}{"Cost":>10}")
+        for item in character.items:
+            print(f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}")
+            shop_counter += 1
+
+        print(f"\nYour money: {character.money} gp")
+    else:
+        print("\n\tYour inventory is empty.")
 
     input("\nPress enter to return to shop")
     os.system('cls')
