@@ -148,7 +148,7 @@ def show_carrying_capacity(character):
 def show_inventory(character):
     """Print formatted output of list 'items' from instance 'character'."""
     for item in character.items:
-        print(f" - {item.name}")
+        print(f" - {item.name:<30}{f"{item.weight} lbs":>7}")
 
 
 def random_character_generator(character):

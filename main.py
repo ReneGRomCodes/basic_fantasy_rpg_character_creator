@@ -1,4 +1,5 @@
 import main_functions as mf
+import character_sheet_functions as cf
 from functions import check_yes_no
 import character_model as char
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
@@ -8,7 +9,7 @@ It initializes the program and starts the main functionality."""
 def run_character_creator():
     """Initialize main loop for character creation."""
 
-    # Instances of CharacterRace and CharacterClass to set and store values.
+    # Initialize instance of class 'Character' to set and store values.
     character = char.Character()
 
     menu_prompt = mf.show_menu()
@@ -44,7 +45,11 @@ def run_character_creator():
         except ValueError:
             continue
 
+    # Show item shop.
     mf.show_main_shop(character)
+
+    # Show final character sheet.
+    cf.build_character_sheet(character)
     input("\nPress Enter to exit")
 
 
