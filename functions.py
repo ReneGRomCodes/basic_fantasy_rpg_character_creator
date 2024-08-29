@@ -132,7 +132,7 @@ def build_race_class_list(race_list, class_list):
 
 def select_from_list(list, prompt):
     """Print out items from list 'list' in numbered and formatted output, prompts for input via string 'prompt' and
-    return 'selected_item'."""
+    return list item 'selected_item'."""
     selection_counter = 1
 
     for item in list:

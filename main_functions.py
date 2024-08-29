@@ -62,7 +62,7 @@ def random_character(character):
 
 def show_main_shop(character):
     """Main loop for shop 'main menu'."""
-    shop_sections = ["General Items", "Weapons", "Projectiles", "Armor", "Inventory / Sell Item", "EXIT"]
+    shop_sections = ["General Items", "Weapons", "Projectiles", "Armor", "Inventory", "EXIT"]
 
     while True:
         print(" - SHOP -\n")
@@ -77,7 +77,7 @@ def show_main_shop(character):
             sf.projectiles_shop(character)
         elif shop_section == "Armor":
             sf.armor_shop(character)
-        elif shop_section == "Inventory / Sell Item":
+        elif shop_section == "Inventory":
             sf.show_inventory(character)
         else:
             break
