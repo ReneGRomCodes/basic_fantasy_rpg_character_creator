@@ -16,6 +16,9 @@ def show_shop(character, instance_list, shop_name, table_header):
     # Initialize counter for items in shop.
     shop_counter = 1
 
+    # List to check for items already in inventory, so that they appear only once in shop 'INVENTORY'.
+    inventory_list = []
+
     print(f"{shop_name}:")
     print(f"{table_header}")
 
@@ -29,15 +32,22 @@ def show_shop(character, instance_list, shop_name, table_header):
         elif shop_name == "ARMOR":
             table_format = (f"{shop_counter:>2} - {item.name:<15}{f"{item.weight} lbs":>10}{item.armor_class:>10}"
                             f"{f"{item.cost} gp":>10}")
+        elif shop_name == "INVENTORY":
+            table_format = f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}"
 
         # Print items in shop and amount of items in character inventory.
-        if item in character.items:
+        # List 'inventory_list' and if-elif statements ensure that each item is shown only once if shop 'INVENTORY'
+        # is chosen.
+        if item in character.items and item not in inventory_list:
             inventory = character.items.count(item)
             print(table_format + f"{inventory:>8}")
+            inventory_list.append(item)
+            shop_counter += 1
+        elif item in character.items and item in inventory_list:
+            pass
         else:
             print(table_format)
-
-        shop_counter += 1
+            shop_counter += 1
 
     print(f"\nYour money: {character.money} gp")
     return shop_counter
@@ -182,15 +192,12 @@ def show_inventory(character):
     """Print formatted output of items in attribute list 'items' from class 'Character' in 'character_model.py'."""
     # Check if inventory is empty.
     if character.items:
-        shop_counter = 1
+        instance_list = character.items
+        shop_name = "INVENTORY"
+        table_header = f"{"Weight":>42}{"Cost":>10}{"Inventory":>12}"
 
-        print("INVENTORY:")
-        print(f"{"Weight":>42}{"Cost":>10}")
-        for item in character.items:
-            print(f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}")
-            shop_counter += 1
+        trade_items(character, instance_list, shop_name, table_header)
 
-        print(f"\nYour money: {character.money} gp")
     else:
         print("\n\tYour inventory is empty.")
 
