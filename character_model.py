@@ -24,8 +24,8 @@ class Character:
         # Character attributes. Values set based on race and class.
         self.name = None
         self.abilities = {}
-        self.armor_class = item_inst.no_armor.armor_class  # Default no armor.
-        self.attack_bonus = 1  # Default for level 1 characters.
+        self.armor_class = item_inst.no_armor.armor_class + item_inst.no_shield.armor_class
+        self.attack_bonus = 1  # Default attack bonus of +1 for Lvl characters.
         self.specials = []
         self.hit_die = 0
         self.next_level_xp = 0
@@ -39,7 +39,8 @@ class Character:
         self.money = 0
         self.items = []
         self.armor = item_inst.no_armor
-        self.weapon = None
+        self.shield = item_inst.no_shield
+        self.weapon = item_inst.no_weapon
 
     def set_race(self, race_selection):
         """Set race-specific values based on chosen race."""
@@ -257,3 +258,14 @@ class Character:
         self.items.remove(item)
         self.weight_carried -= item.weight
         self.money += item.cost
+
+    def equip_item(self, item):
+        item_index = self.items.index(item)
+        equip = self.items.pop(item_index)
+        if not equip.shield:
+            self.armor = equip
+        else:
+            self.shield = equip
+
+    def unequip_item(self, item):
+        pass

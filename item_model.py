@@ -71,7 +71,8 @@ class Projectile(Item):
 class Armor(Item):
     """Child class to represent armor."""
 
-    def __init__(self, name, cost, weight, armor_class):
+    def __init__(self, name, cost, weight, armor_class, shield = False):
         """Initialize attributes from parent class 'Items' and int attribute 'armor_class'."""
         super().__init__(name, cost, weight)
         self.armor_class = armor_class
+        self.shield = shield

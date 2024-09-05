@@ -201,8 +201,11 @@ def build_character_sheet(character):
     show_carrying_capacity(character)
     print("\nWeight Carried:")
     print(f"{character.weight_carried} Pounds")
+    print("\nWeapons:")
+    print(f"{character.weapon.name}")
     print("\nArmor:")
     print(f"{character.armor.name}")
+    print(f"{character.shield.name}")
 
     if character.items:
         print("\nInventory:")
