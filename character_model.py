@@ -24,7 +24,7 @@ class Character:
         # Character attributes. Values set based on race and class.
         self.name = None
         self.abilities = {}
-        self.armor_class = item_inst.no_armor.armor_class + item_inst.no_shield.armor_class
+        self.armor_class = None
         self.attack_bonus = 1  # Default attack bonus of +1 for Lvl characters.
         self.specials = []
         self.hit_die = 0
@@ -196,6 +196,10 @@ class Character:
         else:
             self.hp += self.abilities["con"][1]
 
+    def set_armor_class(self):
+        """Set armor class based on equipped armor and shield."""
+        self.armor_class = self.armor.armor_class + self.shield.armor_class
+
     def set_carrying_capacity(self):
         """Set dict 'self.carrying_capacity' based on race and ability score and bonus for "strength"."""
         strength = self.abilities["str"][0]
@@ -259,13 +263,22 @@ class Character:
         self.weight_carried -= item.weight
         self.money += item.cost
 
+    # Equip/unequip methods. TODO works only for armor and weapons right now.
     def equip_item(self, item):
+        """Equip instance 'item' from inventory."""
         item_index = self.items.index(item)
         equip = self.items.pop(item_index)
         if not equip.shield:
             self.armor = equip
         else:
             self.shield = equip
+        self.set_armor_class()
 
     def unequip_item(self, item):
-        pass
+        """Unequip instance 'item' and move it to inventory."""
+        self.items.append(item)
+        if not item.shield:
+            self.armor = item_inst.no_armor
+        else:
+            self.shield = item_inst.no_shield
+        self.set_armor_class()

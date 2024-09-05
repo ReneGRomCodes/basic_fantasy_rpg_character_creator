@@ -109,6 +109,7 @@ def set_character_values(character):
     character.set_saving_throws()
     character.set_specials()
     character.set_hp()
+    character.set_armor_class()
     character.set_carrying_capacity()
 
 
