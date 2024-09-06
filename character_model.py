@@ -263,7 +263,7 @@ class Character:
         self.weight_carried -= item.weight
         self.money += item.cost
 
-    # Equip/unequip methods. TODO works only for armor and weapons right now.
+    # Equip/unequip methods. TODO works only for armor right now.
     def equip_item(self, item):
         """Equip instance 'item' from inventory."""
         item_index = self.items.index(item)

@@ -113,8 +113,8 @@ warhammer = item.RangedWeapon("Warhammer", 4, 6, "S", 6, [10, 20, 30], throw=Tru
 hand_axe = item.RangedWeapon("Hand Axe", 4, 5, "S", 6, [10, 20, 30], throw=True)
 
 
-# Armor (args = "name, cost, weight, armor_class"). 'no_armor' and 'no_shield' are not part of list 'armor' below as
-# they can not be bought but are default settings.
+# Armor (args = "name, cost, weight, armor_class., shield=False"). 'no_armor' and 'no_shield' are not part of list
+# 'armor' below as they can not be bought but are default settings.
 no_armor = item.Armor("No Armor", 0, 0, 11)
 leather_armor = item.Armor("Leather Armor", 20, 15, 13)
 chain_mail = item.Armor("Chain Mail", 60, 40, 15)
