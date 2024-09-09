@@ -265,13 +265,24 @@ class Character:
 
     # Equip/unequip methods. TODO works only for armor right now.
     def equip_item(self, item):
-        """Equip instance 'item' from inventory."""
+        """Equip instance 'item' from inventory and move equipped item to inventory."""
         item_index = self.items.index(item)
         equip = self.items.pop(item_index)
+
         if not equip.shield:
-            self.armor = equip
+            if self.armor != item_inst.no_armor:
+                self.unequip_item(self.armor)
+                self.armor = equip
+            else:
+                self.armor = equip
+
         else:
-            self.shield = equip
+            if self.shield != item_inst.no_shield:
+                self.unequip_item(self.shield)
+                self.shield = equip
+            else:
+                self.shield = equip
+
         self.set_armor_class()
 
     def unequip_item(self, item):

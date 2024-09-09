@@ -54,13 +54,21 @@ def show_shop(character, instance_list, shop_name, table_header):
     return shop_counter
 
 
-def buy_option(selected_item, character):
+def buy_and_equip(selected_item, character):
+    """Prompt user to confirm trade and equip item.
+    ARGS:
+        selected_item: selected item from shop. instance of class from 'item_model.py'.
+        character: instance of Character class.
+    """
     if func.check_yes_no(f"\nAre you sure you want to buy '{selected_item.name}' for {selected_item.cost} gp "
                          f"(Y/N)? "):
         if character.buy_item(selected_item):
             input(f"\n\t'{selected_item.name}' added to your inventory. Press 'Enter' to continue.")
             os.system('cls')
-            if isinstance(selected_item, item_model.Armor):
+
+            # Check if item is instance of class Armor and prompt user to equip item if similar item is not equipped yet.
+            if (isinstance(selected_item, item_model.Armor) and selected_item != character.armor
+                    and selected_item != character.shield):
                 if func.check_yes_no(f"\n\tDo you want to equip {selected_item.name} (Y/N)? "):
                     character.equip_item(selected_item)
         else:
@@ -84,7 +92,7 @@ def choose_buy_sell(character, selected_item):
 
         # Show buy and sell options if item is in inventory.
         if func.select_from_list(buy_sell_list, prompt) == buy_sell_list[0]:
-            buy_option(selected_item, character)
+            buy_and_equip(selected_item, character)
         else:
             if func.check_yes_no(f"\nAre you sure you want to sell '{selected_item.name}' for {selected_item.cost} gp "
                                  f"(Y/N)? "):
@@ -96,7 +104,7 @@ def choose_buy_sell(character, selected_item):
 
     # Show buy option only if item is not in characters inventory.
     else:
-        buy_option(selected_item, character)
+        buy_and_equip(selected_item, character)
 
 
 def trade_items(character, instance_list, shop_name, table_header):
