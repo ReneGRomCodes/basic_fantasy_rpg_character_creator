@@ -204,9 +204,9 @@ def build_character_sheet(character):
     print(f"{character.weight_carried} Pounds")
     print("\nWeapons:")
     print(f"{character.weapon.name}")
-    print("\nArmor:")
-    print(f"{character.armor.name}")
-    print(f"{character.shield.name}")
+    print(f"\n{f"Armor:":<15}{f"AC":>5}")
+    print(f"{character.armor.name:<15}{character.armor.armor_class:>5}")
+    print(f"{character.shield.name:<15}{f"+{character.shield.armor_class}":>5}")
 
     if character.items:
         print("\nInventory:")
