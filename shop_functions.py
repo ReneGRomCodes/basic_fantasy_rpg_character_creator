@@ -1,6 +1,7 @@
 import item_instances
 import os
 import functions as func
+import item_model
 """Functions used for the item shop."""
 
 
@@ -53,6 +54,20 @@ def show_shop(character, instance_list, shop_name, table_header):
     return shop_counter
 
 
+def buy_option(selected_item, character):
+    if func.check_yes_no(f"\nAre you sure you want to buy '{selected_item.name}' for {selected_item.cost} gp "
+                         f"(Y/N)? "):
+        if character.buy_item(selected_item):
+            input(f"\n\t'{selected_item.name}' added to your inventory. Press 'Enter' to continue.")
+            os.system('cls')
+            if isinstance(selected_item, item_model.Armor):
+                if func.check_yes_no(f"\n\tDo you want to equip {selected_item.name} (Y/N)? "):
+                    character.equip_item(selected_item)
+        else:
+            input()
+            os.system('cls')
+
+
 def choose_buy_sell(character, selected_item):
     """Check if 'selected_item' is in class attribute 'character.items'. Let user choose to sell or buy item or only
     prompt for buy confirmation if 'selected_item' is not in 'character.items'. Call class methods 'character.buy_item',
@@ -69,14 +84,7 @@ def choose_buy_sell(character, selected_item):
 
         # Show buy and sell options if item is in inventory.
         if func.select_from_list(buy_sell_list, prompt) == buy_sell_list[0]:
-            if func.check_yes_no(f"\nAre you sure you want to buy '{selected_item.name}' for {selected_item.cost} gp "
-                                 f"(Y/N)? "):
-                if character.buy_item(selected_item):
-                    input(f"\n\t'{selected_item.name}' added to your inventory. Press 'Enter' to continue.")
-                    os.system('cls')
-                else:
-                    input()
-                    os.system('cls')
+            buy_option(selected_item, character)
         else:
             if func.check_yes_no(f"\nAre you sure you want to sell '{selected_item.name}' for {selected_item.cost} gp "
                                  f"(Y/N)? "):
@@ -88,14 +96,7 @@ def choose_buy_sell(character, selected_item):
 
     # Show buy option only if item is not in characters inventory.
     else:
-        if func.check_yes_no(f"\nAre you sure you want to buy '{selected_item.name}' for {selected_item.cost} gp "
-                             f"(Y/N)? "):
-            if character.buy_item(selected_item):
-                input(f"\n\t{selected_item.name} added to your inventory. Press 'Enter' to continue.")
-                os.system('cls')
-            else:
-                input()
-                os.system('cls')
+        buy_option(selected_item, character)
 
 
 def trade_items(character, instance_list, shop_name, table_header):
