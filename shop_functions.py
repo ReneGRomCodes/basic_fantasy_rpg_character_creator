@@ -13,6 +13,8 @@ def show_shop(character, instance_list, shop_name, table_header):
         instance_list: list of instances of Item class and child classes. Lists found in 'item_instances.py'.
         shop_name: String for name of the shop.
         table_header: formatted string for header of shop inventory.
+    RETURN:
+        shop_counter: int used in function 'trade_items()'.
     """
     # Initialize counter for items in shop.
     shop_counter = 1
