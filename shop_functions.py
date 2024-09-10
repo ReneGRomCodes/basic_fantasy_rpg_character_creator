@@ -54,6 +54,12 @@ def show_shop(character, instance_list, shop_name, table_header):
     return shop_counter
 
 
+def show_equipped(slot_dict, equipped_table_header):
+    print(equipped_table_header)
+    for k, v in slot_dict.items():
+        print(k, v)
+
+
 def buy_and_equip(selected_item, character):
     """Prompt user to confirm trade and equip item.
     ARGS:
@@ -190,10 +196,17 @@ def projectiles_shop(character):
 def armor_shop(character):
     """Show items available in shop 'ARMOR' and prompt user for buy/sell action. ARG 'character' is Character
     class instance."""
+    slot_dict = {
+                 "Armor": character.armor.name,
+                 "Shield": character.shield.name,
+                 }
+    equipped_table_header = f"{"AC":>15}{"Weight":>5} Pounds"
+
     instance_list = item_instances.armors
     shop_name = "ARMOR"
     table_header = f"{"Weight":>30}{"AC":>10}{"Cost":>10}{"Inventory":>12}"
 
+    show_equipped(slot_dict, equipped_table_header)
     trade_items(character, instance_list, shop_name, table_header)
 
 
