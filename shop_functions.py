@@ -57,7 +57,11 @@ def show_shop(character, instance_list, shop_name, table_header):
 
 
 def show_equipped(slot_dict, equipped_table_header):
-    """Print equipped items in formatted output."""
+    """Print equipped items in formatted output.
+    ARGS:
+        slot_dict: dictionary of equipment slots as keys and equipped items as values.
+        equipped_table_header: formatted string for header of equipped items table.
+    """
     print(equipped_table_header)
     for k, v in slot_dict.items():
         print(k, v)
