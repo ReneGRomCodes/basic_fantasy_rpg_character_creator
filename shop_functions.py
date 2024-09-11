@@ -56,20 +56,30 @@ def show_shop(character, instance_list, shop_name, table_header):
     return shop_counter
 
 
-def show_equipped(slot_dict, equipped_table_header):
+def show_equipped(shop_name, character):
     """Print equipped items in formatted output.
     ARGS:
         slot_dict: dictionary of equipment slots as keys and equipped items as values.
         equipped_table_header: formatted string for header of equipped items table.
     """
-    print("Equipped Items:")
-    print(equipped_table_header)
-    for k, v in slot_dict.items():
-        if v.shield:
-            print(f"{k:<10}{v.name:<10}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
-        else:
-            print(f"{k:<10}{v.name:<10}{v.armor_class:>7}{v.weight:>5} lbs")
-    print("\n")
+    if shop_name != "ARMOR":
+        pass
+    else:
+        print("Equipped Items:")
+        if shop_name == "ARMOR":
+            slot_dict = {
+                "Armor:": character.armor,
+                "Shield:": character.shield,
+            }
+            equipped_table_header = f"{"AC":>37}{"Weight":>9}"
+            print(equipped_table_header)
+
+            for k, v in slot_dict.items():
+                if v.shield:
+                    print(f"{k:<10}{v.name:<20}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
+                else:
+                    print(f"{k:<10}{v.name:<20}{v.armor_class:>7}{v.weight:>5} lbs")
+        print("\n")
 
 
 def buy_and_equip(selected_item, character):
@@ -135,14 +145,7 @@ def trade_items(character, instance_list, shop_name, table_header):
     """
     while True:
         # Show equipped items based on selected shop.
-        if shop_name == "ARMOR":
-            slot_dict = {
-                "Armor:": character.armor,
-                "Shield:": character.shield,
-            }
-            equipped_table_header = f"{"AC":>27}{"Weight":>9}"
-            show_equipped(slot_dict, equipped_table_header)
-
+        show_equipped(shop_name, character)
         # Print shop in formatted output and get int value ('instance_list' index + 1) for each item.
         shop_counter = show_shop(character, instance_list, shop_name, table_header)
         trade_item = input("\nChoose item to trade or press 'Enter' to return to shop menu: ")
