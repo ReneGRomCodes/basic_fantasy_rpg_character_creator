@@ -62,9 +62,14 @@ def show_equipped(slot_dict, equipped_table_header):
         slot_dict: dictionary of equipment slots as keys and equipped items as values.
         equipped_table_header: formatted string for header of equipped items table.
     """
+    print("Equipped Items:")
     print(equipped_table_header)
     for k, v in slot_dict.items():
-        print(k, v)
+        if v.shield:
+            print(f"{k:<10}{v.name:<10}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
+        else:
+            print(f"{k:<10}{v.name:<10}{v.armor_class:>7}{v.weight:>5} lbs")
+    print("\n")
 
 
 def buy_and_equip(selected_item, character):
@@ -132,11 +137,10 @@ def trade_items(character, instance_list, shop_name, table_header):
         # Show equipped items based on selected shop.
         if shop_name == "ARMOR":
             slot_dict = {
-                "Armor": character.armor.name,
-                "Shield": character.shield.name,
+                "Armor:": character.armor,
+                "Shield:": character.shield,
             }
-            equipped_table_header = f"{"AC":>15}{"Weight":>5} Pounds"
-
+            equipped_table_header = f"{"AC":>27}{"Weight":>9}"
             show_equipped(slot_dict, equipped_table_header)
 
         # Print shop in formatted output and get int value ('instance_list' index + 1) for each item.
