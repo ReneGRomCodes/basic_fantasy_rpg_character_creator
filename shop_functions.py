@@ -2,6 +2,8 @@ import item_instances
 import os
 import functions as func
 import item_model
+from item_instances import no_weapon
+
 """Functions used for the item shop."""
 
 
@@ -59,13 +61,15 @@ def show_shop(character, instance_list, shop_name, table_header):
 def show_equipped(shop_name, character):
     """Print equipped items in formatted output.
     ARGS:
-        slot_dict: dictionary of equipment slots as keys and equipped items as values.
-        equipped_table_header: formatted string for header of equipped items table.
+        shop_name: String for name of the shop.
+        character: instance of Character class.
     """
-    if shop_name != "ARMOR":
+    # Check if shop has items that can be equipped.
+    if shop_name != "ARMOR" and shop_name != "INVENTORY" and shop_name != "WEAPONS":
         pass
     else:
         print("Equipped Items:")
+
         if shop_name == "ARMOR":
             slot_dict = {
                 "Armor:": character.armor,
@@ -79,6 +83,31 @@ def show_equipped(shop_name, character):
                     print(f"{k:<10}{v.name:<20}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
                 else:
                     print(f"{k:<10}{v.name:<20}{v.armor_class:>7}{v.weight:>5} lbs")
+
+        elif shop_name == "INVENTORY":
+            slot_dict = {
+                "Armor:": character.armor,
+                "Shield:": character.shield,
+                "Weapon:": character.weapon
+            }
+            equipped_table_header = f"{"AC":>37}{"Weight":>9}{"Damage":>9}"
+            print(equipped_table_header)
+
+        elif shop_name == "WEAPONS":
+            # Check if weapon is equipped.
+            if character.weapon == no_weapon:
+                print("No weapon equipped")
+
+            else:
+                slot_dict = {
+                    "Weapon:": character.weapon
+                }
+                equipped_table_header = f"{"Damage":>37}{"Size":>5}{"Weight":>9}"
+                print(equipped_table_header)
+
+                for k, v in slot_dict.items():
+                    print(f"{k:<10}{v.name:<20}{v.size:>7}{f"1d{v.damage}":>7}{v.weight:>5} lbs")
+
         print("\n")
 
 
@@ -181,6 +210,10 @@ def general_items_shop(character):
 
 def weapons_shop(character):
     """Print items in list 'weapons' from module 'item_instances' in formatted string output."""
+    # Show equipped weapon.
+    show_equipped("WEAPONS", character)
+
+    # Initialize shop counter.
     shop_counter = 1
 
     print("WEAPONS:")
