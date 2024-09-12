@@ -59,7 +59,7 @@ def show_shop(character, instance_list, shop_name, table_header):
 
 
 def show_equipped(shop_name, character):
-    """Print equipped items in formatted output.
+    """Print equipped items in formatted output. Output format is dependent on chosen shop.
     ARGS:
         shop_name: String for name of the shop.
         character: instance of Character class.
@@ -79,6 +79,7 @@ def show_equipped(shop_name, character):
             print(equipped_table_header)
 
             for k, v in slot_dict.items():
+                # Different output format for shield AC.
                 if v.shield:
                     print(f"{k:<10}{v.name:<20}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
                 else:
@@ -93,6 +94,21 @@ def show_equipped(shop_name, character):
             equipped_table_header = f"{"AC":>37}{"Weight":>9}{"Damage":>9}"
             print(equipped_table_header)
 
+            for k, v in slot_dict.items():
+                # Different output format for armor and weapons.
+                if isinstance(v, item_model.Weapon):
+                    # Check if weapon is equipped.
+                    if v == no_weapon:
+                        print(f"{k:<10}No weapon equipped")
+                    else:
+                        print(f"{k:<10}{v.name:<20}{v.weight:>12} lbs{f"1d{v.damage}":>9}")
+
+                else:
+                    if v.shield:
+                        print(f"{k:<10}{v.name:<20}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
+                    else:
+                        print(f"{k:<10}{v.name:<20}{v.armor_class:>7}{v.weight:>5} lbs")
+
         elif shop_name == "WEAPONS":
             # Check if weapon is equipped.
             if character.weapon == no_weapon:
@@ -102,11 +118,11 @@ def show_equipped(shop_name, character):
                 slot_dict = {
                     "Weapon:": character.weapon
                 }
-                equipped_table_header = f"{"Damage":>37}{"Size":>5}{"Weight":>9}"
+                equipped_table_header = f"{"Damage":>37}{"Size":>8}{"Weight":>9}"
                 print(equipped_table_header)
 
                 for k, v in slot_dict.items():
-                    print(f"{k:<10}{v.name:<20}{v.size:>7}{f"1d{v.damage}":>7}{v.weight:>5} lbs")
+                    print(f"{k:<10}{v.name:<20}{f"1d{v.damage}":>7}{v.size:>7}{v.weight:>6} lbs")
 
         print("\n")
 
