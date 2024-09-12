@@ -64,6 +64,11 @@ def show_equipped(shop_name, character):
         shop_name: String for name of the shop.
         character: instance of Character class.
     """
+    # Format strings for table headers.
+    table_header_armor = f"{"AC":>37}{"Weight":>9}"
+    table_header_inventory = f"{"AC":>37}{"Weight":>9}{"Damage":>9}"
+    table_header_weapons = f"{"Damage":>37}{"Size":>8}{"Weight":>9}"
+
     # Check if shop has items that can be equipped.
     if shop_name != "ARMOR" and shop_name != "INVENTORY" and shop_name != "WEAPONS":
         pass
@@ -75,8 +80,7 @@ def show_equipped(shop_name, character):
                 "Armor:": character.armor,
                 "Shield:": character.shield,
             }
-            equipped_table_header = f"{"AC":>37}{"Weight":>9}"
-            print(equipped_table_header)
+            print(table_header_armor)
 
             for k, v in slot_dict.items():
                 # Different output format for shield AC.
@@ -91,8 +95,7 @@ def show_equipped(shop_name, character):
                 "Shield:": character.shield,
                 "Weapon:": character.weapon
             }
-            equipped_table_header = f"{"AC":>37}{"Weight":>9}{"Damage":>9}"
-            print(equipped_table_header)
+            print(table_header_inventory)
 
             for k, v in slot_dict.items():
                 # Different output format for armor and weapons.
@@ -118,8 +121,7 @@ def show_equipped(shop_name, character):
                 slot_dict = {
                     "Weapon:": character.weapon
                 }
-                equipped_table_header = f"{"Damage":>37}{"Size":>8}{"Weight":>9}"
-                print(equipped_table_header)
+                print(table_header_weapons)
 
                 for k, v in slot_dict.items():
                     print(f"{k:<10}{v.name:<20}{f"1d{v.damage}":>7}{v.size:>7}{v.weight:>6} lbs")
@@ -288,6 +290,6 @@ def show_inventory(character):
 
     else:
         print("\n\tYour inventory is empty.")
+        input("\nPress enter to return to shop")
 
-    input("\nPress enter to return to shop")
     os.system('cls')

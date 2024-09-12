@@ -135,6 +135,7 @@ class Character:
         self.spells = False
         self.items = []
         self.weight_carried = 0
+        self.specials = []
 
     def set_name(self, char_name):
         """Set name for character."""
@@ -154,9 +155,6 @@ class Character:
 
     def set_specials(self):
         """Get special abilities and add them to attribute list 'self.specials'."""
-
-        # Set list to empty to not contain any values if previous characters have been created.
-        self.specials = []
 
         for v in self.race_specials:
             if not v:

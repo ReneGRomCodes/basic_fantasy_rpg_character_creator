@@ -72,7 +72,12 @@ class Armor(Item):
     """Child class to represent armor."""
 
     def __init__(self, name, cost, weight, armor_class, shield = False):
-        """Initialize attributes from parent class 'Items' and int attribute 'armor_class'."""
+        """Initialize attributes from parent class 'Items'.
+
+        ARGS:
+            armor_class: int for AC.
+            shield: bool to indicate if item is shield (True) or not (False). Default = False.
+        """
         super().__init__(name, cost, weight)
         self.armor_class = armor_class
         self.shield = shield
