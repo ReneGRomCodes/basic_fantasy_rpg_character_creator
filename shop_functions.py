@@ -68,21 +68,21 @@ def show_equipped(shop_name, character):
     table_header_armor = f"{"AC":>37}{"Weight":>9}"
     table_header_inventory = f"{"AC":>37}{"Weight":>9}{"Damage":>9}"
     table_header_weapons = f"{"Damage":>37}{"Size":>8}{"Weight":>9}"
+    # Dicts to show correct equipment slots for each shop.
+    slot_dict_armor = {"Armor:": character.armor, "Shield:": character.shield,}
+    slot_dict_inventory = {"Armor:": character.armor, "Shield:": character.shield, "Weapon:": character.weapon,}
+    slot_dict_weapons = {"Weapon:": character.weapon,}
 
     # Check if shop has items that can be equipped.
-    if shop_name != "ARMOR" and shop_name != "INVENTORY" and shop_name != "WEAPONS":
+    if shop_name not in ["ARMOR", "INVENTORY", "WEAPONS"]:
         pass
     else:
         print("Equipped Items:")
 
         if shop_name == "ARMOR":
-            slot_dict = {
-                "Armor:": character.armor,
-                "Shield:": character.shield,
-            }
             print(table_header_armor)
 
-            for k, v in slot_dict.items():
+            for k, v in slot_dict_armor.items():
                 # Different output format for shield AC.
                 if v.shield:
                     print(f"{k:<10}{v.name:<20}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
@@ -90,14 +90,9 @@ def show_equipped(shop_name, character):
                     print(f"{k:<10}{v.name:<20}{v.armor_class:>7}{v.weight:>5} lbs")
 
         elif shop_name == "INVENTORY":
-            slot_dict = {
-                "Armor:": character.armor,
-                "Shield:": character.shield,
-                "Weapon:": character.weapon
-            }
             print(table_header_inventory)
 
-            for k, v in slot_dict.items():
+            for k, v in slot_dict_inventory.items():
                 # Different output format for armor and weapons.
                 if isinstance(v, item_model.Weapon):
                     # Check if weapon is equipped.
@@ -118,12 +113,9 @@ def show_equipped(shop_name, character):
                 print("No weapon equipped")
 
             else:
-                slot_dict = {
-                    "Weapon:": character.weapon
-                }
                 print(table_header_weapons)
 
-                for k, v in slot_dict.items():
+                for k, v in slot_dict_weapons.items():
                     print(f"{k:<10}{v.name:<20}{f"1d{v.damage}":>7}{v.size:>7}{v.weight:>6} lbs")
 
         print("\n")
