@@ -41,7 +41,7 @@ def show_shop(character, instance_list, shop_name, table_header):
             table_format = f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}"
 
         # Print items in shop and amount of items in character inventory.
-        # List 'inventory_list' and if-elif statements ensure that each item is shown only once if shop 'INVENTORY'
+        # List 'inventory_list' and if-elif statements ensure that each item is listed only once if shop 'INVENTORY'
         # is chosen.
         if item in character.items and item not in inventory_list:
             inventory = character.items.count(item)
@@ -122,7 +122,7 @@ def show_equipped(shop_name, character):
 
 
 def buy_and_equip(selected_item, character):
-    """Prompt user to confirm trade and equip item.
+    """Prompt user to confirm trade and equip item if it is an instance of class 'Armor'.
     ARGS:
         selected_item: selected item from shop. instance of class from 'item_model.py'.
         character: instance of Character class.
@@ -218,7 +218,7 @@ def general_items_shop(character):
     trade_items(character, instance_list, shop_name, table_header)
 
 
-def weapons_shop(character):
+def weapons_shop(character):  # TODO Fully implement weapons shop.
     """Print items in list 'weapons' from module 'item_instances' in formatted string output."""
     # Show equipped weapon.
     show_equipped("WEAPONS", character)
