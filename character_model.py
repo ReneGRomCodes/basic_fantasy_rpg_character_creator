@@ -242,8 +242,8 @@ class Character:
 
     # Inventory and trade related methods.
     def buy_item(self, item):
-        """Buy instance 'item' of a class from 'item_model' module and return 'True' if trade was successful, 'False'
-        otherwise."""
+        """Buy instance 'item' of a class from 'item_model' module, add it to list 'self.items' and return 'True' if
+        trade was successful, 'False' otherwise."""
         money = self.money - item.cost
         insufficient_money = f"\n\tYou do not have enough money to buy '{item.name}'"
         if money < 0:
@@ -263,7 +263,7 @@ class Character:
 
     # Equip/unequip methods. TODO works only for armor right now.
     def equip_item(self, item):
-        """Equip instance 'item' from inventory and move equipped item to inventory."""
+        """Equip instance 'item' from inventory and move previously equipped item to inventory."""
         item_index = self.items.index(item)
         equip = self.items.pop(item_index)
 
@@ -284,7 +284,8 @@ class Character:
         self.set_armor_class()
 
     def unequip_item(self, item):
-        """Unequip instance 'item' and move it to inventory."""
+        """Unequip instance 'item' and move it to inventory. Set 'self.armor' and 'self.shield' to instances 'no_armor'
+        and 'no_shield' if no other item is equipped."""
         self.items.append(item)
         if not item.shield:
             self.armor = item_inst.no_armor

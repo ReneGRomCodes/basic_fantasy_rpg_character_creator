@@ -179,7 +179,7 @@ def trade_items(character, instance_list, shop_name, table_header):
     ARGS:
         character: instance of Character class.
         instance_list: list of instances of Item class and child classes. Lists found in 'item_instances.py'.
-        shop_name: String for name of the shop.
+        shop_name: String for name of the shop. Either "GENERAL ITEMS", "WEAPONS", "PROJECTILES", "ARMOR" or "INVENTORY".
         table_header: formatted string for header of shop inventory.
     """
     while True:
