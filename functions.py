@@ -118,10 +118,10 @@ def build_race_class_list(race_list, class_list):
     for char_race in race_list:
         for char_class in class_list:
             # Exclude Dwarves and Halflings from class 'Magic-User'.
-            if (char_race == "Dwarf" or char_race == "Halfling") and char_class == "Magic-User":
+            if char_race in ["Dwarf", "Halfling"] and char_class == "Magic-User":
                 pass
             # Assure that combination classes are only shown for Elves.
-            if char_race != "Elf" and (char_class == "Fighter/Magic-User" or char_class == "Magic-User/Thief"):
+            if char_race != "Elf" and char_class in ["Fighter/Magic-User", "Magic-User/Thief"]:
                 pass
             else:
                 race_class = char_race + " " + char_class
@@ -134,6 +134,7 @@ def select_from_list(list, prompt):
     """Print out items from list 'list' in numbered and formatted output, prompts for input via string 'prompt' and
     return list item 'selected_item'."""
     selection_counter = 1
+    invalid_input_message = f"Invalid input. Choose a number between 1 and {selection_counter - 1}."
 
     for item in list:
         print(f"{selection_counter:>2} - {item}")
@@ -145,10 +146,10 @@ def select_from_list(list, prompt):
             selected_item = list[selection - 1]
             break
         except IndexError:
-            print(f"Invalid input. Choose a number between 1 and {selection_counter - 1}.")
+            print(invalid_input_message)
             continue
         except ValueError:
-            print(f"Invalid input. Choose a number between 1 and {selection_counter - 1}.")
+            print(invalid_input_message)
             continue
 
     return selected_item

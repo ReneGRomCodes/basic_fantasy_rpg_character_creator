@@ -128,20 +128,21 @@ def buy_and_equip(selected_item, character, amount):
         character: instance of Character class.
         amount: number of 'selected_item' to buy.
     """
-    confirm_prompt_buy = (f"\nAre you sure you want to buy {amount} '{selected_item.name}(s)' for {selected_item.cost} "
-                         f"gp (Y/N)? ")
-    confirm_prompt_equip = f"\n\tDo you want to equip {selected_item.name} (Y/N)? "
-    added_to_inventory = f"\n\t{amount} '{selected_item.name}(s)' added to your inventory. Press 'Enter' to continue."
+    total_cost = selected_item.cost * amount
+    confirm_buy_prompt = f"\nAre you sure you want to buy {amount} '{selected_item.name}(s)' for {total_cost} gp (Y/N)? "
+    confirm_equip_prompt = f"\n\tDo you want to equip {selected_item.name} (Y/N)? "
+    added_to_inventory_message = (f"\n\t{amount} '{selected_item.name}(s)' added to your inventory. Press 'Enter' to "
+                                  f"continue.")
 
-    if func.check_yes_no(confirm_prompt_buy):
+    if func.check_yes_no(confirm_buy_prompt):
         if character.buy_item(selected_item, amount):
-            input(added_to_inventory)
+            input(added_to_inventory_message)
             os.system('cls')
 
             # Check if item is instance of class Armor and prompt user to equip item if similar item is not equipped yet.
             if (isinstance(selected_item, item_model.Armor) and selected_item != character.armor
                     and selected_item != character.shield):
-                if func.check_yes_no(confirm_prompt_equip):
+                if func.check_yes_no(confirm_equip_prompt):
                     character.equip_item(selected_item)
         else:
             input()

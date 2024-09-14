@@ -13,6 +13,7 @@ def run_character_creator():
     character = char.Character()
 
     menu_prompt = mf.show_menu()
+    keep_char_prompt = "\n\nDO YOU WANT TO KEEP THIS CHARACTER AND PROCEED TO THE SHOP (Y/N)? "
 
     while True:
         try:
@@ -23,7 +24,7 @@ def run_character_creator():
                 mf.custom_character(character)
 
                 # Prompt user to create another character or exit.
-                if not check_yes_no("\n\nDO YOU WANT TO KEEP THIS CHARACTER AND PROCEED TO THE SHOP (Y/N)? "):
+                if not check_yes_no(keep_char_prompt):
                     character.reset_character()
                     mf.show_menu()
                     continue
@@ -35,7 +36,7 @@ def run_character_creator():
                 mf.random_character(character)
 
                 # Prompt user to create another character or exit.
-                if not check_yes_no("\n\nDO YOU WANT TO KEEP THIS CHARACTER AND PROCEED TO THE SHOP (Y/N)? "):
+                if not check_yes_no(keep_char_prompt):
                     character.reset_character()
                     mf.show_menu()
                     continue

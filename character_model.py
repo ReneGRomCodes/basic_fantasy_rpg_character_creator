@@ -252,13 +252,14 @@ class Character:
             money subtracted from 'self.money'.
         """
         money = self.money - (item.cost * amount)
-        insufficient_money = f"\n\tYou do not have enough money to buy {amount} '{item.name}(s)'"
+        weight_total = item.weight * amount
+        insufficient_money_message = f"\n\tYou do not have enough money to buy {amount} '{item.name}(s)'"
 
         if money < 0:
-            print(insufficient_money)
+            print(insufficient_money_message)
             return False
         else:
-            self.weight_carried += item.weight * amount
+            self.weight_carried += weight_total
             self.money = money
             # Add each item individually to list 'self.items'
             for i in range(amount):
