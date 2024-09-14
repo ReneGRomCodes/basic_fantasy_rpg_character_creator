@@ -18,7 +18,7 @@ def check_yes_no(prompt):
     for n or prompt the user again if any other character is given."""
     user_input = input(prompt)
 
-    while user_input.lower() != "y" and user_input.lower() != "n":
+    while user_input.lower() not in ["y", "n"]:
         user_input = input(prompt)
         continue
 

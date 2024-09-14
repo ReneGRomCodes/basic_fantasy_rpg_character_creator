@@ -121,24 +121,27 @@ def show_equipped(shop_name, character):
         print("\n")
 
 
-def buy_and_equip(selected_item, character):
+def buy_and_equip(selected_item, character, amount):
     """Prompt user to enter amount of items and confirm trade and equip item if it is an instance of class 'Armor'.
     ARGS:
         selected_item: selected item from shop. instance of class from 'item_model.py'.
         character: instance of Character class.
+        amount: number of 'selected_item' to buy.
     """
-    amount = int(input(f"\nHow many '{selected_item.name}(s)' do you want to buy? "))
+    confirm_prompt_buy = (f"\nAre you sure you want to buy {amount} '{selected_item.name}(s)' for {selected_item.cost} "
+                         f"gp (Y/N)? ")
+    confirm_prompt_equip = f"\n\tDo you want to equip {selected_item.name} (Y/N)? "
+    added_to_inventory = f"\n\t{amount} '{selected_item.name}(s)' added to your inventory. Press 'Enter' to continue."
 
-    if func.check_yes_no(f"\nAre you sure you want to buy {amount} '{selected_item.name}(s)' for {selected_item.cost} "
-                         f"gp (Y/N)? "):
+    if func.check_yes_no(confirm_prompt_buy):
         if character.buy_item(selected_item, amount):
-            input(f"\n\t{amount} '{selected_item.name}(s)' added to your inventory. Press 'Enter' to continue.")
+            input(added_to_inventory)
             os.system('cls')
 
             # Check if item is instance of class Armor and prompt user to equip item if similar item is not equipped yet.
             if (isinstance(selected_item, item_model.Armor) and selected_item != character.armor
                     and selected_item != character.shield):
-                if func.check_yes_no(f"\n\tDo you want to equip {selected_item.name} (Y/N)? "):
+                if func.check_yes_no(confirm_prompt_equip):
                     character.equip_item(selected_item)
         else:
             input()
@@ -153,18 +156,22 @@ def choose_buy_sell(character, selected_item):
         character: instance of Character class.
         selected_item: list item selected in function 'trade_items()' through user input.
     """
+    buy_sell_prompt = "Do you want to buy or sell this item? "
+    confirm_sale_prompt = (f"\nAre you sure you want to sell '{selected_item.name}' for {selected_item.cost} gp "
+                           f"(Y/N)? ")
+    buy_amount_prompt = f"\nHow many '{selected_item.name}(s)' do you want to buy? "
+    sell_amount_prompt = f"\nHow many '{selected_item.name}(s)' do you want to sell? "
 
     # Check if 'selected_item' is in characters inventory.
     if selected_item in character.items:
         buy_sell_list = [f"Buy '{selected_item.name}'", f"Sell '{selected_item.name}'"]
-        prompt = "Do you want to buy or sell this item? "
 
         # Show buy and sell options if item is in inventory.
-        if func.select_from_list(buy_sell_list, prompt) == buy_sell_list[0]:
-            buy_and_equip(selected_item, character)
+        if func.select_from_list(buy_sell_list, buy_sell_prompt) == buy_sell_list[0]:
+            amount = int(input(buy_amount_prompt))
+            buy_and_equip(selected_item, character, amount)
         else:
-            if func.check_yes_no(f"\nAre you sure you want to sell '{selected_item.name}' for {selected_item.cost} gp "
-                                 f"(Y/N)? "):
+            if func.check_yes_no(confirm_sale_prompt):
                 character.sell_item(selected_item)
                 input(f"\n\t'{selected_item.name}' sold. Press 'Enter' to continue.")
                 os.system('cls')
@@ -173,7 +180,8 @@ def choose_buy_sell(character, selected_item):
 
     # Show buy option only if item is not in characters inventory.
     else:
-        buy_and_equip(selected_item, character)
+        amount = int(input(buy_amount_prompt))
+        buy_and_equip(selected_item, character, amount)
 
 
 def trade_items(character, instance_list, shop_name, table_header):
@@ -191,6 +199,9 @@ def trade_items(character, instance_list, shop_name, table_header):
         shop_counter = show_shop(character, instance_list, shop_name, table_header)
         trade_item = input("\nChoose item to trade or press 'Enter' to return to shop menu: ")
 
+        invalid_input_message = (f"\n\tInvalid input. Choose a number between 1 and {shop_counter - 1}. Press 'Enter' to "
+                                 f"continue.")
+
         if not trade_item:
             os.system('cls')
             break
@@ -199,13 +210,11 @@ def trade_items(character, instance_list, shop_name, table_header):
                 selected_item = instance_list[int(trade_item) - 1]
                 choose_buy_sell(character, selected_item)
             except IndexError:
-                input(
-                    f"\n\tInvalid input. Choose a number between 1 and {shop_counter - 1}. Press 'Enter' to continue.")
+                input(invalid_input_message)
                 os.system('cls')
                 continue
             except ValueError:
-                input(
-                    f"\n\tInvalid input. Choose a number between 1 and {shop_counter - 1}. Press 'Enter' to continue.")
+                input(invalid_input_message)
                 os.system('cls')
                 continue
 
