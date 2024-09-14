@@ -122,15 +122,17 @@ def show_equipped(shop_name, character):
 
 
 def buy_and_equip(selected_item, character):
-    """Prompt user to confirm trade and equip item if it is an instance of class 'Armor'.
+    """Prompt user to enter amount of items and confirm trade and equip item if it is an instance of class 'Armor'.
     ARGS:
         selected_item: selected item from shop. instance of class from 'item_model.py'.
         character: instance of Character class.
     """
-    if func.check_yes_no(f"\nAre you sure you want to buy '{selected_item.name}' for {selected_item.cost} gp "
-                         f"(Y/N)? "):
-        if character.buy_item(selected_item):
-            input(f"\n\t'{selected_item.name}' added to your inventory. Press 'Enter' to continue.")
+    amount = int(input(f"\nHow many '{selected_item.name}(s)' do you want to buy? "))
+
+    if func.check_yes_no(f"\nAre you sure you want to buy {amount} '{selected_item.name}(s)' for {selected_item.cost} "
+                         f"gp (Y/N)? "):
+        if character.buy_item(selected_item, amount):
+            input(f"\n\t{amount} '{selected_item.name}(s)' added to your inventory. Press 'Enter' to continue.")
             os.system('cls')
 
             # Check if item is instance of class Armor and prompt user to equip item if similar item is not equipped yet.

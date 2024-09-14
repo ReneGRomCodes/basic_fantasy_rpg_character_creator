@@ -241,18 +241,28 @@ class Character:
                 self.carrying_capacity = {cap_light_key: 80, cap_heavy_key: 195, }
 
     # Inventory and trade related methods.
-    def buy_item(self, item):
-        """Buy instance 'item' of a class from 'item_model' module, add it to list 'self.items' and return 'True' if
-        trade was successful, 'False' otherwise."""
-        money = self.money - item.cost
-        insufficient_money = f"\n\tYou do not have enough money to buy '{item.name}'"
+    def buy_item(self, item, amount):
+        """Buy 'amount' number of instance 'item' of a class from 'item_model' module.
+        ARGS:
+            item: instance of a class from 'item_model' module, instances are listed in module 'item_instances'.
+            amount: number of items to buy.
+        RETURN:
+            False: not enough money to buy given amount of items.
+            True: trade successful. Items added to list 'self.items', item weight added to 'self.weight_carried' and
+            money subtracted from 'self.money'.
+        """
+        money = self.money - (item.cost * amount)
+        insufficient_money = f"\n\tYou do not have enough money to buy {amount} '{item.name}(s)'"
+
         if money < 0:
             print(insufficient_money)
             return False
         else:
-            self.items.append(item)
-            self.weight_carried += item.weight
+            self.weight_carried += item.weight * amount
             self.money = money
+            # Add each item individually to list 'self.items'
+            for i in range(amount):
+                self.items.append(item)
             return True
 
     def sell_item(self, item):
