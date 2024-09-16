@@ -149,6 +149,38 @@ def buy_and_equip(selected_item, character, amount):
             os.system('cls')
 
 
+def sell(selected_item, character, amount):
+    """Prompt user to enter amount of items and confirm trade.
+        ARGS:
+            selected_item: selected item from shop. instance of class from 'item_model.py'.
+            character: instance of Character class.
+            amount: number of 'selected_item' to sell.
+        """
+    # Get amount of 'selected_item' in inventory 'character.items'.
+    item_inventory_n = character.items.count(selected_item)
+    item_count_prompt = (f"\nYou only have {item_inventory_n} '{selected_item.name}'(s) in your inventory!\nDo you want to "
+                          f"sell all your '{selected_item.name}(s) (Y/N)? ")
+
+    # Check if enough items are in inventory for sale and set 'amount' to correct value or abort trade.
+    if amount > item_inventory_n:
+        if func.check_yes_no(item_count_prompt):
+            amount = item_inventory_n
+        else:
+            os.system('cls')
+            return
+
+    total_revenue = selected_item.cost * amount
+    confirm_sale_prompt = (f"\nAre you sure you want to sell {amount} '{selected_item.name}'(s) for {total_revenue}"
+                           f" gp (Y/N)? ")
+
+    # Prompt user to confirm sale.
+    if func.check_yes_no(confirm_sale_prompt):
+        character.sell_item(selected_item, amount)
+        input(f"\n\t{amount} '{selected_item.name}'(s) sold. Press 'Enter' to continue.")
+        os.system('cls')
+    else:
+        os.system('cls')
+
 def choose_buy_sell(character, selected_item):
     """Check if 'selected_item' is in class attribute 'character.items'. Let user choose to sell or buy item or only
     prompt for buy confirmation if 'selected_item' is not in 'character.items'. Call class methods 'character.buy_item',
@@ -158,8 +190,6 @@ def choose_buy_sell(character, selected_item):
         selected_item: list item selected in function 'trade_items()' through user input.
     """
     buy_sell_prompt = "Do you want to buy or sell this item? "
-    confirm_sale_prompt = (f"\nAre you sure you want to sell '{selected_item.name}'(s) for {selected_item.cost} gp "
-                           f"(Y/N)? ")
     buy_amount_prompt = f"\nHow many '{selected_item.name}(s)' do you want to buy? "
     sell_amount_prompt = f"\nHow many '{selected_item.name}(s)' do you want to sell? "
 
@@ -171,15 +201,9 @@ def choose_buy_sell(character, selected_item):
         if func.select_from_list(buy_sell_list, buy_sell_prompt) == buy_sell_list[0]:
             amount = int(input(buy_amount_prompt))
             buy_and_equip(selected_item, character, amount)
-
         else:
             amount = int(input(sell_amount_prompt))
-            if func.check_yes_no(confirm_sale_prompt):
-                character.sell_item(selected_item, amount)
-                input(f"\n\t{amount} '{selected_item.name}'(s) sold. Press 'Enter' to continue.")
-                os.system('cls')
-            else:
-                os.system('cls')
+            sell(selected_item, character, amount)
 
     # Show buy option only if item is not in characters inventory.
     else:
