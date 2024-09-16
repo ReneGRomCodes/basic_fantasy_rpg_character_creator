@@ -158,7 +158,7 @@ def choose_buy_sell(character, selected_item):
         selected_item: list item selected in function 'trade_items()' through user input.
     """
     buy_sell_prompt = "Do you want to buy or sell this item? "
-    confirm_sale_prompt = (f"\nAre you sure you want to sell '{selected_item.name}' for {selected_item.cost} gp "
+    confirm_sale_prompt = (f"\nAre you sure you want to sell '{selected_item.name}'(s) for {selected_item.cost} gp "
                            f"(Y/N)? ")
     buy_amount_prompt = f"\nHow many '{selected_item.name}(s)' do you want to buy? "
     sell_amount_prompt = f"\nHow many '{selected_item.name}(s)' do you want to sell? "
@@ -171,10 +171,12 @@ def choose_buy_sell(character, selected_item):
         if func.select_from_list(buy_sell_list, buy_sell_prompt) == buy_sell_list[0]:
             amount = int(input(buy_amount_prompt))
             buy_and_equip(selected_item, character, amount)
+
         else:
+            amount = int(input(sell_amount_prompt))
             if func.check_yes_no(confirm_sale_prompt):
-                character.sell_item(selected_item)
-                input(f"\n\t'{selected_item.name}' sold. Press 'Enter' to continue.")
+                character.sell_item(selected_item, amount)
+                input(f"\n\t{amount} '{selected_item.name}'(s) sold. Press 'Enter' to continue.")
                 os.system('cls')
             else:
                 os.system('cls')

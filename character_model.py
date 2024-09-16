@@ -266,11 +266,12 @@ class Character:
                 self.items.append(item)
             return True
 
-    def sell_item(self, item):
+    def sell_item(self, item, amount):
         """Sell instance 'item' of a class from 'item_model' module."""
-        self.items.remove(item)
-        self.weight_carried -= item.weight
-        self.money += item.cost
+        self.weight_carried -= item.weight * amount
+        self.money += item.cost * amount
+        for i in range(amount):
+            self.items.remove(item)
 
     # Equip/unequip methods. TODO works only for armor right now.
     def equip_item(self, item):
