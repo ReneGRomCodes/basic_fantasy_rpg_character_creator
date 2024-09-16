@@ -133,6 +133,7 @@ def buy_and_equip(selected_item, character, amount):
     confirm_equip_prompt = f"\n\tDo you want to equip {selected_item.name} (Y/N)? "
     added_to_inventory_message = (f"\n\t{amount} '{selected_item.name}(s)' added to your inventory. Press 'Enter' to "
                                   f"continue.")
+    buy_abort_message = "\n\tTrade cancelled. Press 'Enter to return to shop."
 
     if func.check_yes_no(confirm_buy_prompt):
         if character.buy_item(selected_item, amount):
@@ -145,41 +146,49 @@ def buy_and_equip(selected_item, character, amount):
                 if func.check_yes_no(confirm_equip_prompt):
                     character.equip_item(selected_item)
         else:
-            input()
+            os.system('cls')
+            input(buy_abort_message)
             os.system('cls')
 
 
 def sell(selected_item, character, amount):
-    """Prompt user to enter amount of items and confirm trade.
+    """Check if trade is valid (enough items in character inventory 'character.items') and prompt user to confirm trade.
         ARGS:
             selected_item: selected item from shop. instance of class from 'item_model.py'.
             character: instance of Character class.
             amount: number of 'selected_item' to sell.
         """
+    total_revenue = selected_item.cost * amount
+    confirm_sale_prompt = (f"\n\tAre you sure you want to sell {amount} '{selected_item.name}'(s) for {total_revenue}"
+                           f" gp (Y/N)? ")
+    sale_confirmed_message = (f"\n\t{amount} '{selected_item.name}'(s) sold for {total_revenue} gp. Press 'Enter' to "
+                               f"continue.")
+    sale_abort_message = "\n\tTrade cancelled. Press 'Enter to return to shop."
+
     # Get amount of 'selected_item' in inventory 'character.items'.
     item_inventory_n = character.items.count(selected_item)
-    item_count_prompt = (f"\nYou only have {item_inventory_n} '{selected_item.name}'(s) in your inventory!\nDo you want to "
-                          f"sell all your '{selected_item.name}(s) (Y/N)? ")
 
-    # Check if enough items are in inventory for sale and set 'amount' to correct value or abort trade.
+    # Change variables and prompt if 'amount' exceeds the number of 'selected_item' in inventory 'character.items'.
     if amount > item_inventory_n:
-        if func.check_yes_no(item_count_prompt):
-            amount = item_inventory_n
-        else:
-            os.system('cls')
-            return
+        amount = item_inventory_n
+        total_revenue = selected_item.cost * amount
+        confirm_sale_prompt = (f"\n\tYou only have {item_inventory_n} '{selected_item.name}'(s) in your inventory!"
+                               f"\n\tDo you want to sell all your '{selected_item.name}(s)' for {total_revenue} gp "
+                               f"(Y/N)? ")
+        sale_confirmed_message = (f"\n\t{amount} '{selected_item.name}'(s) sold for {total_revenue} gp. Press 'Enter' to "
+                                  f"continue.")
 
-    total_revenue = selected_item.cost * amount
-    confirm_sale_prompt = (f"\nAre you sure you want to sell {amount} '{selected_item.name}'(s) for {total_revenue}"
-                           f" gp (Y/N)? ")
-
-    # Prompt user to confirm sale.
+    os.system('cls')
     if func.check_yes_no(confirm_sale_prompt):
+        os.system('cls')
         character.sell_item(selected_item, amount)
-        input(f"\n\t{amount} '{selected_item.name}'(s) sold. Press 'Enter' to continue.")
+        input(sale_confirmed_message)
         os.system('cls')
     else:
         os.system('cls')
+        input(sale_abort_message)
+        os.system('cls')
+
 
 def choose_buy_sell(character, selected_item):
     """Check if 'selected_item' is in class attribute 'character.items'. Let user choose to sell or buy item or only
