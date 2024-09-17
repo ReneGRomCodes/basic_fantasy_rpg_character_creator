@@ -158,25 +158,25 @@ def sell(selected_item, character, amount):
             character: instance of Character class.
             amount: number of 'selected_item' to sell.
         """
-    # Default variables and prompts.
-    total_revenue = selected_item.cost * amount
-    confirm_sale_prompt = (f"\n\tAre you sure you want to sell {amount} '{selected_item.name}'(s) for {total_revenue}"
-                           f" gp (Y/N)? ")
-    sale_confirmed_message = (f"\n\t{amount} '{selected_item.name}'(s) sold for {total_revenue} gp. Press 'Enter' to "
-                               f"continue.")
-    sale_abort_message = "\n\tTrade cancelled. Press 'Enter to return to shop."
     # Get amount of 'selected_item' in inventory 'character.items'.
     item_inventory_n = character.items.count(selected_item)
 
-    # Change variables and prompt if 'amount' exceeds the number of 'selected_item' in inventory 'character.items'.
+    # Check if 'amount' exceeds number of 'selected_item' in character inventory, set confirmation prompt and change
+    # 'amount' to max value if necessary.
     if amount > item_inventory_n:
         amount = item_inventory_n
-        total_revenue = selected_item.cost * amount
         confirm_sale_prompt = (f"\n\tYou only have {item_inventory_n} '{selected_item.name}'(s) in your inventory!"
-                               f"\n\tDo you want to sell all your '{selected_item.name}(s)' for {total_revenue} gp "
-                               f"(Y/N)? ")
-        sale_confirmed_message = (f"\n\t{amount} '{selected_item.name}'(s) sold for {total_revenue} gp. Press 'Enter' to "
-                                  f"continue.")
+                               f"\n\tDo you want to sell all your '{selected_item.name}(s)' for "
+                               f"{selected_item.cost*amount} gp (Y/N)? ")
+    else:
+        confirm_sale_prompt = (f"\n\tAre you sure you want to sell {amount} '{selected_item.name}'(s) for "
+                               f"{selected_item.cost * amount} gp (Y/N)? ")
+
+    # Default 'total_revenue' and prompts.
+    total_revenue = selected_item.cost * amount
+    sale_confirmed_message = (f"\n\t{amount} '{selected_item.name}'(s) sold for {total_revenue} gp. Press 'Enter' to "
+                              f"continue.")
+    sale_abort_message = "\n\tTrade cancelled. Press 'Enter to return to shop."
 
     os.system('cls')
     if func.check_yes_no(confirm_sale_prompt):
