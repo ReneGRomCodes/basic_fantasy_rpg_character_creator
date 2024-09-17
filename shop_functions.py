@@ -2,7 +2,7 @@ import item_instances
 import os
 import functions as func
 import item_model
-from item_instances import no_weapon
+from item_instances import no_weapon, no_shield
 
 """Functions used for the item shop."""
 
@@ -16,7 +16,7 @@ def show_shop(character, instance_list, shop_name, table_header):
         shop_name: String for name of the shop.
         table_header: formatted string for header of shop inventory.
     RETURN:
-        shop_counter: int used in function 'trade_items()'.
+        shop_counter: int for number of items in shop.
     """
     # Initialize counter for items in shop.
     shop_counter = 1
@@ -85,7 +85,12 @@ def show_equipped(shop_name, character):
             for k, v in slot_dict_armor.items():
                 # Different output format for shield AC.
                 if v.shield:
-                    print(f"{k:<10}{v.name:<20}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
+                    # Check if shield is equipped.
+                    if v == no_shield:
+                        print(f"{k:<10}No shield equipped")
+                    else:
+                        print(f"{k:<10}{v.name:<20}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
+
                 else:
                     print(f"{k:<10}{v.name:<20}{v.armor_class:>7}{v.weight:>5} lbs")
 
@@ -103,7 +108,11 @@ def show_equipped(shop_name, character):
 
                 else:
                     if v.shield:
-                        print(f"{k:<10}{v.name:<20}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
+                        # Check if shield is equipped.
+                        if v == no_shield:
+                            print(f"{k:<10}No shield equipped")
+                        else:
+                            print(f"{k:<10}{v.name:<20}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
                     else:
                         print(f"{k:<10}{v.name:<20}{v.armor_class:>7}{v.weight:>5} lbs")
 
@@ -133,7 +142,6 @@ def buy_and_equip(selected_item, character, amount):
     confirm_equip_prompt = f"\n\tDo you want to equip {selected_item.name} (Y/N)? "
     added_to_inventory_message = (f"\n\t{amount} '{selected_item.name}(s)' added to your inventory. Press 'Enter' to "
                                   f"continue.")
-    buy_abort_message = "\n\tTrade cancelled. Press 'Enter to return to shop."
 
     if func.check_yes_no(confirm_buy_prompt):
         if character.buy_item(selected_item, amount):
@@ -146,8 +154,7 @@ def buy_and_equip(selected_item, character, amount):
                 if func.check_yes_no(confirm_equip_prompt):
                     character.equip_item(selected_item)
         else:
-            os.system('cls')
-            input(buy_abort_message)
+            input()
             os.system('cls')
 
 
