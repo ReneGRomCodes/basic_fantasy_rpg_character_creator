@@ -2,8 +2,6 @@ import item_instances
 import os
 import functions as func
 import item_model
-from item_instances import no_weapon, no_shield
-
 """Functions used for the item shop."""
 
 
@@ -43,12 +41,12 @@ def show_shop(character, instance_list, shop_name, table_header):
         # Print items in shop and amount of items in character inventory.
         # List 'inventory_list' and if-elif statements ensure that each item is listed only once if shop 'INVENTORY'
         # is chosen.
-        if item in character.items and item not in inventory_list:
-            inventory = character.items.count(item)
+        if item in character.inventory and item not in inventory_list:
+            inventory = character.inventory.count(item)
             print(table_format + f"{inventory:>8}")
             inventory_list.append(item)
             shop_counter += 1
-        elif item in character.items and item in inventory_list:
+        elif item in character.inventory and item in inventory_list:
             pass
         else:
             print(table_format)
@@ -86,7 +84,7 @@ def show_equipped(shop_name, character):
                 # Different output format for shield AC.
                 if v.shield:
                     # Check if shield is equipped.
-                    if v == no_shield:
+                    if v == item_instances.no_shield:
                         print(f"{k:<10}No shield equipped")
                     else:
                         print(f"{k:<10}{v.name:<20}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
@@ -101,7 +99,7 @@ def show_equipped(shop_name, character):
                 # Different output format for armor and weapons.
                 if isinstance(v, item_model.Weapon):
                     # Check if weapon is equipped.
-                    if v == no_weapon:
+                    if v == item_instances.no_weapon:
                         print(f"{k:<10}No weapon equipped")
                     else:
                         print(f"{k:<10}{v.name:<20}{v.weight:>12} lbs{f"1d{v.damage}":>9}")
@@ -109,7 +107,7 @@ def show_equipped(shop_name, character):
                 else:
                     if v.shield:
                         # Check if shield is equipped.
-                        if v == no_shield:
+                        if v == item_instances.no_shield:
                             print(f"{k:<10}No shield equipped")
                         else:
                             print(f"{k:<10}{v.name:<20}{f"+{v.armor_class}":>7}{v.weight:>5} lbs")
@@ -118,7 +116,7 @@ def show_equipped(shop_name, character):
 
         elif shop_name == "WEAPONS":
             # Check if weapon is equipped.
-            if character.weapon == no_weapon:
+            if character.weapon == item_instances.no_weapon:
                 print("No weapon equipped")
 
             else:
@@ -139,7 +137,7 @@ def buy_and_equip(selected_item, character, amount):
     """
     total_cost = selected_item.cost * amount
     confirm_buy_prompt = f"\nAre you sure you want to buy {amount} '{selected_item.name}(s)' for {total_cost} gp (Y/N)? "
-    confirm_equip_prompt = f"\n\tDo you want to equip {selected_item.name} (Y/N)? "
+    confirm_equip_prompt = f"\n\tDo you want to equip '{selected_item.name}' (Y/N)? "
     added_to_inventory_message = (f"\n\t{amount} '{selected_item.name}(s)' added to your inventory. Press 'Enter' to "
                                   f"continue.")
 
@@ -159,14 +157,15 @@ def buy_and_equip(selected_item, character, amount):
 
 
 def sell(selected_item, character, amount):
-    """Check if trade is valid (enough items in character inventory 'character.items') and prompt user to confirm trade.
+    """Check if trade is valid (enough items in character inventory 'character.inventory') and prompt user to confirm
+       trade.
         ARGS:
             selected_item: selected item from shop. instance of class from 'item_model.py'.
             character: instance of Character class.
             amount: number of 'selected_item' to sell.
         """
     # Get amount of 'selected_item' in inventory 'character.items'.
-    item_inventory_n = character.items.count(selected_item)
+    item_inventory_n = character.inventory.count(selected_item)
 
     # Check if 'amount' exceeds number of 'selected_item' in character inventory, set confirmation prompt and change
     # 'amount' to max value if necessary.
@@ -198,9 +197,9 @@ def sell(selected_item, character, amount):
 
 
 def choose_buy_sell(character, selected_item):
-    """Check if 'selected_item' is in class attribute 'character.items'. Let user choose to sell or buy item or only
-    prompt for buy confirmation if 'selected_item' is not in 'character.items'. Call class methods 'character.buy_item',
-    'character.sell_item' or abort trade based on user input.
+    """Check if 'selected_item' is in class attribute 'character.inventory'. Let user choose to sell or buy item or only
+    prompt for buy confirmation if 'selected_item' is not in 'character.inventory'. Call class methods
+    'character.buy_item', 'character.sell_item' or abort trade based on user input.
     ARGS:
         character: instance of Character class.
         selected_item: list item selected in function 'trade_items()' through user input.
@@ -210,7 +209,7 @@ def choose_buy_sell(character, selected_item):
     sell_amount_prompt = f"\nHow many '{selected_item.name}(s)' do you want to sell? "
 
     # Check if 'selected_item' is in characters inventory.
-    if selected_item in character.items:
+    if selected_item in character.inventory:
         buy_sell_list = [f"Buy '{selected_item.name}'", f"Sell '{selected_item.name}'"]
 
         # Show buy and sell options if item is in inventory.
@@ -327,8 +326,8 @@ def armor_shop(character):
 def show_inventory(character):
     """Print formatted output of items in attribute list 'items' from class 'Character' in 'character_model.py'."""
     # Check if inventory is empty.
-    if character.items:
-        instance_list = character.items
+    if character.inventory:
+        instance_list = character.inventory
         shop_name = "INVENTORY"
         table_header = f"{"Weight":>42}{"Cost":>10}{"Inventory":>12}"
 

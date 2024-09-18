@@ -37,7 +37,7 @@ class Character:
         self.carrying_capacity = {}
         self.weight_carried = 0
         self.money = 0
-        self.items = []
+        self.inventory = []
         self.armor = item_inst.no_armor
         self.shield = item_inst.no_shield
         self.weapon = item_inst.no_weapon
@@ -99,7 +99,7 @@ class Character:
             self.class_specials = [False]
             self.class_saving_throws = [13, 14, 13, 16, 15]
             self.spells = "Read Magic"
-            self.items.append(item_inst.spellbook)
+            self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Thief":
             self.class_name = "Thief"
@@ -117,7 +117,7 @@ class Character:
             self.class_specials = [False]
             self.class_saving_throws = [13, 14, 14, 16, 17]
             self.spells = "Read Magic"
-            self.items.append(item_inst.spellbook)
+            self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Magic-User/Thief":
             self.class_name = "Magic-User/Thief"
@@ -127,13 +127,13 @@ class Character:
             self.class_specials = ["Sneak Attack", "Thief Abilities"]
             self.class_saving_throws = [13, 14, 13, 16, 15]
             self.spells = "Read Magic"
-            self.items.append(item_inst.spellbook)
+            self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
 
     def reset_character(self):
         """Reset values that may not be overwritten when creating a new character."""
         self.spells = False
-        self.items = []
+        self.inventory = []
         self.weight_carried = 0
         self.specials = []
 
@@ -263,7 +263,7 @@ class Character:
             self.money = money
             # Add each item individually to list 'self.items'
             for i in range(amount):
-                self.items.append(item)
+                self.inventory.append(item)
             return True
 
     def sell_item(self, item, amount):
@@ -271,13 +271,13 @@ class Character:
         self.weight_carried -= item.weight * amount
         self.money += item.cost * amount
         for i in range(amount):
-            self.items.remove(item)
+            self.inventory.remove(item)
 
     # Equip/unequip methods. TODO works only for armor right now.
     def equip_item(self, item):
         """Equip instance 'item' from inventory and move previously equipped item to inventory."""
-        item_index = self.items.index(item)
-        equip = self.items.pop(item_index)
+        item_index = self.inventory.index(item)
+        equip = self.inventory.pop(item_index)
 
         if not equip.shield:
             if self.armor != item_inst.no_armor:
@@ -298,7 +298,7 @@ class Character:
     def unequip_item(self, item):
         """Unequip instance 'item' and move it to inventory. Set 'self.armor' and 'self.shield' to instances 'no_armor'
         and 'no_shield' if no other item is equipped."""
-        self.items.append(item)
+        self.inventory.append(item)
         if not item.shield:
             self.armor = item_inst.no_armor
         else:

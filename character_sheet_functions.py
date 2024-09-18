@@ -1,5 +1,8 @@
 import functions as func
 import random
+
+from item_instances import no_shield
+
 """Functions used to set race/class and build the character sheet."""
 
 
@@ -147,8 +150,8 @@ def show_carrying_capacity(character):
 
 
 def show_inventory(character):
-    """Print formatted output of list 'items' from instance 'character'."""
-    for item in character.items:
+    """Print formatted output of list 'inventory' from instance 'character'."""
+    for item in character.inventory:
         print(f" - {item.name:<30}{f"{item.weight} lbs":>7}")
 
 
@@ -206,8 +209,11 @@ def build_character_sheet(character):
     print(f"{character.weapon.name}")
     print(f"\n{f"Armor:":<15}{f"AC":>5}")
     print(f"{character.armor.name:<15}{character.armor.armor_class:>5}")
-    print(f"{character.shield.name:<15}{f"+{character.shield.armor_class}":>5}")
+    if character.shield == no_shield:
+        pass
+    else:
+        print(f"{character.shield.name:<15}{f"+{character.shield.armor_class}":>5}")
 
-    if character.items:
+    if character.inventory:
         print("\nInventory:")
         show_inventory(character)
