@@ -158,12 +158,12 @@ def buy_and_equip(selected_item, character, amount):
 
 def sell(selected_item, character, amount):
     """Check if trade is valid (enough items in character inventory 'character.inventory') and prompt user to confirm
-       trade.
-        ARGS:
-            selected_item: selected item from shop. instance of class from 'item_model.py'.
-            character: instance of Character class.
-            amount: number of 'selected_item' to sell.
-        """
+    trade.
+    ARGS:
+        selected_item: selected item from shop. instance of class from 'item_model.py'.
+        character: instance of Character class.
+        amount: number of 'selected_item' to sell.
+    """
     # Get amount of 'selected_item' in inventory 'character.items'.
     item_inventory_n = character.inventory.count(selected_item)
 

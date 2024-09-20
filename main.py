@@ -1,3 +1,5 @@
+import pygame
+import sys
 import main_functions as mf
 import character_sheet_functions as cf
 from functions import check_yes_no
