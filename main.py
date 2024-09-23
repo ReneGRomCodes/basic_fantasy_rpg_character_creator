@@ -5,7 +5,6 @@ import character_sheet_functions as cf
 from functions import check_yes_no
 import character_model as char
 from settings import Settings
-import screen_objects as so
 import threading
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
 It initializes the program and starts the main functionality."""
@@ -18,8 +17,6 @@ def pygame_setup():
     screen = pygame.display.set_mode((pg_settings.screen_width, pg_settings.screen_height))
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
 
-    # Instantiate text for title screen.
-    title = so.TextField(screen, "BASIC FANTASY RPG Character Creator")
 
     # Loop to keep Pygame running and responsive during migration
     while True:
@@ -29,7 +26,7 @@ def pygame_setup():
                 sys.exit()
 
         screen.fill(pg_settings.bg_color)
-        title.draw_text()
+        mf.show_title_screen(screen)
         pygame.display.flip()
 
 

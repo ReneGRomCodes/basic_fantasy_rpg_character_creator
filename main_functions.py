@@ -2,7 +2,36 @@ import os
 import character_sheet_functions as cf
 import functions as func
 import shop_functions as sf
+import screen_objects as so
 """Main functions used in 'main.py'."""
+
+
+def show_title_screen(screen):
+    """Show title screen."""
+    # Strings for instances of class 'TextField'.
+    title_message = "BASIC FANTASY ROLE-PLAYING GAME"
+    subtitle_message = "Character Creator"
+    copyright_message = ("Basic Fantasy Role-Playing Game, Copyright 2006-2024 Chris Gonnerman. All Rights reserved. "
+                         "Distributed under CC BY-SA license. www.basicfantasy.com")
+
+    # Create and position title.
+    title = so.TextField(screen, title_message, size=48)
+    title.text_rect.centerx = screen.get_rect().centerx
+    title.text_rect.bottom = screen.get_rect().centery - 20
+
+    # Create and position subtitle.
+    subtitle = so.TextField(screen, subtitle_message, size=40)
+    subtitle.text_rect.centerx = screen.get_rect().centerx
+    subtitle.text_rect.top = screen.get_rect().centery + 20
+
+    # Create and position copyright notice.
+    copyright_notice = so.TextField(screen, copyright_message)
+    copyright_notice.text_rect.centerx = screen.get_rect().centerx
+    copyright_notice.text_rect.bottom = screen.get_rect().bottom - 20
+
+    title.draw_text()
+    subtitle.draw_text()
+    copyright_notice.draw_text()
 
 
 def show_menu():
