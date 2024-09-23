@@ -133,12 +133,10 @@ def build_race_class_list(race_list, class_list):
 def select_from_list(list, prompt):
     """Print out items from list 'list' in numbered and formatted output, prompts for input via string 'prompt' and
     return list item 'selected_item'."""
-    selection_counter = 1
-    invalid_input_message = f"Invalid input. Choose a number between 1 and {selection_counter - 1}."
+    invalid_input_message = f"Invalid input. Choose a number between 1 and {len(list)}."
 
-    for item in list:
-        print(f"{selection_counter:>2} - {item}")
-        selection_counter += 1
+    for index, item in enumerate(list, start=1):
+        print(f"{index:>2} - {item}")
 
     while True:
         try:
