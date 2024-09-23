@@ -4,6 +4,13 @@ import functions as func
 import item_model
 """Functions used for the item shop."""
 
+# Shop names.
+shop_name_general_items = "GENERAL ITEMS"
+shop_name_weapons = "WEAPONS"
+shop_name_projectiles = "PROJECTILES"
+shop_name_armor = "ARMOR"
+shop_name_inventory = "INVENTORY"
+
 
 def show_shop(character, instance_list, shop_name, table_header):
     """Show formatted output of selected shop with appropriate class attributes and return int 'counter' for use in
@@ -27,15 +34,15 @@ def show_shop(character, instance_list, shop_name, table_header):
 
     for item in instance_list:
         # Select appropriate table format for shop.
-        if shop_name == "GENERAL ITEMS":
+        if shop_name == shop_name_general_items:
             table_format = f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}"
-        elif shop_name == "PROJECTILES":
+        elif shop_name == shop_name_projectiles:
             table_format = (f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>10}"
                             f"{f"1d{item.damage}":>8}{f"{item.cost} gp":>10}")
-        elif shop_name == "ARMOR":
+        elif shop_name == shop_name_armor:
             table_format = (f"{shop_counter:>2} - {item.name:<15}{f"{item.weight} lbs":>10}{item.armor_class:>10}"
                             f"{f"{item.cost} gp":>10}")
-        elif shop_name == "INVENTORY":
+        elif shop_name == shop_name_inventory:
             table_format = f"{shop_counter:>2} - {item.name:<30}{f"{item.weight} lbs":>7}{f"{item.cost} gp":>10}"
 
         # Print items in shop and amount of items in character inventory.
@@ -72,12 +79,12 @@ def show_equipped(shop_name, character):
     slot_dict_weapons = {"Weapon:": character.weapon,}
 
     # Check if shop has items that can be equipped.
-    if shop_name not in ["ARMOR", "INVENTORY", "WEAPONS"]:
+    if shop_name not in [shop_name_armor, shop_name_inventory, shop_name_weapons]:
         pass
     else:
         print("Equipped Items:")
 
-        if shop_name == "ARMOR":
+        if shop_name == shop_name_armor:
             print(table_header_armor)
 
             for k, v in slot_dict_armor.items():
@@ -92,7 +99,7 @@ def show_equipped(shop_name, character):
                 else:
                     print(f"{k:<10}{v.name:<20}{v.armor_class:>7}{v.weight:>5} lbs")
 
-        elif shop_name == "INVENTORY":
+        elif shop_name == shop_name_inventory:
             print(table_header_inventory)
 
             for k, v in slot_dict_inventory.items():
@@ -114,7 +121,7 @@ def show_equipped(shop_name, character):
                     else:
                         print(f"{k:<10}{v.name:<20}{v.armor_class:>7}{v.weight:>5} lbs")
 
-        elif shop_name == "WEAPONS":
+        elif shop_name == shop_name_weapons:
             # Check if weapon is equipped.
             if character.weapon == item_instances.no_weapon:
                 print("No weapon equipped")
@@ -265,21 +272,20 @@ def general_items_shop(character):
     """Show items available in shop 'GENERAL ITEMS' and prompt user for buy/sell action. ARG 'character' is Character
     class instance."""
     instance_list = item_instances.general_items
-    shop_name = "GENERAL ITEMS"
     table_header = f"{"Weight":>42}{"Cost":>10}{"Inventory":>12}"
 
-    trade_items(character, instance_list, shop_name, table_header)
+    trade_items(character, instance_list, shop_name_general_items, table_header)
 
 
 def weapons_shop(character):  # TODO Fully implement weapons shop.
     """Print items in list 'weapons' from module 'item_instances' in formatted string output."""
     # Show equipped weapon.
-    show_equipped("WEAPONS", character)
+    show_equipped(shop_name_weapons, character)
 
     # Initialize shop counter.
     shop_counter = 1
 
-    print("WEAPONS:")
+    print(shop_name_weapons)
     for k, v in item_instances.weapons.items():
         print("\n\n" + k)
 
@@ -307,20 +313,18 @@ def projectiles_shop(character):
     """Show items available in shop 'PROJECTILES' and prompt user for buy/sell action. ARG 'character' is Character
     class instance."""
     instance_list = item_instances.projectiles
-    shop_name = "PROJECTILES"
     table_header = f"{"weight":>45}{"damage":>8}{"cost":>10}{"Inventory":>12}"
 
-    trade_items(character, instance_list, shop_name, table_header)
+    trade_items(character, instance_list, shop_name_projectiles, table_header)
 
 
 def armor_shop(character):
     """Show items available in shop 'ARMOR' and prompt user for buy/sell action. ARG 'character' is Character
     class instance."""
     instance_list = item_instances.armors
-    shop_name = "ARMOR"
     table_header = f"{"Weight":>30}{"AC":>10}{"Cost":>10}{"Inventory":>12}"
 
-    trade_items(character, instance_list, shop_name, table_header)
+    trade_items(character, instance_list, shop_name_armor, table_header)
 
 
 def show_inventory(character):
@@ -328,10 +332,9 @@ def show_inventory(character):
     # Check if inventory is empty.
     if character.inventory:
         instance_list = character.inventory
-        shop_name = "INVENTORY"
         table_header = f"{"Weight":>42}{"Cost":>10}{"Inventory":>12}"
 
-        trade_items(character, instance_list, shop_name, table_header)
+        trade_items(character, instance_list, shop_name_inventory, table_header)
 
     else:
         print("\n\tYour inventory is empty.")
