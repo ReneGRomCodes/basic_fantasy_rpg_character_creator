@@ -12,6 +12,116 @@ shop_name_armor = "ARMOR"
 shop_name_inventory = "INVENTORY"
 
 
+def general_items_shop(character):
+    """Show items available in shop 'GENERAL ITEMS' and prompt user for buy/sell action. ARG 'character' is Character
+    class instance."""
+    instance_list = item_instances.general_items
+    table_header = f"{"Weight":>42}{"Cost":>10}{"Inventory":>12}"
+
+    trade_items(character, instance_list, shop_name_general_items, table_header)
+
+
+def weapons_shop(character):  # TODO Fully implement weapons shop.
+    """Print items in list 'weapons' from module 'item_instances' in formatted string output."""
+    # Show equipped weapon.
+    show_equipped(shop_name_weapons, character)
+
+    # Initialize shop counter.
+    shop_counter = 1
+
+    print(shop_name_weapons)
+    for k, v in item_instances.weapons.items():
+        print("\n\n" + k)
+
+        if k == "Ranged Weapons":
+            print(f"{"Range":>50}")
+            print(f"{"size":>27}{"weight":>9}{"S    M    L":^23}{"cost":>8}")
+            for item in v:
+                ranges = f"{item.range_list[0]:>3}, {item.range_list[1]:>3}, {item.range_list[2]:>3}"
+                print(f"{shop_counter:>2} - {item.name:<20}{item.size}{f"{item.weight} lbs":>10}{ranges:^23}"
+                      f"{f"{item.cost} gp":>8}")
+                shop_counter += 1
+
+        else:
+            print(f"{"size":>27}{"weight":>9}{"damage":>8}{"cost":>10}")
+            for item in v:
+                print(f"{shop_counter:>2} - {item.name:<20}{item.size}{f"{item.weight} lbs":>10}{f"1d{item.damage}":>8}"
+                      f"{f"{item.cost} gp":>10}")
+                shop_counter += 1
+
+    input("\nPress enter to return to shop")
+    os.system('cls')
+
+
+def projectiles_shop(character):
+    """Show items available in shop 'PROJECTILES' and prompt user for buy/sell action. ARG 'character' is Character
+    class instance."""
+    instance_list = item_instances.projectiles
+    table_header = f"{"weight":>45}{"damage":>8}{"cost":>10}{"Inventory":>12}"
+
+    trade_items(character, instance_list, shop_name_projectiles, table_header)
+
+
+def armor_shop(character):
+    """Show items available in shop 'ARMOR' and prompt user for buy/sell action. ARG 'character' is Character
+    class instance."""
+    instance_list = item_instances.armors
+    table_header = f"{"Weight":>30}{"AC":>10}{"Cost":>10}{"Inventory":>12}"
+
+    trade_items(character, instance_list, shop_name_armor, table_header)
+
+
+def show_inventory(character):
+    """Print formatted output of items in attribute list 'items' from class 'Character' in 'character_model.py'."""
+    # Check if inventory is empty.
+    if character.inventory:
+        instance_list = character.inventory
+        table_header = f"{"Weight":>42}{"Cost":>10}{"Inventory":>12}"
+
+        trade_items(character, instance_list, shop_name_inventory, table_header)
+
+    else:
+        print("\n\tYour inventory is empty.")
+        input("\nPress enter to return to shop")
+
+    os.system('cls')
+
+
+def trade_items(character, instance_list, shop_name, table_header):
+    """Initialize trade loop for item shops.
+    ARGS:
+        character: instance of Character class.
+        instance_list: list of instances of Item class and child classes. Lists found in 'item_instances.py'.
+        shop_name: String for name of the shop. Either "GENERAL ITEMS", "WEAPONS", "PROJECTILES", "ARMOR" or "INVENTORY".
+        table_header: formatted string for header of shop inventory.
+    """
+    while True:
+        # Show equipped items based on selected shop.
+        show_equipped(shop_name, character)
+        # Print shop in formatted output and get int value ('instance_list' index + 1) for each item.
+        shop_counter = show_shop(character, instance_list, shop_name, table_header)
+        trade_item = input("\nChoose item to trade or press 'Enter' to return to shop menu: ")
+
+        invalid_input_message = (f"\n\tInvalid input. Choose a number between 1 and {shop_counter - 1}. Press 'Enter' to "
+                                 f"continue.")
+
+        if not trade_item:
+            os.system('cls')
+            break
+        else:
+            try:
+                selected_item = instance_list[int(trade_item) - 1]
+                choose_buy_sell(character, selected_item)
+            except IndexError:
+                input(invalid_input_message)
+                os.system('cls')
+                continue
+            except ValueError:
+                input(invalid_input_message)
+                os.system('cls')
+                continue
+
+
 def show_shop(character, instance_list, shop_name, table_header):
     """Show formatted output of selected shop with appropriate class attributes and return int 'counter' for use in
     function 'trade_items()'.
@@ -135,6 +245,36 @@ def show_equipped(shop_name, character):
         print("\n")
 
 
+def choose_buy_sell(character, selected_item):
+    """Check if 'selected_item' is in class attribute 'character.inventory'. Let user choose to sell or buy item or only
+    prompt for buy confirmation if 'selected_item' is not in 'character.inventory'. Call class methods
+    'character.buy_item', 'character.sell_item' or abort trade based on user input.
+    ARGS:
+        character: instance of Character class.
+        selected_item: list item selected in function 'trade_items()' through user input.
+    """
+    buy_sell_prompt = "Do you want to buy or sell this item? "
+    buy_amount_prompt = f"\nHow many '{selected_item.name}(s)' do you want to buy? "
+    sell_amount_prompt = f"\nHow many '{selected_item.name}(s)' do you want to sell? "
+
+    # Check if 'selected_item' is in characters inventory.
+    if selected_item in character.inventory:
+        buy_sell_list = [f"Buy '{selected_item.name}'", f"Sell '{selected_item.name}'"]
+
+        # Show buy and sell options if item is in inventory.
+        if func.select_from_list(buy_sell_list, buy_sell_prompt) == buy_sell_list[0]:
+            amount = int(input(buy_amount_prompt))
+            buy_and_equip(selected_item, character, amount)
+        else:
+            amount = int(input(sell_amount_prompt))
+            sell(selected_item, character, amount)
+
+    # Show buy option only if item is not in characters inventory.
+    else:
+        amount = int(input(buy_amount_prompt))
+        buy_and_equip(selected_item, character, amount)
+
+
 def buy_and_equip(selected_item, character, amount):
     """Prompt user to enter amount of items and confirm trade and equip item if it is an instance of class 'Armor'.
     ARGS:
@@ -201,143 +341,3 @@ def sell(selected_item, character, amount):
         os.system('cls')
         input(sale_abort_message)
         os.system('cls')
-
-
-def choose_buy_sell(character, selected_item):
-    """Check if 'selected_item' is in class attribute 'character.inventory'. Let user choose to sell or buy item or only
-    prompt for buy confirmation if 'selected_item' is not in 'character.inventory'. Call class methods
-    'character.buy_item', 'character.sell_item' or abort trade based on user input.
-    ARGS:
-        character: instance of Character class.
-        selected_item: list item selected in function 'trade_items()' through user input.
-    """
-    buy_sell_prompt = "Do you want to buy or sell this item? "
-    buy_amount_prompt = f"\nHow many '{selected_item.name}(s)' do you want to buy? "
-    sell_amount_prompt = f"\nHow many '{selected_item.name}(s)' do you want to sell? "
-
-    # Check if 'selected_item' is in characters inventory.
-    if selected_item in character.inventory:
-        buy_sell_list = [f"Buy '{selected_item.name}'", f"Sell '{selected_item.name}'"]
-
-        # Show buy and sell options if item is in inventory.
-        if func.select_from_list(buy_sell_list, buy_sell_prompt) == buy_sell_list[0]:
-            amount = int(input(buy_amount_prompt))
-            buy_and_equip(selected_item, character, amount)
-        else:
-            amount = int(input(sell_amount_prompt))
-            sell(selected_item, character, amount)
-
-    # Show buy option only if item is not in characters inventory.
-    else:
-        amount = int(input(buy_amount_prompt))
-        buy_and_equip(selected_item, character, amount)
-
-
-def trade_items(character, instance_list, shop_name, table_header):
-    """Initialize trade loop for item shops.
-    ARGS:
-        character: instance of Character class.
-        instance_list: list of instances of Item class and child classes. Lists found in 'item_instances.py'.
-        shop_name: String for name of the shop. Either "GENERAL ITEMS", "WEAPONS", "PROJECTILES", "ARMOR" or "INVENTORY".
-        table_header: formatted string for header of shop inventory.
-    """
-    while True:
-        # Show equipped items based on selected shop.
-        show_equipped(shop_name, character)
-        # Print shop in formatted output and get int value ('instance_list' index + 1) for each item.
-        shop_counter = show_shop(character, instance_list, shop_name, table_header)
-        trade_item = input("\nChoose item to trade or press 'Enter' to return to shop menu: ")
-
-        invalid_input_message = (f"\n\tInvalid input. Choose a number between 1 and {shop_counter - 1}. Press 'Enter' to "
-                                 f"continue.")
-
-        if not trade_item:
-            os.system('cls')
-            break
-        else:
-            try:
-                selected_item = instance_list[int(trade_item) - 1]
-                choose_buy_sell(character, selected_item)
-            except IndexError:
-                input(invalid_input_message)
-                os.system('cls')
-                continue
-            except ValueError:
-                input(invalid_input_message)
-                os.system('cls')
-                continue
-
-
-def general_items_shop(character):
-    """Show items available in shop 'GENERAL ITEMS' and prompt user for buy/sell action. ARG 'character' is Character
-    class instance."""
-    instance_list = item_instances.general_items
-    table_header = f"{"Weight":>42}{"Cost":>10}{"Inventory":>12}"
-
-    trade_items(character, instance_list, shop_name_general_items, table_header)
-
-
-def weapons_shop(character):  # TODO Fully implement weapons shop.
-    """Print items in list 'weapons' from module 'item_instances' in formatted string output."""
-    # Show equipped weapon.
-    show_equipped(shop_name_weapons, character)
-
-    # Initialize shop counter.
-    shop_counter = 1
-
-    print(shop_name_weapons)
-    for k, v in item_instances.weapons.items():
-        print("\n\n" + k)
-
-        if k == "Ranged Weapons":
-            print(f"{"Range":>50}")
-            print(f"{"size":>27}{"weight":>9}{"S    M    L":^23}{"cost":>8}")
-            for item in v:
-                ranges = f"{item.range_list[0]:>3}, {item.range_list[1]:>3}, {item.range_list[2]:>3}"
-                print(f"{shop_counter:>2} - {item.name:<20}{item.size}{f"{item.weight} lbs":>10}{ranges:^23}"
-                      f"{f"{item.cost} gp":>8}")
-                shop_counter += 1
-
-        else:
-            print(f"{"size":>27}{"weight":>9}{"damage":>8}{"cost":>10}")
-            for item in v:
-                print(f"{shop_counter:>2} - {item.name:<20}{item.size}{f"{item.weight} lbs":>10}{f"1d{item.damage}":>8}"
-                      f"{f"{item.cost} gp":>10}")
-                shop_counter += 1
-
-    input("\nPress enter to return to shop")
-    os.system('cls')
-
-
-def projectiles_shop(character):
-    """Show items available in shop 'PROJECTILES' and prompt user for buy/sell action. ARG 'character' is Character
-    class instance."""
-    instance_list = item_instances.projectiles
-    table_header = f"{"weight":>45}{"damage":>8}{"cost":>10}{"Inventory":>12}"
-
-    trade_items(character, instance_list, shop_name_projectiles, table_header)
-
-
-def armor_shop(character):
-    """Show items available in shop 'ARMOR' and prompt user for buy/sell action. ARG 'character' is Character
-    class instance."""
-    instance_list = item_instances.armors
-    table_header = f"{"Weight":>30}{"AC":>10}{"Cost":>10}{"Inventory":>12}"
-
-    trade_items(character, instance_list, shop_name_armor, table_header)
-
-
-def show_inventory(character):
-    """Print formatted output of items in attribute list 'items' from class 'Character' in 'character_model.py'."""
-    # Check if inventory is empty.
-    if character.inventory:
-        instance_list = character.inventory
-        table_header = f"{"Weight":>42}{"Cost":>10}{"Inventory":>12}"
-
-        trade_items(character, instance_list, shop_name_inventory, table_header)
-
-    else:
-        print("\n\tYour inventory is empty.")
-        input("\nPress enter to return to shop")
-
-    os.system('cls')
