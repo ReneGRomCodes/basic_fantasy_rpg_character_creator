@@ -3,6 +3,7 @@ import character_sheet_functions as cf
 import functions as func
 import shop_functions as sf
 import screen_objects as so
+
 """Main functions used in 'main.py'."""
 
 
@@ -99,14 +100,14 @@ def show_main_shop(character):
         os.system('cls')
 
         if shop_section == "General Items":
-            sf.general_items_shop(character)
+            sf.set_shop(character, shop_section)
         elif shop_section == "Weapons":
-            sf.weapons_shop(character)
+            sf.set_shop(character, shop_section)
         elif shop_section == "Projectiles":
-            sf.projectiles_shop(character)
+            sf.set_shop(character, shop_section)
         elif shop_section == "Armor":
-            sf.armor_shop(character)
+            sf.set_shop(character, shop_section)
         elif shop_section == "Inventory":
-            sf.show_inventory(character)
+            sf.set_shop(character, shop_section)
         else:
             break
