@@ -9,7 +9,7 @@ import sys
 
 
 def handle_events(character, state, gui_elements):
-    """Check and handle pygame events for 'pygame_setup()' in 'main.py'. Set and return 'state'"""
+    """Check and handle pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()

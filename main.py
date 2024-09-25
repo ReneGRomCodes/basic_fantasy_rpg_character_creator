@@ -8,7 +8,7 @@ It initializes the program and starts the main functionality."""
 
 
 def run_character_creator():
-    """Initialize Pygame, create a window and start the character creator."""
+    """Initialize Pygame, create a window, instantiate character and start the character creator."""
     # Initialize pygame and create a window.
     pygame.init()
     pg_settings = Settings()
@@ -22,7 +22,7 @@ def run_character_creator():
     # Create dict for GUI elements.
     gui_elements = {}
 
-    # Loop to keep Pygame running and responsive during migration
+    # Start main loop.
     while True:
         screen.fill(pg_settings.bg_color)
         state = mf.handle_events(character, state, gui_elements)
