@@ -3,8 +3,33 @@ import character_sheet_functions as cf
 import functions as func
 import shop_functions as sf
 import screen_objects as so
-
+import pygame
+import sys
 """Main functions used in 'main.py'."""
+
+
+def handle_events(character, state, gui_elements):
+    """Check and handle pygame events for 'pygame_setup()' in 'main.py'. Set and return 'state'"""
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        if state == "title_screen":
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                return "main_menu"
+
+        elif state == "main_menu":
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+
+                if gui_elements["custom"].text_rect.collidepoint(mouse_pos):
+                    custom_character(character)
+
+                if gui_elements["random"].text_rect.collidepoint(mouse_pos):
+                    random_character(character)
+
+    return state
 
 
 def show_title_screen(screen):
@@ -35,18 +60,18 @@ def show_title_screen(screen):
     copyright_notice.draw_text()
 
 
-def show_menu():
-    """Print string 'menu' and return string 'menu_prompt'."""
-    menu = ("- BASIC FANTASY RPG CHARACTER CREATOR -\n\n"
-            "Do you want to customize your character or generate a random character?\n"
-            "1 - Custom Character\n"
-            "2 - Random Character\n\n")
-    menu_prompt = "Please enter '1' or '2': "
+def show_menu(screen, gui_elements):
+    """Display menu and position GUI elements."""
 
-    print(menu)
+    # Positioning.
+    gui_elements["custom"].text_rect.centerx = screen.get_rect().centerx
+    gui_elements["custom"].text_rect.bottom = screen.get_rect().centery - 20
+    gui_elements["random"].text_rect.centerx = screen.get_rect().centerx
+    gui_elements["random"].text_rect.top = screen.get_rect().centery + 20
 
-    # Return 'menu_prompt' for use in 'run_character_creator()' in 'main.py'
-    return menu_prompt
+    # Draw elements on screen.
+    gui_elements["custom"].draw_text()
+    gui_elements["random"].draw_text()
 
 
 def custom_character(character):
