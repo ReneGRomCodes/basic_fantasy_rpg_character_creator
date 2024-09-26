@@ -2,7 +2,6 @@ import os
 import character_sheet_functions as cf
 import functions as func
 import shop_functions as sf
-import screen_objects as so
 import pygame
 import sys
 """Main functions used in 'main.py'."""
@@ -32,26 +31,19 @@ def handle_events(character, state, gui_elements):
     return state
 
 
-def show_title_screen(screen):
+def show_title_screen(screen, gui_elements):
     """Show title screen."""
-    # Strings for instances of class 'TextField'.
-    title_message = "BASIC FANTASY ROLE-PLAYING GAME"
-    subtitle_message = "Character Creator"
-    copyright_message = ("Basic Fantasy Role-Playing Game, Copyright 2006-2024 Chris Gonnerman. All Rights reserved. "
-                         "Distributed under CC BY-SA license. www.basicfantasy.com")
 
-    # Create and position title.
-    title = so.TextField(screen, title_message, size=48)
+    # Assign gui_elements to variables.
+    title = gui_elements["title"]
+    subtitle = gui_elements["subtitle"]
+    copyright_notice = gui_elements["copyright_notice"]
+
+    # Position title, subtitle and copyright notice.
     title.text_rect.centerx = screen.get_rect().centerx
     title.text_rect.bottom = screen.get_rect().centery - 20
-
-    # Create and position subtitle.
-    subtitle = so.TextField(screen, subtitle_message, size=40)
     subtitle.text_rect.centerx = screen.get_rect().centerx
     subtitle.text_rect.top = screen.get_rect().centery + 20
-
-    # Create and position copyright notice.
-    copyright_notice = so.TextField(screen, copyright_message)
     copyright_notice.text_rect.centerx = screen.get_rect().centerx
     copyright_notice.text_rect.bottom = screen.get_rect().bottom - 20
 
@@ -61,17 +53,21 @@ def show_title_screen(screen):
 
 
 def show_menu(screen, gui_elements):
-    """Display menu and position GUI elements."""
+    """Display main menu."""
+
+    # Assign gui_elements to variables.
+    custom = gui_elements["custom"]
+    random = gui_elements["random"]
 
     # Positioning.
-    gui_elements["custom"].text_rect.centerx = screen.get_rect().centerx
-    gui_elements["custom"].text_rect.bottom = screen.get_rect().centery - 20
-    gui_elements["random"].text_rect.centerx = screen.get_rect().centerx
-    gui_elements["random"].text_rect.top = screen.get_rect().centery + 20
+    custom.text_rect.centerx = screen.get_rect().centerx
+    custom.text_rect.bottom = screen.get_rect().centery - 20
+    random.text_rect.centerx = screen.get_rect().centerx
+    random.text_rect.top = screen.get_rect().centery + 20
 
     # Draw elements on screen.
-    gui_elements["custom"].draw_text()
-    gui_elements["random"].draw_text()
+    custom.draw_text()
+    random.draw_text()
 
 
 def custom_character(character):

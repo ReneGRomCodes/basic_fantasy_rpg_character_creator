@@ -2,7 +2,7 @@ import pygame
 import main_functions as mf
 import character_model as char
 from settings import Settings
-import screen_objects as so
+from gui.gui_elements import initialize_screen_elements
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
 It initializes the program and starts the main functionality."""
 
@@ -19,8 +19,8 @@ def run_character_creator():
     character = char.Character()
     # Set initial state.
     state = "title_screen"
-    # Create dict for GUI elements.
-    gui_elements = {}
+    # Initialize GUI elements.
+    gui_elements = initialize_screen_elements(screen)
 
     # Start main loop.
     while True:
@@ -28,14 +28,8 @@ def run_character_creator():
         state = mf.handle_events(character, state, gui_elements)
 
         if state == "title_screen":
-            mf.show_title_screen(screen)
+            mf.show_title_screen(screen, gui_elements)
         elif state == "main_menu":
-            # Instantiate elements for main menu and populate dict 'gui_elements'.
-            custom = so.TextField(screen, "Custom Character")
-            random = so.TextField(screen, "Random Character")
-            gui_elements["custom"] = custom
-            gui_elements["random"] = random
-
             mf.show_menu(screen, gui_elements)
 
         pygame.display.flip()
