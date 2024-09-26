@@ -25,7 +25,7 @@ def run_character_creator():
     # Start main loop.
     while True:
         screen.fill(pg_settings.bg_color)
-        state = mf.handle_events(character, state, gui_elements)
+        state = mf.handle_events(screen, character, state, gui_elements)
 
         if state == "title_screen":
             mf.show_title_screen(screen, gui_elements)
