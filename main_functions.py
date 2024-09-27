@@ -15,23 +15,21 @@ def handle_events(screen, character, state, gui_elements):
             sys.exit()
 
         # Keep track of mouse position.
-        mouse_position = pygame.mouse.get_pos()
+        mouse_pos = pygame.mouse.get_pos()
 
         if state == "title_screen":
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYUP:
                 return "main_menu"
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if screen.get_rect().collidepoint(mouse_position):
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if screen.get_rect().collidepoint(mouse_pos):
                     return "main_menu"
 
         elif state == "main_menu":
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-
-                if gui_elements["custom"].text_rect.collidepoint(mouse_pos):
+            if event.type == pygame.MOUSEBUTTONUP:
+                if gui_elements["custom"].button_rect.collidepoint(mouse_pos):
                     custom_character(character)
 
-                if gui_elements["random"].text_rect.collidepoint(mouse_pos):
+                if gui_elements["random"].button_rect.collidepoint(mouse_pos):
                     random_character(character)
 
     return state
