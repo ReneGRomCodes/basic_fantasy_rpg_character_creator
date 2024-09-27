@@ -7,15 +7,12 @@ import sys
 """Main functions used in 'main.py'."""
 
 
-def handle_events(screen, character, state, gui_elements):
+def handle_events(screen, character, state, gui_elements, mouse_pos):
     """Check and handle pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-
-        # Keep track of mouse position.
-        mouse_pos = pygame.mouse.get_pos()
 
         if state == "title_screen":
             if event.type == pygame.KEYUP:

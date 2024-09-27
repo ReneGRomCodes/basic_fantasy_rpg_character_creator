@@ -24,8 +24,11 @@ def run_character_creator():
 
     # Start main loop.
     while True:
+        # Keep track of mouse position.
+        mouse_pos = pygame.mouse.get_pos()
+
         screen.fill(pg_settings.bg_color)
-        state = mf.handle_events(screen, character, state, gui_elements)
+        state = mf.handle_events(screen, character, state, gui_elements, mouse_pos)
 
         if state == "title_screen":
             mf.show_title_screen(screen, gui_elements)
