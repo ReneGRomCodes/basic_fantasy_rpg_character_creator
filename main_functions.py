@@ -55,7 +55,7 @@ def show_title_screen(screen, gui_elements):
     copyright_notice.draw_text()
 
 
-def show_menu(screen, gui_elements):
+def show_menu(screen, gui_elements, mouse_pos):
     """Display main menu."""
 
     # Assign gui_elements to variables.
@@ -69,8 +69,8 @@ def show_menu(screen, gui_elements):
     random.button_rect.top = screen.get_rect().centery
 
     # Draw elements on screen.
-    custom.draw_button()
-    random.draw_button()
+    custom.draw_button(mouse_pos)
+    random.draw_button(mouse_pos)
 
 
 def custom_character(character):
