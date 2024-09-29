@@ -82,26 +82,6 @@ def check_valid_race_class(race_list, class_list):
     return race_list
 
 
-def build_race_class_list(race_list, class_list):
-    """Take lists of possible races and classes and return list 'possible_characters' with valid race-class
-    combinations."""
-    possible_characters = []
-
-    for char_race in race_list:
-        for char_class in class_list:
-            # Exclude Dwarves and Halflings from class 'Magic-User'.
-            if char_race in ["Dwarf", "Halfling"] and char_class == "Magic-User":
-                pass
-            # Assure that combination classes are only shown for Elves.
-            if char_race != "Elf" and char_class in ["Fighter/Magic-User", "Magic-User/Thief"]:
-                pass
-            else:
-                race_class = char_race + " " + char_class
-                possible_characters.append(race_class)
-
-    return possible_characters
-
-
 def select_from_list(list, prompt):
     """Print out items from list 'list' in numbered and formatted output, prompts for input via string 'prompt' and
     return list item 'selected_item'."""
@@ -123,27 +103,3 @@ def select_from_list(list, prompt):
             continue
 
     return selected_item
-
-
-def show_char_race_descr(character):
-    """Take instance 'character' and print detailed description of character race."""
-    os.system('cls')
-
-    with open(character.race_description) as f:
-        for line in f:
-            output_text = line.rstrip()
-            print(output_text)
-
-    input(f"\n\n\n\n\tPRESS ENTER TO SHOW '{character.class_name}' CLASS.")
-
-
-def show_char_class_descr(character):
-    """Take instance 'character' and print detailed description of character class."""
-    os.system('cls')
-
-    with open(character.class_description) as f:
-        for line in f:
-            output_text = line.rstrip()
-            print(output_text)
-
-    input("\n\n\n\n\tPRESS ENTER TO CONTINUE.")

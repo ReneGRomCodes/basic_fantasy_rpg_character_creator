@@ -1,8 +1,7 @@
 import functions as func
 import random
-
+import os
 from item_instances import no_shield
-
 """Functions used to set race/class and build the character sheet."""
 
 
@@ -58,37 +57,6 @@ def get_ability_race_class(character):
             continue
 
 
-def race_class_selection(character, race_list, class_list):
-    """Take lists of possible races and classes, 'race_list' and 'class_list', check for allowed combination, let user
-    choose a race/class combination and set race and class in instance 'character'."""
-    while True:
-        print("Based on your scores you can choose from the following race-class combinations:\n")
-
-        possible_characters = func.build_race_class_list(race_list, class_list)
-        selected_character = func.select_from_list(possible_characters,
-                                                   "\nSelect a character to show race and class description: ")
-
-        # Split selected 'character' into variables for race and class and call class methods 'set_race()' and
-        # 'set_class()'.
-        character.set_race(selected_character.split(" ")[0])
-        character.set_class(selected_character.split(" ")[1])
-        # Show description of selected race and class.
-        func.show_char_race_descr(character)
-        func.show_char_class_descr(character)
-
-        # if-else block to assure grammatically correct prompt... because it would bother me to no end.
-        if character.race_name == "Elf":
-            if func.check_yes_no(f"\n\n\n\n\n\tDO YOU WANT TO BE AN '{selected_character}'? (Y/N) "):
-                break
-            else:
-                continue
-        else:
-            if func.check_yes_no(f"\n\n\n\n\n\tDO YOU WANT TO BE A '{selected_character}'? (Y/N) "):
-                break
-            else:
-                continue
-
-
 def show_ability_scores(character):
     """Print formatted table of abilities from instance 'character'."""
     abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
@@ -108,6 +76,81 @@ def show_ability_scores(character):
             pass
 
         print(f"{abilities_name:<23} {character.abilities[key][0]:>2} {bonus_penalty:>4}")
+
+
+def build_race_class_list(race_list, class_list):
+    """Take lists of possible races and classes and return list 'possible_characters' with valid race-class
+    combinations."""
+    possible_characters = []
+
+    for char_race in race_list:
+        for char_class in class_list:
+            # Exclude Dwarves and Halflings from class 'Magic-User'.
+            if char_race in ["Dwarf", "Halfling"] and char_class == "Magic-User":
+                pass
+            # Assure that combination classes are only shown for Elves.
+            if char_race != "Elf" and char_class in ["Fighter/Magic-User", "Magic-User/Thief"]:
+                pass
+            else:
+                race_class = char_race + " " + char_class
+                possible_characters.append(race_class)
+
+    return possible_characters
+
+
+def race_class_selection(character, race_list, class_list):
+    """Take lists of possible races and classes, 'race_list' and 'class_list', check for allowed combination, let user
+    choose a race/class combination and set race and class in instance 'character'."""
+    while True:
+        print("Based on your scores you can choose from the following race-class combinations:\n")
+
+        possible_characters = build_race_class_list(race_list, class_list)
+        selected_character = func.select_from_list(possible_characters,
+                                                   "\nSelect a character to show race and class description: ")
+
+        # Split selected 'character' into variables for race and class and call class methods 'set_race()' and
+        # 'set_class()'.
+        character.set_race(selected_character.split(" ")[0])
+        character.set_class(selected_character.split(" ")[1])
+        # Show description of selected race and class.
+        show_char_race_descr(character)
+        show_char_class_descr(character)
+
+        # if-else block to assure grammatically correct prompt... because it would bother me to no end.
+        if character.race_name == "Elf":
+            if func.check_yes_no(f"\n\n\n\n\n\tDO YOU WANT TO BE AN '{selected_character}'? (Y/N) "):
+                break
+            else:
+                continue
+        else:
+            if func.check_yes_no(f"\n\n\n\n\n\tDO YOU WANT TO BE A '{selected_character}'? (Y/N) "):
+                break
+            else:
+                continue
+
+
+def show_char_race_descr(character):
+    """Take instance 'character' and print detailed description of character race."""
+    os.system('cls')
+
+    with open(character.race_description) as f:
+        for line in f:
+            output_text = line.rstrip()
+            print(output_text)
+
+    input(f"\n\n\n\n\tPRESS ENTER TO SHOW '{character.class_name}' CLASS.")
+
+
+def show_char_class_descr(character):
+    """Take instance 'character' and print detailed description of character class."""
+    os.system('cls')
+
+    with open(character.class_description) as f:
+        for line in f:
+            output_text = line.rstrip()
+            print(output_text)
+
+    input("\n\n\n\n\tPRESS ENTER TO CONTINUE.")
 
 
 def name_character(character):
@@ -195,7 +238,7 @@ def random_character_generator(character):
         class_list = func.check_class(character)
         if not func.check_valid_race_class(race_list, class_list):
             continue
-        race_class_list = func.build_race_class_list(race_list, class_list)
+        race_class_list = build_race_class_list(race_list, class_list)
 
         # Generate random character and set values.
         character_race_class = race_class_list[random.randint(0, (len(race_list)-1))]
