@@ -231,7 +231,7 @@ def random_character_generator(character):
     while True:
 
         # Generate dictionary for character abilities.
-        character.build_ability_dict()
+        character.set_ability_dict()
 
         # Check if abilities allow for valid race-class combinations.
         race_list = func.check_race(character)

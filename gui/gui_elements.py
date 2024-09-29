@@ -22,15 +22,22 @@ def initialize_screen_elements(screen):
     copyright_notice = so.TextField(screen, copyright_message, small)
 
     # Main menu.
-    custom = so.Button(screen, "Custom Character", medium)
-    random = so.Button(screen, "Random Character", medium)
+    main_menu_title = "MAIN MENU"
+    main_menu = so.TextField(screen, main_menu_title, large)
+    custom = so.Button(screen, "Create Custom Character", medium)
+    random = so.Button(screen, "Create Random Character", medium)
 
 
     # Dict to be returned containing instances for GUI objects.
     gui_elements = {
+        # Key-value pairs for element positioning.
+        "title_screen_spacing": int(screen.get_rect().height / 40),
+        "menu_title_spacing": int(screen.get_rect().height / 30),
+        # Key-value pairs for screen objects.
         "title": title,
         "subtitle": subtitle,
         "copyright_notice": copyright_notice,
+        "main_menu": main_menu,
         "custom": custom,
         "random": random,
     }

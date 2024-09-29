@@ -36,19 +36,20 @@ def show_title_screen(screen, gui_elements):
     """Show title screen."""
 
     # Assign gui_elements to variables.
+    spacing = gui_elements["title_screen_spacing"]
     title = gui_elements["title"]
     subtitle = gui_elements["subtitle"]
     copyright_notice = gui_elements["copyright_notice"]
 
     # Position title, subtitle and copyright notice.
-    space_between_elements = int(screen.get_rect().height / 40)
+    #space_between_elements = int(screen.get_rect().height / 40)
 
     title.text_rect.centerx = screen.get_rect().centerx
-    title.text_rect.bottom = screen.get_rect().centery - space_between_elements
+    title.text_rect.bottom = screen.get_rect().centery - spacing
     subtitle.text_rect.centerx = screen.get_rect().centerx
-    subtitle.text_rect.top = screen.get_rect().centery + space_between_elements
+    subtitle.text_rect.top = screen.get_rect().centery + spacing
     copyright_notice.text_rect.centerx = screen.get_rect().centerx
-    copyright_notice.text_rect.bottom = screen.get_rect().bottom - space_between_elements
+    copyright_notice.text_rect.bottom = screen.get_rect().bottom - spacing
 
     title.draw_text()
     subtitle.draw_text()
@@ -59,6 +60,8 @@ def show_menu(screen, gui_elements, mouse_pos):
     """Display main menu."""
 
     # Assign gui_elements to variables.
+    spacing = gui_elements["menu_title_spacing"]
+    main_menu = gui_elements["main_menu"]
     custom = gui_elements["custom"]
     random = gui_elements["random"]
 
@@ -67,8 +70,10 @@ def show_menu(screen, gui_elements, mouse_pos):
     custom.button_rect.bottom = screen.get_rect().centery
     random.button_rect.centerx = screen.get_rect().centerx
     random.button_rect.top = screen.get_rect().centery
+    main_menu.text_rect.bottom = custom.button_rect.top - spacing
 
     # Draw elements on screen.
+    main_menu.draw_text()
     custom.draw_button(mouse_pos)
     random.draw_button(mouse_pos)
 
