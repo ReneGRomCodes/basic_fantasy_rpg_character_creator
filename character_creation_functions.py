@@ -6,6 +6,34 @@ from item_instances import no_shield
 """Functions used to set race/class and build the character sheet."""
 
 
+def get_ability_score():
+    """Generate random value for ability score, apply bonus/penalty and return both values in list
+    'ability_score' with the base score at index 0 and the bonus/penalty at index 1."""
+    ability_score = [func.dice_roll(3, 6)]
+
+    if ability_score[0] <= 3:
+        ability_score.append(-3)
+        return ability_score
+    elif ability_score[0] <= 5:
+        ability_score.append(-2)
+        return ability_score
+    elif ability_score[0] <= 8:
+        ability_score.append(-1)
+        return ability_score
+    elif ability_score[0] <= 12:
+        ability_score.append(0)
+        return ability_score
+    elif ability_score[0] <= 15:
+        ability_score.append(1)
+        return ability_score
+    elif ability_score[0] <= 17:
+        ability_score.append(2)
+        return ability_score
+    else:
+        ability_score.append(3)
+        return ability_score
+
+
 def get_ability_race_class(character):
     """Generate abilities for instance 'character', ask for user confirmation and return list 'race_list' and list
     'class_list'."""
@@ -13,7 +41,7 @@ def get_ability_race_class(character):
         print("Let's roll the dice!\n")
 
         # Generate dictionary for character abilities.
-        character.build_ability_dict()
+        character.set_ability_dict()
 
         # Check if abilities allow for valid race-class combinations.
         race_list = func.check_race(character)

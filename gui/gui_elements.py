@@ -17,11 +17,9 @@ def initialize_screen_elements(screen):
     subtitle_message = "Character Creator"
     copyright_message = ("Basic Fantasy Role-Playing Game, Copyright 2006-2024 Chris Gonnerman. All Rights reserved. "
                          "Distributed under CC BY-SA license. www.basicfantasy.com")
-
     title = so.TextField(screen, title_message, title)
     subtitle = so.TextField(screen, subtitle_message, large)
     copyright_notice = so.TextField(screen, copyright_message, small)
-
 
     # Main menu.
     custom = so.Button(screen, "Custom Character", medium)

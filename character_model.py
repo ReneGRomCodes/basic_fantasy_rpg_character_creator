@@ -1,4 +1,5 @@
-from functions import dice_roll, get_ability_score
+from functions import dice_roll
+from character_creation_functions import get_ability_score
 import item_instances as item_inst
 """Class for character."""
 
@@ -141,8 +142,9 @@ class Character:
         """Set name for character."""
         self.name = char_name
 
-    def build_ability_dict(self):
-        """Build attribute dictionary 'self.abilities' for character abilities."""
+    def set_ability_dict(self):
+        """Build attribute dictionary 'self.abilities' for character abilities. Values are lists with base score at
+        index 0 and bonus/penalty at index 1."""
         ability_names = ["str", "dex", "con", "int", "wis", "cha"]
 
         for item in ability_names:

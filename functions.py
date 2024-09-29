@@ -30,34 +30,6 @@ def check_yes_no(prompt):
         return False
 
 
-def get_ability_score():
-    """Generate random value for ability score, apply bonus/penalty and return both values in list
-    'ability_score' with the base score at index 0 and the bonus/penalty at index 1."""
-    ability_score = [dice_roll(3, 6)]
-
-    if ability_score[0] <= 3:
-        ability_score.append(-3)
-        return ability_score
-    elif ability_score[0] <= 5:
-        ability_score.append(-2)
-        return ability_score
-    elif ability_score[0] <= 8:
-        ability_score.append(-1)
-        return ability_score
-    elif ability_score[0] <= 12:
-        ability_score.append(0)
-        return ability_score
-    elif ability_score[0] <= 15:
-        ability_score.append(1)
-        return ability_score
-    elif ability_score[0] <= 17:
-        ability_score.append(2)
-        return ability_score
-    else:
-        ability_score.append(3)
-        return ability_score
-
-
 def check_race(character):
     """Check instance 'character' abilities for possible races to choose and return them in list 'possible_races'."""
     possible_races = ["Human"]  # Humans have no minimum requirements.
