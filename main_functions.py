@@ -104,6 +104,12 @@ def custom_character(character):
     # Build character sheet.
     cf.build_character_sheet(character)
 
+    # Proceed to shop.
+    print("\n\nPress ENTER to proceed to shop.")
+    input()
+    os.system('cls')
+    show_main_shop(character)
+
 
 def random_character(character):
     """Create character with random values and print character sheet."""
@@ -117,6 +123,12 @@ def random_character(character):
 
     # Build character sheet.
     cf.build_character_sheet(character)
+
+    # Proceed to shop.
+    print("\n\nPress ENTER to proceed to shop.")
+    input()
+    os.system('cls')
+    show_main_shop(character)
 
 
 def show_main_shop(character):
