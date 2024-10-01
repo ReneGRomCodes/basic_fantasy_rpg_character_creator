@@ -24,9 +24,11 @@ def handle_events(screen, character, state, gui_elements, mouse_pos):
         elif state == "main_menu":
             if event.type == pygame.MOUSEBUTTONUP:
                 if gui_elements["custom"].button_rect.collidepoint(mouse_pos):
+                    pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
                     custom_character(character)
 
                 if gui_elements["random"].button_rect.collidepoint(mouse_pos):
+                    pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
                     random_character(character)
 
     return state
