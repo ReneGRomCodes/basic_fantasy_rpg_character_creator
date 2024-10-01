@@ -8,6 +8,7 @@ class TextField:
     def __init__(self, screen, text, size):
         """Initialize a text field on screen
         ARGS:
+            screen: pygame window.
             text: string to be shown in text field.
             size: font size for text.
         Default position is centered on screen.
@@ -32,11 +33,12 @@ class TextField:
 
 
 class Button(TextField):
-    """Represent a selectable button."""
+    """Represent an interactive button."""
 
     def __init__(self, screen, text, size):
         """Initialize an interactive button on screen
         ARGS:
+            screen: pygame window.
             text: string to be shown on the button.
             size: font size for text.
         Default position is centered on screen.
@@ -62,4 +64,29 @@ class Button(TextField):
 
         # Draw the text on top of the button.
         self.text_rect.center = self.button_rect.center
+        self.screen.blit(self.text_image, self.text_rect)
+
+
+class LabeledText(Button):
+    """Represent an interactive text field with popup when mouse hovers over it. """
+
+    def __init__(self, screen, text, size):
+        """Initialize an interactive text field with popup on screen.
+        ARGS:
+            screen: pygame window.
+            text: string to be shown for the text field.
+            size: font size for text.
+        Default position is centered on screen.
+        """
+        super().__init__(screen, text, size)
+        # NOTE: Rect, size and position (text_image, text_rect and text_rect.center) are set by attributes from class
+        # 'TextField' not 'Button'.
+
+    def draw_labeled_text(self, mouse_pos):
+        """Draw the text field on the screen, changing color based on hover and show popup using 'mouse_pos' as
+        initialized in main loop in 'main.py'."""
+        # Change button color based on mouse hover.
+        if self.text_rect.collidepoint(mouse_pos):
+            pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
+
         self.screen.blit(self.text_image, self.text_rect)
