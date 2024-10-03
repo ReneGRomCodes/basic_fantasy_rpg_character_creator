@@ -5,9 +5,9 @@ import gui.screen_objects as so
 def initialize_screen_elements(screen):
     """Initialize instances of classes from 'screen_objects.py' for use in GUI. Return dict of instances 'gui_elements'.
     NOTE: Instances created have to be then added manually to dict 'gui_elements'!"""
-    # Text sizes.
+    # Text sizes from biggest to smallest. Sizes are calculated based on screen size for scalability.
     screen_height = screen.get_rect().height
-    title = int(screen_height / 16)
+    title_size = int(screen_height / 16)
     large = int(screen_height / 20)
     medium = int(screen_height / 25)
     small = int(screen_height / 40)
@@ -17,7 +17,7 @@ def initialize_screen_elements(screen):
     subtitle_message = "Character Creator"
     copyright_message = ("Basic Fantasy Role-Playing Game, Copyright 2006-2024 Chris Gonnerman. All Rights reserved. "
                          "Distributed under CC BY-SA license. www.basicfantasy.com")
-    title = so.TextField(screen, title_message, title)
+    title = so.TextField(screen, title_message, title_size)
     subtitle = so.TextField(screen, subtitle_message, large)
     copyright_notice = so.TextField(screen, copyright_message, small)
 
