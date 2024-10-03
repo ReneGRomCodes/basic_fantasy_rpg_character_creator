@@ -28,15 +28,15 @@ def initialize_screen_elements(screen):
     random = so.Button(screen, "Create Random Character", medium)
 
 
-    # Dict to be returned containing instances for GUI objects.
+    # Dict to be returned containing instances and spacing values (for positioning) for GUI objects.
     gui_elements = {
-        # Key-value pairs for element positioning.
+        # Title screen.
         "title_screen_spacing": int(screen.get_rect().height / 40),
-        "menu_title_spacing": int(screen.get_rect().height / 30),
-        # Key-value pairs for screen objects.
         "title": title,
         "subtitle": subtitle,
         "copyright_notice": copyright_notice,
+        # Main menu.
+        "menu_title_spacing": int(screen.get_rect().height / 30),
         "main_menu": main_menu,
         "custom": custom,
         "random": random,
