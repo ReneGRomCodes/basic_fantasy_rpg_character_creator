@@ -33,7 +33,7 @@ def get_ability_score():
         return ability_score
 
 
-def get_ability_race_class(character):
+def get_ability_race_class(character, gui_elements, mouse_pos):
     """Generate abilities for instance 'character', ask for user confirmation and return list 'race_list' and list
     'class_list'."""
     while True:
@@ -50,11 +50,45 @@ def get_ability_race_class(character):
 
         # Print ability scores.
         show_ability_scores(character)
+        show_ability_scores_pygame(character, gui_elements, mouse_pos)
 
         if func.check_yes_no("\nKeep these scores and proceed to choose your race and class? (Y/N) "):
             return race_list, class_list
         else:
             continue
+
+
+def show_ability_scores_pygame(character, gui_elements, mouse_pos):
+    # Assign gui_elements to variables and add them to list 'abilities'.
+    strength = gui_elements["strength"]
+    dexterity = gui_elements["dexterity"]
+    constitution = gui_elements["constitution"]
+    intelligence = gui_elements["intelligence"]
+    wisdom = gui_elements["wisdom"]
+    charisma = gui_elements["charisma"]
+    abilities = [strength, dexterity, constitution, intelligence, wisdom, charisma]
+
+    for ability, key in zip(abilities, character.abilities):
+        # 'Pre-formatting' ability name and bonus/penalty for better code-readability further down when 'ability.text'
+        # is formatted.
+        abilities_name = f"{ability.name}:"  # TODO change here because ability.name just adds to the string if abilities are re-rolled.
+        bonus_penalty = f"{character.abilities[key][1]}"
+
+        # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
+        # string if bonus_penalty is 0.
+        if character.abilities[key][1] > 0:
+            bonus_penalty = f"+{bonus_penalty}"
+        elif character.abilities[key][1] == 0:
+            bonus_penalty = ""
+        else:
+            pass
+
+        ability.text = f"{abilities_name:<23} {character.abilities[key][0]:>2} {bonus_penalty:>4}"
+        ability.text_image = ability.font.render(ability.text, True, ability.text_color)
+        ability.text_rect = ability.text_image.get_rect()
+
+
+    strength.draw_labeled_text(mouse_pos)
 
 
 def show_ability_scores(character):

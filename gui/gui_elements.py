@@ -27,6 +27,14 @@ def initialize_screen_elements(screen):
     custom = so.Button(screen, "Create Custom Character", medium)
     random = so.Button(screen, "Create Random Character", medium)
 
+    # Ability scores screen.
+    strength_field = so.LabeledText(screen, "Strength", small)
+    dexterity_field = so.LabeledText(screen, "Dexterity", small)
+    constitution_field = so.LabeledText(screen, "Constitution", small)
+    intelligence_field = so.LabeledText(screen, "Intelligence", small)
+    wisdom_field = so.LabeledText(screen, "Wisdom", small)
+    charisma_field = so.LabeledText(screen, "Charisma", small)
+
 
     # Dict to be returned containing instances and spacing values (for positioning) for GUI objects.
     gui_elements = {
@@ -40,6 +48,13 @@ def initialize_screen_elements(screen):
         "main_menu": main_menu,
         "custom": custom,
         "random": random,
+        # Ability scores screen.
+        "strength": strength_field,
+        "dexterity": dexterity_field,
+        "constitution": constitution_field,
+        "intelligence": intelligence_field,
+        "wisdom": wisdom_field,
+        "charisma": charisma_field,
     }
 
     return gui_elements
