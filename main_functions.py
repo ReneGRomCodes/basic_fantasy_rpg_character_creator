@@ -24,11 +24,13 @@ def handle_events(screen, character, state, gui_elements, mouse_pos):
         elif state == "main_menu":
             if event.type == pygame.MOUSEBUTTONUP:
                 if gui_elements["custom"].button_rect.collidepoint(mouse_pos):
+                    pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
                     return "custom_character"
 
                 if gui_elements["random"].button_rect.collidepoint(mouse_pos):
                     pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
-                    random_character(character)
+                    return "random_character"
+
 
     return state
 
@@ -77,11 +79,11 @@ def show_menu(screen, gui_elements, mouse_pos):
     random.draw_button(mouse_pos)
 
 
-def custom_character(character, gui_elements, mouse_pos):
+def custom_character(character):
     """Create custom character with user input and print character sheet."""
     os.system('cls')
     # Get ability scores and lists with available races and classes.
-    race_list, class_list = cf.get_ability_race_class(character, gui_elements, mouse_pos)
+    race_list, class_list = cf.get_ability_race_class(character)
 
     # Race and class selection.
     cf.race_class_selection(character, race_list, class_list)

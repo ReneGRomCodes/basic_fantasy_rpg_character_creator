@@ -33,7 +33,7 @@ def get_ability_score():
         return ability_score
 
 
-def get_ability_race_class(character, gui_elements, mouse_pos):
+def get_ability_race_class(character):
     """Generate abilities for instance 'character', ask for user confirmation and return list 'race_list' and list
     'class_list'."""
     while True:
@@ -50,7 +50,6 @@ def get_ability_race_class(character, gui_elements, mouse_pos):
 
         # Print ability scores.
         show_ability_scores(character)
-        show_ability_scores_pygame(character, gui_elements, mouse_pos)
 
         if func.check_yes_no("\nKeep these scores and proceed to choose your race and class? (Y/N) "):
             return race_list, class_list
@@ -67,28 +66,36 @@ def show_ability_scores_pygame(character, gui_elements, mouse_pos):
     wisdom = gui_elements["wisdom"]
     charisma = gui_elements["charisma"]
     abilities = [strength, dexterity, constitution, intelligence, wisdom, charisma]
+    # Assign dict 'character.abilities' to 'stats' to avoid confusion with list 'abilities' above.
+    stats = character.abilities
 
-    for ability, key in zip(abilities, character.abilities):
+    for ability, key in zip(abilities, stats):
         # 'Pre-formatting' ability name and bonus/penalty for better code-readability further down when 'ability.text'
         # is formatted.
-        abilities_name = f"{ability.name}:"  # TODO change here because ability.name just adds to the string if abilities are re-rolled.
-        bonus_penalty = f"{character.abilities[key][1]}"
+        abilities_name = f"{ability.text}:"  # TODO change here because ability.name just adds to the string if abilities are re-rolled.
+        bonus_penalty = f"{stats[key][1]}"
 
         # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
         # string if bonus_penalty is 0.
-        if character.abilities[key][1] > 0:
+        if stats[key][1] > 0:
             bonus_penalty = f"+{bonus_penalty}"
-        elif character.abilities[key][1] == 0:
+        elif stats[key][1] == 0:
             bonus_penalty = ""
         else:
             pass
 
-        ability.text = f"{abilities_name:<23} {character.abilities[key][0]:>2} {bonus_penalty:>4}"
+        ability.text = f"{abilities_name:<23} {stats[key][0]:>2} {bonus_penalty:>4}"
+
+    # Render text and get rect after 'ability.text' changes for instances in list 'abilities'.
+    for ability in abilities:
         ability.text_image = ability.font.render(ability.text, True, ability.text_color)
         ability.text_rect = ability.text_image.get_rect()
 
-
-    strength.draw_labeled_text(mouse_pos)
+    # Temporary positioning for testing TODO!!!
+    element_pos_y = strength.size
+    for ability in abilities:
+        ability.draw_labeled_text(mouse_pos)
+        ability.text_rect.top += element_pos_y
 
 
 def show_ability_scores(character):

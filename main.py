@@ -35,7 +35,9 @@ def run_character_creator():
         elif state == "main_menu":
             mf.show_menu(screen, gui_elements, mouse_pos)
         elif state == "custom_character":
-            mf.custom_character(character, gui_elements, mouse_pos)
+            mf.custom_character(character)
+        elif state == "random_character":
+            mf.random_character(character)
 
         pygame.display.flip()
 
