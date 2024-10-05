@@ -66,13 +66,15 @@ def show_ability_scores_pygame(character, gui_elements, mouse_pos):
     wisdom = gui_elements["wisdom"]
     charisma = gui_elements["charisma"]
     abilities = [strength, dexterity, constitution, intelligence, wisdom, charisma]
+    # Default names for instances in list 'abilities' for reset/re-roll of ability values.
+    abilities_names = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
     # Assign dict 'character.abilities' to 'stats' to avoid confusion with list 'abilities' above.
     stats = character.abilities
 
-    for ability, key in zip(abilities, stats):
+    for ability, name, key in zip(abilities, abilities_names, stats):
         # 'Pre-formatting' ability name and bonus/penalty for better code-readability further down when 'ability.text'
         # is formatted.
-        abilities_name = f"{ability.text}:"  # TODO change here because ability.name just adds to the string if abilities are re-rolled.
+        ability_name = f"{name}:"
         bonus_penalty = f"{stats[key][1]}"
 
         # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
@@ -84,7 +86,7 @@ def show_ability_scores_pygame(character, gui_elements, mouse_pos):
         else:
             pass
 
-        ability.text = f"{abilities_name:<23} {stats[key][0]:>2} {bonus_penalty:>4}"
+        ability.text = f"{ability_name:<23} {stats[key][0]:>2} {bonus_penalty:>4}"
 
     # Render text and get rect after 'ability.text' changes for instances in list 'abilities'.
     for ability in abilities:
@@ -92,10 +94,11 @@ def show_ability_scores_pygame(character, gui_elements, mouse_pos):
         ability.text_rect = ability.text_image.get_rect()
 
     # Temporary positioning for testing TODO!!!
-    element_pos_y = strength.size
+    element_pos_y = 20
     for ability in abilities:
-        ability.draw_labeled_text(mouse_pos)
         ability.text_rect.top += element_pos_y
+        ability.draw_labeled_text(mouse_pos)
+        element_pos_y += 30
 
 
 def show_ability_scores(character):
