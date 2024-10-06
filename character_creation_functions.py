@@ -66,15 +66,13 @@ def show_ability_scores_pygame(character, gui_elements, mouse_pos):
     wisdom = gui_elements["wisdom"]
     charisma = gui_elements["charisma"]
     abilities = [strength, dexterity, constitution, intelligence, wisdom, charisma]
-    # Default names for instances in list 'abilities' for reset/re-roll of ability values.
-    abilities_names = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
     # Assign dict 'character.abilities' to 'stats' to avoid confusion with list 'abilities' above.
     stats = character.abilities
 
-    for ability, name, key in zip(abilities, abilities_names, stats):
+    for ability, key in zip(abilities, stats):
         # 'Pre-formatting' ability name and bonus/penalty for better code-readability further down when 'ability.text'
         # is formatted.
-        ability_name = f"{name}:"
+        ability_name = f"{ability.name}:"
         bonus_penalty = f"{stats[key][1]}"
 
         # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
