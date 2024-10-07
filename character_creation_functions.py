@@ -2,6 +2,7 @@ import functions as func
 import random
 import os
 from item_instances import no_shield
+import gui.screen_objects as so
 """Functions used to set race/class and build the character sheet."""
 
 
@@ -57,7 +58,8 @@ def get_ability_race_class(character):
             continue
 
 
-def show_ability_scores_pygame(character, gui_elements, mouse_pos):
+def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
+    # TODO 'character.set_character_abilities' has to be called, gui positioning needs work.
     # Assign gui_elements to variables and add them to list 'abilities'.
     strength = gui_elements["strength"]
     dexterity = gui_elements["dexterity"]
@@ -68,11 +70,16 @@ def show_ability_scores_pygame(character, gui_elements, mouse_pos):
     abilities = [strength, dexterity, constitution, intelligence, wisdom, charisma]
     # Assign dict 'character.abilities' to 'stats' to avoid confusion with list 'abilities' above.
     stats = character.abilities
+    # Create instances of class 'TextField' to show ability scores on screen. Text size is taken from an instance in
+    # 'gui_elements' to assure automatic scaling.
+    ability_score_field = so.TextField(screen, "score", strength.size)
+    bonus_penalty_field = so.TextField(screen, "bonus_penalty", strength.size)
+
+    # TODO Temporary variable for gui positioning during testing.
+    element_pos_y = 20
 
     for ability, key in zip(abilities, stats):
-        # 'Pre-formatting' ability name and bonus/penalty for better code-readability further down when 'ability.text'
-        # is formatted.
-        ability_name = f"{ability.name}:"
+        # 'Pre-formatting' bonus/penalty to string for easier formatting and better code-readability further down.
         bonus_penalty = f"{stats[key][1]}"
 
         # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
@@ -84,18 +91,24 @@ def show_ability_scores_pygame(character, gui_elements, mouse_pos):
         else:
             pass
 
-        ability.text = f"{ability_name:<23} {stats[key][0]:>2} {bonus_penalty:>4}"
-
-    # Render text and get rect after 'ability.text' changes for instances in list 'abilities'.
-    for ability in abilities:
-        ability.text_image = ability.font.render(ability.text, True, ability.text_color)
-        ability.text_rect = ability.text_image.get_rect()
-
-    # Temporary positioning for testing TODO!!!
-    element_pos_y = 20
-    for ability in abilities:
-        ability.text_rect.top += element_pos_y
+        ability.text_rect.top = element_pos_y
         ability.draw_labeled_text(mouse_pos)
+
+        # Changing contents and position of 'TextField' instances to show correct stats for ability during each iteration.
+        ability_score_field.text = str(stats[key][0])
+        ability_score_field.text_image = ability_score_field.font.render(ability_score_field.text, True, bonus_penalty_field.text_color)
+        ability_score_field.text_rect = ability_score_field.text_image.get_rect()
+        ability_score_field.left = ability.text_rect.right
+        ability_score_field.text_rect.top = element_pos_y
+        bonus_penalty_field.text = bonus_penalty
+        bonus_penalty_field.text_image = bonus_penalty_field.font.render(bonus_penalty_field.text, True, bonus_penalty_field.text_color)
+        bonus_penalty_field.text_rect = bonus_penalty_field.text_image.get_rect()
+        bonus_penalty_field.left = ability_score_field.text_rect.right
+        bonus_penalty_field.top = element_pos_y
+
+        ability_score_field.draw_text()
+        bonus_penalty_field.draw_text()
+
         element_pos_y += 30
 
 
