@@ -35,7 +35,7 @@ def get_ability_score():
 
 
 def get_race_class_lists(character):
-    """Generate race and class based on abilities for instance 'character' and return lists 'race_list' and
+    """Generate race and class based on abilities scores for instance 'character' and return lists 'race_list' and
     'class_list'."""
     race_list = func.check_race(character)
     class_list = func.check_class(character)
@@ -44,7 +44,8 @@ def get_race_class_lists(character):
 
 
 def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
-    # TODO 'character.set_character_abilities' has to be called, gui positioning needs work.
+    """Display character ability scores and bonus/penalty on screen."""
+    # TODO positioning needs work.
     # Assign gui_elements to variables and add them to list 'abilities'.
     strength = gui_elements["strength"]
     dexterity = gui_elements["dexterity"]

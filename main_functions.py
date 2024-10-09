@@ -87,11 +87,11 @@ def show_menu(screen, gui_elements, mouse_pos):
 
 
 def custom_character(screen, state, character, gui_elements, mouse_pos):
-    """Create custom character with user input and print character sheet."""
+    """Create custom character with user input and return state for main loop."""
     if state == "custom_character_1":
         # Generate dictionary for character abilities.
         character.set_ability_dict()
-        # Check if character abilities allow for valid race-class combinations.
+        # Check if character abilities allow for any valid race-class combinations.
         race_list, class_list = cf.get_race_class_lists(character)
         if func.check_valid_race_class(race_list, class_list):
             return "custom_character_2"
@@ -99,6 +99,7 @@ def custom_character(screen, state, character, gui_elements, mouse_pos):
             return "custom_character_1"
 
     elif state == "custom_character_2":
+        # Display ability score screen.
         cf.show_ability_scores_pygame(screen, character, gui_elements, mouse_pos)
 
     elif state == "custom_character_3":
