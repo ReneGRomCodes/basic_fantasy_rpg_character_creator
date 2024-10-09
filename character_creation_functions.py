@@ -34,28 +34,13 @@ def get_ability_score():
         return ability_score
 
 
-def get_ability_race_class(character):
-    """Generate abilities for instance 'character', ask for user confirmation and return list 'race_list' and list
+def get_race_class_lists(character):
+    """Generate race and class based on abilities for instance 'character' and return lists 'race_list' and
     'class_list'."""
-    while True:
-        print("Let's roll the dice!\n")
+    race_list = func.check_race(character)
+    class_list = func.check_class(character)
 
-        # Generate dictionary for character abilities.
-        character.set_ability_dict()
-
-        # Check if abilities allow for valid race-class combinations.
-        race_list = func.check_race(character)
-        class_list = func.check_class(character)
-        if not func.check_valid_race_class(race_list, class_list):
-            continue
-
-        # Print ability scores.
-        show_ability_scores(character)
-
-        if func.check_yes_no("\nKeep these scores and proceed to choose your race and class? (Y/N) "):
-            return race_list, class_list
-        else:
-            continue
+    return race_list, class_list
 
 
 def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
@@ -289,8 +274,7 @@ def random_character_generator(character):
         character.set_ability_dict()
 
         # Check if abilities allow for valid race-class combinations.
-        race_list = func.check_race(character)
-        class_list = func.check_class(character)
+        race_list, class_list = get_race_class_lists(character)
         if not func.check_valid_race_class(race_list, class_list):
             continue
         race_class_list = build_race_class_list(race_list, class_list)

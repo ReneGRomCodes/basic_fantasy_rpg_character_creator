@@ -24,13 +24,20 @@ def handle_events(screen, character, state, gui_elements, mouse_pos):
         elif state == "main_menu":
             if event.type == pygame.MOUSEBUTTONUP:
                 if gui_elements["custom"].button_rect.collidepoint(mouse_pos):
-                    pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
-                    return "custom_character"
+                    return "custom_character_1"
 
                 if gui_elements["random"].button_rect.collidepoint(mouse_pos):
                     pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
                     return "random_character"
 
+        elif state == "custom_character_2":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if screen.get_rect().collidepoint(mouse_pos):
+                    pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
+                    return "custom_character_3"
+
+        else:
+            pass
 
     return state
 
@@ -79,38 +86,54 @@ def show_menu(screen, gui_elements, mouse_pos):
     random.draw_button(mouse_pos)
 
 
-def custom_character(character):
+def custom_character(screen, state, character, gui_elements, mouse_pos):
     """Create custom character with user input and print character sheet."""
-    os.system('cls')
-    # Get ability scores and lists with available races and classes.
-    race_list, class_list = cf.get_ability_race_class(character)
+    if state == "custom_character_1":
+        # Generate dictionary for character abilities.
+        character.set_ability_dict()
+        # Check if character abilities allow for valid race-class combinations.
+        race_list, class_list = cf.get_race_class_lists(character)
+        if func.check_valid_race_class(race_list, class_list):
+            return "custom_character_2"
+        else:
+            return "custom_character_1"
 
-    # Race and class selection.
-    cf.race_class_selection(character, race_list, class_list)
+    elif state == "custom_character_2":
+        cf.show_ability_scores_pygame(screen, character, gui_elements, mouse_pos)
 
-    # Set values in character instance based on race and class.
-    cf.set_character_values(character)
+    elif state == "custom_character_3":
+        # Get lists with available races and classes.
+        race_list, class_list = cf.get_race_class_lists(character)
+        # Race and class selection.
+        cf.race_class_selection(character, race_list, class_list)
+        # Set values in character instance based on race and class.
+        cf.set_character_values(character)
 
-    # Name the character.
-    cf.name_character(character)
+        return "custom_character_4"
 
-    # Set amount of starting money.
-    cf.set_starting_money(character)
-    os.system('cls')
+    elif state == "custom_character_4":
+        # Name the character.
+        cf.name_character(character)
 
-    print("\n\n\t\tCharacter creation complete. Press ENTER to show character sheet.")
-    input()
-    os.system('cls')
+        # Set amount of starting money.
+        cf.set_starting_money(character)
+        os.system('cls')
 
-    # Build character sheet.
-    cf.build_character_sheet(character)
+        print("\n\n\t\tCharacter creation complete. Press ENTER to show character sheet.")
+        input()
+        os.system('cls')
 
-    # Proceed to shop and show final character sheet when finished.
-    input("\n\nPress ENTER to proceed to shop.")
-    os.system('cls')
-    show_main_shop(character)
-    cf.build_character_sheet(character)
-    input("\n\nPress ENTER to exit.")
+        # Build character sheet.
+        cf.build_character_sheet(character)
+
+        # Proceed to shop and show final character sheet when finished.
+        input("\n\nPress ENTER to proceed to shop.")
+        os.system('cls')
+        show_main_shop(character)
+        cf.build_character_sheet(character)
+        input("\n\nPress ENTER to exit.")
+
+    return state
 
 
 def random_character(character):

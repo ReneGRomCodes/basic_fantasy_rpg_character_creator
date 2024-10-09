@@ -34,8 +34,8 @@ def run_character_creator():
             mf.show_title_screen(screen, gui_elements)
         elif state == "main_menu":
             mf.show_menu(screen, gui_elements, mouse_pos)
-        elif state == "custom_character":
-            mf.custom_character(character)
+        elif state in ["custom_character_1", "custom_character_2", "custom_character_3", "custom_character_4"]:
+            state = mf.custom_character(screen, state, character, gui_elements, mouse_pos)
         elif state == "random_character":
             mf.random_character(character)
 

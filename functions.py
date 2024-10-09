@@ -66,8 +66,9 @@ def check_class(character):
 
 
 def check_valid_race_class(race_list, class_list):
-    """Check if 'class_list' is empty, return 'False' if so. If not check for valid race-class combinations and return
-    valid 'race_list'. NOTE: returned list can be empty at after this function executes."""
+    """Check if 'class_list' is empty, return 'False' if so. If not check for valid race-class combinations and remove
+     invalid races from 'race_list'. Return 'False' if 'race_list' is empty, 'True' if items remain in 'race_list'
+     afterward."""
 
     # Check if class list is empty.
     if not class_list:
@@ -79,7 +80,11 @@ def check_valid_race_class(race_list, class_list):
     if class_list == ["Magic-User"] and "Halfling" in race_list:
         race_list.remove("Halfling")
 
-    return race_list
+    # Check if race list is empty after 'Magic-User' check above and return 'False' or modified 'race_list'.
+    if not race_list:
+        return False
+    else:
+        return race_list
 
 
 def select_from_list(list, prompt):
