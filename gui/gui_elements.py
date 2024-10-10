@@ -35,7 +35,7 @@ def initialize_screen_elements(screen):
     copyright_notice = so.TextField(screen, copyright_message, text_small)
 
     # Main menu.
-    main_menu_title = "MAIN MENU"
+    main_menu_title = "- MAIN MENU -"
     main_menu = so.TextField(screen, main_menu_title, text_large)
     custom = so.Button(screen, "Create Custom Character", text_medium)
     random = so.Button(screen, "Create Random Character", text_medium)

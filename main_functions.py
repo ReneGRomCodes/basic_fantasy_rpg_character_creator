@@ -80,8 +80,10 @@ def show_menu(screen, gui_elements, mouse_pos):
     random = gui_elements["random"]
 
     # Positioning.
+    custom.button_rect.width = screen.get_rect().width / 3
     custom.button_rect.centerx = screen.get_rect().centerx
     custom.button_rect.bottom = screen.get_rect().centery
+    random.button_rect.width = screen.get_rect().width / 3
     random.button_rect.centerx = screen.get_rect().centerx
     random.button_rect.top = screen.get_rect().centery
     main_menu.text_rect.bottom = custom.button_rect.top - spacing
