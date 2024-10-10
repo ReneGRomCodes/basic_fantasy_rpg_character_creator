@@ -46,7 +46,12 @@ def get_race_class_lists(character):
 def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
     """Display character ability scores and bonus/penalty on screen."""
     # TODO positioning needs work.
-    # Assign gui_elements to variables and add them to list 'abilities'.
+    # Assign buttons from 'gui_elements' to variables.
+    reroll_button = gui_elements["reroll_button"]
+    back_button = gui_elements["back_button"]
+    continue_button = gui_elements["continue_button"]
+
+    # Assign further gui_elements to variables and add them to list 'abilities'.
     strength = gui_elements["strength"]
     dexterity = gui_elements["dexterity"]
     constitution = gui_elements["constitution"]
@@ -80,7 +85,7 @@ def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
         ability.text_rect.top = element_pos_y
         ability.draw_labeled_text(mouse_pos)
 
-        # Changing contents and position of 'TextField' instances to show correct stats for ability during each iteration.
+        # Change contents and position of 'TextField' instances to show correct stats for ability during each iteration.
         ability_score_field.text = str(stats[key][0])
         ability_score_field.text_image = ability_score_field.font.render(ability_score_field.text, True, bonus_penalty_field.text_color)
         ability_score_field.text_rect = ability_score_field.text_image.get_rect()
@@ -96,6 +101,18 @@ def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
         bonus_penalty_field.draw_text()
 
         element_pos_y += 30
+
+    # Position and draw buttons on screen
+    reroll_button.button_rect.bottom = screen.get_rect().bottom
+    reroll_button.button_rect.centerx = screen.get_rect().centerx
+    back_button.button_rect.bottom = screen.get_rect().bottom
+    back_button.button_rect.right = reroll_button.text_rect.left
+    continue_button.button_rect.bottom = screen.get_rect().bottom
+    continue_button.button_rect.left = reroll_button.text_rect.right
+
+    reroll_button.draw_button(mouse_pos)
+    back_button.draw_button(mouse_pos)
+    continue_button.draw_button(mouse_pos)
 
 
 def show_ability_scores(character):

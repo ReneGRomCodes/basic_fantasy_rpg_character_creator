@@ -21,6 +21,10 @@ def initialize_screen_elements(screen):
     subtitle = so.TextField(screen, subtitle_message, large)
     copyright_notice = so.TextField(screen, copyright_message, small)
 
+    # Buttons.
+    continue_button = so.Button(screen, "Continue", medium)
+    back_button = so.Button(screen, "Back", medium)
+
     # Main menu.
     main_menu_title = "MAIN MENU"
     main_menu = so.TextField(screen, main_menu_title, large)
@@ -34,6 +38,7 @@ def initialize_screen_elements(screen):
     intelligence_field = so.LabeledText(screen, "Intelligence", small)
     wisdom_field = so.LabeledText(screen, "Wisdom", small)
     charisma_field = so.LabeledText(screen, "Charisma", small)
+    reroll_button = so.Button(screen, "Roll Again", medium)
 
 
     # Dict to be returned containing instances and spacing values (for positioning) for GUI objects.
@@ -43,6 +48,9 @@ def initialize_screen_elements(screen):
         "title": title,
         "subtitle": subtitle,
         "copyright_notice": copyright_notice,
+        # Buttons.
+        "continue_button": continue_button,
+        "back_button": back_button,
         # Main menu.
         "menu_title_spacing": int(screen.get_rect().height / 30),
         "main_menu": main_menu,
@@ -55,6 +63,7 @@ def initialize_screen_elements(screen):
         "intelligence": intelligence_field,
         "wisdom": wisdom_field,
         "charisma": charisma_field,
+        "reroll_button": reroll_button,
     }
 
     return gui_elements
