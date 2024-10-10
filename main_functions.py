@@ -32,7 +32,13 @@ def handle_events(screen, character, state, gui_elements, mouse_pos):
 
         elif state == "custom_character_2":
             if event.type == pygame.MOUSEBUTTONUP:
-                if screen.get_rect().collidepoint(mouse_pos):
+                if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                    return "main_menu"
+
+                if gui_elements["reroll_button"].button_rect.collidepoint(mouse_pos):
+                    return "custom_character_1"
+
+                if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                     pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
                     return "custom_character_3"
 

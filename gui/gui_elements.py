@@ -43,16 +43,17 @@ def initialize_screen_elements(screen):
 
     # Dict to be returned containing instances and spacing values (for positioning) for GUI objects.
     gui_elements = {
-        # Title screen.
+        # Variables for spacing.
         "title_screen_spacing": int(screen.get_rect().height / 40),
-        "title": title,
-        "subtitle": subtitle,
-        "copyright_notice": copyright_notice,
+        "menu_title_spacing": int(screen.get_rect().height / 30),
         # Buttons.
         "continue_button": continue_button,
         "back_button": back_button,
+        # Title screen.
+        "title": title,
+        "subtitle": subtitle,
+        "copyright_notice": copyright_notice,
         # Main menu.
-        "menu_title_spacing": int(screen.get_rect().height / 30),
         "main_menu": main_menu,
         "custom": custom,
         "random": random,
