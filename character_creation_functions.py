@@ -103,12 +103,9 @@ def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
         element_pos_y += 30
 
     # Position and draw buttons on screen
-    reroll_button.button_rect.bottom = screen.get_rect().bottom
+    reroll_button.button_rect.width = gui_elements["default_button_width"]
     reroll_button.button_rect.centerx = screen.get_rect().centerx
-    back_button.button_rect.bottom = screen.get_rect().bottom
-    back_button.button_rect.right = reroll_button.text_rect.left
-    continue_button.button_rect.bottom = screen.get_rect().bottom
-    continue_button.button_rect.left = reroll_button.text_rect.right
+    reroll_button.button_rect.bottom = screen.get_rect().bottom - gui_elements["default_button_spacing"]
 
     reroll_button.draw_button(mouse_pos)
     back_button.draw_button(mouse_pos)
