@@ -99,7 +99,8 @@ class LabeledText(Button):
         """Draw the text field on the screen, changing color based on hover and show popup using 'mouse_pos' as
         initialized in main loop in 'main.py'."""
         # Change field color based on mouse hover.
-        if self.text_rect.collidepoint(mouse_pos):
-            pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
+        if self.button_rect.collidepoint(mouse_pos):
+            pygame.draw.rect(self.screen, self.rect_hover_color, self.button_rect)
 
+        self.text_rect.center = self.button_rect.center
         self.screen.blit(self.text_image, self.text_rect)

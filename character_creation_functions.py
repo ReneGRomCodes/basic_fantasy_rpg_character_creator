@@ -82,14 +82,15 @@ def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
         else:
             pass
 
-        ability.text_rect.top = element_pos_y
+        ability.button_rect.top = screen.get_rect().top + element_pos_y
+        ability.button_rect.centerx = screen.get_rect().centerx
         ability.draw_labeled_text(mouse_pos)
 
         # Change contents and position of 'TextField' instances to show correct stats for ability during each iteration.
         ability_score_field.text = str(stats[key][0])
         ability_score_field.text_image = ability_score_field.font.render(ability_score_field.text, True, bonus_penalty_field.text_color)
         ability_score_field.text_rect = ability_score_field.text_image.get_rect()
-        ability_score_field.left = ability.text_rect.right
+        ability_score_field.left = ability.button_rect.right
         ability_score_field.text_rect.top = element_pos_y
         bonus_penalty_field.text = bonus_penalty
         bonus_penalty_field.text_image = bonus_penalty_field.font.render(bonus_penalty_field.text, True, bonus_penalty_field.text_color)
