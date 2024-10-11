@@ -12,17 +12,17 @@ def initialize_screen_elements(screen):
     text_large = int(screen_height / 20)
     text_medium = int(screen_height / 25)
     text_small = int(screen_height / 40)
-    button_spacing = screen_width / 25
+    spacing_screen_edge = screen_width / 25  # Default value for distance to edge of screen for GUI objects.
     button_width = screen_width / 6
     # Standard buttons, size and default positions.
     continue_button = so.Button(screen, "Continue", text_medium)
     continue_button.button_rect.width = button_width
-    continue_button.button_rect.bottomright = (screen.get_rect().right - button_spacing,
-                                               screen.get_rect().bottom - button_spacing)
+    continue_button.button_rect.bottomright = (screen.get_rect().right - spacing_screen_edge,
+                                               screen.get_rect().bottom - spacing_screen_edge)
     back_button = so.Button(screen, "Back", text_medium)
     back_button.button_rect.width = button_width
-    back_button.button_rect.bottomleft = (screen.get_rect().left + button_spacing,
-                                          screen.get_rect().bottom - button_spacing)
+    back_button.button_rect.bottomleft = (screen.get_rect().left + spacing_screen_edge,
+                                          screen.get_rect().bottom - spacing_screen_edge)
 
 
     # Title screen.
@@ -56,7 +56,7 @@ def initialize_screen_elements(screen):
         "title_screen_spacing": int(screen.get_rect().height / 40),
         "menu_title_spacing": int(screen.get_rect().height / 30),
         "default_button_width": button_width,
-        "default_button_spacing": button_spacing,
+        "default_button_spacing": spacing_screen_edge,
         # Standard buttons.
         "continue_button": continue_button,
         "back_button": back_button,

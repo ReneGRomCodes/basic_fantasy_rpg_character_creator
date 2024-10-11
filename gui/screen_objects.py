@@ -79,7 +79,7 @@ class Button(TextField):
         self.screen.blit(self.text_image, self.text_rect)
 
 
-class LabeledText(Button):
+class LabeledText(TextField):
     """Represent an interactive text field with popup when mouse hovers over it. """
 
     def __init__(self, screen, text, size, bg_color=(0, 0, 0, 0)):
@@ -92,19 +92,18 @@ class LabeledText(Button):
         Default position is centered on screen.
         """
         super().__init__(screen, text, size, bg_color)
-        # NOTE: Rect, size and position (text_image, text_rect and text_rect.center) are set by attributes from class
-        # 'TextField' not 'Button'.
+        # Set field colors for events.
+        self.rect_hover_color = (200, 200, 200)
 
     def draw_labeled_text(self, mouse_pos):
         """Draw the text field on the screen, changing color based on hover and show popup using 'mouse_pos' as
         initialized in main loop in 'main.py'."""
         # Draw background rect if 'bg_color' is not transparent.
         if self.bg_color != (0, 0, 0, 0):
-            pygame.draw.rect(self.screen, self.bg_color, self.button_rect)
+            pygame.draw.rect(self.screen, self.bg_color, self.text_rect)
 
         # Change field color based on mouse hover.
-        if self.button_rect.collidepoint(mouse_pos):
-            pygame.draw.rect(self.screen, self.rect_hover_color, self.button_rect)
+        if self.text_rect.collidepoint(mouse_pos):
+            pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
 
-        self.text_rect.center = self.button_rect.center
         self.screen.blit(self.text_image, self.text_rect)
