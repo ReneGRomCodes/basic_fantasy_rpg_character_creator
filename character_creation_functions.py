@@ -63,8 +63,8 @@ def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
     stats = character.abilities
     # Create instances of class 'TextField' to show ability scores on screen. Text size is taken from an instance in
     # 'gui_elements' to assure automatic scaling.
-    ability_score_field = so.TextField(screen, "score", strength.size)
-    bonus_penalty_field = so.TextField(screen, "bonus_penalty", strength.size)
+    ability_score_text = so.TextField(screen, "score", strength.size)
+    bonus_penalty_text = so.TextField(screen, "bonus_penalty", strength.size)
 
     # TODO Temporary variable for gui positioning during testing.
     element_pos_y = 20
@@ -87,19 +87,19 @@ def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
         ability.draw_labeled_text(mouse_pos)
 
         # Change contents and position of 'TextField' instances to show correct stats for ability during each iteration.
-        ability_score_field.text = str(stats[key][0])
-        ability_score_field.text_image = ability_score_field.font.render(ability_score_field.text, True, bonus_penalty_field.text_color)
-        ability_score_field.text_rect = ability_score_field.text_image.get_rect()
-        ability_score_field.text_rect.left = ability.text_rect.right
-        ability_score_field.text_rect.top = element_pos_y
-        bonus_penalty_field.text = bonus_penalty
-        bonus_penalty_field.text_image = bonus_penalty_field.font.render(bonus_penalty_field.text, True, bonus_penalty_field.text_color)
-        bonus_penalty_field.text_rect = bonus_penalty_field.text_image.get_rect()
-        bonus_penalty_field.text_rect.left = ability_score_field.text_rect.right
-        bonus_penalty_field.text_rect.top = element_pos_y
+        ability_score_text.text = str(stats[key][0])
+        ability_score_text.text_image = ability_score_text.font.render(ability_score_text.text, True, ability_score_text.text_color)
+        ability_score_text.text_rect = ability_score_text.text_image.get_rect()
+        ability_score_text.text_rect.left = ability.text_rect.right
+        ability_score_text.text_rect.top = element_pos_y
+        bonus_penalty_text.text = bonus_penalty
+        bonus_penalty_text.text_image = bonus_penalty_text.font.render(bonus_penalty_text.text, True, bonus_penalty_text.text_color)
+        bonus_penalty_text.text_rect = bonus_penalty_text.text_image.get_rect()
+        bonus_penalty_text.text_rect.left = ability_score_text.text_rect.right
+        bonus_penalty_text.text_rect.top = element_pos_y
 
-        ability_score_field.draw_text()
-        bonus_penalty_field.draw_text()
+        ability_score_text.draw_text()
+        bonus_penalty_text.draw_text()
 
         element_pos_y += 30
 
