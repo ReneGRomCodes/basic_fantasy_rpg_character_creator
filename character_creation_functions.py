@@ -45,7 +45,6 @@ def get_race_class_lists(character):
 
 def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
     """Display character ability scores and bonus/penalty on screen."""
-    # TODO positioning needs work.
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["abilities_title"]
     reroll_button = gui_elements["reroll_button"]
@@ -67,13 +66,13 @@ def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
     ability_score_text = so.TextField(screen, "score", strength.size)
     bonus_penalty_text = so.TextField(screen, "bonus_penalty", strength.size)
 
-    # TODO Temporary variable for gui positioning during testing.
-    element_pos_y = 100
-
-    # Draw and position for screen title.
+    # Position and draw screen title.
     screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
     screen_title.text_rect.centerx = screen.get_rect().centerx
     screen_title.draw_text()
+
+    # Set initial position on y-axis for ability score fields.
+    element_pos_y = screen.get_rect().height / 3
 
     for ability, key in zip(abilities, stats):
         # 'Pre-formatting' bonus/penalty to string for easier formatting and better code-readability further down.
@@ -88,26 +87,38 @@ def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
         else:
             pass
 
-        ability.text_rect.top = screen.get_rect().top + element_pos_y
-        ability.text_rect.right = screen.get_rect().centerx
+        # Position and draw copied rect for item from list 'abilities'.
+        ability_rect = ability.text_rect.copy()
+        ability_rect.top = screen.get_rect().top + element_pos_y
+        ability_rect.width = screen.get_rect().width / 6
+        ability_rect.right = screen.get_rect().centerx
+        # Position ability rect within copied rect for left-alignment.
+        ability.text_rect.topleft = ability_rect.topleft
         ability.draw_labeled_text(mouse_pos)
 
-        # Change contents and position of 'TextField' instances to show correct stats for ability during each iteration.
+        # Change contents and get rect of 'TextField' instances for each ability score stat.
         ability_score_text.text = str(stats[key][0])
         ability_score_text.text_image = ability_score_text.font.render(ability_score_text.text, True, ability_score_text.text_color)
         ability_score_text.text_rect = ability_score_text.text_image.get_rect()
-        ability_score_text.text_rect.left = ability.text_rect.right
-        ability_score_text.text_rect.top = element_pos_y
         bonus_penalty_text.text = bonus_penalty
         bonus_penalty_text.text_image = bonus_penalty_text.font.render(bonus_penalty_text.text, True, bonus_penalty_text.text_color)
         bonus_penalty_text.text_rect = bonus_penalty_text.text_image.get_rect()
-        bonus_penalty_text.text_rect.left = ability_score_text.text_rect.right
-        bonus_penalty_text.text_rect.top = element_pos_y
+
+        # Position and draw copied rects for each stat and bonus/penalty field.
+        ability_score_rect = ability_score_text.text_rect.copy()
+        ability_score_rect.width = screen.get_rect().width / 12
+        ability_score_rect.topleft = ability_rect.topright
+        bonus_penalty_rect = bonus_penalty_text.text_rect.copy()
+        bonus_penalty_rect.width = screen.get_rect().width / 12
+        bonus_penalty_rect.topleft = ability_score_rect.topright
+        # Position stat and bonus/penalty rects within copied rects for right-alignment.
+        ability_score_text.text_rect.topright = ability_score_rect.topright
+        bonus_penalty_text.text_rect.topright = bonus_penalty_rect.topright
 
         ability_score_text.draw_text()
         bonus_penalty_text.draw_text()
 
-        element_pos_y += 30
+        element_pos_y += ability_score_text.text_rect.height * 2
 
     # Position and draw buttons on screen
     reroll_button.button_rect.width = gui_elements["default_button_width"]
