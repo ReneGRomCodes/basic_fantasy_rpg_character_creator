@@ -46,7 +46,8 @@ def get_race_class_lists(character):
 def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
     """Display character ability scores and bonus/penalty on screen."""
     # TODO positioning needs work.
-    # Assign buttons from 'gui_elements' to variables.
+    # Assign fields and buttons from 'gui_elements' to variables.
+    screen_title = gui_elements["abilities_title"]
     reroll_button = gui_elements["reroll_button"]
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
@@ -67,7 +68,12 @@ def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
     bonus_penalty_text = so.TextField(screen, "bonus_penalty", strength.size)
 
     # TODO Temporary variable for gui positioning during testing.
-    element_pos_y = 20
+    element_pos_y = 100
+
+    # Draw and position for screen title.
+    screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
+    screen_title.text_rect.centerx = screen.get_rect().centerx
+    screen_title.draw_text()
 
     for ability, key in zip(abilities, stats):
         # 'Pre-formatting' bonus/penalty to string for easier formatting and better code-readability further down.
@@ -106,7 +112,7 @@ def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
     # Position and draw buttons on screen
     reroll_button.button_rect.width = gui_elements["default_button_width"]
     reroll_button.button_rect.centerx = screen.get_rect().centerx
-    reroll_button.button_rect.bottom = screen.get_rect().bottom - gui_elements["default_button_spacing"]
+    reroll_button.button_rect.bottom = screen.get_rect().bottom - gui_elements["default_edge_spacing"]
 
     reroll_button.draw_button(mouse_pos)
     back_button.draw_button(mouse_pos)

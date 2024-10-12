@@ -75,7 +75,7 @@ def show_menu(screen, gui_elements, mouse_pos):
 
     # Assign gui_elements to variables.
     spacing = gui_elements["menu_title_spacing"]
-    main_menu = gui_elements["main_menu"]
+    main_menu = gui_elements["main_menu_title"]
     custom = gui_elements["custom"]
     random = gui_elements["random"]
 
