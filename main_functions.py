@@ -110,6 +110,8 @@ def custom_character(screen, state, character, gui_elements, mouse_pos):
 
 def random_character(character):
     """Create character with random values and print character sheet."""
+    pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
+
     os.system('cls')
     # Get random class, race, name and ability scores.
     cf.random_character_generator(character)
