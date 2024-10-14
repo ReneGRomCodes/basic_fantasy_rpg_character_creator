@@ -43,7 +43,7 @@ def get_race_class_lists(character):
     return race_list, class_list
 
 
-def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
+def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     """Display character ability scores and bonus/penalty on screen."""
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["abilities_title"]
@@ -131,7 +131,7 @@ def show_ability_scores_pygame(screen, character, gui_elements, mouse_pos):
 
 
 def show_ability_scores(character):
-    """Print formatted table of abilities from instance 'character'."""
+    """Print formatted table of abilities from instance 'character' in console."""
     abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
 
     for ability, key in zip(abilities, character.abilities):

@@ -2,50 +2,9 @@ import os
 import character_creation_functions as cf
 import functions as func
 import shop_functions as sf
+import event_handlers as eh
 import pygame
-import sys
 """Main functions used in 'main.py'."""
-
-
-def handle_events(screen, character, state, gui_elements, mouse_pos):
-    """Check and handle pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'"""
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-        if state == "title_screen":
-            if event.type == pygame.KEYUP:
-                return "main_menu"
-            elif event.type == pygame.MOUSEBUTTONUP:
-                if screen.get_rect().collidepoint(mouse_pos):
-                    return "main_menu"
-
-        elif state == "main_menu":
-            if event.type == pygame.MOUSEBUTTONUP:
-                if gui_elements["custom"].button_rect.collidepoint(mouse_pos):
-                    return "custom_character_1"
-
-                if gui_elements["random"].button_rect.collidepoint(mouse_pos):
-                    pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
-                    return "random_character"
-
-        elif state == "custom_character_2":
-            if event.type == pygame.MOUSEBUTTONUP:
-                if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
-                    return "main_menu"
-
-                if gui_elements["reroll_button"].button_rect.collidepoint(mouse_pos):
-                    return "custom_character_1"
-
-                if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                    pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
-                    return "custom_character_3"
-
-        else:
-            pass
-
-    return state
 
 
 def show_title_screen(screen, gui_elements):
@@ -95,22 +54,26 @@ def show_menu(screen, gui_elements, mouse_pos):
 
 
 def custom_character(screen, state, character, gui_elements, mouse_pos):
-    """Create custom character with user input and return state for main loop."""
-    if state == "custom_character_1":
+    """Create custom character based on user input and return state for main loop."""
+    if state == "set_abilities":
         # Generate dictionary for character abilities.
         character.set_ability_dict()
         # Check if character abilities allow for any valid race-class combinations.
         race_list, class_list = cf.get_race_class_lists(character)
         if func.check_valid_race_class(race_list, class_list):
-            return "custom_character_2"
+            state = "show_abilities"
         else:
-            return "custom_character_1"
+            state = "set_abilities"
 
-    elif state == "custom_character_2":
+    elif state == "show_abilities":
         # Display ability score screen.
-        cf.show_ability_scores_pygame(screen, character, gui_elements, mouse_pos)
+        cf.show_ability_scores_screen(screen, character, gui_elements, mouse_pos)
+
+        state = eh.custom_character_events(state, gui_elements, mouse_pos)
 
     elif state == "custom_character_3":
+        pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
+
         # Get lists with available races and classes.
         race_list, class_list = cf.get_race_class_lists(character)
         # Race and class selection.
@@ -118,7 +81,7 @@ def custom_character(screen, state, character, gui_elements, mouse_pos):
         # Set values in character instance based on race and class.
         cf.set_character_values(character)
 
-        return "custom_character_4"
+        state = "custom_character_4"
 
     elif state == "custom_character_4":
         # Name the character.

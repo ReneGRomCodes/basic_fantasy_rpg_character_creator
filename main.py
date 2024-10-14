@@ -1,6 +1,7 @@
 import pygame
 import main_functions as mf
 import character_model as char
+import event_handlers as eh
 from settings import Settings
 from gui.gui_elements import initialize_screen_elements
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
@@ -28,13 +29,13 @@ def run_character_creator():
         mouse_pos = pygame.mouse.get_pos()
 
         screen.fill(pg_settings.bg_color)
-        state = mf.handle_events(screen, character, state, gui_elements, mouse_pos)
+        state = eh.main_events(screen, state, gui_elements, mouse_pos)
 
         if state == "title_screen":
             mf.show_title_screen(screen, gui_elements)
         elif state == "main_menu":
             mf.show_menu(screen, gui_elements, mouse_pos)
-        elif state in ["custom_character_1", "custom_character_2", "custom_character_3", "custom_character_4"]:
+        elif state in ["set_abilities", "show_abilities", "custom_character_3", "custom_character_4"]:
             state = mf.custom_character(screen, state, character, gui_elements, mouse_pos)
         elif state == "random_character":
             mf.random_character(character)
