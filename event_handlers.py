@@ -34,9 +34,6 @@ def main_events(screen, state, gui_elements, mouse_pos):
                     if gui_elements["random"].button_rect.collidepoint(mouse_pos):
                         state = "random_character"
 
-            else:
-                pass
-
     return state
 
 
