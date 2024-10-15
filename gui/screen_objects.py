@@ -79,19 +79,26 @@ class Button(TextField):
         self.screen.blit(self.text_image, self.text_rect)
 
 
-class LabeledText(TextField):
-    """Represent an interactive text field with popup when mouse hovers over it. """
+class InteractiveText(TextField):
+    """Represent an interactive text field with popup and/or option to toggle between selected/unselected states based
+    on user input like mouse collision or mouse button event."""
 
-    def __init__(self, screen, text, size, bg_color=(0, 0, 0, 0)):
+    def __init__(self, screen, text, size, bg_color=(0, 0, 0, 0), label=False, select=False):
         """Initialize an interactive text field with popup on screen.
         ARGS:
             screen: pygame window.
             text: string to be shown for the text field.
             size: font size for text.
             bg_color: background color for rect. Default is transparent.
+            label: instance of 'TextField' class for popup. Default is 'False'.
+            select: activate option to toggle between selected/unselected state. Default is 'False'.
         Default position is centered on screen.
         """
         super().__init__(screen, text, size, bg_color)
+        self.label = label
+        self.select = select
+        # State attribute if 'select=True'.
+        self.selected = False
         # Set field colors for events.
         self.rect_hover_color = (200, 200, 200)
 

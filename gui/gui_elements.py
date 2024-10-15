@@ -46,12 +46,12 @@ def initialize_screen_elements(screen):
     # Ability scores screen.
     ability_scores_title_text = "- ABILITIES -"
     ability_scores_screen_title = so.TextField(screen, ability_scores_title_text, text_large)
-    strength_field = so.LabeledText(screen, "Strength", text_medium)
-    dexterity_field = so.LabeledText(screen, "Dexterity", text_medium)
-    constitution_field = so.LabeledText(screen, "Constitution", text_medium)
-    intelligence_field = so.LabeledText(screen, "Intelligence", text_medium)
-    wisdom_field = so.LabeledText(screen, "Wisdom", text_medium)
-    charisma_field = so.LabeledText(screen, "Charisma", text_medium)
+    strength_field = so.InteractiveText(screen, "Strength", text_medium)
+    dexterity_field = so.InteractiveText(screen, "Dexterity", text_medium)
+    constitution_field = so.InteractiveText(screen, "Constitution", text_medium)
+    intelligence_field = so.InteractiveText(screen, "Intelligence", text_medium)
+    wisdom_field = so.InteractiveText(screen, "Wisdom", text_medium)
+    charisma_field = so.InteractiveText(screen, "Charisma", text_medium)
     reroll_button = so.Button(screen, "Roll Again", text_medium)
 
 
