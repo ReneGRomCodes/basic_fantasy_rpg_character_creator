@@ -94,7 +94,7 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
         ability_rect.right = screen.get_rect().centerx
         # Position ability rect within copied rect for left-alignment.
         ability.text_rect.topleft = ability_rect.topleft
-        ability.draw_labeled_text(mouse_pos)
+        ability.draw_interactive_text(mouse_pos)
 
         # Change contents and get rect of 'TextField' instances for each ability score stat.
         ability_score_text.text = str(stats[key][0])

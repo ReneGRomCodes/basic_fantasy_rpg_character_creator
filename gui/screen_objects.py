@@ -35,7 +35,7 @@ class TextField:
         if self.bg_color != (0, 0, 0, 0):
             pygame.draw.rect(self.screen, self.bg_color, self.text_rect)
 
-        # Draw the text on top of the rectangle
+        # Draw the text on top of the rect.
         self.screen.blit(self.text_image, self.text_rect)
 
 
@@ -84,7 +84,7 @@ class InteractiveText(TextField):
     on user input like mouse collision or mouse button event."""
 
     def __init__(self, screen, text, size, bg_color=(0, 0, 0, 0), label=False, select=False):
-        """Initialize an interactive text field with popup on screen.
+        """Initialize an interactive text field.
         ARGS:
             screen: pygame window.
             text: string to be shown for the text field.
@@ -102,9 +102,8 @@ class InteractiveText(TextField):
         # Set field colors for events.
         self.rect_hover_color = (200, 200, 200)
 
-    def draw_labeled_text(self, mouse_pos):
-        """Draw the text field on the screen, changing color based on hover and show popup using 'mouse_pos' as
-        initialized in main loop in 'main.py'."""
+    def draw_interactive_text(self, mouse_pos):
+        """Draw interactive text field on the screen."""
         # Draw background rect if 'bg_color' is not transparent.
         if self.bg_color != (0, 0, 0, 0):
             pygame.draw.rect(self.screen, self.bg_color, self.text_rect)
