@@ -5,13 +5,15 @@ import pygame
 class TextField:
     """Represent field of text."""
 
-    def __init__(self, screen, text, size, bg_color=(0, 0, 0, 0)):
+    def __init__(self, screen, text, size, bg_color=(0, 0, 0, 0), multi_line=False, image_width=0):
         """Initialize a text field on screen
         ARGS:
             screen: pygame window.
             text: string to be shown in text field.
             size: font size for text.
             bg_color: background color for rect. Default is transparent.
+            multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
+            image_width: set width for attribute 'text_image' if 'multi_line' is 'True'. Default is '0'.
         Default position is centered on screen.
         """
         self.screen = screen
@@ -19,6 +21,8 @@ class TextField:
         self.text = text
         self.size = size
         self.bg_color = bg_color
+        self.multi_line = multi_line
+        self.image_width = image_width
 
         # Set text color to black and get rect for text field.
         self.text_color = (0, 0, 0)
@@ -28,6 +32,25 @@ class TextField:
 
         # Set text_rect's center position based on x and y.
         self.text_rect.center = self.screen_rect.center
+
+    def render_multiline_image(self, surface, text, pos, font, color):
+        """Render and return multi line text image."""
+        words = [word.split(" ") for word in text.splitlines()]  # 2D array where each row is a list of words.
+        space = font.size(" ")[0]  # The width of a space.
+        max_width, max_height = surface.get_size()
+        x, y = pos
+        for line in words:
+            for word in line:
+                word_surface = font.render(word, True, color)
+                word_width, word_height = word_surface.get_size()
+                if x + word_width >= max_width:
+                    x = pos[0]  # Reset the x.
+                    y += word_height  # Start on new row.
+                surface.blit(word_surface, (x, y))
+                x += word_width + space
+            x = pos[0]  # Reset the x.
+            y += word_height  # Start on new row.
+        return surface
 
     def draw_text(self):
         """Draw the text field on the screen."""
