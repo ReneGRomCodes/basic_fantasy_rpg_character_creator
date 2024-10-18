@@ -12,8 +12,8 @@ def run_character_creator():
     """Initialize Pygame, create a window, instantiate character and start the character creator."""
     # Initialize pygame and create a window.
     pygame.init()
-    pg_settings = Settings()
-    screen = pygame.display.set_mode((pg_settings.screen_width, pg_settings.screen_height))
+    settings = Settings()
+    screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
 
     # Create instance of class 'Character'.
@@ -28,7 +28,7 @@ def run_character_creator():
         # Keep track of mouse position.
         mouse_pos = pygame.mouse.get_pos()
 
-        screen.fill(pg_settings.bg_color)
+        screen.fill(settings.bg_color)
         state = eh.main_events(screen, state, gui_elements, mouse_pos)
 
         if state == "title_screen":
