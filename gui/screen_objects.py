@@ -54,8 +54,8 @@ class TextField:
 
     def render_multiline_image(self):
         """Render and return multi line text image."""
-        # Create empty surface.
-        text_image = pygame.Surface((self.image_width, self.image_height))
+        # Create empty surface with transparency (use SRCALPHA for alpha transparency).
+        text_image = pygame.Surface((self.image_width, self.image_height), pygame.SRCALPHA)
         # Positioning and spacing variables.
         x, y = self.pos
         space = self.font.size(" ")[0]
@@ -76,7 +76,7 @@ class TextField:
                     # Blit the existing text image onto the temporary surface, then update text_image to reference the
                     # expanded surface.
                     new_height = self.image_height + self.font.get_height()
-                    temporary_surface = pygame.Surface((self.image_width, new_height))
+                    temporary_surface = pygame.Surface((self.image_width, new_height), pygame.SRCALPHA)
                     temporary_surface.blit(text_image, (0, 0))
                     text_image = temporary_surface
                     self.image_height = new_height  # Update image height
@@ -88,7 +88,7 @@ class TextField:
             y += self.font.get_height()
 
             new_height = self.image_height + self.font.get_height()
-            temporary_surface = pygame.Surface((self.image_width, new_height))
+            temporary_surface = pygame.Surface((self.image_width, new_height), pygame.SRCALPHA)
             temporary_surface.blit(text_image, (0, 0))
             text_image = temporary_surface
             self.image_height = new_height
@@ -105,7 +105,7 @@ class Button(TextField):
             screen: pygame window.
             text: string to be shown on the button.
             size: font size for text.
-            bg_color: background color for rect. Default is transparent.
+            bg_color: background color for rect. Default is 'False' for transparent background.
         Default position is centered on screen.
         """
         super().__init__(screen, text, size, bg_color)
@@ -146,7 +146,7 @@ class InteractiveText(TextField):
             screen: pygame window.
             text: string to be shown for the text field.
             size: font size for text.
-            bg_color: background color for rect. Default is transparent.
+            bg_color: background color for rect. Default is 'False' for transparent background.
             label: instance of 'TextField' class for popup. Default is 'False'.
             select: activate option to toggle between selected/unselected state. Default is 'False'.
         Default position is centered on screen.
