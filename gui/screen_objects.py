@@ -45,7 +45,7 @@ class TextField:
 
     def draw_text(self):
         """Draw the text field on the screen."""
-        # Draw background rect if 'bg_color' is not transparent.
+        # Draw background rect if 'bg_color' is specified.
         if self.bg_color:
             pygame.draw.rect(self.screen, self.bg_color, self.text_rect)
 
@@ -91,7 +91,7 @@ class TextField:
             temporary_surface = pygame.Surface((self.image_width, new_height))
             temporary_surface.blit(text_image, (0, 0))
             text_image = temporary_surface
-            self.image_height = new_height  # Update image height
+            self.image_height = new_height
 
         return text_image
 
@@ -120,7 +120,7 @@ class Button(TextField):
     def draw_button(self, mouse_pos):
         """Draw the button on the screen, changing color based on hover or click using 'mouse_pos' as initialized in
         main loop in 'main.py'."""
-        # Draw background rect if 'bg_color' is not transparent.
+        # Draw background rect if 'bg_color' is specified.
         if self.bg_color:
             pygame.draw.rect(self.screen, self.bg_color, self.button_rect)
 
@@ -161,7 +161,7 @@ class InteractiveText(TextField):
 
     def draw_interactive_text(self, mouse_pos):
         """Draw interactive text field on the screen."""
-        # Draw background rect if 'bg_color' is not transparent.
+        # Draw background rect if 'bg_color' is specified.
         if self.bg_color:
             pygame.draw.rect(self.screen, self.bg_color, self.text_rect)
 
