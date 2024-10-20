@@ -5,13 +5,13 @@ import pygame
 class TextField:
     """Represent field of text."""
 
-    def __init__(self, screen, text, size, bg_color=(0, 0, 0, 0), multi_line=False, image_width=0, pos=(0,0)):
+    def __init__(self, screen, text, size, bg_color=False, multi_line=False, image_width=0, pos=(0,0)):
         """Initialize a text field on screen
         ARGS:
             screen: pygame window.
             text: string to be shown in text field.
             size: font size for text.
-            bg_color: background color for rect. Default is transparent.
+            bg_color: background color for rect. Default is 'False' for transparent background.
             multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
         ARGS for use when 'multi_line=True':
             image_width: set width for attribute 'text_image'. Default is '0'.
@@ -42,6 +42,15 @@ class TextField:
         # Get text_rect and set default center position.
         self.text_rect = self.text_image.get_rect()
         self.text_rect.center = self.screen_rect.center
+
+    def draw_text(self):
+        """Draw the text field on the screen."""
+        # Draw background rect if 'bg_color' is not transparent.
+        if self.bg_color:
+            pygame.draw.rect(self.screen, self.bg_color, self.text_rect)
+
+        # Draw the text on top of the rect.
+        self.screen.blit(self.text_image, self.text_rect)
 
     def render_multiline_image(self):
         """Render and return multi line text image."""
@@ -86,20 +95,11 @@ class TextField:
 
         return text_image
 
-    def draw_text(self):
-        """Draw the text field on the screen."""
-        # Draw background rect if 'bg_color' is not transparent.
-        if self.bg_color != (0, 0, 0, 0):
-            pygame.draw.rect(self.screen, self.bg_color, self.text_rect)
-
-        # Draw the text on top of the rect.
-        self.screen.blit(self.text_image, self.text_rect)
-
 
 class Button(TextField):
     """Represent an interactive button."""
 
-    def __init__(self, screen, text, size, bg_color=(0, 0, 0, 0)):
+    def __init__(self, screen, text, size, bg_color=False):
         """Initialize an interactive button on screen
         ARGS:
             screen: pygame window.
@@ -121,7 +121,7 @@ class Button(TextField):
         """Draw the button on the screen, changing color based on hover or click using 'mouse_pos' as initialized in
         main loop in 'main.py'."""
         # Draw background rect if 'bg_color' is not transparent.
-        if self.bg_color != (0, 0, 0, 0):
+        if self.bg_color:
             pygame.draw.rect(self.screen, self.bg_color, self.button_rect)
 
         # Determine button color based on mouse hover or click.
@@ -140,7 +140,7 @@ class InteractiveText(TextField):
     """Represent an interactive text field with popup and/or option to toggle between selected/unselected states based
     on user input like mouse collision or mouse button event."""
 
-    def __init__(self, screen, text, size, bg_color=(0, 0, 0, 0), label=False, select=False):
+    def __init__(self, screen, text, size, bg_color=False, label=False, select=False):
         """Initialize an interactive text field.
         ARGS:
             screen: pygame window.
@@ -162,7 +162,7 @@ class InteractiveText(TextField):
     def draw_interactive_text(self, mouse_pos):
         """Draw interactive text field on the screen."""
         # Draw background rect if 'bg_color' is not transparent.
-        if self.bg_color != (0, 0, 0, 0):
+        if self.bg_color:
             pygame.draw.rect(self.screen, self.bg_color, self.text_rect)
 
         # Change field color based on mouse hover.
