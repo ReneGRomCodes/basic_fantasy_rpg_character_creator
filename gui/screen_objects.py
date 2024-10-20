@@ -32,7 +32,7 @@ class TextField:
         # Get image for mult-line text field.
         if multi_line:
             self.image_width = image_width
-            self.image_height = 0  # Default value for use in 'render_multiline_image()'
+            self.image_height = self.font.get_height()  # Starting value for use in 'render_multiline_image()'
             self.pos = pos
             self.text_image = self.render_multiline_image()
         # Get image for standard, one-line text field.
@@ -44,7 +44,7 @@ class TextField:
         self.text_rect.center = self.screen_rect.center
 
     def render_multiline_image(self):
-        """Render and return multi line text image. Argument 'pos' is starting point for text in 'text_image'."""
+        """Render and return multi line text image."""
         # Create empty surface.
         text_image = pygame.Surface((self.image_width, self.image_height))
         # Positioning and spacing variables.
@@ -56,17 +56,33 @@ class TextField:
         for line in words:
             for word in line:
                 word_image = self.font.render(word, True, self.text_color)
-                word_width, word_height = word_image.get_size()
+                word_width = word_image.get_width()
 
                 if x + word_width >= text_image.get_width():
                     x = self.pos[0]  # Reset 'x' for next line.
-                    y += word_height  # Set 'y' for next line.
+                    y += self.font.get_height()  # Set 'y' for next line.
+
+                    # Create a temporary surface to accommodate the new line of text.
+                    # The new height is calculated by adding the current image height to the font height.
+                    # Blit the existing text image onto the temporary surface, then update text_image to reference the
+                    # expanded surface.
+                    new_height = self.image_height + self.font.get_height()
+                    temporary_surface = pygame.Surface((self.image_width, new_height))
+                    temporary_surface.blit(text_image, (0, 0))
+                    text_image = temporary_surface
+                    self.image_height = new_height  # Update image height
 
                 text_image.blit(word_image, (x, y))
                 x += word_width + space
 
-            x = self.pos[0]  # Reset 'x' for next line.
-            y += word_height  # Set 'y' for next line.
+            x = self.pos[0]
+            y += self.font.get_height()
+
+            new_height = self.image_height + self.font.get_height()
+            temporary_surface = pygame.Surface((self.image_width, new_height))
+            temporary_surface.blit(text_image, (0, 0))
+            text_image = temporary_surface
+            self.image_height = new_height  # Update image height
 
         return text_image
 
