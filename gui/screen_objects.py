@@ -62,7 +62,7 @@ class TextField:
         # 2D array, each row is a list of words.
         words = [word.split(" ") for word in self.text.splitlines()]
 
-        for line in words:
+        for line_index, line in enumerate(words, start=1):
             for word in line:
                 word_image = self.font.render(word, True, self.text_color)
                 word_width = word_image.get_width()
@@ -73,12 +73,15 @@ class TextField:
                 text_image.blit(word_image, (x, y))
                 x += word_width + space
 
-            text_image, x, y = self.expand_multiline_image(text_image, y)
+            # Check if we are at the last line to avoid addition of empty line at the end.
+            if line_index < len(words):
+                text_image, x, y = self.expand_multiline_image(text_image, y)
 
         return text_image
 
     def expand_multiline_image(self, text_image, y):
-        """Expand 'text_image' to accommodate new lines of text automatically through use of a temporary surface."""
+        """Helper function for use in 'render_multiline_image()' to expand 'text_image' for accommodation of new lines
+        of text automatically through use of a temporary surface."""
         x = self.pos[0]  # Reset 'x' for next line.
         y += self.font.get_height()  # Set 'y' for next line.
 
