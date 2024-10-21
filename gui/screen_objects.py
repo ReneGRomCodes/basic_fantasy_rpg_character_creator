@@ -54,7 +54,7 @@ class TextField:
 
     def render_multiline_image(self):
         """Render and return multi line text image."""
-        # Create empty surface with transparency (use SRCALPHA for alpha transparency).
+        # Create empty surface.
         text_image = pygame.Surface((self.image_width, self.image_height), pygame.SRCALPHA)
         # Positioning and spacing variables.
         x, y = self.pos
@@ -68,32 +68,31 @@ class TextField:
                 word_width = word_image.get_width()
 
                 if x + word_width >= text_image.get_width():
-                    x = self.pos[0]  # Reset 'x' for next line.
-                    y += self.font.get_height()  # Set 'y' for next line.
-
-                    # Create a temporary surface to accommodate the new line of text.
-                    # The new height is calculated by adding the current image height to the font height.
-                    # Blit the existing text image onto the temporary surface, then update text_image to reference the
-                    # expanded surface.
-                    new_height = self.image_height + self.font.get_height()
-                    temporary_surface = pygame.Surface((self.image_width, new_height), pygame.SRCALPHA)
-                    temporary_surface.blit(text_image, (0, 0))
-                    text_image = temporary_surface
-                    self.image_height = new_height  # Update image height
+                    text_image, x, y = self.expand_multiline_image(text_image, y)
 
                 text_image.blit(word_image, (x, y))
                 x += word_width + space
 
-            x = self.pos[0]
-            y += self.font.get_height()
-
-            new_height = self.image_height + self.font.get_height()
-            temporary_surface = pygame.Surface((self.image_width, new_height), pygame.SRCALPHA)
-            temporary_surface.blit(text_image, (0, 0))
-            text_image = temporary_surface
-            self.image_height = new_height
+            text_image, x, y = self.expand_multiline_image(text_image, y)
 
         return text_image
+
+    def expand_multiline_image(self, text_image, y):
+        """Expand 'text_image' to accommodate new lines of text automatically through use of a temporary surface."""
+        x = self.pos[0]  # Reset 'x' for next line.
+        y += self.font.get_height()  # Set 'y' for next line.
+
+        # Create a temporary surface to accommodate the new line of text.
+        # The new height is calculated by adding the current image height to the font height.
+        # Blit the existing text image onto the temporary surface, then update text_image to reference the
+        # expanded surface.
+        new_height = self.image_height + self.font.get_height()
+        temporary_surface = pygame.Surface((self.image_width, new_height), pygame.SRCALPHA)
+        temporary_surface.blit(text_image, (0, 0))
+        text_image = temporary_surface
+        self.image_height = new_height  # Update image height
+
+        return text_image, x, y
 
 
 class Button(TextField):
