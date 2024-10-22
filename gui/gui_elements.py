@@ -1,4 +1,5 @@
 import gui.screen_objects as so
+import descr.abilities
 """Initialize instances of classes from 'screen_objects.py' for use in GUI."""
 
 
@@ -6,6 +7,10 @@ def initialize_screen_elements(screen):
     """Initialize instances of classes from 'screen_objects.py' for use in GUI in addition to default size and spacing
     values for automatic scalability of screen objects. Return dict of instances 'gui_elements'.
     NOTE: Instances created have to be then added manually to dict 'gui_elements'!"""
+
+    # Initialize dictionaries from 'descr' package.
+    ability_descr = descr.abilities.get_ability_descr()
+
     # Size and spacing variables that are calculated based on screen size for scalability.
     screen_height, screen_width = screen.get_rect().height, screen.get_rect().width
     title_size = int(screen_height / 16)
@@ -53,6 +58,9 @@ def initialize_screen_elements(screen):
     wisdom_field = so.InteractiveText(screen, "Wisdom", text_medium)
     charisma_field = so.InteractiveText(screen, "Charisma", text_medium)
     reroll_button = so.Button(screen, "Roll Again", text_medium)
+    # Popup info boxes.
+
+
 
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
