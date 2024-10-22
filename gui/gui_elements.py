@@ -62,7 +62,7 @@ def initialize_screen_elements(screen):
         "menu_title_spacing": menu_title_spacing,
         "default_button_width": button_width,
         "default_edge_spacing": spacing_screen_edge,
-        # Standard and buttons.
+        # Standard buttons.
         "continue_button": continue_button,
         "back_button": back_button,
 
