@@ -170,5 +170,8 @@ class InteractiveText(TextField):
         # Change field color based on mouse hover.
         if self.text_rect.collidepoint(mouse_pos):
             pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
+            if self.label:
+                self.label.text_rect.topleft = mouse_pos
+                self.label.draw_text()
 
         self.screen.blit(self.text_image, self.text_rect)

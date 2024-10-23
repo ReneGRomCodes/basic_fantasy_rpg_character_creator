@@ -16,6 +16,7 @@ def get_ability_descr():
                  " - Armor Class (AC).\n"
                  " - Initiative die roll.")
     constitution = ("A combination of general health and vitality.\n"
+                    "\n\Bonuses:\n"
                     " - Add to each Hit Die.\n"
                     " - Save vs. Poison.")
     intelligence = ("The ability to learn and apply knowledge. Intelligence is the prime requisite for MAGIC-USERS.\n"
