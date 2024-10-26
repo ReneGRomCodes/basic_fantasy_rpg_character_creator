@@ -39,7 +39,12 @@ class TextField:
         else:
             self.text_image = self.font.render(self.text, True, self.text_color)
 
-        # Get text_rect and set default center position.
+        # Get text_rect and set default center position. Get background_rect and center text_rect on it if 'bg_color'
+        # is specified.
+        if self.bg_color:
+            self.background_rect = self.text_image.get_rect().inflate(int(self.image_width/8), int(self.image_width/8))
+            self.background_rect.center = self.screen_rect.center
+
         self.text_rect = self.text_image.get_rect()
         self.text_rect.center = self.screen_rect.center
 
@@ -47,7 +52,8 @@ class TextField:
         """Draw the text field on the screen."""
         # Draw background rect if 'bg_color' is specified.
         if self.bg_color:
-            pygame.draw.rect(self.screen, self.bg_color, self.text_rect)
+            self.text_rect.center = self.background_rect.center
+            pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
 
         # Draw the text on top of the rect.
         self.screen.blit(self.text_image, self.text_rect)
@@ -200,10 +206,10 @@ class InfoPanel(TextField):
         """
         super().__init__(screen, text, size, bg_color, multi_line, image_width, text_pos)
         if surface_pos == "topleft":
-            self.text_rect.topleft = screen.get_rect().topleft
+            self.background_rect.topleft = screen.get_rect().topleft
         elif surface_pos == "topright":
-            self.text_rect.topright = screen.get_rect().topright
+            self.background_rect.topright = screen.get_rect().topright
         elif surface_pos == "bottomleft":
-            self.text_rect.bottomleft = screen.get_rect().bottomleft
+            self.background_rect.bottomleft = screen.get_rect().bottomleft
         elif surface_pos == "bottomright":
-            self.text_rect.bottomright = screen.get_rect().bottomright
+            self.background_rect.bottomright = screen.get_rect().bottomright
