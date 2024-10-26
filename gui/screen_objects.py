@@ -29,6 +29,9 @@ class TextField:
         self.text_color = (0, 0, 0)
         self.font = pygame.font.SysFont(None, self.size)
 
+        # Set padding for text fields with background color.
+        self.padding = int(self.screen_rect.width / 40)
+
         # Get image for mult-line text field.
         if multi_line:
             self.image_width = image_width
@@ -42,7 +45,7 @@ class TextField:
         # Get text_rect and set default center position. Get background_rect and center text_rect on it if 'bg_color'
         # is specified.
         if self.bg_color:
-            self.background_rect = self.text_image.get_rect().inflate(int(self.image_width/8), int(self.image_width/8))
+            self.background_rect = self.text_image.get_rect().inflate(self.padding, self.padding)
             self.background_rect.center = self.screen_rect.center
 
         self.text_rect = self.text_image.get_rect()
