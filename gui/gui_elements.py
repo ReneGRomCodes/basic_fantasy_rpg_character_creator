@@ -18,7 +18,7 @@ def initialize_screen_elements(screen):
     text_large = int(screen_height / 20)
     text_medium = int(screen_height / 25)
     text_small = int(screen_height / 40)
-    popup_width = int(screen_width / 7)
+    info_panel_width = int(screen_width / 5)
     title_screen_spacing = int(screen_height / 40)  # Spacing between main title and subtitle on title screen.
     menu_title_spacing = int(screen_height / 30)  # Default spacing between menu title and GUI objects.
     spacing_screen_edge = screen_width / 25  # Default value for distance to edge of screen for GUI objects.
@@ -52,19 +52,19 @@ def initialize_screen_elements(screen):
     # Ability scores screen.
     ability_scores_title_text = "- ABILITIES -"
     ability_scores_screen_title = so.TextField(screen, ability_scores_title_text, text_large)
-    # Popup info boxes.
-    strength_info = so.TextField(screen, ability_descr["str_descr"], text_small, bg_color=(255, 255, 255),
-                                  multi_line=True, image_width=popup_width)
-    dexterity_info = so.TextField(screen, ability_descr["dex_descr"], text_small, bg_color=(255, 255, 255),
-                                  multi_line=True, image_width=popup_width)
-    constitution_info = so.TextField(screen, ability_descr["con_descr"], text_small, bg_color=(255, 255, 255),
-                                  multi_line=True, image_width=popup_width)
-    intelligence_info = so.TextField(screen, ability_descr["int_descr"], text_small, bg_color=(255, 255, 255),
-                                  multi_line=True, image_width=popup_width)
-    wisdom_info = so.TextField(screen, ability_descr["wis_descr"], text_small, bg_color=(255, 255, 255),
-                                  multi_line=True, image_width=popup_width)
-    charisma_info = so.TextField(screen, ability_descr["cha_descr"], text_small, bg_color=(255, 255, 255),
-                                  multi_line=True, image_width=popup_width)
+    # Info panels.
+    strength_info = so.InfoPanel(screen, ability_descr["str_descr"], text_small, bg_color=(255, 255, 255),
+                                  multi_line=True, image_width=info_panel_width)
+    dexterity_info = so.InfoPanel(screen, ability_descr["dex_descr"], text_small, bg_color=(255, 255, 255),
+                                  multi_line=True, image_width=info_panel_width)
+    constitution_info = so.InfoPanel(screen, ability_descr["con_descr"], text_small, bg_color=(255, 255, 255),
+                                  multi_line=True, image_width=info_panel_width)
+    intelligence_info = so.InfoPanel(screen, ability_descr["int_descr"], text_small, bg_color=(255, 255, 255),
+                                  multi_line=True, image_width=info_panel_width)
+    wisdom_info = so.InfoPanel(screen, ability_descr["wis_descr"], text_small, bg_color=(255, 255, 255),
+                                  multi_line=True, image_width=info_panel_width)
+    charisma_info = so.InfoPanel(screen, ability_descr["cha_descr"], text_small, bg_color=(255, 255, 255),
+                                  multi_line=True, image_width=info_panel_width)
     # Ability text fields.
     strength_field = so.InteractiveText(screen, "Strength", text_medium, label=strength_info)
     dexterity_field = so.InteractiveText(screen, "Dexterity", text_medium, label=dexterity_info)

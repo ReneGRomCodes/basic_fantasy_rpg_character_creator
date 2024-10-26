@@ -5,7 +5,7 @@ import pygame
 class TextField:
     """Represent field of text."""
 
-    def __init__(self, screen, text, size, bg_color=False, multi_line=False, image_width=0, pos=(0,0)):
+    def __init__(self, screen, text, size, bg_color=False, multi_line=False, image_width=0, text_pos=(0,0)):
         """Initialize a text field on screen
         ARGS:
             screen: pygame window.
@@ -15,7 +15,7 @@ class TextField:
             multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
         ARGS for use when 'multi_line=True':
             image_width: set width for attribute 'text_image'. Default is '0'.
-            pos: set starting point for text in 'text_image'. Default is '(0,0)'.
+            text_pos: set starting point for text in 'text_image'. Default is '(0,0)'.
         Default position is centered on screen.
         """
         self.screen = screen
@@ -33,7 +33,7 @@ class TextField:
         if multi_line:
             self.image_width = image_width
             self.image_height = self.font.get_height()  # Starting value for use in 'render_multiline_image()'
-            self.pos = pos
+            self.text_pos = text_pos
             self.text_image = self.render_multiline_image()
         # Get image for standard, one-line text field.
         else:
@@ -57,7 +57,7 @@ class TextField:
         # Create empty surface.
         text_image = pygame.Surface((self.image_width, self.image_height), pygame.SRCALPHA)
         # Positioning and spacing variables.
-        x, y = self.pos
+        x, y = self.text_pos
         space = self.font.size(" ")[0]
         # 2D array, each row is a list of words.
         words = [word.split(" ") for word in self.text.splitlines()]
@@ -82,7 +82,7 @@ class TextField:
     def expand_multiline_image(self, text_image, y):
         """Helper function for use in 'render_multiline_image()' to expand 'text_image' for accommodation of new lines
         of text automatically through use of a temporary surface."""
-        x = self.pos[0]  # Reset 'x' for next line.
+        x = self.text_pos[0]  # Reset 'x' for next line.
         y += self.font.get_height()  # Set 'y' for next line.
 
         # Create a temporary surface to accommodate the new line of text.
@@ -139,8 +139,8 @@ class Button(TextField):
 
 
 class InteractiveText(TextField):
-    """Represent an interactive text field with popup and/or option to toggle between selected/unselected states based
-    on user input like mouse collision or mouse button event."""
+    """Represent an interactive text field with info panel and/or option to toggle between selected/unselected states
+    based on user input like mouse collision or mouse button event."""
 
     def __init__(self, screen, text, size, bg_color=False, label=False, select=False):
         """Initialize an interactive text field.
@@ -149,7 +149,7 @@ class InteractiveText(TextField):
             text: string to be shown for the text field.
             size: font size for text.
             bg_color: background color for rect. Default is 'False' for transparent background.
-            label: instance of 'TextField' class for popup. Default is 'False'.
+            label: instance of 'TextField' class for info panel. Default is 'False'.
             select: activate option to toggle between selected/unselected state. Default is 'False'.
         Default position is centered on screen.
         """
@@ -170,8 +170,40 @@ class InteractiveText(TextField):
         # Change field color based on mouse hover.
         if self.text_rect.collidepoint(mouse_pos):
             pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
+            # Check for and draw info panel.
             if self.label:
-                self.label.text_rect.topleft = mouse_pos
                 self.label.draw_text()
 
         self.screen.blit(self.text_image, self.text_rect)
+
+
+class InfoPanel(TextField):
+    """Represent an info panel for use in conjunction with an instance of class 'InteractiveText()'."""
+
+    def __init__(self, screen, text, size, bg_color=False, multi_line=False, image_width=0, text_pos=(0,0), surface_pos="topright"):
+        """Initialize an info panel.
+        ARGS:
+            screen: pygame window.
+            text: string to be shown in text field.
+            size: font size for text.
+            bg_color: background color for rect. Default is 'False' for transparent background.
+            multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
+        ARGS for use when 'multi_line=True':
+            image_width: set width for attribute 'text_image'. Default is '0'.
+            text_pos: set starting point for text in 'text_image'. Default is '(0,0)'.
+            surface_pos: set position for info panel on screen using a string keyword. Possible keywords:
+                "topleft",
+                "topright",
+                "bottomleft",
+                "bottomright".
+            Default position is "topright".
+        """
+        super().__init__(screen, text, size, bg_color, multi_line, image_width, text_pos)
+        if surface_pos == "topleft":
+            self.text_rect.topleft = screen.get_rect().topleft
+        elif surface_pos == "topright":
+            self.text_rect.topright = screen.get_rect().topright
+        elif surface_pos == "bottomleft":
+            self.text_rect.bottomleft = screen.get_rect().bottomleft
+        elif surface_pos == "bottomright":
+            self.text_rect.bottomright = screen.get_rect().bottomright
