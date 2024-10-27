@@ -53,18 +53,12 @@ def initialize_screen_elements(screen):
     ability_scores_title_text = "- ABILITIES -"
     ability_scores_screen_title = so.TextField(screen, ability_scores_title_text, text_large)
     # Info panels.
-    strength_info = so.InfoPanel(screen, ability_descr["str_descr"], text_small, bg_color=(255, 255, 255),
-                                  multi_line=True, image_width=info_panel_width)
-    dexterity_info = so.InfoPanel(screen, ability_descr["dex_descr"], text_small, bg_color=(255, 255, 255),
-                                  multi_line=True, image_width=info_panel_width)
-    constitution_info = so.InfoPanel(screen, ability_descr["con_descr"], text_small, bg_color=(255, 255, 255),
-                                  multi_line=True, image_width=info_panel_width)
-    intelligence_info = so.InfoPanel(screen, ability_descr["int_descr"], text_small, bg_color=(255, 255, 255),
-                                  multi_line=True, image_width=info_panel_width)
-    wisdom_info = so.InfoPanel(screen, ability_descr["wis_descr"], text_small, bg_color=(255, 255, 255),
-                                  multi_line=True, image_width=info_panel_width)
-    charisma_info = so.InfoPanel(screen, ability_descr["cha_descr"], text_small, bg_color=(255, 255, 255),
-                                  multi_line=True, image_width=info_panel_width)
+    strength_info = so.InfoPanel(screen, ability_descr["str_descr"], text_small, multi_line=True, image_width=info_panel_width)
+    dexterity_info = so.InfoPanel(screen, ability_descr["dex_descr"], text_small, multi_line=True, image_width=info_panel_width)
+    constitution_info = so.InfoPanel(screen, ability_descr["con_descr"], text_small, multi_line=True, image_width=info_panel_width)
+    intelligence_info = so.InfoPanel(screen, ability_descr["int_descr"], text_small, multi_line=True, image_width=info_panel_width)
+    wisdom_info = so.InfoPanel(screen, ability_descr["wis_descr"], text_small, multi_line=True, image_width=info_panel_width)
+    charisma_info = so.InfoPanel(screen, ability_descr["cha_descr"], text_small, multi_line=True, image_width=info_panel_width)
     # Ability text fields.
     strength_field = so.InteractiveText(screen, "Strength", text_medium, label=strength_info)
     dexterity_field = so.InteractiveText(screen, "Dexterity", text_medium, label=dexterity_info)

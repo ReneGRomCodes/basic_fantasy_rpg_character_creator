@@ -181,7 +181,7 @@ class InteractiveText(TextField):
             pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
             # Check for and draw info panel.
             if self.label:
-                self.label.draw_text()
+                self.label.draw_info_panel()
 
         self.screen.blit(self.text_image, self.text_rect)
 
@@ -189,13 +189,13 @@ class InteractiveText(TextField):
 class InfoPanel(TextField):
     """Represent an info panel for use in conjunction with an instance of class 'InteractiveText()'."""
 
-    def __init__(self, screen, text, size, bg_color=False, multi_line=False, image_width=0, text_pos=(0,0), surface_pos="topright"):
+    def __init__(self, screen, text, size, bg_color="white", multi_line=False, image_width=0, text_pos=(0,0), surface_pos="topright"):
         """Initialize an info panel.
         ARGS:
             screen: pygame window.
             text: string to be shown in text field.
             size: font size for text.
-            bg_color: background color for rect. Default is 'False' for transparent background.
+            bg_color: background color for rect. Default is 'white'.
             multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
         ARGS for use when 'multi_line=True':
             image_width: set width for attribute 'text_image'. Default is '0'.
@@ -205,7 +205,7 @@ class InfoPanel(TextField):
                 "topright",
                 "bottomleft",
                 "bottomright".
-            Default position is "topright".
+            Default position is 'topright'.
         """
         super().__init__(screen, text, size, bg_color, multi_line, image_width, text_pos)
         if surface_pos == "topleft":
@@ -216,3 +216,9 @@ class InfoPanel(TextField):
             self.background_rect.bottomleft = screen.get_rect().bottomleft
         elif surface_pos == "bottomright":
             self.background_rect.bottomright = screen.get_rect().bottomright
+
+    def draw_info_panel(self):
+        """Draw info panel on screen."""
+        self.text_rect.center = self.background_rect.center
+        pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
+        self.screen.blit(self.text_image, self.text_rect)
