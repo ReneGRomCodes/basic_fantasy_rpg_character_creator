@@ -200,11 +200,11 @@ class InfoPanel(TextField):
         ARGS for use when 'multi_line=True':
             image_width: set width for attribute 'text_image'. Default is '0'.
             text_pos: set starting point for text in 'text_image'. Default is '(0,0)'.
-            surface_pos: set position for info panel on screen using a string keyword. Possible keywords:
-                "topleft",
-                "topright",
-                "bottomleft",
-                "bottomright".
+        surface_pos: set position for info panel on screen using a string keyword. Possible keywords:
+            "topleft",
+            "topright",
+            "bottomleft",
+            "bottomright".
             Default position is 'topright'.
         """
         super().__init__(screen, text, size, bg_color, multi_line, image_width, text_pos)
