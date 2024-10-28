@@ -178,7 +178,11 @@ def show_race_class_selection_screen(screen, character, gui_elements, race_list,
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
 
+    # Position and draw screen title.
+    screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
+    screen_title.text_rect.centerx = screen.get_rect().centerx
     screen_title.draw_text()
+    # Draw buttons.
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
 
