@@ -71,19 +71,23 @@ def custom_character(screen, state, character, gui_elements, mouse_pos):
 
         state = eh.custom_character_events(state, gui_elements, mouse_pos)
 
-    elif state == "custom_character_3":
-        pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
-
+    elif state == "race_class_selection":
         # Get lists with available races and classes.
         race_list, class_list = cf.get_race_class_lists(character)
+
+        # Display race/class selection screen.
+        cf.show_race_class_selection_screen(screen, character, gui_elements, race_list, class_list)
+
         # Race and class selection.
         cf.race_class_selection(character, race_list, class_list)
         # Set values in character instance based on race and class.
         cf.set_character_values(character)
 
-        state = "custom_character_4"
+        state = eh.custom_character_events(state, gui_elements, mouse_pos)
 
     elif state == "custom_character_4":
+        pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
+
         # Name the character.
         cf.name_character(character)
 

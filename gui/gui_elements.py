@@ -1,5 +1,7 @@
 import gui.screen_objects as so
 import descr.abilities
+from character_creation_functions import race_class_selection
+
 """Initialize instances of classes from 'screen_objects.py' for use in GUI."""
 
 
@@ -68,6 +70,10 @@ def initialize_screen_elements(screen):
     charisma_field = so.InteractiveText(screen, "Charisma", text_medium, label=charisma_info)
     reroll_button = so.Button(screen, "Roll Again", text_medium)
 
+    # Race/class selection screen.
+    race_class_selection_title_text = "- RACE / CLASS SELECTION -"
+    race_class_selection_screen_title = so.TextField(screen, race_class_selection_title_text, text_large)
+
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
@@ -97,6 +103,8 @@ def initialize_screen_elements(screen):
         "wisdom": wisdom_field,
         "charisma": charisma_field,
         "reroll_button": reroll_button,
+        # Race/class selection screen.
+        "race_class_title": race_class_selection_screen_title,
     }
 
     return gui_elements
