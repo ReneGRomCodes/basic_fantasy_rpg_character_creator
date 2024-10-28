@@ -76,7 +76,7 @@ def custom_character(screen, state, character, gui_elements, mouse_pos):
         race_list, class_list = cf.get_race_class_lists(character)
 
         # Display race/class selection screen.
-        cf.show_race_class_selection_screen(screen, character, gui_elements, race_list, class_list)
+        cf.show_race_class_selection_screen(screen, character, gui_elements, race_list, class_list, mouse_pos)
 
         # Race and class selection.
         cf.race_class_selection(character, race_list, class_list)

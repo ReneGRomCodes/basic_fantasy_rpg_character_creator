@@ -171,7 +171,7 @@ def build_race_class_list(race_list, class_list):
     return possible_characters
 
 
-def show_race_class_selection_screen(screen, character, gui_elements, race_list, class_list):
+def show_race_class_selection_screen(screen, character, gui_elements, race_list, class_list, mouse_pos):
     """Display race/class selection on screen."""
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["race_class_title"]
@@ -179,8 +179,8 @@ def show_race_class_selection_screen(screen, character, gui_elements, race_list,
     continue_button = gui_elements["continue_button"]
 
     screen_title.draw_text()
-    back_button.draw_button()
-    continue_button.draw_button()
+    back_button.draw_button(mouse_pos)
+    continue_button.draw_button(mouse_pos)
 
 
 def race_class_selection(character, race_list, class_list):
