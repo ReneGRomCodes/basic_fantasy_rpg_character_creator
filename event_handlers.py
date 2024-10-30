@@ -1,5 +1,6 @@
 import pygame
 import sys
+import character_creation_functions as cf
 """Contains event handler functions."""
 
 
@@ -37,7 +38,7 @@ def main_events(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def custom_character_events(state, gui_elements, mouse_pos):
+def custom_character_events(state, character, race_list, class_list, gui_elements, mouse_pos):
     """Check and handle events in function 'custom_character()' in 'main_functions.py' and return 'state'."""
 
     for event in pygame.event.get():
@@ -54,6 +55,8 @@ def custom_character_events(state, gui_elements, mouse_pos):
                     state = "set_abilities"
 
                 if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                    # Set and return available races/classes and state after confirmation of ability scores.
+                    race_list, class_list = cf.get_race_class_lists(character)
                     state = "race_class_selection"
 
         elif state == "race_class_selection":
@@ -67,4 +70,4 @@ def custom_character_events(state, gui_elements, mouse_pos):
         else:
             pass
 
-    return state
+    return race_list, class_list, state

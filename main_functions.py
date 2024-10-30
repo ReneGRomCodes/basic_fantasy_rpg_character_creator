@@ -53,7 +53,7 @@ def show_menu(screen, gui_elements, mouse_pos):
     random.draw_button(mouse_pos)
 
 
-def custom_character(screen, state, character, gui_elements, mouse_pos):
+def custom_character(screen, state, character, race_list, class_list, gui_elements, mouse_pos):
     """Create custom character based on user input and return state for main loop."""
     if state == "set_abilities":
         # Generate dictionary for character abilities.
@@ -68,26 +68,20 @@ def custom_character(screen, state, character, gui_elements, mouse_pos):
     elif state == "show_abilities":
         # Display ability score screen.
         cf.show_ability_scores_screen(screen, character, gui_elements, mouse_pos)
+        race_list, class_list, state = eh.custom_character_events(state, character, race_list, class_list, gui_elements, mouse_pos)
 
-        state = eh.custom_character_events(state, gui_elements, mouse_pos)
+        return race_list, class_list, state
 
     elif state == "race_class_selection":
-        # Get lists with available races and classes.
-        race_list, class_list = cf.get_race_class_lists(character)
-
+        race_list, class_list, state = eh.custom_character_events(state, character, race_list, class_list, gui_elements, mouse_pos)
         # Display race/class selection screen.
         cf.show_race_class_selection_screen(screen, character, gui_elements, race_list, class_list, mouse_pos)
-
         # Race and class selection.
         cf.race_class_selection(character, race_list, class_list)
         # Set values in character instance based on race and class.
         cf.set_character_values(character)
 
-        state = eh.custom_character_events(state, gui_elements, mouse_pos)
-
     elif state == "custom_character_4":
-        pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
-
         # Name the character.
         cf.name_character(character)
 
@@ -114,8 +108,6 @@ def custom_character(screen, state, character, gui_elements, mouse_pos):
 
 def random_character(character):
     """Create character with random values and print character sheet."""
-    pygame.quit()  # TODO REMOVE AFTER FURTHER GUI SCREENS ARE IMPLEMENTED!!!
-
     os.system('cls')
     # Get random class, race, name and ability scores.
     cf.random_character_generator(character)

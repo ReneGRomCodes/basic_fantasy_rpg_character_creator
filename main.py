@@ -18,6 +18,10 @@ def run_character_creator():
 
     # Create instance of class 'Character'.
     character = char.Character()
+    # Variables for character creation.
+    race_list = []
+    class_list = []
+
     # Set initial state.
     state = "title_screen"
     # Initialize GUI elements.
@@ -35,8 +39,10 @@ def run_character_creator():
             mf.show_title_screen(screen, gui_elements)
         elif state == "main_menu":
             mf.show_menu(screen, gui_elements, mouse_pos)
-        elif state in ["set_abilities", "show_abilities", "race_class_selection", "custom_character_4"]:
-            state = mf.custom_character(screen, state, character, gui_elements, mouse_pos)
+        elif state in ["set_abilities", "custom_character_4"]:
+            state = mf.custom_character(screen, state, character, race_list, class_list, gui_elements, mouse_pos)
+        elif state in ["show_abilities", "race_class_selection"]:
+            race_list, class_list, state = mf.custom_character(screen, state, character, race_list, class_list, gui_elements, mouse_pos)
         elif state == "random_character":
             mf.random_character(character)
 
