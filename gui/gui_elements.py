@@ -62,12 +62,12 @@ def initialize_screen_elements(screen):
     wisdom_info = so.InfoPanel(screen, ability_descr["wis_descr"], text_small, multi_line=True, image_width=info_panel_width)
     charisma_info = so.InfoPanel(screen, ability_descr["cha_descr"], text_small, multi_line=True, image_width=info_panel_width)
     # Ability text fields.
-    strength_field = so.InteractiveText(screen, "Strength", text_medium, label=strength_info)
-    dexterity_field = so.InteractiveText(screen, "Dexterity", text_medium, label=dexterity_info)
-    constitution_field = so.InteractiveText(screen, "Constitution", text_medium, label=constitution_info)
-    intelligence_field = so.InteractiveText(screen, "Intelligence", text_medium, label=intelligence_info)
-    wisdom_field = so.InteractiveText(screen, "Wisdom", text_medium, label=wisdom_info)
-    charisma_field = so.InteractiveText(screen, "Charisma", text_medium, label=charisma_info)
+    strength_field = so.InteractiveText(screen, "Strength", text_medium, panel=strength_info)
+    dexterity_field = so.InteractiveText(screen, "Dexterity", text_medium, panel=dexterity_info)
+    constitution_field = so.InteractiveText(screen, "Constitution", text_medium, panel=constitution_info)
+    intelligence_field = so.InteractiveText(screen, "Intelligence", text_medium, panel=intelligence_info)
+    wisdom_field = so.InteractiveText(screen, "Wisdom", text_medium, panel=wisdom_info)
+    charisma_field = so.InteractiveText(screen, "Charisma", text_medium, panel=charisma_info)
     reroll_button = so.Button(screen, "Roll Again", text_medium)
 
     # Race/class selection screen.

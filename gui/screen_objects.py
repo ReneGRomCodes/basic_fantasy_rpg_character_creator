@@ -151,19 +151,19 @@ class InteractiveText(TextField):
     """Represent an interactive text field with info panel and/or option to toggle between selected/unselected states
     based on user input like mouse collision or mouse button event."""
 
-    def __init__(self, screen, text, size, bg_color=False, label=False, select=False):
+    def __init__(self, screen, text, size, bg_color=False, panel=False, select=False):
         """Initialize an interactive text field.
         ARGS:
             screen: pygame window.
             text: string to be shown for the text field.
             size: font size for text.
             bg_color: background color for rect. Default is 'False' for transparent background.
-            label: instance of 'TextField' class for info panel. Default is 'False'.
+            panel: instance of 'TextField' class for info panel. Default is 'False'.
             select: activate option to toggle between selected/unselected state. Default is 'False'.
         Default position is centered on screen.
         """
         super().__init__(screen, text, size, bg_color)
-        self.label = label
+        self.panel = panel
         self.select = select
         # State attribute if 'select=True'.
         self.selected = False
@@ -180,8 +180,8 @@ class InteractiveText(TextField):
         if self.text_rect.collidepoint(mouse_pos):
             pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
             # Check for and draw info panel.
-            if self.label:
-                self.label.draw_info_panel()
+            if self.panel:
+                self.panel.draw_info_panel()
 
         self.screen.blit(self.text_image, self.text_rect)
 
