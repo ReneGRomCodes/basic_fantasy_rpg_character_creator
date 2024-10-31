@@ -73,7 +73,17 @@ def initialize_screen_elements(screen):
     # Race/class selection screen.
     race_class_selection_title_text = "- RACE / CLASS SELECTION -"
     race_class_selection_screen_title = so.TextField(screen, race_class_selection_title_text, text_large)
-
+    # Race and class text fields.
+    race_human_field = so.InteractiveText(screen, "Human", text_medium)
+    race_elf_field = so.InteractiveText(screen, "Elf", text_medium)
+    race_dwarf_field = so.InteractiveText(screen, "Dwarf", text_medium)
+    race_halfling_field = so.InteractiveText(screen, "Halfling", text_medium)
+    class_cleric_field = so.InteractiveText(screen, "Clerinc", text_medium)
+    class_fighter_field = so.InteractiveText(screen, "Fighter", text_medium)
+    class_fighter_magic_user_field = so.InteractiveText(screen, "Fighter/Magic-User", text_medium)
+    class_magic_user_field = so.InteractiveText(screen, "Magic-User", text_medium)
+    class_magic_user_thief_field = so.InteractiveText(screen, "Magic-User/Thief", text_medium)
+    class_thief_field = so.InteractiveText(screen, "Thief", text_medium)
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
@@ -105,6 +115,9 @@ def initialize_screen_elements(screen):
         "reroll_button": reroll_button,
         # Race/class selection screen.
         "race_class_title": race_class_selection_screen_title,
+        "possible_races": [race_human_field, race_elf_field, race_dwarf_field, race_halfling_field],
+        "possible_classes": [class_cleric_field, class_fighter_field, class_fighter_magic_user_field,
+                             class_magic_user_field, class_magic_user_thief_field, class_thief_field],
     }
 
     return gui_elements
