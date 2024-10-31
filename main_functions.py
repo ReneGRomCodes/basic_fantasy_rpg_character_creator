@@ -70,16 +70,15 @@ def custom_character(screen, state, character, race_list, class_list, gui_elemen
         cf.show_ability_scores_screen(screen, character, gui_elements, mouse_pos)
         race_list, class_list, state = eh.custom_character_events(state, character, race_list, class_list, gui_elements, mouse_pos)
 
-        return race_list, class_list, state
-
     elif state == "race_class_selection":
-        race_list, class_list, state = eh.custom_character_events(state, character, race_list, class_list, gui_elements, mouse_pos)
         # Display race/class selection screen.
         cf.show_race_class_selection_screen(screen, character, gui_elements, race_list, class_list, mouse_pos)
         # Race and class selection.
         cf.race_class_selection(character, race_list, class_list)
         # Set values in character instance based on race and class.
         cf.set_character_values(character)
+
+        race_list, class_list, state = eh.custom_character_events(state, character, race_list, class_list, gui_elements, mouse_pos)
 
     elif state == "custom_character_4":
         # Name the character.
@@ -103,7 +102,7 @@ def custom_character(screen, state, character, race_list, class_list, gui_elemen
         cf.build_character_sheet(character)
         input("\n\nPress ENTER to exit.")
 
-    return state
+    return race_list, class_list, state
 
 
 def random_character(character):
