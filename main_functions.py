@@ -73,7 +73,7 @@ def custom_character(screen, state, character, possible_characters, gui_elements
 
     elif state == "race_class_selection":
         # Display race/class selection screen.
-        cf.show_race_class_selection_screen(screen, character, gui_elements, possible_characters, gui_elements, mouse_pos)
+        cf.show_race_class_selection_screen(screen, possible_characters, gui_elements, mouse_pos)
         # Race and class selection.
         #cf.race_class_selection(character, race_list, class_list)
         # Set values in character instance based on race and class.
