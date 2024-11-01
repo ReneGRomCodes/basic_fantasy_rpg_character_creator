@@ -78,7 +78,7 @@ def initialize_screen_elements(screen):
     race_elf_field = so.InteractiveText(screen, "Elf", text_medium)
     race_dwarf_field = so.InteractiveText(screen, "Dwarf", text_medium)
     race_halfling_field = so.InteractiveText(screen, "Halfling", text_medium)
-    class_cleric_field = so.InteractiveText(screen, "Clerinc", text_medium)
+    class_cleric_field = so.InteractiveText(screen, "Cleric", text_medium)
     class_fighter_field = so.InteractiveText(screen, "Fighter", text_medium)
     class_fighter_magic_user_field = so.InteractiveText(screen, "Fighter/Magic-User", text_medium)
     class_magic_user_field = so.InteractiveText(screen, "Magic-User", text_medium)
