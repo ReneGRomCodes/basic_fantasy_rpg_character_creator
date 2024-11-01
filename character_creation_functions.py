@@ -180,21 +180,31 @@ def show_race_class_selection_screen(screen, possible_characters, gui_elements, 
     possible_races = gui_elements["possible_races"]
     possible_classes = gui_elements["possible_classes"]
 
-    # Create list and populate it with instances from 'possible_races' and 'possible_classes' if their 'text' attributes
-    # match entries in 'possible_characters' (first word for race, second for class). Items in 'available_choices' are
+    # Create dict and populate it with instances from 'possible_races' and 'possible_classes' if their 'text' attributes
+    # match entries in 'possible_characters' (first word for race, second for class). Values in 'available_choices' are
     # then ready to be drawn on screen.
-    available_choices = []
+    available_choices = {
+        "races": [],
+        "classes": [],
+    }
     for character in possible_characters:
-        # Split each item to get race and class
+        # Split each item to get race and class.
         race_name, class_name = character.split()
-        # Check if the race matches
+        # Check if the race matches.
         for race in possible_races:
             if race.text == race_name:
-                available_choices.append(race)
-        # Check if the class matches
+                available_choices["races"].append(race)
+        # Check if the class matches.
         for cls in possible_classes:
             if cls.text == class_name:
-                available_choices.append(cls)
+                available_choices["classes"].append(cls)
+
+    # Draw text fields for available races on screen.
+    for race in available_choices["races"]:
+        pass
+    # Draw text fields for available classes on screen.
+    for cls in available_choices["classes"]:
+        pass
 
     # Position and draw screen title.
     screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
