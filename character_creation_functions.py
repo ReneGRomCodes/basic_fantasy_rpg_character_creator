@@ -179,9 +179,14 @@ def show_race_class_selection_screen(screen, possible_characters, gui_elements, 
     continue_button = gui_elements["continue_button"]
     possible_races = gui_elements["possible_races"]
     possible_classes = gui_elements["possible_classes"]
+    # Variables for element positioning.
+    race_field_centerx = int(screen.get_rect().width / 4)
+    race_field_centery_start = int(screen.get_rect().height / 4)
+    class_field_centerx = race_field_centerx * 3
+    class_field_centery_start = int(screen.get_rect().height / 4)
 
     # Create dict and populate it with instances from 'possible_races' and 'possible_classes' if their 'text' attributes
-    # match entries in 'possible_characters' (first word for race, second for class). Values in 'available_choices' are
+    # match entries in 'possible_characters' (first word for race, second for class). Objects in 'available_choices' are
     # then ready to be drawn on screen.
     available_choices = {
         "races": [],
@@ -193,18 +198,33 @@ def show_race_class_selection_screen(screen, possible_characters, gui_elements, 
         # Check if the race matches.
         for race in possible_races:
             if race.text == race_name:
-                available_choices["races"].append(race)
+                # Assuring only one instance of each object is added to dict.
+                if race in available_choices["races"]:
+                    pass
+                else:
+                    available_choices["races"].append(race)
         # Check if the class matches.
         for cls in possible_classes:
             if cls.text == class_name:
-                available_choices["classes"].append(cls)
+                # Assuring only one instance of each object is added to dict.
+                if cls in available_choices["classes"]:
+                    pass
+                else:
+                    available_choices["classes"].append(cls)
 
     # Draw text fields for available races on screen.
     for race in available_choices["races"]:
-        pass
+        race.text_rect.centerx, race.text_rect.centery = race_field_centerx, race_field_centery_start
+        race.draw_text()
+
+        race_field_centery_start += race.text_rect.height * 2
+
     # Draw text fields for available classes on screen.
     for cls in available_choices["classes"]:
-        pass
+        cls.text_rect.centerx, cls.text_rect.centery = class_field_centerx, class_field_centery_start
+        cls.draw_text()
+
+        class_field_centery_start += cls.text_rect.height * 2
 
     # Position and draw screen title.
     screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
