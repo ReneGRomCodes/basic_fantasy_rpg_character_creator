@@ -210,23 +210,23 @@ def show_race_class_selection_screen(screen, possible_characters, gui_elements, 
     if len(available_choices["races"]) == 1:
         race_field_centery_start = screen.get_rect().centery
     else:
-        race_field_block_height = len(available_choices["races"]) * available_choices["races"][0].text_rect.height * 2
-        race_field_centery_start = screen.get_rect().centery - race_field_block_height / 2
+        race_field_block_height = len(available_choices["races"]) * available_choices["races"][0].text_rect.height
+        race_field_centery_start = screen.get_rect().centery - race_field_block_height
     if len(available_choices["classes"]) == 1:
         class_field_centery_start = screen.get_rect().centery
     else:
-        class_field_block_height = len(available_choices["classes"]) * available_choices["classes"][0].text_rect.height * 2
-        class_field_centery_start = screen.get_rect().centery - class_field_block_height / 2
+        class_field_block_height = len(available_choices["classes"]) * available_choices["classes"][0].text_rect.height
+        class_field_centery_start = screen.get_rect().centery - class_field_block_height
 
     # Draw text fields for available races on screen.
     for race in available_choices["races"]:
         race.text_rect.centerx, race.text_rect.centery = race_field_centerx, race_field_centery_start
-        race.draw_text()
+        race.draw_interactive_text(mouse_pos)
         race_field_centery_start += race.text_rect.height * 2
     # Draw text fields for available classes on screen.
     for cls in available_choices["classes"]:
         cls.text_rect.centerx, cls.text_rect.centery = class_field_centerx, class_field_centery_start
-        cls.draw_text()
+        cls.draw_interactive_text(mouse_pos)
         class_field_centery_start += cls.text_rect.height * 2
 
     # Position and draw screen title.
