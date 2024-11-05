@@ -1,6 +1,6 @@
 """Contains function for the class descriptions."""
 
-def get_race_descr():
+def get_class_descr():
     """Initialize variables containing class descriptions and return them in dict 'class_descr'.
         NOTE: String variables created have to be then added manually to dict 'class_descr'."""
 
