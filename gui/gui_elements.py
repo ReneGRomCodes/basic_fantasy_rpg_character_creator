@@ -1,7 +1,5 @@
 import gui.screen_objects as so
 import descr.abilities
-from character_creation_functions import race_class_selection
-
 """Initialize instances of classes from 'screen_objects.py' for use in GUI."""
 
 

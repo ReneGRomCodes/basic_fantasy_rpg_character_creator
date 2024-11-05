@@ -3,7 +3,7 @@
 
 def get_ability_descr():
     """Initialize variables containing characters ability score descriptions and return them in dict 'ability_descr'.
-    NOTE: String variables created have to be then added manually to dict 'ability_descr'!"""
+    NOTE: String variables created have to be then added manually to dict 'ability_descr'."""
 
     strength = ("Measures the character's raw physical power. Strength is the prime requisite for FIGHTERS.\n"
                 "\nBonuses:\n"

@@ -3,7 +3,6 @@ import character_creation_functions as cf
 import functions as func
 import shop_functions as sf
 import event_handlers as eh
-import pygame
 """Main functions used in 'main.py'."""
 
 
