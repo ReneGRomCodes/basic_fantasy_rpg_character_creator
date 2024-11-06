@@ -73,18 +73,30 @@ def initialize_screen_elements(screen):
     # Race/class selection screen.
     race_class_selection_title_text = "- RACE / CLASS SELECTION -"
     race_class_selection_screen_title = so.TextField(screen, race_class_selection_title_text, text_large)
+    race_class_info_width = int(screen_width / 4)
     # Race info Panels.
-    humans_info = so.InfoPanel(screen, race_descr["humans"], text_small, multi_line=True, image_width=info_panel_width)
-    elves_info = so.InfoPanel(screen, race_descr["elves"], text_small, multi_line=True, image_width=info_panel_width)
-    dwarves_info = so.InfoPanel(screen, race_descr["dwarves"], text_small, multi_line=True, image_width=info_panel_width)
-    halflings_info= so.InfoPanel(screen, race_descr["halflings"], text_small, multi_line=True, image_width=info_panel_width)
+    humans_info = so.InfoPanel(screen, race_descr["humans"], text_small, multi_line=True, image_width=race_class_info_width)
+    elves_info = so.InfoPanel(screen, race_descr["elves"], text_small, multi_line=True, image_width=race_class_info_width)
+    dwarves_info = so.InfoPanel(screen, race_descr["dwarves"], text_small, multi_line=True, image_width=race_class_info_width)
+    halflings_info= so.InfoPanel(screen, race_descr["halflings"], text_small, multi_line=True, image_width=race_class_info_width)
     # Class info panels.
-    fighter_info = so.InfoPanel(screen, class_descr["fighter"], text_small, multi_line=True, image_width=info_panel_width)
-    cleric_info = so.InfoPanel(screen, class_descr["cleric"], text_small, multi_line=True, image_width=info_panel_width)
-    magic_user_info = so.InfoPanel(screen, class_descr["magic-user"], text_small, multi_line=True, image_width=info_panel_width)
-    thief_info = so.InfoPanel(screen, class_descr["thief"], text_small, multi_line=True, image_width=info_panel_width)
-    fighter_magic_user_info = so.InfoPanel(screen, class_descr["fighter_magic-user"], text_small, multi_line=True, image_width=info_panel_width)
-    magic_user_thief_info = so.InfoPanel(screen, class_descr["magic-user_thief"], text_small, multi_line=True, image_width=info_panel_width)
+    fighter_info = so.InfoPanel(screen, class_descr["fighter"], text_small, multi_line=True, image_width=race_class_info_width)
+    cleric_info = so.InfoPanel(screen, class_descr["cleric"], text_small, multi_line=True, image_width=race_class_info_width)
+    magic_user_info = so.InfoPanel(screen, class_descr["magic-user"], text_small, multi_line=True, image_width=race_class_info_width)
+    thief_info = so.InfoPanel(screen, class_descr["thief"], text_small, multi_line=True, image_width=race_class_info_width)
+    fighter_magic_user_info = so.InfoPanel(screen, class_descr["fighter_magic-user"], text_small, multi_line=True, image_width=race_class_info_width)
+    magic_user_thief_info = so.InfoPanel(screen, class_descr["magic-user_thief"], text_small, multi_line=True, image_width=race_class_info_width)
+    # Position for race and class info panels.
+    humans_info.background_rect.center = screen.get_rect().center
+    elves_info.background_rect.center = screen.get_rect().center
+    dwarves_info.background_rect.center = screen.get_rect().center
+    halflings_info.background_rect.center = screen.get_rect().center
+    fighter_info.background_rect.center = screen.get_rect().center
+    cleric_info.background_rect.center = screen.get_rect().center
+    magic_user_info.background_rect.center = screen.get_rect().center
+    thief_info.background_rect.center = screen.get_rect().center
+    fighter_magic_user_info.background_rect.center = screen.get_rect().center
+    magic_user_thief_info.background_rect.center = screen.get_rect().center
     # Race and class text fields.
     race_human_field = so.InteractiveText(screen, "Human", text_medium, panel=humans_info)
     race_elf_field = so.InteractiveText(screen, "Elf", text_medium, panel=elves_info)
