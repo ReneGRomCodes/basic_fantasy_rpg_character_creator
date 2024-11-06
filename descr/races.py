@@ -16,6 +16,20 @@ def get_race_descr():
                    "earned.\n"
                    "\n"
                    "Saving Throws: Humans are the 'standard', and thus have no saving throw bonuses.")
+    humans_table = ("Ability Requirements        No ability score requirements\n"
+                    "--------------------------------------------------------------------------\n"
+                    "Classes                     Any\n"
+                    "--------------------------------------------------------------------------\n"
+                    "Hit Die                     Any\n"
+                    "--------------------------------------------------------------------------\n"
+                    "Weapons                     Large weapons require two hands.\n"
+                    "--------------------------------------------------------------------------\n"
+                    "Special                     +10% to all earned experience\n"
+                    "--------------------------------------------------------------------------\n"
+                    "Save Bonuses                None\n"
+                    "--------------------------------------------------------------------------\n"
+                    "Languages                   - Common\n"
+                    "                            - +1 / point of INT bonus")
     elves_descr = ("Description: Elves are a slender race, with both males and females standing around five feet tall and "
                    "weighing around 130 pounds. Most have dark hair, with little or no body or facial hair. Their skin "
                    "is pale, and they have pointed ears and delicate features. Elves are lithe and graceful. They have "
@@ -78,10 +92,10 @@ def get_race_descr():
                       "and Spells, and at +3 vs. Dragon Breath.")
 
     race_descr = {
-        "humans": humans_descr,
-        "elves": elves_descr,
-        "dwarves": dwarfes_descr,
-        "halflings": halflings_desc,
+        "humans": [humans_descr, humans_table],
+        "elves": [elves_descr],
+        "dwarves": [dwarfes_descr],
+        "halflings": [halflings_desc],
     }
 
     return race_descr

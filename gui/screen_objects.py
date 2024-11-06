@@ -158,7 +158,7 @@ class InteractiveText(TextField):
             text: string to be shown for the text field.
             size: font size for text.
             bg_color: background color for rect. Default is 'False' for transparent background.
-            panel: instance of 'TextField' class for info panel. Default is 'False'.
+            panel: list of instances of 'TextField' class for info panel. Default is 'False'.
             select: activate option to toggle between selected/unselected state. Default is 'False'.
         Default position is centered on screen.
         """
@@ -181,7 +181,8 @@ class InteractiveText(TextField):
             pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
             # Check for and draw info panel.
             if self.panel:
-                self.panel.draw_info_panel()
+                for i in self.panel:
+                    i.draw_info_panel()
 
         self.screen.blit(self.text_image, self.text_rect)
 

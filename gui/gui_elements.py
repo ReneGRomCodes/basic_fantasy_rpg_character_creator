@@ -62,12 +62,12 @@ def initialize_screen_elements(screen):
     wisdom_info = so.InfoPanel(screen, ability_descr["wis_descr"], text_small, multi_line=True, image_width=info_panel_width)
     charisma_info = so.InfoPanel(screen, ability_descr["cha_descr"], text_small, multi_line=True, image_width=info_panel_width)
     # Ability text fields.
-    strength_field = so.InteractiveText(screen, "Strength", text_medium, panel=strength_info)
-    dexterity_field = so.InteractiveText(screen, "Dexterity", text_medium, panel=dexterity_info)
-    constitution_field = so.InteractiveText(screen, "Constitution", text_medium, panel=constitution_info)
-    intelligence_field = so.InteractiveText(screen, "Intelligence", text_medium, panel=intelligence_info)
-    wisdom_field = so.InteractiveText(screen, "Wisdom", text_medium, panel=wisdom_info)
-    charisma_field = so.InteractiveText(screen, "Charisma", text_medium, panel=charisma_info)
+    strength_field = so.InteractiveText(screen, "Strength", text_medium, panel=[strength_info])
+    dexterity_field = so.InteractiveText(screen, "Dexterity", text_medium, panel=[dexterity_info])
+    constitution_field = so.InteractiveText(screen, "Constitution", text_medium, panel=[constitution_info])
+    intelligence_field = so.InteractiveText(screen, "Intelligence", text_medium, panel=[intelligence_info])
+    wisdom_field = so.InteractiveText(screen, "Wisdom", text_medium, panel=[wisdom_info])
+    charisma_field = so.InteractiveText(screen, "Charisma", text_medium, panel=[charisma_info])
     reroll_button = so.Button(screen, "Roll Again", text_medium)
 
     # Race/class selection screen.
@@ -75,10 +75,11 @@ def initialize_screen_elements(screen):
     race_class_selection_screen_title = so.TextField(screen, race_class_selection_title_text, text_large)
     race_class_info_width = int(screen_width / 4)
     # Race info Panels.
-    humans_info = so.InfoPanel(screen, race_descr["humans"], text_small, multi_line=True, image_width=race_class_info_width)
-    elves_info = so.InfoPanel(screen, race_descr["elves"], text_small, multi_line=True, image_width=race_class_info_width)
-    dwarves_info = so.InfoPanel(screen, race_descr["dwarves"], text_small, multi_line=True, image_width=race_class_info_width)
-    halflings_info= so.InfoPanel(screen, race_descr["halflings"], text_small, multi_line=True, image_width=race_class_info_width)
+    humans_info = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True, image_width=race_class_info_width)
+    humans_info_table = so.InfoPanel(screen, race_descr["humans"][1], text_small, multi_line=True, image_width=race_class_info_width)
+    elves_info = so.InfoPanel(screen, race_descr["elves"][0], text_small, multi_line=True, image_width=race_class_info_width)
+    dwarves_info = so.InfoPanel(screen, race_descr["dwarves"][0], text_small, multi_line=True, image_width=race_class_info_width)
+    halflings_info= so.InfoPanel(screen, race_descr["halflings"][0], text_small, multi_line=True, image_width=race_class_info_width)
     # Class info panels.
     fighter_info = so.InfoPanel(screen, class_descr["fighter"], text_small, multi_line=True, image_width=race_class_info_width)
     cleric_info = so.InfoPanel(screen, class_descr["cleric"], text_small, multi_line=True, image_width=race_class_info_width)
@@ -98,16 +99,16 @@ def initialize_screen_elements(screen):
     fighter_magic_user_info.background_rect.center = screen.get_rect().center
     magic_user_thief_info.background_rect.center = screen.get_rect().center
     # Race and class text fields.
-    race_human_field = so.InteractiveText(screen, "Human", text_medium, panel=humans_info)
-    race_elf_field = so.InteractiveText(screen, "Elf", text_medium, panel=elves_info)
-    race_dwarf_field = so.InteractiveText(screen, "Dwarf", text_medium, panel=dwarves_info)
-    race_halfling_field = so.InteractiveText(screen, "Halfling", text_medium, panel=halflings_info)
-    class_cleric_field = so.InteractiveText(screen, "Cleric", text_medium, panel=cleric_info)
-    class_fighter_field = so.InteractiveText(screen, "Fighter", text_medium, panel=fighter_info)
-    class_fighter_magic_user_field = so.InteractiveText(screen, "Fighter/Magic-User", text_medium, panel=fighter_magic_user_info)
-    class_magic_user_field = so.InteractiveText(screen, "Magic-User", text_medium, panel=magic_user_info)
-    class_magic_user_thief_field = so.InteractiveText(screen, "Magic-User/Thief", text_medium, panel=magic_user_thief_info)
-    class_thief_field = so.InteractiveText(screen, "Thief", text_medium, panel=thief_info)
+    race_human_field = so.InteractiveText(screen, "Human", text_medium, panel=[humans_info, humans_info_table])
+    race_elf_field = so.InteractiveText(screen, "Elf", text_medium, panel=[elves_info])
+    race_dwarf_field = so.InteractiveText(screen, "Dwarf", text_medium, panel=[dwarves_info])
+    race_halfling_field = so.InteractiveText(screen, "Halfling", text_medium, panel=[halflings_info])
+    class_cleric_field = so.InteractiveText(screen, "Cleric", text_medium, panel=[cleric_info])
+    class_fighter_field = so.InteractiveText(screen, "Fighter", text_medium, panel=[fighter_info])
+    class_fighter_magic_user_field = so.InteractiveText(screen, "Fighter/Magic-User", text_medium, panel=[fighter_magic_user_info])
+    class_magic_user_field = so.InteractiveText(screen, "Magic-User", text_medium, panel=[magic_user_info])
+    class_magic_user_thief_field = so.InteractiveText(screen, "Magic-User/Thief", text_medium, panel=[magic_user_thief_info])
+    class_thief_field = so.InteractiveText(screen, "Thief", text_medium, panel=[thief_info])
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
