@@ -16,20 +16,20 @@ def get_race_descr():
                    "earned.\n"
                    "\n"
                    "Saving Throws: Humans are the 'standard', and thus have no saving throw bonuses.")
-    humans_table = ("Ability Requirements        No ability score requirements\n"
+    humans_table = ("No ability score requirements\n"
                     "--------------------------------------------------------------------------\n"
-                    "Classes                     Any\n"
+                    "Any class\n"
                     "--------------------------------------------------------------------------\n"
-                    "Hit Die                     Any\n"
+                    "Any Hit Die\n"
                     "--------------------------------------------------------------------------\n"
-                    "Weapons                     Large weapons require two hands.\n"
+                    "Large weapons require two hands.\n"
                     "--------------------------------------------------------------------------\n"
-                    "Special                     +10% to all earned experience\n"
+                    "+10% to all earned experience\n"
                     "--------------------------------------------------------------------------\n"
-                    "Save Bonuses                None\n"
+                    "No save bonuses\n"
                     "--------------------------------------------------------------------------\n"
-                    "Languages                   - Common\n"
-                    "                            - +1 / point of INT bonus")
+                    "Common language, +1 point of INT bonus\n")
+
     elves_descr = ("Description: Elves are a slender race, with both males and females standing around five feet tall and "
                    "weighing around 130 pounds. Most have dark hair, with little or no body or facial hair. Their skin "
                    "is pale, and they have pointed ears and delicate features. Elves are lithe and graceful. They have "
@@ -48,6 +48,25 @@ def get_race_descr():
                    "surprise by 1 in 1d6.\n"
                    "\n"
                    "Saving Throws: Elves save at +1 vs. Paralysis or Petrify, and +2 vs. Magic Wands and Spells.")
+    elves_table = ("Ability Requirements		INT 9 or higher, CON 17 or lower\n"
+                   "--------------------------------------------------------------------------\n"
+                   "Classes				Any single class as well as Fighter/Magic-User and Magic-User/Thief\n"
+                   "--------------------------------------------------------------------------\n"
+                   "Hit Die				d6 maximum\n"
+                   "--------------------------------------------------------------------------\n"
+                   "Weapons				Large weapons require two hands."
+                   "--------------------------------------------------------------------------\n"
+                   "Special				- Darkvision (60' range)\n"
+                   "- Detect secret doors (1-2 on 1d6; 1 on 1d6 with a cursory look)\n"
+                   "- Immune to the paralyzing attack of ghouls\n"
+                   "- Range reduction by one for surprise checks\n"
+                   "--------------------------------------------------------------------------\n"
+                   "Save Bonuses			- +2 vs. Magic Wands\n"
+                   "- +1 vs. Paralysis or Petrify\n"
+                   "--------------------------------------------------------------------------\n"
+                   "Languages			- Common, Elvish\n"
+                   "- +1 / point of INT bonus")
+
     dwarfes_descr = ("Description: Dwarves are a short, stocky race; both male and female Dwarves stand around four feet "
                      "tall and typically weigh around 120 pounds. Their long hair and thick beards are dark brown, gray "
                      "or black. They take great pride in their beards, sometimes braiding or forking them. They have a "
@@ -67,6 +86,26 @@ def get_race_descr():
                      "\n"
                      "Saving Throws: Dwarves save at +4 vs. Death Ray or Poison, Magic Wands, Paralysis or Petrify, and "
                      "Spells, and at +3 vs. Dragon Breath.")
+    dwarves_table = ("Ability Requirements		CON 9 or higher, CHA 17 or lower\n"
+                     "--------------------------------------------------------------------------\n"
+                     "Classes				Cleric, Fighter, Thief"
+                     "--------------------------------------------------------------------------\n"
+                     "Hit Die				Any"
+                     "--------------------------------------------------------------------------\n"
+                     "Weapons				Large weapons require two hands. No 2-handed swords, pole-arms, or longbows.\n"
+                     "--------------------------------------------------------------------------\n"
+                     "Special				- Darkvision 60'\n"
+                     "- Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6\n"
+                     "--------------------------------------------------------------------------\n"
+                     "Save Bonuses			- +4 vs. Death Ray or Poison\n"
+                     "- +4 vs. Magic Wands\n"
+                     "- +4 vs. Paralysis or Petrify\n"
+                     "- +3 vs. Dragon Breath\n"
+                     "- +4 vs. Spells\n"
+                     "--------------------------------------------------------------------------\n"
+                     "Languages			- Common, Dwarvish\n"
+                     "- +1 / point of INT bonus")
+
     halflings_desc = ("Description: Halflings are small, slightly stocky folk who stand around three feet tall and weigh "
                       "about 60 pounds. They have curly brown hair on their heads and feet, but rarely have facial hair. "
                       "They are usually fair skinned, often with ruddy cheeks. Halflings are remarkably rugged for their "
@@ -90,12 +129,34 @@ def get_race_descr():
                       "\n"
                       "Saving Throws: Halflings save at +4 vs. Death Ray or Poison, Magic Wands, Paralysis or Petrify, "
                       "and Spells, and at +3 vs. Dragon Breath.")
+    halflings_table = ("Ability Requirements		DEX 9 or higher, STR 17 or lower\n"
+                       "--------------------------------------------------------------------------\n"
+                       "Classes				Cleric, Fighter, Thief\n"
+                       "--------------------------------------------------------------------------\n"
+                       "Hit Die				d6 maximum\n"
+                       "--------------------------------------------------------------------------\n"
+                       "Weapons				Must use medium weapons in two hands. Cannot use large weapons.\n"
+                       "--------------------------------------------------------------------------\n"
+                       "Special				- +1 attack bonus on ranged weapons\n"
+                       "- +2 bonus to AC when attacked in melee by creatures larger than man-sized\n"
+                       "- +1 to initiative die rolls\n"
+                       "- Hide (10% chance to be detected outdoors, 30% chance to be detected indoors)\n"
+                       "--------------------------------------------------------------------------\n"
+                       "Save Bonuses			- +4 vs. Death Ray or Poison\n"
+                       "- +4 vs. Magic Wands\n"
+                       "- +4 vs. Paralysis or Petrify\n"
+                       "- +3 vs. Dragon Breath\n"
+                       "- +4 vs. Spells\n"
+                       "--------------------------------------------------------------------------\n"
+                       "Languages			- Common, Halfling\n"
+                       "- +1 / point of INT bonus")
+
 
     race_descr = {
         "humans": [humans_descr, humans_table],
-        "elves": [elves_descr],
-        "dwarves": [dwarfes_descr],
-        "halflings": [halflings_desc],
+        "elves": [elves_descr, elves_table],
+        "dwarves": [dwarfes_descr, dwarves_table],
+        "halflings": [halflings_desc, halflings_table],
     }
 
     return race_descr
