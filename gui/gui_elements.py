@@ -95,13 +95,18 @@ def initialize_screen_elements(screen):
                                      surface_pos="topleft")
     magic_user_info = so.InfoPanel(screen, class_descr["magic-user"][0], text_small, multi_line=True, image_width=info_panel_width)
     magic_user_info_table = so.InfoPanel(screen, class_descr["magic-user"][1], text_small, multi_line=True, image_width=info_panel_width,
-                                     surface_pos="topleft")
+                                         surface_pos="topleft")
     thief_info = so.InfoPanel(screen, class_descr["thief"][0], text_small, multi_line=True, image_width=info_panel_width)
-    thief_info_table = None
-    fighter_magic_user_info = so.InfoPanel(screen, class_descr["fighter_magic-user"][0], text_small, multi_line=True, image_width=info_panel_width)
-    fighter_magic_user_info_table = None
-    magic_user_thief_info = so.InfoPanel(screen, class_descr["magic-user_thief"][0], text_small, multi_line=True, image_width=info_panel_width)
-    magic_user_thief_info_table = None
+    thief_info_table = so.InfoPanel(screen, class_descr["thief"][1], text_small, multi_line=True, image_width=info_panel_width,
+                                    surface_pos="topleft")
+    fighter_magic_user_info = so.InfoPanel(screen, class_descr["fighter_magic-user"][0], text_small, multi_line=True,
+                                           image_width=info_panel_width)
+    fighter_magic_user_info_table = so.InfoPanel(screen, class_descr["fighter_magic-user"][1], text_small, multi_line=True,
+                                                 image_width=info_panel_width, surface_pos="topleft")
+    magic_user_thief_info = so.InfoPanel(screen, class_descr["magic-user_thief"][0], text_small, multi_line=True,
+                                         image_width=info_panel_width)
+    magic_user_thief_info_table = so.InfoPanel(screen, class_descr["magic-user_thief"][1], text_small, multi_line=True,
+                                               image_width=info_panel_width, surface_pos="topleft")
     # Position for race and class info panels.
     humans_info.background_rect.center = screen.get_rect().center
     elves_info.background_rect.center = screen.get_rect().center
@@ -121,9 +126,11 @@ def initialize_screen_elements(screen):
     class_fighter_field = so.InteractiveText(screen, "Fighter", text_medium, panel=[fighter_info, fighter_info_table])
     class_cleric_field = so.InteractiveText(screen, "Cleric", text_medium, panel=[cleric_info, cleric_info_table])
     class_magic_user_field = so.InteractiveText(screen, "Magic-User", text_medium, panel=[magic_user_info, magic_user_info_table])
-    class_thief_field = so.InteractiveText(screen, "Thief", text_medium, panel=[thief_info])
-    class_fighter_magic_user_field = so.InteractiveText(screen, "Fighter/Magic-User", text_medium, panel=[fighter_magic_user_info])
-    class_magic_user_thief_field = so.InteractiveText(screen, "Magic-User/Thief", text_medium, panel=[magic_user_thief_info])
+    class_thief_field = so.InteractiveText(screen, "Thief", text_medium, panel=[thief_info, thief_info_table])
+    class_fighter_magic_user_field = so.InteractiveText(screen, "Fighter/Magic-User", text_medium,
+                                                        panel=[fighter_magic_user_info, fighter_magic_user_info_table])
+    class_magic_user_thief_field = so.InteractiveText(screen, "Magic-User/Thief", text_medium,
+                                                      panel=[magic_user_thief_info, magic_user_thief_info_table])
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
