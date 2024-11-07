@@ -14,6 +14,26 @@ def get_class_descr():
                      "\n"
                      "The Prime Requisite for Fighters is Strength; a character must have a Strength score of 9 or higher "
                      "to become a Fighter. Members of this class may wear any armor and use any weapon.")
+    fighter_table = ("Prime Requisite			STR (Must be 9+)\n"
+                     "--------------------------------------------------------------------------\n"
+                     "Hit Dice			d8\n"
+                     "--------------------------------------------------------------------------\n"
+                     "Weapons				Any\n"
+                     "--------------------------------------------------------------------------\n"
+                     "Armor				Any, shields allowed\n"
+                     "--------------------------------------------------------------------------\n"
+                     "XP for 2nd Level		2,000\n"
+                     "--------------------------------------------------------------------------\n"
+                     "Spells				None\n"
+                     "--------------------------------------------------------------------------\n"
+                     "Special				None\n"
+                     "--------------------------------------------------------------------------\n"
+                     "Saving Throws at 1st Level	- Death Ray or Poison: 12\n"
+                     "- Magic Wands: 13\n"
+                     "- Paralysis or Petrify: 14\n"
+                     "- Dragon Breath: 15\n"
+                     "- Spells: 17")
+
     cleric_descr = ("Clerics are those who have devoted themselves to the service of a deity, pantheon or other belief "
                     "system. Most Clerics spend their time in mundane forms of service such as preaching and ministering "
                     "in a temple; but there are those who are called to go abroad from the temple and serve their deity "
@@ -28,6 +48,31 @@ def get_class_descr():
                     "The Prime Requisite for Clerics is Wisdom; a character must have a Wisdom score of 9 or higher to "
                     "become a Cleric. They may wear any armor, but may only use blunt weapons (specifically including "
                     "warhammer, mace, maul, club, quarterstaff, and sling).")
+    cleric_table = ("Prime Requisite			WIS (Must be 9+)\n"
+                    "--------------------------------------------------------------------------\n"
+                    "Hit Dice			d6\n"
+                    "--------------------------------------------------------------------------\n"
+                    "Weapons				Blunt weapons only (club, mace, maul, quarterstaff, sling, warhammer)\n"
+                    "--------------------------------------------------------------------------\n"
+                    "Armor				Any, shields allowed\n"
+                    "--------------------------------------------------------------------------\n"
+                    "XP for 2nd Level		1,500\n"
+                    "--------------------------------------------------------------------------\n"
+                    "Spells				None at first level\n"
+                    "--------------------------------------------------------------------------\n"
+                    "Special				Turn the Undead (see below)\n"
+                    "--------------------------------------------------------------------------\n"
+                    "Saving Throws at 1st Level	- Death Ray or Poison: 11\n"
+                    "- Magic Wands: 12\n"
+                    "- Paralysis or Petrify: 14\n"
+                    "- Dragon Breath: 16\n"
+                    "- Spells: 15\n"
+                    "\n"
+                    "Turn the Undead:\n"
+                    "Clerics may be able to turn the undead or drive away undead monsters by means of faith alone. The "
+                    "Cleric brandishes their holy symbol and calls upon the power of their divine patron. The player rolls "
+                    "1d20 and tells the GM the result.")
+
     magic_user_descr = ("Magic-Users are those who seek and use knowledge of the arcane. They do magic not as the Cleric "
                         "does, by faith in a greater power, but rather through insight and understanding.\n"
                         "\n"
@@ -43,6 +88,40 @@ def get_class_descr():
                         "A first level Magic-User begins play knowing read magic and one other spell of first level. These "
                         "pells are written in a spellbook provided by their master. The GM may roll for the spell, assign "
                         "it as they see fit, or allow the player to choose it, at their option.")
+    magic_user_table = ("Prime Requisite			INT (Must be 9+)\n"
+                        "--------------------------------------------------------------------------\n"
+                        "Hit Dice			d4\n"
+                        "--------------------------------------------------------------------------\n"
+                        "Weapons				Cudgel, dagger, walking staff\n"
+                        "--------------------------------------------------------------------------\n"
+                        "Armor				None\n"
+                        "--------------------------------------------------------------------------\n"
+                        "XP for 2nd Level		2,500\n"
+                        "--------------------------------------------------------------------------\n"
+                        "Spells				1 first-level spell (see below)\n"
+                        "--------------------------------------------------------------------------\n"
+                        "Special				None\n"
+                        "--------------------------------------------------------------------------\n"
+                        "Saving Throws at 1st Level	- Death Ray or Poison: 13\n"
+                        "- Magic Wands: 14\n"
+                        "- Paralysis or Petrify: 13\n"
+                        "- Dragon Breath: 16\n"
+                        "- Spells: 15\n"
+                        "\n"
+                        "First Level Magic-User Spells:\n"
+                        "- Charm Person\n"
+                        "- Detect Magic\n"
+                        "- Floating Disc\n"
+                        "- Hold Portal\n"
+                        "- Light\n"
+                        "- Magic Missile\n"
+                        "- Magic Mouth\n"
+                        "- Protection from Evil\n"
+                        "- Read Languages\n"
+                        "- Shield\n"
+                        "- Sleep\n"
+                        "- Ventriloquism")
+
     thief_descr = ("Thieves are those who take what they want or need by stealth, disarming traps and picking locks to get "
                    "to the gold they crave; or 'borrowing' money from pockets, beltpouches, etc. right under the nose of "
                    "the 'mark' without the victim ever knowing.\n"
@@ -61,6 +140,8 @@ def get_class_descr():
                    "GM may apply situational adjustments (plus or minus percentage points) as they see fit; for instance, "
                    "it's obviously harder to climb a wall slick with slime than one that is dry, so the GM might apply a "
                    "penalty of 20% for the slimy wall.")
+    thief_table = None
+
     fighter_magic_user_descr = ("The Fighter/Magic-User is a rare blend of martial prowess and arcane mastery, combining "
                                 "the battlefield prowess of a Fighter with the spellcasting abilities of a Magic-User. "
                                 "These versatile combatants can face enemies with both sword and spell, making them "
@@ -78,6 +159,8 @@ def get_class_descr():
                                 "higher to pursue this path. They may wear any armor and use any weapon, and they start "
                                 "their journey with a spellbook containing read magic and one additional spell of first "
                                 "level, similar to the Magic-User.")
+    fighter_magic_user_table = None
+
     magic_user_thief_descr = ("The Magic-User/Thief is a cunning and elusive character, merging the arcane arts with the "
                               "skills of subterfuge and stealth. These individuals use their magical knowledge to enhance "
                               "their thieving capabilities, making them unpredictable and dangerous in a world that "
@@ -96,14 +179,16 @@ def get_class_descr():
                               "begins with a spellbook containing read magic and one additional first-level spell, "
                               "allowing them to embark on their adventures with both magical and practical tools at their "
                               "disposal.")
+    magic_user_thief_table = None
+
 
     class_descr = {
-        "fighter": fighter_descr,
-        "cleric": cleric_descr,
-        "magic-user": magic_user_descr,
-        "thief": thief_descr,
-        "fighter_magic-user": fighter_magic_user_descr,
-        "magic-user_thief": magic_user_thief_descr,
+        "fighter": [fighter_descr, fighter_table],
+        "cleric": [cleric_descr, cleric_table],
+        "magic-user": [magic_user_descr, magic_user_table],
+        "thief": [thief_descr, thief_table],
+        "fighter_magic-user": [fighter_magic_user_descr, fighter_magic_user_table],
+        "magic-user_thief": [magic_user_thief_descr, magic_user_thief_table],
     }
 
     return class_descr
