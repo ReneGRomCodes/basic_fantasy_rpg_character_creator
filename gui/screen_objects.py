@@ -170,6 +170,7 @@ class InteractiveText(TextField):
         self.was_pressed = False # Track previous state of mouse button.
         # Set field colors for events.
         self.rect_hover_color = (200,200,200)
+        self.rect_clicked_color = (240, 240, 240)
         self.rect_selected_color = (173, 192, 202)
 
     def draw_interactive_text(self, mouse_pos):
@@ -182,7 +183,13 @@ class InteractiveText(TextField):
 
         # Change field color based on mouse hover.
         if self.text_rect.collidepoint(mouse_pos):
-            pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
+            # Color change when mouse is pressed (only if 'self.select' is True).
+            if self.select and pygame.mouse.get_pressed()[0]:
+                pygame.draw.rect(self.screen, self.rect_clicked_color, self.text_rect)
+            # Normal hover color when mouse is hovering but not pressed.
+            else:
+                pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
+
             # Check for and draw info panel.
             if self.panel:
                 for i in self.panel:
