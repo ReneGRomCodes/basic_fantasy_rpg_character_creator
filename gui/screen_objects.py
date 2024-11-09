@@ -183,32 +183,35 @@ class InteractiveText(TextField):
 
         # Change field color based on mouse hover.
         if self.text_rect.collidepoint(mouse_pos):
-            # Color change when mouse is pressed (only if 'self.select' is True).
-            if self.select and pygame.mouse.get_pressed()[0]:
-                pygame.draw.rect(self.screen, self.rect_clicked_color, self.text_rect)
-            # Normal hover color when mouse is hovering but not pressed.
-            else:
-                pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
-
-            # Check for and draw info panel.
-            if self.panel:
-                for i in self.panel:
-                    i.draw_info_panel()
-
-            # Change selected state of field by mouse click if 'select' is True.
-            if self.select:
-                is_pressed = pygame.mouse.get_pressed()[0]
-                # Toggle only if mouse is pressed and wasn't pressed in the previous frame.
-                if is_pressed and not self.was_pressed:
-                    self.selected = not self.selected
-                # Update previous mouse button state.
-                self.was_pressed = is_pressed
-            else:
-                # Reset 'was_pressed' if mouse is not over the button to avoid accidental toggles.
-                self.was_pressed = False
-
+            self.handle_mouse_interaction()
 
         self.screen.blit(self.text_image, self.text_rect)
+
+    def handle_mouse_interaction(self):
+        """Handle interactive functions for the class object like info panel and selectablility."""
+        # Color change when mouse is pressed (only if 'self.select' is True).
+        if self.select and pygame.mouse.get_pressed()[0]:
+            pygame.draw.rect(self.screen, self.rect_clicked_color, self.text_rect)
+        # Normal hover color when mouse is hovering but not pressed.
+        else:
+            pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
+
+        # Check for and draw info panel.
+        if self.panel:
+            for i in self.panel:
+                i.draw_info_panel()
+
+        # Change selected state of field by mouse click if 'select' is True.
+        if self.select:
+            is_pressed = pygame.mouse.get_pressed()[0]
+            # Toggle only if mouse is pressed and wasn't pressed in the previous frame.
+            if is_pressed and not self.was_pressed:
+                self.selected = not self.selected
+            # Update previous mouse button state.
+            self.was_pressed = is_pressed
+        else:
+            # Reset 'was_pressed' if mouse is not over the button to avoid accidental toggles.
+            self.was_pressed = False
 
 
 class InfoPanel(TextField):
