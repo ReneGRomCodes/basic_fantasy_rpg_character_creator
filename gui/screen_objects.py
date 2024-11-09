@@ -1,5 +1,9 @@
 import pygame
+from settings import Settings
 """Classes for screen objects (buttons, text, etc.)."""
+
+# Instance of 'Settings' class for color palette.
+color_settings = Settings()
 
 
 class TextField:
@@ -26,7 +30,7 @@ class TextField:
         self.multi_line = multi_line
 
         # Set font, text color to black and get rect for text field.
-        self.text_color = (0,0,0)
+        self.text_color = color_settings.text_color
         self.font = pygame.font.SysFont(None, self.size)
 
         # Set padding for text fields with background color.
@@ -121,8 +125,8 @@ class Button(TextField):
         """
         super().__init__(screen, text, size, bg_color)
         # Set button colors for events.
-        self.rect_hover_color = (200,200,200)
-        self.rect_clicked_color = (240,240,240)
+        self.rect_hover_color = color_settings.rect_hover_color
+        self.rect_clicked_color = color_settings.rect_clicked_color
 
         # Set rect and size for button.
         self.button_rect = self.text_image.get_rect()
@@ -169,9 +173,9 @@ class InteractiveText(TextField):
         self.selected = False
         self.was_pressed = False # Track previous state of mouse button.
         # Set field colors for events.
-        self.rect_hover_color = (200,200,200)
-        self.rect_clicked_color = (240, 240, 240)
-        self.rect_selected_color = (173, 192, 202)
+        self.rect_hover_color = color_settings.rect_hover_color
+        self.rect_clicked_color = color_settings.rect_clicked_color
+        self.rect_selected_color = color_settings.rect_selected_color
 
     def draw_interactive_text(self, mouse_pos):
         """Draw interactive text field on the screen."""
@@ -217,7 +221,8 @@ class InteractiveText(TextField):
 class InfoPanel(TextField):
     """Represent an info panel for use in conjunction with an instance of class 'InteractiveText()'."""
 
-    def __init__(self, screen, text, size, bg_color=(240,240,240), multi_line=False, image_width=0, text_pos=(0,0), surface_pos="topright"):
+    def __init__(self, screen, text, size, bg_color=color_settings.info_panel_bg_color, multi_line=False, image_width=0,
+                 text_pos=(0,0), surface_pos="topright"):
         """Initialize an info panel.
         ARGS:
             screen: pygame window.
