@@ -119,18 +119,18 @@ def initialize_screen_elements(screen):
     fighter_magic_user_info.background_rect.center = screen.get_rect().center
     magic_user_thief_info.background_rect.center = screen.get_rect().center
     # Race and class text fields.
-    race_human_field = so.InteractiveText(screen, "Human", text_medium, panel=[humans_info, humans_info_table])
-    race_elf_field = so.InteractiveText(screen, "Elf", text_medium, panel=[elves_info, elves_info_table])
-    race_dwarf_field = so.InteractiveText(screen, "Dwarf", text_medium, panel=[dwarves_info, dwarves_info_table])
-    race_halfling_field = so.InteractiveText(screen, "Halfling", text_medium, panel=[halflings_info, halflings_info_table])
-    class_fighter_field = so.InteractiveText(screen, "Fighter", text_medium, panel=[fighter_info, fighter_info_table])
-    class_cleric_field = so.InteractiveText(screen, "Cleric", text_medium, panel=[cleric_info, cleric_info_table])
-    class_magic_user_field = so.InteractiveText(screen, "Magic-User", text_medium, panel=[magic_user_info, magic_user_info_table])
-    class_thief_field = so.InteractiveText(screen, "Thief", text_medium, panel=[thief_info, thief_info_table])
+    race_human_field = so.InteractiveText(screen, "Human", text_medium, panel=[humans_info, humans_info_table], select=True)
+    race_elf_field = so.InteractiveText(screen, "Elf", text_medium, panel=[elves_info, elves_info_table], select=True)
+    race_dwarf_field = so.InteractiveText(screen, "Dwarf", text_medium, panel=[dwarves_info, dwarves_info_table], select=True)
+    race_halfling_field = so.InteractiveText(screen, "Halfling", text_medium, panel=[halflings_info, halflings_info_table], select=True)
+    class_fighter_field = so.InteractiveText(screen, "Fighter", text_medium, panel=[fighter_info, fighter_info_table], select=True)
+    class_cleric_field = so.InteractiveText(screen, "Cleric", text_medium, panel=[cleric_info, cleric_info_table], select=True)
+    class_magic_user_field = so.InteractiveText(screen, "Magic-User", text_medium, panel=[magic_user_info, magic_user_info_table], select=True)
+    class_thief_field = so.InteractiveText(screen, "Thief", text_medium, panel=[thief_info, thief_info_table], select=True)
     class_fighter_magic_user_field = so.InteractiveText(screen, "Fighter/Magic-User", text_medium,
-                                                        panel=[fighter_magic_user_info, fighter_magic_user_info_table])
+                                                        panel=[fighter_magic_user_info, fighter_magic_user_info_table], select=True)
     class_magic_user_thief_field = so.InteractiveText(screen, "Magic-User/Thief", text_medium,
-                                                      panel=[magic_user_thief_info, magic_user_thief_info_table])
+                                                      panel=[magic_user_thief_info, magic_user_thief_info_table], select=True)
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {

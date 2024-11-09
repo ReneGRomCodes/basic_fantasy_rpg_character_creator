@@ -26,7 +26,7 @@ class TextField:
         self.multi_line = multi_line
 
         # Set font, text color to black and get rect for text field.
-        self.text_color = (0, 0, 0)
+        self.text_color = (0,0,0)
         self.font = pygame.font.SysFont(None, self.size)
 
         # Set padding for text fields with background color.
@@ -100,7 +100,7 @@ class TextField:
         # expanded surface.
         new_height = self.image_height + self.font.get_height()
         temporary_surface = pygame.Surface((self.image_width, new_height), pygame.SRCALPHA)
-        temporary_surface.blit(text_image, (0, 0))
+        temporary_surface.blit(text_image, (0,0))
         text_image = temporary_surface
         self.image_height = new_height  # Update image height
 
@@ -121,8 +121,8 @@ class Button(TextField):
         """
         super().__init__(screen, text, size, bg_color)
         # Set button colors for events.
-        self.rect_hover_color = (200, 200, 200)
-        self.rect_clicked_color = (240, 240, 240)
+        self.rect_hover_color = (200,200,200)
+        self.rect_clicked_color = (240,240,240)
 
         # Set rect and size for button.
         self.button_rect = self.text_image.get_rect()
@@ -165,15 +165,19 @@ class InteractiveText(TextField):
         super().__init__(screen, text, size, bg_color)
         self.panel = panel
         self.select = select
-        # State attribute if 'select=True'.
+        # State attributes if 'select=True'.
         self.selected = False
+        self.was_pressed = False # Track previous state of mouse button.
         # Set field colors for events.
-        self.rect_hover_color = (200, 200, 200)
+        self.rect_hover_color = (200,200,200)
+        self.rect_selected_color = (173, 192, 202)
 
     def draw_interactive_text(self, mouse_pos):
         """Draw interactive text field on the screen."""
-        # Draw background rect if 'bg_color' is specified.
-        if self.bg_color:
+        # Draw background rect if 'bg_color' is specified or use 'rect_selected_color' if 'selected' is True.
+        if self.selected:
+            pygame.draw.rect(self.screen, self.rect_selected_color, self.text_rect)
+        elif self.bg_color:
             pygame.draw.rect(self.screen, self.bg_color, self.text_rect)
 
         # Change field color based on mouse hover.
@@ -184,13 +188,26 @@ class InteractiveText(TextField):
                 for i in self.panel:
                     i.draw_info_panel()
 
+            # Change selected state of field by mouse click if 'select' is True.
+            if self.select:
+                is_pressed = pygame.mouse.get_pressed()[0]
+                # Toggle only if mouse is pressed and wasn't pressed in the previous frame.
+                if is_pressed and not self.was_pressed:
+                    self.selected = not self.selected
+                # Update previous mouse button state.
+                self.was_pressed = is_pressed
+            else:
+                # Reset 'was_pressed' if mouse is not over the button to avoid accidental toggles.
+                self.was_pressed = False
+
+
         self.screen.blit(self.text_image, self.text_rect)
 
 
 class InfoPanel(TextField):
     """Represent an info panel for use in conjunction with an instance of class 'InteractiveText()'."""
 
-    def __init__(self, screen, text, size, bg_color="white", multi_line=False, image_width=0, text_pos=(0,0), surface_pos="topright"):
+    def __init__(self, screen, text, size, bg_color=(240,240,240), multi_line=False, image_width=0, text_pos=(0,0), surface_pos="topright"):
         """Initialize an info panel.
         ARGS:
             screen: pygame window.
