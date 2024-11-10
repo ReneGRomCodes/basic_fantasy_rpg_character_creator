@@ -6,6 +6,8 @@ import gui.screen_objects as so
 """Functions used to set race/class and build the character sheet."""
 
 
+# Background functions for character creation:
+
 def get_ability_score():
     """Generate random value for ability score, apply bonus/penalty and return both values in list
     'ability_score' with the base score at index 0 and the bonus/penalty at index 1."""
@@ -42,6 +44,28 @@ def get_race_class_lists(character):
 
     return race_list, class_list
 
+
+def build_possible_characters_list(race_list, class_list):
+    """Take lists of possible races and classes and return list 'possible_characters' with valid race-class
+    combinations."""
+    possible_characters = []
+
+    for char_race in race_list:
+        for char_class in class_list:
+            # Exclude Dwarves and Halflings from class 'Magic-User'.
+            if char_race in ["Dwarf", "Halfling"] and char_class == "Magic-User":
+                pass
+            # Assure that combination classes are only shown for Elves.
+            if char_race != "Elf" and char_class in ["Fighter/Magic-User", "Magic-User/Thief"]:
+                pass
+            else:
+                race_class = char_race + " " + char_class
+                possible_characters.append(race_class)
+
+    return possible_characters
+
+
+# Pygame screen functions:
 
 def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     """Display character ability scores and bonus/penalty on screen."""
@@ -130,47 +154,6 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     continue_button.draw_button(mouse_pos)
 
 
-def show_ability_scores(character):
-    """Print formatted table of abilities from instance 'character' in console."""
-    abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
-
-    for ability, key in zip(abilities, character.abilities):
-        # 'Pre-formatting' ability name and bonus/penalty for better code-readability further down in print-statement.
-        abilities_name = f"{ability}:"
-        bonus_penalty = f"{character.abilities[key][1]}"
-
-        # Check bonus/penalty for positive or negative value to apply correct prefix in output or give out an empty
-        # string if bonus_penalty is 0.
-        if character.abilities[key][1] > 0:
-            bonus_penalty = f"+{bonus_penalty}"
-        elif character.abilities[key][1] == 0:
-            bonus_penalty = ""
-        else:
-            pass
-
-        print(f"{abilities_name:<23} {character.abilities[key][0]:>2} {bonus_penalty:>4}")
-
-
-def build_race_class_list(race_list, class_list):
-    """Take lists of possible races and classes and return list 'possible_characters' with valid race-class
-    combinations."""
-    possible_characters = []
-
-    for char_race in race_list:
-        for char_class in class_list:
-            # Exclude Dwarves and Halflings from class 'Magic-User'.
-            if char_race in ["Dwarf", "Halfling"] and char_class == "Magic-User":
-                pass
-            # Assure that combination classes are only shown for Elves.
-            if char_race != "Elf" and char_class in ["Fighter/Magic-User", "Magic-User/Thief"]:
-                pass
-            else:
-                race_class = char_race + " " + char_class
-                possible_characters.append(race_class)
-
-    return possible_characters
-
-
 def show_race_class_selection_screen(screen, possible_characters, gui_elements, mouse_pos):
     """Display race/class selection on screen."""
     # Assign fields and buttons from 'gui_elements' to variables.
@@ -238,13 +221,15 @@ def show_race_class_selection_screen(screen, possible_characters, gui_elements, 
     continue_button.draw_button(mouse_pos)
 
 
+# Console functions:
+
 def race_class_selection(character, race_list, class_list):
     """Take lists of possible races and classes, 'race_list' and 'class_list', check for allowed combination, let user
     choose a race/class combination and set race and class in instance 'character'."""
     while True:
         print("Based on your scores you can choose from the following race-class combinations:\n")
 
-        possible_characters = build_race_class_list(race_list, class_list)
+        possible_characters = build_possible_characters_list(race_list, class_list)
         selected_character = func.select_from_list(possible_characters,
                                                    "\nSelect a character to show race and class description: ")
 
@@ -267,6 +252,27 @@ def race_class_selection(character, race_list, class_list):
                 break
             else:
                 continue
+
+
+def show_ability_scores(character):
+    """Print formatted table of abilities from instance 'character' in console."""
+    abilities = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
+
+    for ability, key in zip(abilities, character.abilities):
+        # 'Pre-formatting' ability name and bonus/penalty for better code-readability further down in print-statement.
+        abilities_name = f"{ability}:"
+        bonus_penalty = f"{character.abilities[key][1]}"
+
+        # Check bonus/penalty for positive or negative value to apply correct prefix in output or give out an empty
+        # string if bonus_penalty is 0.
+        if character.abilities[key][1] > 0:
+            bonus_penalty = f"+{bonus_penalty}"
+        elif character.abilities[key][1] == 0:
+            bonus_penalty = ""
+        else:
+            pass
+
+        print(f"{abilities_name:<23} {character.abilities[key][0]:>2} {bonus_penalty:>4}")
 
 
 def show_char_race_descr(character):
@@ -377,7 +383,7 @@ def random_character_generator(character):
         race_list, class_list = get_race_class_lists(character)
         if not func.check_valid_race_class(race_list, class_list):
             continue
-        race_class_list = build_race_class_list(race_list, class_list)
+        race_class_list = build_possible_characters_list(race_list, class_list)
 
         # Generate random character and set values.
         character_race_class = race_class_list[random.randint(0, (len(race_list)-1))]
