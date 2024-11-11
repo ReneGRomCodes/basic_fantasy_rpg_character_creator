@@ -213,11 +213,12 @@ def show_race_class_selection_screen(screen, possible_characters, gui_elements, 
         cls.draw_interactive_text(mouse_pos)
         class_field_centery_start += cls.text_rect.height * 2
 
-    # Check for selected race and class.
+    # Selected race and class.
     if pygame.mouse.get_pressed()[0]:  # Only process click events if left mouse button is pressed.
-        # Find the selected race (if any).
         selected_race = None
         selected_class = None
+
+        # Find the selected race, if any.
         for race in available_choices["races"]:
             if race.text_rect.collidepoint(mouse_pos):
                 selected_race = race
@@ -226,13 +227,7 @@ def show_race_class_selection_screen(screen, possible_characters, gui_elements, 
             if cls.text_rect.collidepoint(mouse_pos):
                 selected_class = cls
                 break  # Exit loop once selected class is found.
-        if selected_class:
-            # Unselect the previous selected class, if any.
-            for cls in available_choices["classes"]:
-                if cls.selected:
-                    cls.selected = False
-            # Select the new class.
-            selected_class.selected = True
+
         if selected_race:
             # Unselect the previous selected race, if any.
             for race in available_choices["races"]:
@@ -240,6 +235,13 @@ def show_race_class_selection_screen(screen, possible_characters, gui_elements, 
                     race.selected = False
             # Select the new race.
             selected_race.selected = True
+        if selected_class:
+            # Unselect the previous selected class, if any.
+            for cls in available_choices["classes"]:
+                if cls.selected:
+                    cls.selected = False
+            # Select the new class.
+            selected_class.selected = True
 
     # Position and draw screen title.
     screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
