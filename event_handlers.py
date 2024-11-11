@@ -65,7 +65,7 @@ def custom_character_events(state, character, possible_characters, gui_elements,
                     if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                         # Set and return available races/classes and state after confirmation of ability scores.
                         race_list, class_list = cf.get_race_class_lists(character)
-                        possible_characters = cf.build_race_class_list(race_list, class_list)
+                        possible_characters = cf.build_possible_characters_list(race_list, class_list)
                         state = "race_class_selection"
 
             elif state == "race_class_selection":
