@@ -214,11 +214,13 @@ def show_race_class_selection_screen(screen, possible_characters, gui_elements, 
         class_field_centery_start += cls.text_rect.height * 2
 
     # Selected race and class.
-    if pygame.mouse.get_pressed()[0]:  # Only process click events if left mouse button is pressed.
+    # Check if the left mouse button is pressed before proceeding with selection logic.
+    if pygame.mouse.get_pressed()[0]:
+        # Variables to store the selected race and class from the user's click (if any).
         selected_race = None
         selected_class = None
 
-        # Find the selected race, if any.
+        # Loop through each available race and class option to see if any were clicked.
         for race in available_choices["races"]:
             if race.text_rect.collidepoint(mouse_pos):
                 selected_race = race
@@ -232,14 +234,14 @@ def show_race_class_selection_screen(screen, possible_characters, gui_elements, 
             # Unselect the previous selected race, if any.
             for race in available_choices["races"]:
                 if race.selected:
-                    race.selected = False
+                    race.selected = False  # Set the selected attribute of the previously selected race to False.
             # Select the new race.
             selected_race.selected = True
         if selected_class:
             # Unselect the previous selected class, if any.
             for cls in available_choices["classes"]:
                 if cls.selected:
-                    cls.selected = False
+                    cls.selected = False  # Set the selected attribute of the previously selected class to False.
             # Select the new class.
             selected_class.selected = True
 
