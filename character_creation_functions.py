@@ -155,7 +155,7 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     continue_button.draw_button(mouse_pos)
 
 
-def show_race_class_selection_screen(screen, possible_characters, gui_elements, mouse_pos):
+def show_race_class_selection_screen(screen, possible_characters, selected_race, selected_class, gui_elements, mouse_pos):
     """Display race/class selection on screen."""
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["race_class_title"]
@@ -213,12 +213,9 @@ def show_race_class_selection_screen(screen, possible_characters, gui_elements, 
         cls.draw_interactive_text(mouse_pos)
         class_field_centery_start += cls.text_rect.height * 2
 
-    # Selected race and class.
+    # Select race and class.
     # Check if the left mouse button is pressed before proceeding with selection logic.
     if pygame.mouse.get_pressed()[0]:
-        # Variables to store the selected race and class from the user's click (if any).
-        selected_race = None
-        selected_class = None
 
         # Loop through each available race and class option to see if any were clicked.
         for race in available_choices["races"]:
@@ -252,6 +249,8 @@ def show_race_class_selection_screen(screen, possible_characters, gui_elements, 
     # Draw buttons.
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
+
+    return selected_race, selected_class
 
 
 # Console functions:

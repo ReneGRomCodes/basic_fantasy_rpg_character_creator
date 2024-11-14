@@ -52,7 +52,7 @@ def show_menu(screen, gui_elements, mouse_pos):
     random.draw_button(mouse_pos)
 
 
-def custom_character(screen, state, character, possible_characters, gui_elements, mouse_pos):
+def custom_character(screen, state, character, possible_characters, selected_race, selected_class, gui_elements, mouse_pos):
     """Create custom character based on user input and return state for main loop."""
     if state == "set_abilities":
         # Generate dictionary for character abilities.
@@ -72,7 +72,8 @@ def custom_character(screen, state, character, possible_characters, gui_elements
 
     elif state == "race_class_selection":
         # Display race/class selection screen.
-        cf.show_race_class_selection_screen(screen, possible_characters, gui_elements, mouse_pos)
+        selected_race, selected_class = cf.show_race_class_selection_screen(screen, possible_characters, selected_race,
+                                                                            selected_class, gui_elements, mouse_pos)
         # Race and class selection.
         #cf.race_class_selection(character, race_list, class_list)
         # Set values in character instance based on race and class.
@@ -102,7 +103,7 @@ def custom_character(screen, state, character, possible_characters, gui_elements
         cf.build_character_sheet(character)
         input("\n\nPress ENTER to exit.")
 
-    return possible_characters, state
+    return possible_characters, state, selected_race, selected_class
 
 
 def random_character(character):
