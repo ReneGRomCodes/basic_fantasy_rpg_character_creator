@@ -67,8 +67,16 @@ def custom_character(screen, state, character, possible_characters, selected_rac
     elif state == "show_abilities":
         # Display ability score screen.
         cf.show_ability_scores_screen(screen, character, gui_elements, mouse_pos)
-
         possible_characters, state = eh.custom_character_events(state, character, possible_characters, gui_elements, mouse_pos)
+
+        # Unselect race and class selection, set variables to 'None' if user returns to ability score screen from
+        # race/class selection screen.
+        if selected_race:
+            selected_race.selected = False
+            selected_race = None
+        if selected_class:
+            selected_class.selected = False
+            selected_class = None
 
     elif state == "race_class_selection":
         # Display race/class selection screen.
