@@ -220,12 +220,24 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
         # Loop through each available race and class option to see if any were clicked.
         for race in available_choices["races"]:
             if race.text_rect.collidepoint(mouse_pos):
-                selected_race = race
-                break  # Exit loop once selected race is found.
+                # Check if clicked race is already selected.
+                if race == selected_race:
+                    race.selected = False
+                    selected_race = None
+                    break
+                else:
+                    selected_race = race
+                    break
         for cls in available_choices["classes"]:
             if cls.text_rect.collidepoint(mouse_pos):
-                selected_class = cls
-                break  # Exit loop once selected class is found.
+                # Check if clicked class is already selected.
+                if cls == selected_class:
+                    cls.selected = False
+                    selected_class = None
+                    break
+                else:
+                    selected_class = cls
+                    break
 
         if selected_race:
             # Unselect the previous selected race, if any.
