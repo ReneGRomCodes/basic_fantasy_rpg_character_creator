@@ -159,6 +159,7 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     """Display race/class selection on screen."""
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["race_class_title"]
+    reset_button = gui_elements["reset_button"]
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
     possible_races = gui_elements["possible_races"]
@@ -217,27 +218,24 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     # Check if the left mouse button is pressed before proceeding with selection logic.
     if pygame.mouse.get_pressed()[0]:
 
+        # Reset selected race/class if 'reset button' is clicked.
+        if reset_button.button_rect.collidepoint(mouse_pos):
+            if selected_race:
+                selected_race.selected = False
+                selected_race = None
+            if selected_class:
+                selected_class.selected = False
+                selected_class = None
+
         # Loop through each available race and class option to see if any were clicked.
         for race in available_choices["races"]:
             if race.text_rect.collidepoint(mouse_pos):
-                # Check if clicked race is already selected.
-                if race == selected_race:
-                    race.selected = False
-                    selected_race = None
-                    break
-                else:
-                    selected_race = race
-                    break
+                selected_race = race
+                break
         for cls in available_choices["classes"]:
             if cls.text_rect.collidepoint(mouse_pos):
-                # Check if clicked class is already selected.
-                if cls == selected_class:
-                    cls.selected = False
-                    selected_class = None
-                    break
-                else:
-                    selected_class = cls
-                    break
+                selected_class = cls
+                break
 
         if selected_race:
             # Unselect the previous selected race, if any.
@@ -259,6 +257,7 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     screen_title.text_rect.centerx = screen.get_rect().centerx
     screen_title.draw_text()
     # Draw buttons.
+    reset_button.draw_button(mouse_pos)
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
 

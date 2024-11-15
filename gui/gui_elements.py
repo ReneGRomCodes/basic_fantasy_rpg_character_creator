@@ -54,6 +54,7 @@ def initialize_screen_elements(screen):
     # Ability scores screen.
     ability_scores_title_text = "- ABILITIES -"
     ability_scores_screen_title = so.TextField(screen, ability_scores_title_text, text_large)
+    reroll_button = so.Button(screen, "Roll Again", text_medium)
     # Info panels.
     strength_info = so.InfoPanel(screen, ability_descr["str_descr"], text_small, multi_line=True, image_width=info_panel_width)
     dexterity_info = so.InfoPanel(screen, ability_descr["dex_descr"], text_small, multi_line=True, image_width=info_panel_width)
@@ -68,11 +69,14 @@ def initialize_screen_elements(screen):
     intelligence_field = so.InteractiveText(screen, "Intelligence", text_medium, panel=[intelligence_info])
     wisdom_field = so.InteractiveText(screen, "Wisdom", text_medium, panel=[wisdom_info])
     charisma_field = so.InteractiveText(screen, "Charisma", text_medium, panel=[charisma_info])
-    reroll_button = so.Button(screen, "Roll Again", text_medium)
 
     # Race/class selection screen.
     race_class_selection_title_text = "- RACE / CLASS SELECTION -"
     race_class_selection_screen_title = so.TextField(screen, race_class_selection_title_text, text_large)
+    reset_button = so.Button(screen, "RESET", text_medium)
+    reset_button.button_rect.width = button_width
+    reset_button.button_rect.centerx = screen.get_rect().centerx
+    reset_button.button_rect.bottom = screen.get_rect().bottom - spacing_screen_edge
     # Race info Panels.
     humans_info = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True, image_width=info_panel_width)
     humans_info_table = so.InfoPanel(screen, race_descr["humans"][1], text_small, multi_line=True, image_width=info_panel_width,
@@ -162,6 +166,7 @@ def initialize_screen_elements(screen):
         "reroll_button": reroll_button,
         # Race/class selection screen.
         "race_class_title": race_class_selection_screen_title,
+        "reset_button": reset_button,
         "possible_races": [race_human_field, race_elf_field, race_dwarf_field, race_halfling_field],
         "possible_classes": [class_fighter_field, class_cleric_field, class_magic_user_field, class_thief_field,
                               class_fighter_magic_user_field, class_magic_user_thief_field],
