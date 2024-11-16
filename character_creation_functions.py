@@ -162,6 +162,7 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     reset_button = gui_elements["reset_button"]
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
+    inactive_continue_button = gui_elements["inactive_continue_button"]
     possible_races = gui_elements["possible_races"]
     possible_classes = gui_elements["possible_classes"]
     # Variables for element positioning.
@@ -259,7 +260,11 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     # Draw buttons.
     reset_button.draw_button(mouse_pos)
     back_button.draw_button(mouse_pos)
-    continue_button.draw_button(mouse_pos)
+    # Show continue button only if race AND class have been selected.
+    if selected_race and selected_class:
+        continue_button.draw_button(mouse_pos)
+    else:
+        inactive_continue_button.draw_button(mouse_pos)
 
     return selected_race, selected_class
 

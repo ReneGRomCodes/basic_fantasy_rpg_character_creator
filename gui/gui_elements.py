@@ -30,6 +30,11 @@ def initialize_screen_elements(screen):
     continue_button.button_rect.width = button_width
     continue_button.button_rect.bottomright = (screen.get_rect().right - spacing_screen_edge,
                                                screen.get_rect().bottom - spacing_screen_edge)
+    inactive_continue_button = so.Button(screen, "Continue", text_medium)
+    inactive_continue_button.button_rect.width = button_width
+    inactive_continue_button.button_rect.bottomright = continue_button.button_rect.bottomright
+    inactive_continue_button.rect_hover_color = (220, 150, 150)
+    inactive_continue_button.rect_clicked_color = (200, 50, 50)
     back_button = so.Button(screen, "Back", text_medium)
     back_button.button_rect.width = button_width
     back_button.button_rect.bottomleft = (screen.get_rect().left + spacing_screen_edge,
@@ -145,6 +150,7 @@ def initialize_screen_elements(screen):
         "default_edge_spacing": spacing_screen_edge,
         # Standard buttons.
         "continue_button": continue_button,
+        "inactive_continue_button": inactive_continue_button,
         "back_button": back_button,
 
         # Title screen.
