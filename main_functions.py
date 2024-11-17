@@ -87,7 +87,8 @@ def custom_character(screen, state, character, possible_characters, selected_rac
         # Set values in character instance based on race and class.
         #cf.set_character_values(character)
 
-        possible_characters, state = eh.custom_character_events(state, character, possible_characters, gui_elements, mouse_pos)
+        possible_characters, state = eh.custom_character_events(state, character, possible_characters, gui_elements, mouse_pos,
+                                                                selected_race, selected_class)
 
     elif state == "custom_character_4":
         # Name the character.

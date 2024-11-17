@@ -227,7 +227,6 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
             if selected_class:
                 selected_class.selected = False
                 selected_class = None
-
         # Loop through each available race and class option to see if any were clicked.
         for race in available_choices["races"]:
             if race.text_rect.collidepoint(mouse_pos):
