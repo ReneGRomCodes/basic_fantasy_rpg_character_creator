@@ -7,7 +7,7 @@ import pygame
 """Functions used to set race/class and build the character sheet."""
 
 
-# Background functions for character creation:
+"""Background functions for character creation"""
 
 def get_ability_score():
     """Generate random value for ability score, apply bonus/penalty and return both values in list
@@ -66,7 +66,7 @@ def build_possible_characters_list(race_list, class_list):
     return possible_characters
 
 
-# Pygame screen functions:
+"""Pygame screen functions"""
 
 def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     """Display character ability scores and bonus/penalty on screen."""
@@ -155,23 +155,14 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     continue_button.draw_button(mouse_pos)
 
 
-def show_race_class_selection_screen(screen, possible_characters, selected_race, selected_class, gui_elements, mouse_pos):
-    """Display race/class selection on screen."""
-    # Assign fields and buttons from 'gui_elements' to variables.
-    screen_title = gui_elements["race_class_title"]
-    reset_button = gui_elements["reset_button"]
-    back_button = gui_elements["back_button"]
-    continue_button = gui_elements["continue_button"]
-    inactive_continue_button = gui_elements["inactive_continue_button"]
-    possible_races = gui_elements["possible_races"]
-    possible_classes = gui_elements["possible_classes"]
-    # Variables for element positioning.
-    race_field_centerx = int(screen.get_rect().width / 4)
-    class_field_centerx = race_field_centerx * 3
-
-    # Create dict and populate it with instances from 'possible_races' and 'possible_classes' if their 'text' attributes
-    # match entries in 'possible_characters' (first word for race, second for class). Objects in 'available_choices' are
-    # then ready to be drawn on screen.
+def get_available_choices(possible_characters, possible_races, possible_classes):
+    """Create dict and populate it with instances from 'possible_races' and 'possible_classes' if their 'text' attributes
+    match entries in 'possible_characters' (first word for race, second for class) and return it in 'available_choices'.
+    ARGS:
+        possible_characters: list of possible race-class combinations.
+        possible_races: entry from gui element dict 'gui_elements["possible_races"]'.
+        possible_classes: entry from gui element dict 'gui_elements["possible_classes"]'.
+    """
     available_choices = {
         "races": [],
         "classes": [],
@@ -191,6 +182,20 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
                 # Assuring only one instance of each object is added to dict.
                 if cls not in available_choices["classes"]:
                     available_choices["classes"].append(cls)
+
+    return available_choices
+
+
+def draw_available_choices(screen, available_choices, mouse_pos):
+    """Get position of text field items in dict 'available_choices' draw them on screen.
+    ARGS:
+        screen: pygame window.
+        available_choices: dict with instances of interactive text fields for race and class selection.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    """
+    # Variables for element positioning.
+    race_field_centerx = int(screen.get_rect().width / 4)
+    class_field_centerx = race_field_centerx * 3
 
     # Get position of elements on y-axis based on number of values in dict 'available_choices'.
     if len(available_choices["races"]) == 1:
@@ -214,6 +219,25 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
         cls.text_rect.centerx, cls.text_rect.centery = class_field_centerx, class_field_centery_start
         cls.draw_interactive_text(mouse_pos)
         class_field_centery_start += cls.text_rect.height * 2
+
+
+def show_race_class_selection_screen(screen, possible_characters, selected_race, selected_class, gui_elements, mouse_pos):
+    """Display race/class selection on screen."""
+    # Assign fields and buttons from 'gui_elements' to variables.
+    screen_title = gui_elements["race_class_title"]
+    reset_button = gui_elements["reset_button"]
+    back_button = gui_elements["back_button"]
+    continue_button = gui_elements["continue_button"]
+    inactive_continue_button = gui_elements["inactive_continue_button"]
+    possible_races = gui_elements["possible_races"]
+    possible_classes = gui_elements["possible_classes"]
+
+    # Get dict of race and class interactive text field instances 'available_choices', which are then ready to be drawn
+    # on screen.
+    available_choices = get_available_choices(possible_characters, possible_races, possible_classes)
+
+    # Position and draw instances from dict 'available_choices' on screen.
+    draw_available_choices(screen, available_choices, mouse_pos)
 
     # Select race and class.
     # Check if the left mouse button is pressed before proceeding with selection logic.
@@ -268,7 +292,7 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     return selected_race, selected_class
 
 
-# Console functions:
+"""Console functions"""
 
 def race_class_selection(character, race_list, class_list):
     """Take lists of possible races and classes, 'race_list' and 'class_list', check for allowed combination, let user
