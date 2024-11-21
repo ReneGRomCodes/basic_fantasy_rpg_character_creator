@@ -57,7 +57,7 @@ def build_possible_characters_list(race_list, class_list):
             if char_race in ["Dwarf", "Halfling"] and char_class == "Magic-User":
                 pass
             # Assure that combination classes are only shown for Elves.
-            if char_race != "Elf" and char_class in ["Fighter/Magic-User", "Magic-User/Thief"]:
+            elif char_race != "Elf" and char_class in ["Fighter/Magic-User", "Magic-User/Thief"]:
                 pass
             else:
                 race_class = char_race + " " + char_class
