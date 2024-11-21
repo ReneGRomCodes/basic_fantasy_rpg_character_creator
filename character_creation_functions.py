@@ -68,33 +68,72 @@ def build_possible_characters_list(race_list, class_list):
 
 """Background functions for race/class selection screen."""
 
-def get_available_choices(possible_characters, possible_races, possible_classes):
+def get_available_choices(possible_characters, possible_races, possible_classes, selected_race, selected_class):
     """Create dict and populate it with instances from 'possible_races' and 'possible_classes' if their 'text' attributes
-    match entries in 'possible_characters' (first word for race, second for class) and return it in 'available_choices'.
-    ARGS:
-        possible_characters: list of possible race-class combinations as strings.
-        possible_races: entry from gui element dict 'gui_elements["possible_races"]'.
-        possible_classes: entry from gui element dict 'gui_elements["possible_classes"]'.
-    """
+        match entries in 'possible_characters' (first word for race, second for class) and return it in 'available_choices'.
+        ARGS:
+            possible_characters: list of possible race-class combinations as strings.
+            possible_races: entry from gui element dict 'gui_elements["possible_races"]'.
+            possible_classes: entry from gui element dict 'gui_elements["possible_classes"]'.
+            selected_race: instance of 'InteractiveText' class representing chosen race.
+            selected_class: instance of 'InteractiveText' class representing chosen class.
+        """
     available_choices = {
         "races": [],
         "classes": [],
     }
+
     for character in possible_characters:
-        # Split each item to get race and class.
-        race_name, class_name = character.split()
-        # Check if the race matches.
-        for race in possible_races:
-            if race.text == race_name:
-                # Assuring only one instance of each object is added to dict.
-                if race not in available_choices["races"]:
-                    available_choices["races"].append(race)
-        # Check if the class matches.
-        for cls in possible_classes:
-            if cls.text == class_name:
-                # Assuring only one instance of each object is added to dict.
-                if cls not in available_choices["classes"]:
-                    available_choices["classes"].append(cls)
+        # Add all available races and classes to dict if none are selected.
+        if not selected_race and not selected_class:
+            # Split each item to get race and class.
+            race_name, class_name = character.split()
+            # Check if the race matches.
+            for race in possible_races:
+                if race.text == race_name:
+                    # Assuring only one instance of each object is added to dict.
+                    if race not in available_choices["races"]:
+                        available_choices["races"].append(race)
+            # Check if the class matches.
+            for cls in possible_classes:
+                if cls.text == class_name:
+                    # Assuring only one instance of each object is added to dict.
+                    if cls not in available_choices["classes"]:
+                        available_choices["classes"].append(cls)
+
+        # Add only classes that are compatible with selected race to dict.
+        elif selected_race and (selected_race.text in character):
+            # Split each item to get race and class.
+            race_name, class_name = character.split()
+            # Check if the race matches.
+            for race in possible_races:
+                if race.text == race_name:
+                    # Assuring only one instance of each object is added to dict.
+                    if race not in available_choices["races"]:
+                        available_choices["races"].append(race)
+            # Check if the class matches.
+            for cls in possible_classes:
+                if cls.text == class_name:
+                    # Assuring only one instance of each object is added to dict.
+                    if cls not in available_choices["classes"]:
+                        available_choices["classes"].append(cls)
+
+        # Add only races that are compatible with selected class to dict.
+        elif selected_class and (selected_class.text in character):
+            # Split each item to get race and class.
+            race_name, class_name = character.split()
+            # Check if the race matches.
+            for race in possible_races:
+                if race.text == race_name:
+                    # Assuring only one instance of each object is added to dict.
+                    if race not in available_choices["races"]:
+                        available_choices["races"].append(race)
+            # Check if the class matches.
+            for cls in possible_classes:
+                if cls.text == class_name:
+                    # Assuring only one instance of each object is added to dict.
+                    if cls not in available_choices["classes"]:
+                        available_choices["classes"].append(cls)
 
     return available_choices
 
@@ -290,7 +329,8 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
 
     # Get dict of race and class interactive text field instances 'available_choices', which are then ready to be drawn
     # on screen.
-    available_choices = get_available_choices(possible_characters, possible_races, possible_classes)
+    available_choices = get_available_choices(possible_characters, possible_races, possible_classes, selected_race,
+                                                selected_class)
 
     # Position and draw instances from dict 'available_choices' on screen.
     draw_available_choices(screen, available_choices, mouse_pos)
