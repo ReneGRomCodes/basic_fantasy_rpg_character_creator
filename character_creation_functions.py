@@ -71,13 +71,14 @@ def build_possible_characters_list(race_list, class_list):
 def get_available_choices(possible_characters, possible_races, possible_classes, selected_race, selected_class):
     """Create dict and populate it with instances from 'possible_races' and 'possible_classes' if their 'text' attributes
         match entries in 'possible_characters' (first word for race, second for class) and return it in 'available_choices'.
-        ARGS:
-            possible_characters: list of possible race-class combinations as strings.
-            possible_races: entry from gui element dict 'gui_elements["possible_races"]'.
-            possible_classes: entry from gui element dict 'gui_elements["possible_classes"]'.
-            selected_race: instance of 'InteractiveText' class representing chosen race.
-            selected_class: instance of 'InteractiveText' class representing chosen class.
-        """
+    ARGS:
+        possible_characters: list of possible race-class combinations as strings.
+        possible_races: entry from gui element dict 'gui_elements["possible_races"]'.
+        possible_classes: entry from gui element dict 'gui_elements["possible_classes"]'.
+        selected_race: instance of 'InteractiveText' class representing chosen race.
+        selected_class: instance of 'InteractiveText' class representing chosen class.
+    """
+    # Dictionary for available race and class choices to be returned.
     available_choices = {
         "races": [],
         "classes": [],
@@ -321,6 +322,8 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     inactive_continue_button = gui_elements["inactive_continue_button"]
     possible_races = gui_elements["possible_races"]
     possible_classes = gui_elements["possible_classes"]
+    inactive_races = gui_elements["inactive_races"]
+    inactive_classes = gui_elements["inactive_classes"]
 
     # Position and draw screen title.
     screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]

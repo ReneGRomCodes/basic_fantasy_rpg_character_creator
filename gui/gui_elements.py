@@ -50,11 +50,13 @@ def initialize_screen_elements(screen):
     subtitle = so.TextField(screen, subtitle_message, text_large)
     copyright_notice = so.TextField(screen, copyright_message, text_small)
 
+
     # Main menu.
     main_menu_title_text = "- MAIN MENU -"
     main_menu_screen_title = so.TextField(screen, main_menu_title_text, text_large)
     custom = so.Button(screen, "Create Custom Character", text_medium)
     random = so.Button(screen, "Create Random Character", text_medium)
+
 
     # Ability scores screen.
     ability_scores_title_text = "- ABILITIES -"
@@ -74,6 +76,7 @@ def initialize_screen_elements(screen):
     intelligence_field = so.InteractiveText(screen, "Intelligence", text_medium, panel=[intelligence_info])
     wisdom_field = so.InteractiveText(screen, "Wisdom", text_medium, panel=[wisdom_info])
     charisma_field = so.InteractiveText(screen, "Charisma", text_medium, panel=[charisma_info])
+
 
     # Race/class selection screen.
     race_class_selection_title_text = "- RACE / CLASS SELECTION -"
@@ -140,6 +143,18 @@ def initialize_screen_elements(screen):
                                                         panel=[fighter_magic_user_info, fighter_magic_user_info_table], select=True)
     class_magic_user_thief_field = so.InteractiveText(screen, "Magic-User/Thief", text_medium,
                                                       panel=[magic_user_thief_info, magic_user_thief_info_table], select=True)
+    # Inactive race/class text fields.
+    inactive_human_field = so.TextField(screen, "Human", text_medium, text_color="inactive")
+    inactive_elf_field = so.TextField(screen, "Elf", text_medium, text_color="inactive")
+    inactive_dwarf_field = so.TextField(screen, "Dwarf", text_medium, text_color="inactive")
+    inactive_halfling_field = so.TextField(screen, "Halfling", text_medium, text_color="inactive")
+    inactive_fighter_field = so.TextField(screen, "Fighter", text_medium, text_color="inactive")
+    inactive_cleric_field = so.TextField(screen, "Cleric", text_medium, text_color="inactive")
+    inactive_magic_user_field = so.TextField(screen, "Magic-User", text_medium, text_color="inactive")
+    inactive_thief_field = so.TextField(screen, "Thief", text_medium, text_color="inactive")
+    inactive_fighter_magic_user_field = so.TextField(screen, "Fighter/Magic-User", text_medium, text_color="inactive")
+    inactive_magic_user_thief_field = so.TextField(screen, "Magic-User/Thief", text_medium, text_color="inactive")
+
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
@@ -176,6 +191,9 @@ def initialize_screen_elements(screen):
         "possible_races": [race_human_field, race_elf_field, race_dwarf_field, race_halfling_field],
         "possible_classes": [class_fighter_field, class_cleric_field, class_magic_user_field, class_thief_field,
                               class_fighter_magic_user_field, class_magic_user_thief_field],
+        "inactive_races": [inactive_human_field, inactive_elf_field, inactive_dwarf_field, inactive_halfling_field],
+        "inactive_classes": [inactive_fighter_field, inactive_cleric_field, inactive_magic_user_field, inactive_thief_field,
+                             inactive_fighter_magic_user_field, inactive_magic_user_thief_field],
     }
 
     return gui_elements

@@ -9,13 +9,14 @@ color_settings = Settings()
 class TextField:
     """Represent field of text."""
 
-    def __init__(self, screen, text, size, bg_color=False, multi_line=False, image_width=0, text_pos=(0,0)):
+    def __init__(self, screen, text, size, bg_color=False, text_color="default", multi_line=False, image_width=0, text_pos=(0,0)):
         """Initialize a text field on screen
         ARGS:
             screen: pygame window.
             text: string to be shown in text field.
             size: font size for text.
             bg_color: background color for rect. Default is 'False' for transparent background.
+            text_color: string for text color presets. "default" for black, "inactive" for greyed-out text.
             multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
         ARGS for use when 'multi_line=True':
             image_width: set width for attribute 'text_image'. Default is '0'.
@@ -29,10 +30,12 @@ class TextField:
         self.bg_color = bg_color
         self.multi_line = multi_line
 
-        # Set font, text color to black and get rect for text field.
-        self.text_color = color_settings.text_color
+        # Set font, text color and get rect for text field.
+        if text_color == "default":
+            self.text_color = color_settings.text_color
+        elif text_color == "inactive":
+            self.text_color = color_settings.greyed_out_text_color
         self.font = pygame.font.SysFont(None, self.size)
-
         # Set padding for text fields with background color.
         self.padding = int(self.screen_rect.width / 40)
 
@@ -221,8 +224,8 @@ class InteractiveText(TextField):
 class InfoPanel(TextField):
     """Represent an info panel for use in conjunction with an instance of class 'InteractiveText()'."""
 
-    def __init__(self, screen, text, size, bg_color=color_settings.info_panel_bg_color, multi_line=False, image_width=0,
-                 text_pos=(0,0), surface_pos="topright"):
+    def __init__(self, screen, text, size, bg_color=color_settings.info_panel_bg_color, text_color="default",
+                 multi_line=False, image_width=0, text_pos=(0,0), surface_pos="topright"):
         """Initialize an info panel.
         ARGS:
             screen: pygame window.
@@ -240,7 +243,7 @@ class InfoPanel(TextField):
             "bottomright".
             Default position is 'topright'.
         """
-        super().__init__(screen, text, size, bg_color, multi_line, image_width, text_pos)
+        super().__init__(screen, text, size, bg_color, text_color, multi_line, image_width, text_pos)
         if surface_pos == "topleft":
             self.background_rect.topleft = screen.get_rect().topleft
         elif surface_pos == "topright":
