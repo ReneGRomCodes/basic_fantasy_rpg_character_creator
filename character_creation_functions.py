@@ -147,8 +147,29 @@ def draw_available_choices(screen, available_choices, mouse_pos):
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
     # Variables for element positioning.
+    screen_center_y = screen.get_rect().centery
+    text_field_height = available_choices["races"][0].text_rect.height
+    text_field_y_offset = text_field_height * 2
+    race_field_block_height = 4 * text_field_height
     race_field_centerx = int(screen.get_rect().width / 4)
+    race_field_centery_start = screen_center_y - race_field_block_height
+    class_field_block_height = 6 * text_field_height
     class_field_centerx = race_field_centerx * 3
+    class_field_centery_start = screen_center_y - class_field_block_height
+
+    # Text field positions.
+    # Races.
+    human_pos_x, human_pos_y = race_field_centerx, race_field_centery_start
+    elf_pos_x, elf_pos_y = race_field_centerx, human_pos_y + text_field_y_offset
+    dwarf_pos_x, dwarf_pos_y = race_field_centerx, elf_pos_y + text_field_y_offset
+    halfling_pos_x, halfling_pos_y = race_field_centerx, dwarf_pos_y + text_field_y_offset
+    # Classes.
+    fighter_pos_x, fighter_pos_y = class_field_centerx, class_field_centery_start
+    cleric_pos_x, cleric_pos_y = class_field_centerx, fighter_pos_y + text_field_y_offset
+    magic_user_pos_x, magic_user_pos_y = class_field_centerx, cleric_pos_y + text_field_y_offset
+    thief_pos_x, thief_pos_y = class_field_centerx, magic_user_pos_y + text_field_y_offset
+    fighter_magic_user_pos_x, fighter_magic_user_pos_y = class_field_centerx, thief_pos_y + text_field_y_offset
+    magic_user_thief_pos_x, magic_user_thief_pos_y = class_field_centerx, fighter_magic_user_pos_y + text_field_y_offset
 
     # Get position of elements on y-axis based on number of values in dict 'available_choices'.
     if len(available_choices["races"]) == 1:
