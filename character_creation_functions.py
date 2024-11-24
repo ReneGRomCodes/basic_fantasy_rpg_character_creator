@@ -113,7 +113,7 @@ def get_available_choices(possible_characters, possible_races, possible_classes,
             available_choices = race_class_check(available_choices, possible_races, possible_classes, race_name, class_name)
 
         # Add only classes that are compatible with selected race to dict.
-        elif selected_race and (selected_race.text in character):
+        elif selected_race and selected_race.text == race_name:
             available_choices = race_class_check(available_choices, possible_races, possible_classes, race_name, class_name)
 
         # Add only races that are compatible with selected class to dict.
@@ -134,7 +134,7 @@ def draw_available_choices(screen, available_choices, inactive_races, inactive_c
     """
     # Variables for element positioning.
     screen_center_y = screen.get_rect().centery
-    text_field_height = available_choices["races"][0].text_rect.height
+    text_field_height = inactive_races[0].text_rect.height  # Value taken from list item for consistent field height.
     text_field_y_offset = text_field_height * 2
     race_field_block_height = 4 * text_field_height
     race_field_centerx = int(screen.get_rect().width / 4)
