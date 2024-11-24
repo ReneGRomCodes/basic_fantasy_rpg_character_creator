@@ -85,10 +85,11 @@ def get_available_choices(possible_characters, possible_races, possible_classes,
     }
 
     for character in possible_characters:
+        # Split each possible character to get race and class.
+        race_name, class_name = character.split()
+
         # Add all available races and classes to dict if none are selected.
         if not selected_race and not selected_class:
-            # Split each item to get race and class.
-            race_name, class_name = character.split()
             # Check if the race matches.
             for race in possible_races:
                 if race.text == race_name:
@@ -104,8 +105,6 @@ def get_available_choices(possible_characters, possible_races, possible_classes,
 
         # Add only classes that are compatible with selected race to dict.
         elif selected_race and (selected_race.text in character):
-            # Split each item to get race and class.
-            race_name, class_name = character.split()
             # Check if the race matches.
             for race in possible_races:
                 if race.text == race_name:
@@ -120,9 +119,7 @@ def get_available_choices(possible_characters, possible_races, possible_classes,
                         available_choices["classes"].append(cls)
 
         # Add only races that are compatible with selected class to dict.
-        elif selected_class and (selected_class.text in character):
-            # Split each item to get race and class.
-            race_name, class_name = character.split()
+        elif selected_class and selected_class.text == class_name:
             # Check if the race matches.
             for race in possible_races:
                 if race.text == race_name:
@@ -180,6 +177,7 @@ def draw_available_choices(screen, available_choices, inactive_races, inactive_c
     for c in available_choices["classes"]:
         check_list.append(c.text)
 
+    # Draw race selection.
     for race in inactive_races:
         if race.text in check_list:
             for r in available_choices["races"]:
@@ -203,6 +201,7 @@ def draw_available_choices(screen, available_choices, inactive_races, inactive_c
                 race.text_rect.centerx, race.text_rect.centery = halfling_pos_x, halfling_pos_y
             race.draw_text()
 
+    # Draw class selection.
     for cls in inactive_classes:
         if cls.text in check_list:
             for c in available_choices["classes"]:
