@@ -123,16 +123,15 @@ def get_available_choices(possible_characters, possible_races, possible_classes,
     return available_choices
 
 
-def draw_available_choices(screen, available_choices, inactive_races, inactive_classes, mouse_pos):
-    """Get position of text field items in dict 'available_choices' and draw them on screen.
+def position_race_class_elements(screen, race_class, inactive_races):
+    """Get and return x and y values for GUI elements in function 'draw_available_choices()'.
     ARGS:
         screen: pygame window.
-        available_choices: dict with instances of interactive text fields for race and class selection.
-        inactive_races: list of text field instances for non-choose able races.
-        inactive_classes: list of text field instances for non-choose able classes.
-        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+        race_class: string variable for race or class check.
+        inactive_races: list of text field instances for non-choose able races. Only used here to calculate value for
+        variable 'text_field_height'.
     """
-    # Variables for element positioning.
+    # General variables for element positioning.
     screen_center_y = screen.get_rect().centery
     text_field_height = inactive_races[0].text_rect.height  # Value taken from list item for consistent field height.
     text_field_y_offset = text_field_height * 2
@@ -157,6 +156,41 @@ def draw_available_choices(screen, available_choices, inactive_races, inactive_c
     fighter_magic_user_pos_x, fighter_magic_user_pos_y = class_field_centerx, thief_pos_y + text_field_y_offset
     magic_user_thief_pos_x, magic_user_thief_pos_y = class_field_centerx, fighter_magic_user_pos_y + text_field_y_offset
 
+    # Check 'race_class' and assign correct x and y value for each specific race/class.
+    if race_class.text == "Human":
+        x, y = human_pos_x, human_pos_y
+    elif race_class.text == "Elf":
+        x, y = elf_pos_x, elf_pos_y
+    elif race_class.text == "Dwarf":
+        x, y = dwarf_pos_x, dwarf_pos_y
+    elif race_class.text == "Halfling":
+        x, y = halfling_pos_x, halfling_pos_y
+    elif race_class.text == "Fighter":
+        x, y = fighter_pos_x, fighter_pos_y
+    elif race_class.text == "Cleric":
+        x, y = cleric_pos_x, cleric_pos_y
+    elif race_class.text == "Magic-User":
+        x, y = magic_user_pos_x, magic_user_pos_y
+    elif race_class.text == "Thief":
+        x, y = thief_pos_x, thief_pos_y
+    elif race_class.text == "Fighter/Magic-User":
+        x, y = fighter_magic_user_pos_x, fighter_magic_user_pos_y
+    elif race_class.text == "Magic-User/Thief":
+        x, y = magic_user_thief_pos_x, magic_user_thief_pos_y
+
+    return x, y
+
+
+def draw_available_choices(screen, available_choices, inactive_races, inactive_classes, mouse_pos):
+    """Get position of text field items in dict 'available_choices' and draw them on screen.
+    ARGS:
+        screen: pygame window.
+        available_choices: dict with instances of interactive text fields for race and class selection.
+        inactive_races: list of text field instances for non-choose able races.
+        inactive_classes: list of text field instances for non-choose able classes.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    """
+
     # Create list to check if inactive or selectable text field should be displayed.
     check_list = []
     for r in available_choices["races"]:
@@ -168,56 +202,20 @@ def draw_available_choices(screen, available_choices, inactive_races, inactive_c
     for race in inactive_races:
         if race.text in check_list:
             for r in available_choices["races"]:
-                if r.text == "Human":
-                    r.text_rect.centerx, r.text_rect.centery = human_pos_x, human_pos_y
-                elif r.text == "Elf":
-                    r.text_rect.centerx, r.text_rect.centery = elf_pos_x, elf_pos_y
-                elif r.text == "Dwarf":
-                    r.text_rect.centerx, r.text_rect.centery = dwarf_pos_x, dwarf_pos_y
-                elif r.text == "Halfling":
-                    r.text_rect.centerx, r.text_rect.centery = halfling_pos_x, halfling_pos_y
+                r.text_rect.centerx, r.text_rect.centery = position_race_class_elements(screen, r, inactive_races)
                 r.draw_interactive_text(mouse_pos)
         else:
-            if race.text == "Human":
-                race.text_rect.centerx, race.text_rect.centery = human_pos_x, human_pos_y
-            elif race.text == "Elf":
-                race.text_rect.centerx, race.text_rect.centery = elf_pos_x, elf_pos_y
-            elif race.text == "Dwarf":
-                race.text_rect.centerx, race.text_rect.centery = dwarf_pos_x, dwarf_pos_y
-            elif race.text == "Halfling":
-                race.text_rect.centerx, race.text_rect.centery = halfling_pos_x, halfling_pos_y
+            race.text_rect.centerx, race.text_rect.centery = position_race_class_elements(screen, race, inactive_races)
             race.draw_text()
 
     # Draw class selection.
     for cls in inactive_classes:
         if cls.text in check_list:
             for c in available_choices["classes"]:
-                if c.text == "Fighter":
-                    c.text_rect.centerx, c.text_rect.centery = fighter_pos_x, fighter_pos_y
-                elif c.text == "Cleric":
-                    c.text_rect.centerx, c.text_rect.centery = cleric_pos_x, cleric_pos_y
-                elif c.text == "Magic-User":
-                    c.text_rect.centerx, c.text_rect.centery = magic_user_pos_x, magic_user_pos_y
-                elif c.text == "Thief":
-                    c.text_rect.centerx, c.text_rect.centery = thief_pos_x, thief_pos_y
-                elif c.text == "Fighter/Magic-User":
-                    c.text_rect.centerx, c.text_rect.centery = fighter_magic_user_pos_x, fighter_magic_user_pos_y
-                elif c.text == "Magic-User/Thief":
-                    c.text_rect.centerx, c.text_rect.centery = magic_user_thief_pos_x, magic_user_thief_pos_y
+                c.text_rect.centerx, c.text_rect.centery = position_race_class_elements(screen, c, inactive_races)
                 c.draw_interactive_text(mouse_pos)
         else:
-            if cls.text == "Fighter":
-                cls.text_rect.centerx, cls.text_rect.centery = fighter_pos_x, fighter_pos_y
-            elif cls.text == "Cleric":
-                cls.text_rect.centerx, cls.text_rect.centery = cleric_pos_x, cleric_pos_y
-            elif cls.text == "Magic-User":
-                cls.text_rect.centerx, cls.text_rect.centery = magic_user_pos_x, magic_user_pos_y
-            elif cls.text == "Thief":
-                cls.text_rect.centerx, cls.text_rect.centery = thief_pos_x, thief_pos_y
-            elif cls.text == "Fighter/Magic-User":
-                cls.text_rect.centerx, cls.text_rect.centery = fighter_magic_user_pos_x, fighter_magic_user_pos_y
-            elif cls.text == "Magic-User/Thief":
-                cls.text_rect.centerx, cls.text_rect.centery = magic_user_thief_pos_x, magic_user_thief_pos_y
+            cls.text_rect.centerx, cls.text_rect.centery = position_race_class_elements(screen, cls, inactive_races)
             cls.draw_text()
 
 
