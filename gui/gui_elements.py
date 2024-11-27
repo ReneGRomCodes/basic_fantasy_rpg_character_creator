@@ -156,6 +156,10 @@ def initialize_screen_elements(screen):
     inactive_magic_user_thief_field = so.TextField(screen, "Magic-User/Thief", text_medium, text_color="inactive")
 
 
+    # Character naming screen.
+    character_naming_title_text = "- NAME YOUR CHARACTER -"
+    character_naming_screen_title = so.TextField(screen, character_naming_title_text, text_large)
+
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
         # Default values for spacing.
@@ -194,6 +198,8 @@ def initialize_screen_elements(screen):
         "inactive_races": [inactive_human_field, inactive_elf_field, inactive_dwarf_field, inactive_halfling_field],
         "inactive_classes": [inactive_fighter_field, inactive_cleric_field, inactive_magic_user_field, inactive_thief_field,
                              inactive_fighter_magic_user_field, inactive_magic_user_thief_field],
+        # Character naming screen.
+        "naming_title": character_naming_screen_title,
     }
 
     return gui_elements
