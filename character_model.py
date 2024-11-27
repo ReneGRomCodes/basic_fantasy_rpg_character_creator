@@ -11,13 +11,11 @@ class Character:
         """Initialize race and class specific attributes and character values."""
         # Race specific attributes.
         self.race_name = None
-        self.race_description = None
         self.max_hit_die = False
         self.race_specials = []
         self.bonuses = []
         # Class specific attributes.
         self.class_name = None
-        self.class_description = None
         self.class_hit_die = 0
         self.class_specials = []
         self.class_saving_throws = []
@@ -47,14 +45,12 @@ class Character:
         """Set race-specific values based on chosen race."""
         if race_selection == "Dwarf":
             self.race_name = "Dwarf"
-            self.race_description = "descr/dwarves.txt"
             self.max_hit_die = False
             self.race_specials = ["Darkvision 60'",
                                   "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"]
             self.bonuses = [4, 4, 4, 3, 4]
         elif race_selection == "Elf":
             self.race_name = "Elf"
-            self.race_description = "descr/elves.txt"
             self.max_hit_die = 6
             self.race_specials = ["Darkvision 60'",
                                   "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
@@ -62,7 +58,6 @@ class Character:
             self.bonuses = [0, 2, 1, 0, 2]
         elif race_selection == "Halfling":
             self.race_name = "Halfling"
-            self.race_description = "descr/halflings.txt"
             self.max_hit_die = 6
             self.race_specials = ["+1 attack bonus on ranged weapons",
                                   "+1 to initiative die rolls",
@@ -70,7 +65,6 @@ class Character:
             self.bonuses = [4, 4, 4, 3, 4]
         elif race_selection == "Human":
             self.race_name = "Human"
-            self.race_description = "descr/humans.txt"
             self.max_hit_die = False
             self.race_specials = ["+10% to all earned XP"]
             self.bonuses = [0, 0, 0, 0, 0]
@@ -79,7 +73,6 @@ class Character:
         """Set class-specific values based on chosen class."""
         if class_selection == "Cleric":
             self.class_name = "Cleric"
-            self.class_description = "descr/cleric.txt"
             self.class_hit_die = 6
             self.next_level_xp = 1500
             self.class_specials = ["Turn the Undead"]
@@ -87,14 +80,12 @@ class Character:
             self.spells = "None"
         elif class_selection == "Fighter":
             self.class_name = "Fighter"
-            self.class_description = "descr/fighter.txt"
             self.class_hit_die = 8
             self.next_level_xp = 2000
             self.class_specials = [False]
             self.class_saving_throws = [12, 13, 14, 15, 17]
         elif class_selection == "Magic-User":
             self.class_name = "Magic-User"
-            self.class_description = "descr/magic-user.txt"
             self.class_hit_die = 4
             self.next_level_xp = 2500
             self.class_specials = [False]
@@ -104,7 +95,6 @@ class Character:
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Thief":
             self.class_name = "Thief"
-            self.class_description = "descr/thief.txt"
             self.class_hit_die = 4
             self.next_level_xp = 1250
             self.class_specials = ["Sneak Attack", "Thief Abilities"]
@@ -112,7 +102,6 @@ class Character:
         # Elf specific combination classes.
         elif class_selection == "Fighter/Magic-User":
             self.class_name = "Fighter/Magic-User"
-            self.class_description = "descr/fighter_magic-user.txt"
             self.class_hit_die = 6
             self.next_level_xp = 4500
             self.class_specials = [False]
@@ -122,7 +111,6 @@ class Character:
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Magic-User/Thief":
             self.class_name = "Magic-User/Thief"
-            self.class_description = "descr/magic-user_thief.txt"
             self.class_hit_die = 4
             self.next_level_xp = 3750
             self.class_specials = ["Sneak Attack", "Thief Abilities"]
