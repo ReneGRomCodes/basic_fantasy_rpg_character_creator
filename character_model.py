@@ -43,49 +43,46 @@ class Character:
 
     def set_race(self, race_selection):
         """Set race-specific values based on chosen race."""
+        self.race_name = race_selection
+
         if race_selection == "Dwarf":
-            self.race_name = "Dwarf"
             self.max_hit_die = False
             self.race_specials = ["Darkvision 60'",
                                   "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"]
             self.bonuses = [4, 4, 4, 3, 4]
         elif race_selection == "Elf":
-            self.race_name = "Elf"
             self.max_hit_die = 6
             self.race_specials = ["Darkvision 60'",
                                   "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
                                   "Range reduction by 1 for surprise checks"]
             self.bonuses = [0, 2, 1, 0, 2]
         elif race_selection == "Halfling":
-            self.race_name = "Halfling"
             self.max_hit_die = 6
             self.race_specials = ["+1 attack bonus on ranged weapons",
                                   "+1 to initiative die rolls",
                                   "Hide (10% chance to be detected outdoors, 30% chance to be detected indoors"]
             self.bonuses = [4, 4, 4, 3, 4]
         elif race_selection == "Human":
-            self.race_name = "Human"
             self.max_hit_die = False
             self.race_specials = ["+10% to all earned XP"]
             self.bonuses = [0, 0, 0, 0, 0]
 
     def set_class(self, class_selection):
         """Set class-specific values based on chosen class."""
+        self.class_name = class_selection
+
         if class_selection == "Cleric":
-            self.class_name = "Cleric"
             self.class_hit_die = 6
             self.next_level_xp = 1500
             self.class_specials = ["Turn the Undead"]
             self.class_saving_throws = [11, 12, 14, 16, 15]
             self.spells = "None"
         elif class_selection == "Fighter":
-            self.class_name = "Fighter"
             self.class_hit_die = 8
             self.next_level_xp = 2000
             self.class_specials = [False]
             self.class_saving_throws = [12, 13, 14, 15, 17]
         elif class_selection == "Magic-User":
-            self.class_name = "Magic-User"
             self.class_hit_die = 4
             self.next_level_xp = 2500
             self.class_specials = [False]
@@ -94,14 +91,12 @@ class Character:
             self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Thief":
-            self.class_name = "Thief"
             self.class_hit_die = 4
             self.next_level_xp = 1250
             self.class_specials = ["Sneak Attack", "Thief Abilities"]
             self.class_saving_throws = [13, 14, 13, 16, 15]
         # Elf specific combination classes.
         elif class_selection == "Fighter/Magic-User":
-            self.class_name = "Fighter/Magic-User"
             self.class_hit_die = 6
             self.next_level_xp = 4500
             self.class_specials = [False]
@@ -110,7 +105,6 @@ class Character:
             self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Magic-User/Thief":
-            self.class_name = "Magic-User/Thief"
             self.class_hit_die = 4
             self.next_level_xp = 3750
             self.class_specials = ["Sneak Attack", "Thief Abilities"]
