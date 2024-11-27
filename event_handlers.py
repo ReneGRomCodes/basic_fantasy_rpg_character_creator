@@ -75,7 +75,11 @@ def custom_character_events(state, character, possible_characters, gui_elements,
                     # Only continue if race AND class are selected.
                     if selected_race and selected_class:
                         if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                            state = "custom_character_4"
+                            # Set race, class and their specific values in character object.
+                            character.set_race(selected_race.text)
+                            character.set_class(selected_class.text)
+                            cf.set_character_values(character)
+                            state = "name_character"
                     else:
                         pass
 

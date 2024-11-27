@@ -268,6 +268,15 @@ def select_race_class(available_choices, selected_race, selected_class, reset_bu
     return selected_race, selected_class
 
 
+def set_character_values(character):
+    """Set values for instance 'character' of class 'Character'."""
+    character.set_saving_throws()
+    character.set_specials()
+    character.set_hp()
+    character.set_armor_class()
+    character.set_carrying_capacity()
+
+
 """Pygame screen functions."""
 
 def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
@@ -499,15 +508,6 @@ def show_special_abilities(character):
     """Print formatted output of list 'specials' from instance 'character'."""
     for special in character.specials:
         print(f" - {special}")
-
-
-def set_character_values(character):
-    """Set values for instance 'character' of class 'Character'."""
-    character.set_saving_throws()
-    character.set_specials()
-    character.set_hp()
-    character.set_armor_class()
-    character.set_carrying_capacity()
 
 
 def set_starting_money(character):
