@@ -62,6 +62,9 @@ def initialize_screen_elements(screen):
     ability_scores_title_text = "- ABILITIES -"
     ability_scores_screen_title = so.TextField(screen, ability_scores_title_text, text_large)
     reroll_button = so.Button(screen, "Roll Again", text_medium)
+    reroll_button.button_rect.width = button_width
+    reroll_button.button_rect.centerx = screen.get_rect().centerx
+    reroll_button.button_rect.bottom = screen.get_rect().bottom - spacing_screen_edge
     # Info panels.
     strength_info = so.InfoPanel(screen, ability_descr["str_descr"], text_small, multi_line=True, image_width=info_panel_width)
     dexterity_info = so.InfoPanel(screen, ability_descr["dex_descr"], text_small, multi_line=True, image_width=info_panel_width)

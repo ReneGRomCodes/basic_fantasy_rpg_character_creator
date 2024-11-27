@@ -1,6 +1,5 @@
 import functions as func
 import random
-import os
 from item_instances import no_shield
 import gui.screen_objects as so
 import pygame
@@ -356,11 +355,7 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
 
         element_pos_y += ability_score_text.text_rect.height * 2
 
-    # Position and draw buttons on screen
-    reroll_button.button_rect.width = gui_elements["default_button_width"]
-    reroll_button.button_rect.centerx = screen.get_rect().centerx
-    reroll_button.button_rect.bottom = screen.get_rect().bottom - gui_elements["default_edge_spacing"]
-
+    # Position and draw buttons on screen.
     reroll_button.draw_button(mouse_pos)
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
