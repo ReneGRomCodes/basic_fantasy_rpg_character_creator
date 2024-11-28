@@ -6,6 +6,13 @@ import pygame
 """Functions used to set race/class and build the character sheet."""
 
 
+def draw_screen_title(screen, screen_title, gui_elements):
+    """Draw 'screen_title' object on screen at default position."""
+    screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
+    screen_title.text_rect.centerx = screen.get_rect().centerx
+    screen_title.draw_text()
+
+
 """Background functions for abilty score screen."""
 
 def get_ability_score():
@@ -301,10 +308,8 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     ability_score_text = so.TextField(screen, "score", strength.size)
     bonus_penalty_text = so.TextField(screen, "bonus_penalty", strength.size)
 
-    # Position and draw screen title.
-    screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
-    screen_title.text_rect.centerx = screen.get_rect().centerx
-    screen_title.draw_text()
+    # Draw screen title.
+    draw_screen_title(screen, screen_title, gui_elements)
 
     # Set initial position on y-axis for ability score fields.
     element_pos_y = screen.get_rect().height / 3
@@ -355,7 +360,7 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
 
         element_pos_y += ability_score_text.text_rect.height * 2
 
-    # Position and draw buttons on screen.
+    # Draw buttons on screen.
     reroll_button.draw_button(mouse_pos)
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
@@ -374,10 +379,8 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     inactive_races = gui_elements["inactive_races"]
     inactive_classes = gui_elements["inactive_classes"]
 
-    # Position and draw screen title.
-    screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
-    screen_title.text_rect.centerx = screen.get_rect().centerx
-    screen_title.draw_text()
+    # Draw screen title.
+    draw_screen_title(screen, screen_title, gui_elements)
 
     # Get dict of race and class interactive text field instances 'available_choices', which are then ready to be drawn
     # on screen.
@@ -400,6 +403,21 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
         inactive_continue_button.draw_button(mouse_pos)
 
     return selected_race, selected_class
+
+
+def show_naming_screen(screen, gui_elements, mouse_pos):
+    # Assign fields and buttons from 'gui_elements' to variables.
+    screen_title = gui_elements["naming_title"]
+    back_button = gui_elements["back_button"]
+    continue_button = gui_elements["continue_button"]
+    inactive_continue_button = gui_elements["inactive_continue_button"]
+
+    # Draw screen title.
+    draw_screen_title(screen, screen_title, gui_elements)
+
+    # Draw buttons on screen.
+    back_button.draw_button(mouse_pos)
+    continue_button.draw_button(mouse_pos)
 
 
 """Console functions."""

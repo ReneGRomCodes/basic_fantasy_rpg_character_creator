@@ -45,6 +45,7 @@ def custom_character_events(state, character, possible_characters, gui_elements,
     states_dict = {
         "show_abilities": True,
         "race_class_selection": True,
+        "name_character": True,
     }
 
     if state in states_dict.keys():
@@ -75,11 +76,19 @@ def custom_character_events(state, character, possible_characters, gui_elements,
                     # Only continue if race AND class are selected.
                     if selected_race and selected_class:
                         if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                            # Set race, class and their specific values in character object.
+                            # Set race, class and their specific values in character object after confirmation.
                             character.set_race(selected_race.text)
                             character.set_class(selected_class.text)
                             cf.set_character_values(character)
                             state = "name_character"
+                    else:
+                        pass
+
+            elif state == "name_character":
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                        state = "race_class_selection"
+
                     else:
                         pass
 

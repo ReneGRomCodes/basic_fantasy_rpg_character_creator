@@ -86,6 +86,13 @@ def custom_character(screen, state, character, possible_characters, selected_rac
                                                                 selected_race, selected_class)
 
     elif state == "name_character":
+        # Display character naming screen.
+        cf.show_naming_screen(screen, gui_elements, mouse_pos)
+        possible_characters, state = eh.custom_character_events(state, character, possible_characters, gui_elements, mouse_pos,
+                                                                selected_race, selected_class)
+
+    # State for code that has yet to be migrated to Pygame.
+    elif state == "TODO":
         # Name the character.
         cf.name_character(character)
 
