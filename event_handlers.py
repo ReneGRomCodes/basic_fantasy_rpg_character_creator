@@ -38,7 +38,8 @@ def main_events(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def custom_character_events(state, character, possible_characters, gui_elements, mouse_pos, selected_race=None, selected_class=None):
+def custom_character_events(state, character, possible_characters, gui_elements, mouse_pos, selected_race=None, selected_class=None,
+                            character_name=None):
     """Check and handle events in function 'custom_character()' in 'main_functions.py' and return 'state'."""
 
     # Hashable dict to optimize state checking and improve performance.
@@ -86,6 +87,8 @@ def custom_character_events(state, character, possible_characters, gui_elements,
                         pass
 
             elif state == "name_character":
+                character_name.update(pygame.event.get())
+
                 if event.type == pygame.MOUSEBUTTONUP:
                     if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                         state = "race_class_selection"

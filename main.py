@@ -4,6 +4,7 @@ import character_model as char
 import event_handlers as eh
 from settings import Settings
 from gui.gui_elements import initialize_screen_elements
+import pygame_textinput
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
 It initializes the program and starts the main functionality."""
 
@@ -22,6 +23,7 @@ def run_character_creator():
     possible_characters = []
     selected_race = None
     selected_class = None
+    character_name = pygame_textinput.TextInputVisualizer()
 
     # Set initial state.
     state = "title_screen"
@@ -43,8 +45,8 @@ def run_character_creator():
         elif state in ["set_abilities", "show_abilities", "race_class_selection", "name_character", "TODO"]:
             possible_characters, state, selected_race, selected_class = mf.custom_character(screen, state, character,
                                                                                            possible_characters, selected_race,
-                                                                                           selected_class, gui_elements,
-                                                                                           mouse_pos)
+                                                                                           selected_class, character_name,
+                                                                                           gui_elements, mouse_pos)
         elif state == "random_character":
             mf.random_character(character)
 

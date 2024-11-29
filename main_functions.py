@@ -52,7 +52,8 @@ def show_menu(screen, gui_elements, mouse_pos):
     random.draw_button(mouse_pos)
 
 
-def custom_character(screen, state, character, possible_characters, selected_race, selected_class, gui_elements, mouse_pos):
+def custom_character(screen, state, character, possible_characters, selected_race, selected_class, character_name,
+                     gui_elements, mouse_pos):
     """Create custom character based on user input and return state for main loop."""
     if state == "set_abilities":
         # Generate dictionary for character abilities.
@@ -87,9 +88,9 @@ def custom_character(screen, state, character, possible_characters, selected_rac
 
     elif state == "name_character":
         # Display character naming screen.
-        cf.show_naming_screen(screen, gui_elements, mouse_pos)
+        cf.show_naming_screen(screen, gui_elements, character_name, mouse_pos)
         possible_characters, state = eh.custom_character_events(state, character, possible_characters, gui_elements, mouse_pos,
-                                                                selected_race, selected_class)
+                                                                selected_race, selected_class, character_name)
 
     # State for code that has yet to be migrated to Pygame.
     elif state == "TODO":
