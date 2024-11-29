@@ -38,15 +38,13 @@ def main_events(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def custom_character_events(state, character, possible_characters, gui_elements, mouse_pos, selected_race=None, selected_class=None,
-                            character_name=None):
+def custom_character_events(state, character, possible_characters, gui_elements, mouse_pos, selected_race=None, selected_class=None):
     """Check and handle events in function 'custom_character()' in 'main_functions.py' and return 'state'."""
 
     # Hashable dict to optimize state checking and improve performance.
     states_dict = {
         "show_abilities": True,
         "race_class_selection": True,
-        "name_character": True,
     }
 
     if state in states_dict.keys():
@@ -86,17 +84,29 @@ def custom_character_events(state, character, possible_characters, gui_elements,
                     else:
                         pass
 
-            elif state == "name_character":
-                character_name.update(pygame.event.get())
-
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
-                        state = "race_class_selection"
-
-                    else:
-                        pass
-
             else:
                 pass
 
     return possible_characters, state
+
+
+def naming_character_events(state, character_name, gui_elements, mouse_pos):
+    """Check and handle text input field events in function 'custom_character()' for state 'name_character' in
+    'main_functions.py' and return new 'state'."""
+    # Check and update events for 'pygame_textinput' instance 'character_name' before other events are checked.
+    character_name.update(pygame.event.get())
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        if state == "name_character":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                    state = "race_class_selection"
+
+                else:
+                    pass
+
+    return state
