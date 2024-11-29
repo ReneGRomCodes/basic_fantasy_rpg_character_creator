@@ -73,6 +73,7 @@ def custom_character_events(state, character, possible_characters, gui_elements,
                 if event.type == pygame.MOUSEBUTTONUP:
                     if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                         state = "show_abilities"
+
                     # Only continue if race AND class are selected.
                     if selected_race and selected_class:
                         if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):

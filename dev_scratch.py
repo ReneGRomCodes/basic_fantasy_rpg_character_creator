@@ -1,4 +1,5 @@
 import pygame
+import pygame_textinput
 from settings import Settings
 import sys
 import gui.screen_objects
@@ -8,43 +9,28 @@ import gui.screen_objects
 # TODO Equip/unequip methods work only for armor right now in 'character_model.py'
 # TODO fully implement weapons shop within 'shop_functions.py'
 
+Settings = Settings()
 
 def show_test_screen():
     """Initialize Pygame and create a window to test GUI elements."""
-    # Initialize pygame and create a window.
     pygame.init()
-    settings = Settings()
-    screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
-    pygame.display.set_caption("TEST SCREEN")
+    screen = pygame.display.set_mode((Settings.screen_width, Settings.screen_height))
 
-    # Instantiate screen objects for testing.
-    test_text = ("In computer programming, a string is traditionally a sequence of characters, either as a literal "
-                 "constant or as some kind of variable. The latter may allow its elements to be mutated and the length "
-                 "changed, or it may be fixed (after creation). A string is generally considered as a data type and is "
-                 "often implemented as an array data structure of bytes (or words) that stores a sequence of elements, "
-                 "typically characters, using some character encoding. String may also denote more general arrays or "
-                 "other sequence (or list) data types and structures.\n"
-                 "Depending on the programming language and precise data type used, a variable declared to be a string "
-                 "may either cause storage in memory to be statically allocated for a predetermined maximum length or "
-                 "employ dynamic allocation to allow it to hold a variable number of elements.\n"
-                 "When a string appears literally in source code, it is known as a string literal or an anonymous "
-                 "string.\n"
-                 "In formal languages, which are used in mathematical logic and theoretical computer science, a string "
-                 "is a finite sequence of symbols that are chosen from a set called an alphabet.")
-    test_object = gui.screen_objects.TextField(screen, test_text, size=20, bg_color=(255,255,255), multi_line=True, image_width=400)
+    # Create TextInput-object
+    textinput = pygame_textinput.TextInputVisualizer()
 
-    # Start main loop.
+
     while True:
-        screen.fill(settings.bg_color)
+        screen.fill(Settings.bg_color)
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+        events = pygame.event.get()
 
-        test_object.draw_text()
+        # Feed it with events every frame
+        textinput.update(events)
+        # Blit its surface onto the screen
+        screen.blit(textinput.surface, (10, 10))
 
-        pygame.display.flip()
+        pygame.display.update()
 
 
 show_test_screen()
