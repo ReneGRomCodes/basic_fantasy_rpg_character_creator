@@ -101,6 +101,7 @@ def naming_character_events(state, character_name, gui_elements, mouse_pos):
             pygame.quit()
             sys.exit()
 
+        # Check of variable 'state' actually unnecessary. Left in for clarity when reading the code.
         if state == "name_character":
             if event.type == pygame.MOUSEBUTTONUP:
                 if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
