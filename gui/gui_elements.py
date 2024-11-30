@@ -9,11 +9,6 @@ def initialize_screen_elements(screen):
     values for automatic scalability of screen objects. Return dict of instances 'gui_elements'.
     NOTE: Instances created have to be then added manually to dict 'gui_elements'!"""
 
-    # Initialize dictionaries from 'descr' package.
-    ability_descr = abilities.get_ability_descr()
-    race_descr = races.get_race_descr()
-    class_descr = classes.get_class_descr()
-
     # Size and spacing variables that are calculated based on screen size for scalability.
     screen_height, screen_width = screen.get_rect().height, screen.get_rect().width
     title_size = int(screen_height / 16)
@@ -66,6 +61,10 @@ def initialize_screen_elements(screen):
     reroll_button.button_rect.width = button_width
     reroll_button.button_rect.centerx = screen.get_rect().centerx
     reroll_button.button_rect.bottom = screen.get_rect().bottom - spacing_screen_edge
+    # Initialize dictionaries from 'descr' package.
+    ability_descr = abilities.get_ability_descr()
+    race_descr = races.get_race_descr()
+    class_descr = classes.get_class_descr()
     # Info panels.
     strength_info = so.InfoPanel(screen, ability_descr["str_descr"], text_small, multi_line=True, image_width=info_panel_width)
     dexterity_info = so.InfoPanel(screen, ability_descr["dex_descr"], text_small, multi_line=True, image_width=info_panel_width)
