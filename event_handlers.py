@@ -90,11 +90,11 @@ def custom_character_events(state, character, possible_characters, gui_elements,
     return possible_characters, state
 
 
-def naming_character_events(state, character_name, gui_elements, mouse_pos):
-    """Check and handle text input field events in function 'custom_character()' for state 'name_character' in
+def naming_character_events(state, character_name_input, gui_elements, mouse_pos):
+    """Check and handle text input field events in function 'custom_character()' for state 'character_name_input' in
     'main_functions.py' and return new 'state'."""
-    # Check and update events for 'pygame_textinput' instance 'character_name' before other events are checked.
-    character_name.update(pygame.event.get())
+    # Check and update events for 'pygame_textinput' instance 'character_name_input' before other events are checked.
+    character_name_input.update(pygame.event.get())
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

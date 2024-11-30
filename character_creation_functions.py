@@ -405,7 +405,7 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     return selected_race, selected_class
 
 
-def show_naming_screen(screen, gui_elements, character_name, mouse_pos):
+def show_naming_screen(screen, gui_elements, character_name_input, mouse_pos):
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["naming_title"]
     back_button = gui_elements["back_button"]
@@ -415,7 +415,7 @@ def show_naming_screen(screen, gui_elements, character_name, mouse_pos):
     # Draw screen title.
     draw_screen_title(screen, screen_title, gui_elements)
 
-    screen.blit(character_name.surface, (screen.get_rect().centerx, screen.get_rect().centery))
+    screen.blit(character_name_input.surface, (screen.get_rect().centerx, screen.get_rect().centery))
 
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)

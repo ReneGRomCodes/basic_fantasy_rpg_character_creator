@@ -4,7 +4,6 @@ import character_model as char
 import event_handlers as eh
 from settings import Settings
 from gui.gui_elements import initialize_screen_elements
-import pygame_textinput
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
 It initializes the program and starts the main functionality."""
 
@@ -17,18 +16,19 @@ def run_character_creator():
     screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
 
+    # Initialize GUI elements.
+    gui_elements = initialize_screen_elements(screen)
+
     # Create instance of class 'Character'.
     character = char.Character()
     # Variables for character creation.
     possible_characters = []
     selected_race = None
     selected_class = None
-    character_name = pygame_textinput.TextInputVisualizer()
+    character_name_input = gui_elements["character_name_input"]
 
     # Set initial state.
     state = "title_screen"
-    # Initialize GUI elements.
-    gui_elements = initialize_screen_elements(screen)
 
     # Start main loop.
     while True:
@@ -45,7 +45,7 @@ def run_character_creator():
         elif state in ["set_abilities", "show_abilities", "race_class_selection", "name_character", "TODO"]:
             possible_characters, state, selected_race, selected_class = mf.custom_character(screen, state, character,
                                                                                            possible_characters, selected_race,
-                                                                                           selected_class, character_name,
+                                                                                           selected_class, character_name_input,
                                                                                            gui_elements, mouse_pos)
         elif state == "random_character":
             mf.random_character(character)

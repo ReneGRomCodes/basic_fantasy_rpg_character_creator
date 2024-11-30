@@ -1,5 +1,6 @@
 import gui.screen_objects as so
 from descr import abilities, races, classes
+import pygame_textinput
 """Initialize instances of classes from 'screen_objects.py' for use in GUI."""
 
 
@@ -162,6 +163,7 @@ def initialize_screen_elements(screen):
     # Character naming screen.
     character_naming_title_text = "- NAME YOUR CHARACTER -"
     character_naming_screen_title = so.TextField(screen, character_naming_title_text, text_large)
+    character_name_input = pygame_textinput.TextInputVisualizer()
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
@@ -203,6 +205,7 @@ def initialize_screen_elements(screen):
                              inactive_fighter_magic_user_field, inactive_magic_user_thief_field],
         # Character naming screen.
         "naming_title": character_naming_screen_title,
+        "character_name_input": character_name_input,
     }
 
     return gui_elements
