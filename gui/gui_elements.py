@@ -163,6 +163,7 @@ def initialize_screen_elements(screen):
     # Character naming screen.
     character_naming_title_text = "- NAME YOUR CHARACTER -"
     character_naming_screen_title = so.TextField(screen, character_naming_title_text, text_large)
+    # Background rect and input field.
     character_name_field = pygame.Rect((0,0), (screen_width/2, text_medium*2))
     character_name_field.centerx, character_name_field.centery = screen.get_rect().centerx, screen.get_rect().centery
     character_input_font = pygame.font.SysFont(None, text_medium)
