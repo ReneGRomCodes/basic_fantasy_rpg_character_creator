@@ -1,3 +1,4 @@
+import pygame.font
 import gui.screen_objects as so
 from descr import abilities, races, classes
 import pygame_textinput
@@ -162,7 +163,10 @@ def initialize_screen_elements(screen):
     # Character naming screen.
     character_naming_title_text = "- NAME YOUR CHARACTER -"
     character_naming_screen_title = so.TextField(screen, character_naming_title_text, text_large)
-    character_name_input = pygame_textinput.TextInputVisualizer()
+    character_name_field = pygame.Rect((0,0), (screen_width/2, text_medium*2))
+    character_name_field.centerx, character_name_field.centery = screen.get_rect().centerx, screen.get_rect().centery
+    character_input_font = pygame.font.SysFont(None, text_medium)
+    character_name_input = pygame_textinput.TextInputVisualizer(font_object=character_input_font)
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
@@ -204,7 +208,7 @@ def initialize_screen_elements(screen):
                              inactive_fighter_magic_user_field, inactive_magic_user_thief_field],
         # Character naming screen.
         "naming_title": character_naming_screen_title,
-        "character_name_input": character_name_input,
+        "character_name_input": [character_name_field, character_name_input],
     }
 
     return gui_elements

@@ -411,11 +411,15 @@ def show_naming_screen(screen, gui_elements, character_name_input, mouse_pos):
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
     inactive_continue_button = gui_elements["inactive_continue_button"]
+    character_name_field = gui_elements["character_name_input"][0]
 
     # Draw screen title.
     draw_screen_title(screen, screen_title, gui_elements)
 
-    screen.blit(character_name_input.surface, (screen.get_rect().centerx, screen.get_rect().centery))
+    # Draw text input field with white background rect.
+    pygame.draw.rect(screen, "white", character_name_field)
+    screen.blit(character_name_input.surface, (character_name_field.centerx - character_name_input.surface.get_width() / 2,
+                                               character_name_field.centery - character_name_input.surface.get_height() / 2))
 
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)

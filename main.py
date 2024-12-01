@@ -25,7 +25,7 @@ def run_character_creator():
     possible_characters = []
     selected_race = None
     selected_class = None
-    character_name_input = gui_elements["character_name_input"]
+    character_name_input = gui_elements["character_name_input"][1]
 
     # Set initial state.
     state = "title_screen"
