@@ -17,6 +17,7 @@ class TextField:
             size: font size for text.
             bg_color: background color for rect. Default is 'False' for transparent background.
             text_color: string for text color presets. "default" for black, "inactive" for greyed-out text.
+                        Use RGB tuple for others.
             multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
         ARGS for use when 'multi_line=True':
             image_width: set width for attribute 'text_image'. Default is '0'.
@@ -35,6 +36,8 @@ class TextField:
             self.text_color = color_settings.text_color
         elif text_color == "inactive":
             self.text_color = color_settings.greyed_out_text_color
+        else:
+            self.text_color = text_color
         self.font = pygame.font.SysFont(None, self.size)
         # Set padding for text fields with background color.
         self.padding = int(self.screen_rect.width / 40)
@@ -232,6 +235,8 @@ class InfoPanel(TextField):
             text: string to be shown in text field.
             size: font size for text.
             bg_color: background color for rect. Default is 'white'.
+            text_color: string for text color presets. "default" for black, "inactive" for greyed-out text.
+                        Use RGB tuple for others.
             multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
         ARGS for use when 'multi_line=True':
             image_width: set width for attribute 'text_image'. Default is '0'.
@@ -258,3 +263,33 @@ class InfoPanel(TextField):
         self.text_rect.center = self.background_rect.center
         pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
         self.screen.blit(self.text_image, self.text_rect)
+
+
+class TextInputField:
+    """Represent a text input field.
+    NOTE: this class does not create the actual instance for a 'pygame_textinput' object, but instead streamlines the
+    process of drawing it on screen with a white background field and having the input centered in said field."""
+
+    def __init__(self, screen, input_field_instance, field_width):
+        """Initialize text input field.
+        ARGS:
+            screen: pygame window.
+            input_field_instance: instance of 'pygame_textinput'.
+            field_width: width of background field.
+        """
+        self.screen = screen
+        self.input_field_instance = input_field_instance
+        self.field_width = field_width
+
+        # Create background field for text input 'input_bg_field' and set it to default position at screen center.
+        self.field_height = input_field_instance.get_height() * 2
+        self.input_bg_field = pygame.Rect((0,0), (field_width, self.field_height))
+        self.bg_rect_color = color_settings.text_input_field_color
+        self.input_bg_field.centerx, self.input_bg_field.centery = screen.get_rect().centerx, screen.get_rect().centery
+
+    def draw_input_field(self):
+        """Draw text input field with background on screen."""
+        pygame.draw.rect(self.screen, self.bg_rect_color, self.input_bg_field)
+        self.screen.blit(self.input_field_instance.surface,
+                    (self.input_bg_field.centerx - self.input_field_instance.surface.get_width() / 2,
+                     self.input_bg_field.centery - self.input_field_instance.surface.get_height() / 2))

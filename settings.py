@@ -20,3 +20,4 @@ class Settings:
         self.rect_hover_color = (200,200,200)
         self.rect_clicked_color = (255,255,255)
         self.rect_selected_color = (173,192,202)
+        self.text_input_field_color = (255,255,255)
