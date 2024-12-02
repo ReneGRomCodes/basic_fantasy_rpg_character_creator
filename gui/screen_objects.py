@@ -282,7 +282,7 @@ class TextInputField:
         self.field_width = field_width
 
         # Create background field for text input 'input_bg_field' and set it to default position at screen center.
-        self.field_height = input_field_instance.get_height() * 2
+        self.field_height = input_field_instance.surface.get_height() * 2
         self.input_bg_field = pygame.Rect((0,0), (field_width, self.field_height))
         self.bg_rect_color = color_settings.text_input_field_color
         self.input_bg_field.centerx, self.input_bg_field.centery = screen.get_rect().centerx, screen.get_rect().centery

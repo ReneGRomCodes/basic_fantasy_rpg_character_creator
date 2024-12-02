@@ -405,21 +405,18 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     return selected_race, selected_class
 
 
-def show_naming_screen(screen, gui_elements, character_name_input, mouse_pos):
+def show_naming_screen(screen, gui_elements, mouse_pos):
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["naming_title"]
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
-    inactive_continue_button = gui_elements["inactive_continue_button"]
-    character_name_field = gui_elements["character_name_input"][0]
+    character_name_field = gui_elements["character_name_input"][1]
 
     # Draw screen title.
     draw_screen_title(screen, screen_title, gui_elements)
 
     # Draw text input field with white background rect.
-    pygame.draw.rect(screen, "white", character_name_field)
-    screen.blit(character_name_input.surface, (character_name_field.centerx - character_name_input.surface.get_width() / 2,
-                                               character_name_field.centery - character_name_input.surface.get_height() / 2))
+    character_name_field.draw_input_field()
 
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)
