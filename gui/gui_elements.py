@@ -59,9 +59,6 @@ def initialize_screen_elements(screen):
     ability_scores_title_text = "- ABILITIES -"
     ability_scores_screen_title = so.TextField(screen, ability_scores_title_text, text_large)
     reroll_button = so.Button(screen, "Roll Again", text_medium)
-    reroll_button.button_rect.width = button_width
-    reroll_button.button_rect.centerx = screen.get_rect().centerx
-    reroll_button.button_rect.bottom = screen.get_rect().bottom - spacing_screen_edge
     # Initialize dictionaries from 'descr' package.
     ability_descr = abilities.get_ability_descr()
     race_descr = races.get_race_descr()
@@ -86,9 +83,6 @@ def initialize_screen_elements(screen):
     race_class_selection_title_text = "- RACE / CLASS SELECTION -"
     race_class_selection_screen_title = so.TextField(screen, race_class_selection_title_text, text_large)
     reset_button = so.Button(screen, "RESET", text_medium)
-    reset_button.button_rect.width = button_width
-    reset_button.button_rect.centerx = screen.get_rect().centerx
-    reset_button.button_rect.bottom = screen.get_rect().bottom - spacing_screen_edge
     # Race info Panels.
     humans_info = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True, image_width=info_panel_width)
     humans_info_table = so.InfoPanel(screen, race_descr["humans"][1], text_small, multi_line=True, image_width=info_panel_width,
@@ -173,16 +167,10 @@ def initialize_screen_elements(screen):
     starting_money_screen_title_text = "- STARTING MONEY -"
     starting_money_screen_title = so.TextField(screen, starting_money_screen_title_text, text_large)
     # Choice buttons.
-    gold_button_width = screen_width / 3
-    gold_button_pos_y = screen_height / 3
     random_gold_button_text = "Roll the dice for your starting money (3d6 x 10)"
     custom_gold_button_text = "Choose your own amount of gold pieces"
     random_gold_button = so.Button(screen, random_gold_button_text, text_standard)
     custom_gold_button = so.Button(screen, custom_gold_button_text, text_standard)
-    random_gold_button.button_rect.width = gold_button_width
-    custom_gold_button.button_rect.width = gold_button_width
-    random_gold_button.button_rect.top, random_gold_button.button_rect.centerx = gold_button_pos_y, screen.get_rect().centerx * 0.5
-    custom_gold_button.button_rect.top, custom_gold_button.button_rect.centerx = gold_button_pos_y, screen.get_rect().centerx * 1.5
 
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.

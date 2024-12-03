@@ -13,6 +13,13 @@ def draw_screen_title(screen, screen_title, gui_elements):
     screen_title.draw_text()
 
 
+def draw_special_button(screen, button, gui_elements, mouse_pos):
+    """Draw special button (i.e. 'Roll Again' or 'Reset') at the bottom center of the screen."""
+    button.button_rect.width = gui_elements["default_button_width"]
+    button.button_rect.centerx = screen.get_rect().centerx
+    button.button_rect.bottom = screen.get_rect().bottom - gui_elements["default_edge_spacing"]
+    button.draw_button(mouse_pos)
+
 """Background functions for abilty score screen."""
 
 def get_ability_score():
@@ -283,6 +290,18 @@ def set_character_values(character):
     character.set_carrying_capacity()
 
 
+"""Background functions for starting money screen."""
+
+def position_money_screen_elements(screen, gui_elements):
+    gold_button_width = screen.get_rect().width / 3
+    gold_button_pos_y = screen.get_rect().height / 3
+    random_gold_button, custom_gold_button = gui_elements["starting_money_choices"][0], gui_elements["starting_money_choices"][1]
+    random_gold_button.button_rect.width = gold_button_width
+    custom_gold_button.button_rect.width = gold_button_width
+    random_gold_button.button_rect.top, random_gold_button.button_rect.centerx = gold_button_pos_y, screen.get_rect().centerx * 0.5
+    custom_gold_button.button_rect.top, custom_gold_button.button_rect.centerx = gold_button_pos_y, screen.get_rect().centerx * 1.5
+
+
 """Pygame screen functions."""
 
 def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
@@ -361,7 +380,7 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
         element_pos_y += ability_score_text.text_rect.height * 2
 
     # Draw buttons on screen.
-    reroll_button.draw_button(mouse_pos)
+    draw_special_button(screen, reroll_button, gui_elements, mouse_pos)
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
 
@@ -394,7 +413,7 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     selected_race, selected_class = select_race_class(available_choices, selected_race, selected_class, reset_button, mouse_pos)
 
     # Draw buttons.
-    reset_button.draw_button(mouse_pos)
+    draw_special_button(screen, reset_button, gui_elements, mouse_pos)
     back_button.draw_button(mouse_pos)
     # Show continue button only if race AND class have been selected otherwise show inactive continue button.
     if selected_race and selected_class:
@@ -406,6 +425,7 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
 
 
 def show_naming_screen(screen, gui_elements, mouse_pos):
+    """Display character naming screen and prompt user for input."""
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["naming_title"]
     back_button = gui_elements["back_button"]
@@ -428,6 +448,9 @@ def show_starting_money_screen(screen, gui_elements, mouse_pos):
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
     choices = gui_elements["starting_money_choices"]
+
+    # Get positions for screen elements.
+    position_money_screen_elements(screen, gui_elements)
 
     # Draw screen title.
     draw_screen_title(screen, screen_title, gui_elements)
