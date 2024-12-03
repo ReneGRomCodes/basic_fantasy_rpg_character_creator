@@ -45,6 +45,7 @@ def custom_character_events(state, character, possible_characters, gui_elements,
     states_dict = {
         "show_abilities": True,
         "race_class_selection": True,
+        "set_starting_money": True
     }
 
     if state in states_dict.keys():
@@ -84,6 +85,13 @@ def custom_character_events(state, character, possible_characters, gui_elements,
                     else:
                         pass
 
+            elif state == "set_starting_money":
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                        state = "name_character"
+                    else:
+                        pass
+
             else:
                 pass
 
@@ -113,7 +121,7 @@ def naming_character_events(state, character, character_name_input, gui_elements
 
                 if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                     character.set_name(character_name_input.manager.value)
-                    state = "TODO"
+                    state = "set_starting_money"
 
                 else:
                     pass

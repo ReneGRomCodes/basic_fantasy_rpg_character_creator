@@ -168,6 +168,12 @@ def initialize_screen_elements(screen):
     character_name_input = pygame_textinput.TextInputVisualizer(font_object=character_input_font)
     character_name_field = so.TextInputField(screen, character_name_input, screen_width/2)
 
+
+    # Starting money screen.
+    starting_money_screen_title_text = "- STARTING MONEY -"
+    starting_money_screen_title = so.TextField(screen, starting_money_screen_title_text, text_large)
+
+
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
         # Default values for spacing.
@@ -209,6 +215,8 @@ def initialize_screen_elements(screen):
         # Character naming screen.
         "naming_title": character_naming_screen_title,
         "character_name_input": [character_name_input, character_name_field],
+        # Starting money screen.
+        "starting_money_title": starting_money_screen_title,
     }
 
     return gui_elements

@@ -423,6 +423,19 @@ def show_naming_screen(screen, gui_elements, mouse_pos):
     continue_button.draw_button(mouse_pos)
 
 
+def show_starting_money_screen(screen, gui_elements, mouse_pos):
+    screen_title = gui_elements["starting_money_title"]
+    back_button = gui_elements["back_button"]
+    continue_button = gui_elements["continue_button"]
+
+    # Draw screen title.
+    draw_screen_title(screen, screen_title, gui_elements)
+
+    # Draw buttons on screen.
+    back_button.draw_button(mouse_pos)
+    continue_button.draw_button(mouse_pos)
+
+
 """Console functions."""
 
 def show_ability_scores(character):
