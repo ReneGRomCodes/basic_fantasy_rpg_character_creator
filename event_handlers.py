@@ -90,7 +90,7 @@ def custom_character_events(state, character, possible_characters, gui_elements,
     return possible_characters, state
 
 
-def naming_character_events(state, character_name_input, gui_elements, mouse_pos):
+def naming_character_events(state, character, character_name_input, gui_elements, mouse_pos):
     """Check and handle text input field events in function 'custom_character()' for state 'character_name_input' in
     'main_functions.py' and return new 'state'."""
     # Get pygame events and assign it to variable to be shared between 'pygame_textinput' instance and the for-loop.
@@ -108,7 +108,12 @@ def naming_character_events(state, character_name_input, gui_elements, mouse_pos
         if state == "name_character":
             if event.type == pygame.MOUSEBUTTONUP:
                 if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                    character.reset_character()
                     state = "race_class_selection"
+
+                if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                    character.set_name(character_name_input.manager.value)
+                    state = "TODO"
 
                 else:
                     pass
