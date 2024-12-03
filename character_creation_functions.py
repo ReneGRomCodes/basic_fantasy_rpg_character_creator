@@ -427,9 +427,14 @@ def show_starting_money_screen(screen, gui_elements, mouse_pos):
     screen_title = gui_elements["starting_money_title"]
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
+    choices = gui_elements["starting_money_choices"]
 
     # Draw screen title.
     draw_screen_title(screen, screen_title, gui_elements)
+
+    # Draw choices on screen.
+    for choice in choices:
+        choice.draw_button(mouse_pos)
 
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)
@@ -457,19 +462,6 @@ def show_ability_scores(character):
             pass
 
         print(f"{abilities_name:<23} {character.abilities[key][0]:>2} {bonus_penalty:>4}")
-
-
-def name_character(character):
-    """Prompt user to name character and set 'character.name'."""
-    while True:
-        print("- CHARACTER NAME -\n")
-        char_name = input(f"Name your {character.race_name} {character.class_name}: ")
-
-        if func.check_yes_no(f"Do you want your character to be named '{char_name}'? (Y/N) "):
-            character.set_name(char_name)
-            break
-        else:
-            continue
 
 
 def show_saving_throws(character):

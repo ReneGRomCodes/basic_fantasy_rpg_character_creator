@@ -172,6 +172,16 @@ def initialize_screen_elements(screen):
     # Starting money screen.
     starting_money_screen_title_text = "- STARTING MONEY -"
     starting_money_screen_title = so.TextField(screen, starting_money_screen_title_text, text_large)
+    # Choice buttons.
+    gold_button_width = screen_width / 2
+    random_gold_button_text = "Roll the dice for your starting money (3d6 x 10)"
+    custom_gold_button_text = "Choose your own amount of gold pieces"
+    random_gold_button = so.Button(screen, random_gold_button_text, text_standard)
+    custom_gold_button = so.Button(screen, custom_gold_button_text, text_standard)
+    random_gold_button.button_rect.width = gold_button_width
+    custom_gold_button.button_rect.width = gold_button_width
+    random_gold_button.button_rect.bottom, random_gold_button.button_rect.right = screen.get_rect().centery, screen.get_rect().centerx
+    custom_gold_button.button_rect.bottom, custom_gold_button.button_rect.left = screen.get_rect().centery, screen.get_rect().centerx
 
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
@@ -217,6 +227,7 @@ def initialize_screen_elements(screen):
         "character_name_input": [character_name_input, character_name_field],
         # Starting money screen.
         "starting_money_title": starting_money_screen_title,
+        "starting_money_choices": [random_gold_button, custom_gold_button]
     }
 
     return gui_elements
