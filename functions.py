@@ -136,6 +136,8 @@ def set_character_values(character):
     character.set_carrying_capacity()
 
 
+"""Functions still in use by console part of the program. DELETE WHEN OBSOLETE!!!"""
+
 def check_yes_no(prompt):
     """Take string 'prompt' for user input and check for y/n answer. Return 'True' for y, 'False'
     for n or prompt the user again if any other character is given."""

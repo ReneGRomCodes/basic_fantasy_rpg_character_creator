@@ -3,9 +3,8 @@ import random
 from item_instances import no_shield
 import gui.screen_objects as so
 import gui.ui_helpers as ui
-
-
 """Pygame screen functions."""
+
 
 def show_title_screen(screen, gui_elements):
     """Show title screen."""
@@ -213,7 +212,7 @@ def show_starting_money_screen(screen, gui_elements, mouse_pos):
     continue_button.draw_button(mouse_pos)
 
 
-"""Console functions."""
+"""Console functions. DELETE WHEN OBSOLETE!!!"""
 
 def show_ability_scores(character):
     """Print formatted table of abilities from instance 'character' in console."""
@@ -308,7 +307,7 @@ def random_character_generator(character):
         func.set_character_values(character)
 
         # prompt user for name.
-        #ui.name_character(character)
+        #ui.name_character(character)  # Uses obsolete function. Replaced with pygame screen!!!
         break
 
 
