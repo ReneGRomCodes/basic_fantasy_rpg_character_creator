@@ -13,21 +13,32 @@ def dice_roll(n, m):
     return result
 
 
-def check_yes_no(prompt):
-    """Take string 'prompt' for user input and check for y/n answer. Return 'True' for y, 'False'
-    for n or prompt the user again if any other character is given."""
-    user_input = input(prompt)
+def get_ability_score():
+    """Generate random value for ability score, apply bonus/penalty and return both values in list
+    'ability_score' with the base score at index 0 and the bonus/penalty at index 1."""
+    ability_score = [dice_roll(3, 6)]
 
-    while user_input.lower() not in ["y", "n"]:
-        user_input = input(prompt)
-        continue
-
-    if user_input.lower() == "y":
-        os.system('cls')
-        return True
-    elif user_input.lower() == "n":
-        os.system('cls')
-        return False
+    if ability_score[0] <= 3:
+        ability_score.append(-3)
+        return ability_score
+    elif ability_score[0] <= 5:
+        ability_score.append(-2)
+        return ability_score
+    elif ability_score[0] <= 8:
+        ability_score.append(-1)
+        return ability_score
+    elif ability_score[0] <= 12:
+        ability_score.append(0)
+        return ability_score
+    elif ability_score[0] <= 15:
+        ability_score.append(1)
+        return ability_score
+    elif ability_score[0] <= 17:
+        ability_score.append(2)
+        return ability_score
+    else:
+        ability_score.append(3)
+        return ability_score
 
 
 def check_race(character):
@@ -65,6 +76,15 @@ def check_class(character):
     return possible_classes
 
 
+def get_race_class_lists(character):
+    """Generate race and class based on abilities scores for instance 'character' and return lists 'race_list' and
+    'class_list'."""
+    race_list = check_race(character)
+    class_list = check_class(character)
+
+    return race_list, class_list
+
+
 def check_valid_race_class(race_list, class_list):
     """Check if 'class_list' is empty, return 'False' if so. If not check for valid race-class combinations and remove
      invalid races from 'race_list'. Return 'False' if 'race_list' is empty, 'True' if items remain in 'race_list'
@@ -85,6 +105,52 @@ def check_valid_race_class(race_list, class_list):
         return False
     else:
         return race_list
+
+
+def build_possible_characters_list(race_list, class_list):
+    """Take lists of possible races and classes and return list 'possible_characters' with valid race-class
+    combinations."""
+    possible_characters = []
+
+    for char_race in race_list:
+        for char_class in class_list:
+            # Exclude Dwarves and Halflings from class 'Magic-User'.
+            if char_race in ["Dwarf", "Halfling"] and char_class == "Magic-User":
+                pass
+            # Assure that combination classes are only shown for Elves.
+            elif char_race != "Elf" and char_class in ["Fighter/Magic-User", "Magic-User/Thief"]:
+                pass
+            else:
+                race_class = char_race + " " + char_class
+                possible_characters.append(race_class)
+
+    return possible_characters
+
+
+def set_character_values(character):
+    """Set values for instance 'character' of class 'Character'."""
+    character.set_saving_throws()
+    character.set_specials()
+    character.set_hp()
+    character.set_armor_class()
+    character.set_carrying_capacity()
+
+
+def check_yes_no(prompt):
+    """Take string 'prompt' for user input and check for y/n answer. Return 'True' for y, 'False'
+    for n or prompt the user again if any other character is given."""
+    user_input = input(prompt)
+
+    while user_input.lower() not in ["y", "n"]:
+        user_input = input(prompt)
+        continue
+
+    if user_input.lower() == "y":
+        os.system('cls')
+        return True
+    elif user_input.lower() == "n":
+        os.system('cls')
+        return False
 
 
 def select_from_list(list, prompt):

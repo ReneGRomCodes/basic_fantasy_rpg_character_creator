@@ -1,8 +1,8 @@
 import pygame
 import main_functions as mf
+import character_creation_functions as cf
 import character_model as char
 import event_handlers as eh
-from main_functions import custom_character
 from settings import Settings
 from gui.gui_elements import initialize_screen_elements
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
@@ -43,9 +43,9 @@ def run_character_creator():
                                    "set_starting_money", "TODO"]
 
         if state == "title_screen":
-            mf.show_title_screen(screen, gui_elements)
+            cf.show_title_screen(screen, gui_elements)
         elif state == "main_menu":
-            mf.show_menu(screen, gui_elements, mouse_pos)
+            cf.show_menu(screen, gui_elements, mouse_pos)
         elif state in custom_character_states:
             possible_characters, state, selected_race, selected_class = mf.custom_character(screen, state, character,
                                                                                            possible_characters, selected_race,

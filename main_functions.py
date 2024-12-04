@@ -6,52 +6,6 @@ import event_handlers as eh
 """Main functions used in 'main.py'."""
 
 
-def show_title_screen(screen, gui_elements):
-    """Show title screen."""
-
-    # Assign gui_elements to variables.
-    spacing = gui_elements["title_screen_spacing"]
-    title = gui_elements["title"]
-    subtitle = gui_elements["subtitle"]
-    copyright_notice = gui_elements["copyright_notice"]
-
-    # Position title, subtitle and copyright notice.
-    title.text_rect.centerx = screen.get_rect().centerx
-    title.text_rect.bottom = screen.get_rect().centery - spacing
-    subtitle.text_rect.centerx = screen.get_rect().centerx
-    subtitle.text_rect.top = screen.get_rect().centery + spacing
-    copyright_notice.text_rect.centerx = screen.get_rect().centerx
-    copyright_notice.text_rect.bottom = screen.get_rect().bottom - spacing
-
-    title.draw_text()
-    subtitle.draw_text()
-    copyright_notice.draw_text()
-
-
-def show_menu(screen, gui_elements, mouse_pos):
-    """Display main menu."""
-
-    # Assign gui_elements to variables.
-    spacing = gui_elements["menu_title_spacing"]
-    main_menu = gui_elements["main_menu_title"]
-    custom = gui_elements["custom"]
-    random = gui_elements["random"]
-
-    # Positioning.
-    custom.button_rect.width = screen.get_rect().width / 3
-    custom.button_rect.centerx = screen.get_rect().centerx
-    custom.button_rect.bottom = screen.get_rect().centery
-    random.button_rect.width = screen.get_rect().width / 3
-    random.button_rect.centerx = screen.get_rect().centerx
-    random.button_rect.top = screen.get_rect().centery
-    main_menu.text_rect.bottom = custom.button_rect.top - spacing
-
-    # Draw elements on screen.
-    main_menu.draw_text()
-    custom.draw_button(mouse_pos)
-    random.draw_button(mouse_pos)
-
-
 def custom_character(screen, state, character, possible_characters, selected_race, selected_class, character_name_input,
                      gui_elements, mouse_pos):
     """Create custom character based on user input and return state for main loop."""
@@ -59,7 +13,7 @@ def custom_character(screen, state, character, possible_characters, selected_rac
         # Generate dictionary for character abilities.
         character.set_ability_dict()
         # Check if character abilities allow for any valid race-class combinations.
-        race_list, class_list = cf.get_race_class_lists(character)
+        race_list, class_list = func.get_race_class_lists(character)
         if func.check_valid_race_class(race_list, class_list):
             state = "show_abilities"
         else:

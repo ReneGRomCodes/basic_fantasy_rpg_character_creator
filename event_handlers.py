@@ -1,6 +1,6 @@
 import pygame
 import sys
-import character_creation_functions as cf
+import functions as func
 """Contains event handler functions."""
 
 
@@ -65,8 +65,8 @@ def custom_character_events(state, character, possible_characters, gui_elements,
 
                     if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                         # Set and return available races/classes and state after confirmation of ability scores.
-                        race_list, class_list = cf.get_race_class_lists(character)
-                        possible_characters = cf.build_possible_characters_list(race_list, class_list)
+                        race_list, class_list = func.get_race_class_lists(character)
+                        possible_characters = func.build_possible_characters_list(race_list, class_list)
                         state = "race_class_selection"
 
             elif state == "race_class_selection":
@@ -80,7 +80,7 @@ def custom_character_events(state, character, possible_characters, gui_elements,
                             # Set race, class and their specific values in character object after confirmation.
                             character.set_race(selected_race.text)
                             character.set_class(selected_class.text)
-                            cf.set_character_values(character)
+                            func.set_character_values(character)
                             state = "name_character"
                     else:
                         pass
