@@ -1,6 +1,6 @@
 import pygame
 import main_functions as mf
-import character_creation_functions as cf
+import gui.gui as gui
 import character_model as char
 import event_handlers as eh
 from settings import Settings
@@ -43,9 +43,9 @@ def run_character_creator():
                                    "set_starting_money", "TODO"]
 
         if state == "title_screen":
-            cf.show_title_screen(screen, gui_elements)
+            gui.show_title_screen(screen, gui_elements)
         elif state == "main_menu":
-            cf.show_menu(screen, gui_elements, mouse_pos)
+            gui.show_menu(screen, gui_elements, mouse_pos)
         elif state in custom_character_states:
             possible_characters, state, selected_race, selected_class = mf.custom_character(screen, state, character,
                                                                                            possible_characters, selected_race,

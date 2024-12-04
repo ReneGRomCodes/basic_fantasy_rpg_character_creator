@@ -1,5 +1,6 @@
 import os
 import character_creation_functions as cf
+import gui.gui as gui
 import functions as func
 import shop_functions as sf
 import event_handlers as eh
@@ -21,7 +22,7 @@ def custom_character(screen, state, character, possible_characters, selected_rac
 
     elif state == "show_abilities":
         # Display ability score screen.
-        cf.show_ability_scores_screen(screen, character, gui_elements, mouse_pos)
+        gui.show_ability_scores_screen(screen, character, gui_elements, mouse_pos)
         possible_characters, state = eh.custom_character_events(state, character, possible_characters, gui_elements, mouse_pos)
 
         # Unselect race and class selection, set variables to 'None' if user returns to ability score screen from
@@ -35,19 +36,19 @@ def custom_character(screen, state, character, possible_characters, selected_rac
 
     elif state == "race_class_selection":
         # Display race/class selection screen.
-        selected_race, selected_class = cf.show_race_class_selection_screen(screen, possible_characters, selected_race,
+        selected_race, selected_class = gui.show_race_class_selection_screen(screen, possible_characters, selected_race,
                                                                             selected_class, gui_elements, mouse_pos)
         possible_characters, state = eh.custom_character_events(state, character, possible_characters, gui_elements, mouse_pos,
                                                                 selected_race, selected_class)
 
     elif state == "name_character":
         # Display character naming screen.
-        cf.show_naming_screen(screen, gui_elements, mouse_pos)
+        gui.show_naming_screen(screen, gui_elements, mouse_pos)
         state = eh.naming_character_events(state, character, character_name_input, gui_elements, mouse_pos)
 
     elif state == "set_starting_money":
         # Display starting money screen.
-        cf.show_starting_money_screen(screen, gui_elements, mouse_pos)
+        gui.show_starting_money_screen(screen, gui_elements, mouse_pos)
         possible_characters, state = eh.custom_character_events(state, character, possible_characters, gui_elements, mouse_pos,
                                                                 selected_race, selected_class)
 
