@@ -1,5 +1,5 @@
 import pygame
-from settings import Settings
+from core.settings import Settings
 """Classes for screen objects (buttons, text, etc.)."""
 
 # Instance of 'Settings' class for color palette.

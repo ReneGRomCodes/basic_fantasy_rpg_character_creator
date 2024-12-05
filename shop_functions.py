@@ -1,6 +1,6 @@
 import item_instances
 import os
-import functions as func
+import core.functions as func
 import item_model
 """Functions used for the item shop."""
 

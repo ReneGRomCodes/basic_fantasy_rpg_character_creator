@@ -1,4 +1,4 @@
-import functions as func
+import core.functions as func
 import random
 from item_instances import no_shield
 """Console functions. DELETE WHEN OBSOLETE!!!"""

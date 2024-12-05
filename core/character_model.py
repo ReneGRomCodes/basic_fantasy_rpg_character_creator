@@ -1,4 +1,4 @@
-from functions import dice_roll, get_ability_score
+from core.functions import dice_roll, get_ability_score
 import item_instances as item_inst
 """Class for character."""
 

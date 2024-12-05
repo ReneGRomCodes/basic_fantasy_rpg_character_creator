@@ -1,9 +1,9 @@
 import pygame
-import main_functions as mf
+import core.main_functions as mf
 import gui.gui as gui
-import character_model as char
-import event_handlers as eh
-from settings import Settings
+import core.character_model as char
+import core.event_handlers as eh
+from core.settings import Settings
 from gui.gui_elements import initialize_screen_elements
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
 It initializes the program and starts the main functionality."""

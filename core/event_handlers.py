@@ -1,6 +1,6 @@
 import pygame
 import sys
-import functions as func
+import core.functions as func
 """Contains event handler functions."""
 
 

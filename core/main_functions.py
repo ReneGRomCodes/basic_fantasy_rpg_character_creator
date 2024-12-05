@@ -1,9 +1,9 @@
 import os
 import character_creation_functions as cf
 import gui.gui as gui
-import functions as func
+import core.functions as func
 import shop_functions as sf
-import event_handlers as eh
+import core.event_handlers as eh
 """Main functions used in 'main.py'."""
 
 
