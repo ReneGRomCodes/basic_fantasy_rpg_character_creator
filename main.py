@@ -19,14 +19,11 @@ def run_character_creator():
 
     # Initialize GUI elements.
     gui_elements = initialize_screen_elements(screen)
+    # Initialize starting variables for character creation.
+    possible_characters, selected_race, selected_class, character_name_input = mf.initialize_starting_variables(gui_elements)
 
     # Create instance of class 'Character'.
     character = char.Character()
-    # Variables for character creation.
-    possible_characters = []
-    selected_race = None
-    selected_class = None
-    character_name_input = gui_elements["character_name_input"][0]
 
     # Set initial state.
     state = "title_screen"
