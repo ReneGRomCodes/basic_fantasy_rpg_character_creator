@@ -189,10 +189,13 @@ def show_naming_screen(screen, gui_elements, mouse_pos):
 
 
 def show_starting_money_screen(screen, gui_elements, mouse_pos):
+    """Display character naming screen and prompt user for input."""
+    # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["starting_money_title"]
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
     choices = gui_elements["starting_money_choices"]
+    money_input = gui_elements["money_amount_input"]
 
     # Get positions for screen elements.
     ui.position_money_screen_elements(screen, gui_elements)

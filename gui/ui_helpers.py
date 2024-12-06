@@ -224,6 +224,7 @@ def select_race_class(available_choices, selected_race, selected_class, reset_bu
 """Background functions for starting money screen."""
 
 def position_money_screen_elements(screen, gui_elements):
+    """Position and draw objects from 'gui_elements' for starting money screen."""
     gold_button_width = screen.get_rect().width / 3
     gold_button_pos_y = screen.get_rect().height / 3
     random_gold_button, custom_gold_button = gui_elements["starting_money_choices"][0], gui_elements["starting_money_choices"][1]

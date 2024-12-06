@@ -2,8 +2,8 @@ import pygame
 from core.settings import Settings
 """Classes for screen objects (buttons, text, etc.)."""
 
-# Instance of 'Settings' class for color palette.
-color_settings = Settings()
+# Instance of 'Settings' class.
+settings = Settings()
 
 
 class TextField:
@@ -33,9 +33,9 @@ class TextField:
 
         # Set font, text color and get rect for text field.
         if text_color == "default":
-            self.text_color = color_settings.text_color
+            self.text_color = settings.text_color
         elif text_color == "inactive":
-            self.text_color = color_settings.greyed_out_text_color
+            self.text_color = settings.greyed_out_text_color
         else:
             self.text_color = text_color
         self.font = pygame.font.SysFont(None, self.size)
@@ -131,8 +131,8 @@ class Button(TextField):
         """
         super().__init__(screen, text, size, bg_color)
         # Set button colors for events.
-        self.rect_hover_color = color_settings.rect_hover_color
-        self.rect_clicked_color = color_settings.rect_clicked_color
+        self.rect_hover_color = settings.rect_hover_color
+        self.rect_clicked_color = settings.rect_clicked_color
 
         # Set rect and size for button.
         self.button_rect = self.text_image.get_rect()
@@ -179,9 +179,9 @@ class InteractiveText(TextField):
         self.selected = False
         self.was_pressed = False # Track previous state of mouse button.
         # Set field colors for events.
-        self.rect_hover_color = color_settings.rect_hover_color
-        self.rect_clicked_color = color_settings.rect_clicked_color
-        self.rect_selected_color = color_settings.rect_selected_color
+        self.rect_hover_color = settings.rect_hover_color
+        self.rect_clicked_color = settings.rect_clicked_color
+        self.rect_selected_color = settings.rect_selected_color
 
     def draw_interactive_text(self, mouse_pos):
         """Draw interactive text field on the screen."""
@@ -227,7 +227,7 @@ class InteractiveText(TextField):
 class InfoPanel(TextField):
     """Represent an info panel for use in conjunction with an instance of class 'InteractiveText()'."""
 
-    def __init__(self, screen, text, size, bg_color=color_settings.info_panel_bg_color, text_color="default",
+    def __init__(self, screen, text, size, bg_color=settings.info_panel_bg_color, text_color="default",
                  multi_line=False, image_width=0, text_pos=(0,0), surface_pos="topright"):
         """Initialize an info panel.
         ARGS:
@@ -284,7 +284,7 @@ class TextInputField:
         # Create background field for text input 'input_bg_field' and set it to default position at screen center.
         self.field_height = input_field_instance.surface.get_height() * 2
         self.input_bg_field = pygame.Rect((0,0), (field_width, self.field_height))
-        self.bg_rect_color = color_settings.text_input_field_color
+        self.bg_rect_color = settings.text_input_field_color
         self.input_bg_field.centerx, self.input_bg_field.centery = screen.get_rect().centerx, screen.get_rect().centery
 
     def draw_input_field(self):

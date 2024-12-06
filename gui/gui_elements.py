@@ -171,6 +171,10 @@ def initialize_screen_elements(screen):
     custom_gold_button_text = "Choose your own amount of gold pieces"
     random_gold_button = so.Button(screen, random_gold_button_text, text_standard)
     custom_gold_button = so.Button(screen, custom_gold_button_text, text_standard)
+    # 'pygame_textinput' and 'TextInputField' instances.
+    money_input_font = pygame.font.SysFont(None, text_medium)
+    money_amount_input = pygame_textinput.TextInputVisualizer(font_object=money_input_font)
+    money_amount_field = so.TextInputField(screen, money_amount_input, screen_width / 2)
 
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
@@ -216,7 +220,8 @@ def initialize_screen_elements(screen):
         "character_name_input": [character_name_input, character_name_field],
         # Starting money screen.
         "starting_money_title": starting_money_screen_title,
-        "starting_money_choices": [random_gold_button, custom_gold_button]
+        "starting_money_choices": [random_gold_button, custom_gold_button],
+        "money_amount_input": [money_amount_input, money_amount_field],
     }
 
     return gui_elements
