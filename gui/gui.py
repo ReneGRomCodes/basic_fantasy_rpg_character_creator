@@ -194,8 +194,9 @@ def show_starting_money_screen(screen, gui_elements, mouse_pos):
     screen_title = gui_elements["starting_money_title"]
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
+    inactive_continue_button = gui_elements["inactive_continue_button"]
     choices = gui_elements["starting_money_choices"]
-    money_input = gui_elements["money_amount_input"]
+    money_amount_field = gui_elements["money_amount_input"][1]
 
     # Get positions for screen elements.
     ui.position_money_screen_elements(screen, gui_elements)
