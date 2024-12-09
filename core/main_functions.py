@@ -30,7 +30,7 @@ def custom_character(screen, state, character, gui_elements, mouse_pos):
     elif state == "show_abilities":
         # Display ability score screen.
         gui.show_ability_scores_screen(screen, character, gui_elements, mouse_pos)
-        possible_characters, state = eh.custom_character_events(state, character, possible_characters, gui_elements, mouse_pos)
+        possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos)
 
         # Unselect race and class selection, set variables to 'None' if user returns to ability score screen from
         # race/class selection screen.
@@ -45,7 +45,7 @@ def custom_character(screen, state, character, gui_elements, mouse_pos):
         # Display race/class selection screen.
         selected_race, selected_class = gui.show_race_class_selection_screen(screen, possible_characters, selected_race,
                                                                             selected_class, gui_elements, mouse_pos)
-        possible_characters, state = eh.custom_character_events(state, character, possible_characters, gui_elements, mouse_pos,
+        possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos, possible_characters,
                                                                 selected_race, selected_class)
 
     elif state == "name_character":
@@ -56,7 +56,7 @@ def custom_character(screen, state, character, gui_elements, mouse_pos):
     elif state == "set_starting_money":
         # Display starting money screen.
         gui.show_starting_money_screen(screen, gui_elements, mouse_pos)
-        possible_characters, state = eh.custom_character_events(state, character, possible_characters, gui_elements, mouse_pos)
+        possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos, possible_characters)
 
     # State for code that has yet to be migrated to Pygame.
     elif state == "TODO":

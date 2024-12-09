@@ -38,8 +38,22 @@ def main_events(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def custom_character_events(state, character, possible_characters, gui_elements, mouse_pos, selected_race=None, selected_class=None):
-    """Check and handle events in function 'custom_character()' in 'main_functions.py' and return 'state'."""
+def custom_character_events(state, character, gui_elements, mouse_pos, possible_characters=None, selected_race=None, selected_class=None):
+    """Check and handle events in function 'custom_character()' in 'main_functions.py' and return 'state'.
+    ARGS:
+        state: program state.
+        character: instance of class 'Character'.
+        gui_elements: dict of GUI elements.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+        possible_characters: list of possible race-class combinations. Default is 'None'.
+            NOTE: arg must always be passed in function 'custom_character()' in 'main_functions.py' from state
+            'race_class_selection' onwards to keep list stored and not have it reset to 'None'.
+        selected_race: instance of 'InteractiveText' class representing chosen race. Default is 'None'.
+        selected_class: instance of 'InteractiveText' class representing chosen class. Default is 'None'.
+    RETURNS:
+        possible_characters: see arg above.
+        state: program state.
+    """
 
     # Hashable dict to optimize state checking and improve performance.
     states_dict = {
