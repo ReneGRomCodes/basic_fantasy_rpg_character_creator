@@ -98,9 +98,11 @@ def custom_character_events(state, character, possible_characters, gui_elements,
     return possible_characters, state
 
 
-def naming_character_events(state, character, character_name_input, gui_elements, mouse_pos):
-    """Check and handle text input field events in function 'custom_character()' for state 'character_name_input' in
+def naming_character_events(state, character, gui_elements, mouse_pos):
+    """Check and handle text input field events in function 'custom_character()' for state 'name_character' in
     'main_functions.py' and return new 'state'."""
+    # Assign 'pygame_textinput' instance stored in dict 'gui_elements' to variable.
+    character_name_input = gui_elements["character_name_input"][0]
     # Get pygame events and assign it to variable to be shared between 'pygame_textinput' instance and the for-loop.
     events = pygame.event.get()
 

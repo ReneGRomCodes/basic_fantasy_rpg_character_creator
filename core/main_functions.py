@@ -7,19 +7,16 @@ import core.event_handlers as eh
 """Main functions used in 'main.py'."""
 
 
-def initialize_starting_variables(gui_elements):
-    """Set and return starting values for variables used during character creation."""
-    possible_characters = []
-    selected_race = None
-    selected_class = None
-    character_name_input = gui_elements["character_name_input"][0]
-
-    return possible_characters, selected_race, selected_class, character_name_input
+# Initialize variables and set starting values for character creation.
+possible_characters = []
+selected_race = None
+selected_class = None
 
 
-def custom_character(screen, state, character, possible_characters, selected_race, selected_class, character_name_input,
-                     gui_elements, mouse_pos):
+def custom_character(screen, state, character, gui_elements, mouse_pos):
     """Create custom character based on user input and return state for main loop."""
+    global possible_characters, selected_race, selected_class
+
     if state == "set_abilities":
         # Generate dictionary for character abilities.
         character.set_ability_dict()
@@ -54,7 +51,7 @@ def custom_character(screen, state, character, possible_characters, selected_rac
     elif state == "name_character":
         # Display character naming screen.
         gui.show_naming_screen(screen, gui_elements, mouse_pos)
-        state = eh.naming_character_events(state, character, character_name_input, gui_elements, mouse_pos)
+        state = eh.naming_character_events(state, character, gui_elements, mouse_pos)
 
     elif state == "set_starting_money":
         # Display starting money screen.
@@ -81,7 +78,7 @@ def custom_character(screen, state, character, possible_characters, selected_rac
         cf.build_character_sheet(character)
         input("\n\nPress ENTER to exit.")
 
-    return possible_characters, state, selected_race, selected_class
+    return state
 
 
 def random_character(character):
