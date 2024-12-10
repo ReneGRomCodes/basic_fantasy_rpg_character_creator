@@ -8,7 +8,7 @@ import core.event_handlers as eh
 
 
 # Initialize variables and set starting values for character creation.
-possible_characters = []
+possible_characters = None
 selected_race = None
 selected_class = None
 

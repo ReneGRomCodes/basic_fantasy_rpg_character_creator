@@ -196,7 +196,7 @@ def show_starting_money_screen(screen, gui_elements, mouse_pos):
     continue_button = gui_elements["continue_button"]
     inactive_continue_button = gui_elements["inactive_continue_button"]
     choices = gui_elements["starting_money_choices"]
-    money_amount_field = gui_elements["money_amount_input"][1]
+    money_amount_field, money_input_prompt = gui_elements["money_amount_input"][1], gui_elements["money_amount_input"][2]
 
     # Get positions for screen elements.
     ui.position_money_screen_elements(screen, gui_elements)
@@ -207,6 +207,10 @@ def show_starting_money_screen(screen, gui_elements, mouse_pos):
     # Draw choices on screen.
     for choice in choices:
         choice.draw_button(mouse_pos)
+
+    # TEST FOR INPUT FIELD POSITION.
+    money_input_prompt.draw_text()
+    money_amount_field.draw_input_field()
 
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)
