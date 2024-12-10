@@ -1,7 +1,6 @@
 import pygame
 import core.main_functions as mf
 import gui.gui as gui
-import core.character_model as char
 import core.event_handlers as eh
 from core.settings import Settings
 from gui.gui_elements import initialize_screen_elements
@@ -19,9 +18,6 @@ def run_character_creator():
 
     # Initialize GUI elements.
     gui_elements = initialize_screen_elements(screen)
-
-    # Create instance of class 'Character'.
-    character = char.Character()
 
     # Set initial state.
     state = "title_screen"
@@ -42,9 +38,9 @@ def run_character_creator():
         elif state == "main_menu":
             gui.show_menu(screen, gui_elements, mouse_pos)
         elif state in custom_character_states:
-            state = mf.custom_character(screen, state, character, gui_elements, mouse_pos)
+            state = mf.custom_character(screen, state, gui_elements, mouse_pos)
         elif state == "random_character":
-            mf.random_character(character)
+            mf.random_character()
 
         pygame.display.flip()
 

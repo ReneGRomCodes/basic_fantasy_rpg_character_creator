@@ -1,4 +1,5 @@
 import os
+import core.character_model as char
 import character_creation_functions as cf
 import gui.gui as gui
 import core.functions as func
@@ -7,15 +8,17 @@ import core.event_handlers as eh
 """Main functions used in 'main.py'."""
 
 
+# Create instance of class 'Character'.
+character = char.Character()
 # Initialize variables and set starting values for character creation.
 possible_characters = None
 selected_race = None
 selected_class = None
 
 
-def custom_character(screen, state, character, gui_elements, mouse_pos):
+def custom_character(screen, state, gui_elements, mouse_pos):
     """Create custom character based on user input and return state for main loop."""
-    global possible_characters, selected_race, selected_class
+    global character, possible_characters, selected_race, selected_class
 
     if state == "set_abilities":
         # Generate dictionary for character abilities.
@@ -81,8 +84,10 @@ def custom_character(screen, state, character, gui_elements, mouse_pos):
     return state
 
 
-def random_character(character):
+def random_character():
     """Create character with random values and print character sheet."""
+    global character
+
     os.system('cls')
     # Get random class, race, name and ability scores.
     cf.random_character_generator(character)

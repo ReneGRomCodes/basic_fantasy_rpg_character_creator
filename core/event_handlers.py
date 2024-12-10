@@ -38,7 +38,7 @@ def main_events(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def custom_character_events(state, character, gui_elements, mouse_pos, possible_characters=None, selected_race=None, selected_class=None):
+def custom_character_events(state, character, gui_elements, mouse_pos, possible_characters=None, context1=None, context2=None):
     """Check and handle events in function 'custom_character()' in 'main_functions.py' and return 'state'.
     ARGS:
         state: program state.
@@ -48,8 +48,8 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
         possible_characters: list of possible race-class combinations. Default is 'None'.
             NOTE: arg must always be passed in function 'custom_character()' in 'main_functions.py' from state
             'race_class_selection' onwards to keep list stored and not have it reset to 'None'.
-        selected_race: instance of 'InteractiveText' class representing chosen race. Default is 'None'.
-        selected_class: instance of 'InteractiveText' class representing chosen class. Default is 'None'.
+        context1: context specific argument whose role depends on current state.
+        context2: context specific argument whose role depends on current state.
     RETURNS:
         possible_characters: see arg above.
         state: program state.
@@ -88,12 +88,12 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
                     if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                         state = "show_abilities"
 
-                    # Only continue if race AND class are selected.
-                    if selected_race and selected_class:
+                    # Only continue if race AND class are selected (context1=selected race, context2=selected_class).
+                    if context1 and context2:
                         if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                             # Set race, class and their specific values in character object after confirmation.
-                            character.set_race(selected_race.text)
-                            character.set_class(selected_class.text)
+                            character.set_race(context1.text)
+                            character.set_class(context2.text)
                             func.set_character_values(character)
                             state = "name_character"
                     else:
