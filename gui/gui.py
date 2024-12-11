@@ -1,5 +1,7 @@
 import gui.screen_objects as so
 import gui.ui_helpers as ui
+import core.functions as func
+import pygame
 """Screen functions."""
 
 
@@ -188,7 +190,7 @@ def show_naming_screen(screen, gui_elements, mouse_pos):
     continue_button.draw_button(mouse_pos)
 
 
-def show_starting_money_screen(screen, gui_elements, mouse_pos):
+def show_starting_money_screen(screen, gui_elements, random_money, custom_money, mouse_pos):
     """Display character naming screen and prompt user for input."""
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["starting_money_title"]
@@ -208,10 +210,26 @@ def show_starting_money_screen(screen, gui_elements, mouse_pos):
     for choice in choices:
         choice.draw_button(mouse_pos)
 
-    # TEST FOR INPUT FIELD POSITION.
-    money_input_prompt.draw_text()
-    money_amount_field.draw_input_field()
+    if pygame.mouse.get_pressed()[0]:
+        if choices[0].button_rect.collidepoint(mouse_pos):
+            custom_money = False
+            random_money = True
+        if choices[1].button_rect.collidepoint(mouse_pos):
+            random_money = False
+            custom_money = True
+
+    if random_money:
+        starting_money = func.dice_roll(3, 6) * 10
+    elif custom_money:
+        money_input_prompt.draw_text()
+        money_amount_field.draw_input_field()
 
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)
-    continue_button.draw_button(mouse_pos)
+    # Show continue button only if a money option has been selected otherwise show inactive continue button.
+    if random_money or custom_money:
+        continue_button.draw_button(mouse_pos)
+    else:
+        inactive_continue_button.draw_button(mouse_pos)
+
+    return random_money, custom_money

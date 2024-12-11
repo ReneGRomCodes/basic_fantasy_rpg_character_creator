@@ -14,11 +14,13 @@ character = char.Character()
 possible_characters = None
 selected_race = None
 selected_class = None
+random_money = False
+custom_money = False
 
 
 def custom_character(screen, state, gui_elements, mouse_pos):
     """Create custom character based on user input and return state for main loop."""
-    global character, possible_characters, selected_race, selected_class
+    global character, possible_characters, selected_race, selected_class, random_money, custom_money
 
     if state == "set_abilities":
         # Generate dictionary for character abilities.
@@ -58,13 +60,11 @@ def custom_character(screen, state, gui_elements, mouse_pos):
 
     elif state == "set_starting_money":
         # Display starting money screen.
-        gui.show_starting_money_screen(screen, gui_elements, mouse_pos)
+        random_money, custom_money = gui.show_starting_money_screen(screen, gui_elements, random_money, custom_money, mouse_pos)
         possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos, possible_characters)
 
     # State for code that has yet to be migrated to Pygame.
     elif state == "TODO":
-        # Set amount of starting money.
-        # cf.set_starting_money(character)
         os.system('cls')
 
         print("\n\n\t\tCharacter creation complete. Press ENTER to show character sheet.")
@@ -77,7 +77,7 @@ def custom_character(screen, state, gui_elements, mouse_pos):
         # Proceed to shop and show final character sheet when finished.
         input("\n\nPress ENTER to proceed to shop.")
         os.system('cls')
-        show_main_shop(character)
+        show_main_shop()
         cf.build_character_sheet(character)
         input("\n\nPress ENTER to exit.")
 
@@ -102,13 +102,14 @@ def random_character():
     # Proceed to shop and show final character sheet when finished.
     input("\n\nPress ENTER to proceed to shop.")
     os.system('cls')
-    show_main_shop(character)
+    show_main_shop()
     cf.build_character_sheet(character)
     input("\n\nPress ENTER to exit.")
 
 
-def show_main_shop(character):
+def show_main_shop():
     """Main loop for shop 'main menu'."""
+    global character
     shop_sections = ["General Items", "Weapons", "Projectiles", "Armor", "Inventory", "EXIT"]
 
     while True:
