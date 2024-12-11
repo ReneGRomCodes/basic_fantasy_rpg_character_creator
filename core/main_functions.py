@@ -61,7 +61,8 @@ def custom_character(screen, state, gui_elements, mouse_pos):
     elif state == "set_starting_money":
         # Display starting money screen.
         random_money, custom_money = gui.show_starting_money_screen(screen, gui_elements, random_money, custom_money, mouse_pos)
-        possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos, possible_characters)
+        possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos, possible_characters,
+                                                                random_money, custom_money)
 
     # State for code that has yet to be migrated to Pygame.
     elif state == "TODO":

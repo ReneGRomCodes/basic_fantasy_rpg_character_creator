@@ -103,6 +103,11 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
                 if event.type == pygame.MOUSEBUTTONUP:
                     if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                         state = "name_character"
+
+                    # Only continue if a money option is selected (context1=random money, context2=custom money).
+                    if context1 or context2:
+                        if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                            state = "TODO"
                     else:
                         pass
 
@@ -143,3 +148,18 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
                     pass
 
     return state
+
+
+def custom_starting_money_events(state, character, gui_elements, mouse_pos):
+    pass
+    starting_money_input = gui_elements["money_amount_input"][0]
+    events = pygame.event.get()
+    starting_money_input.update(events)
+
+    for event in events:
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if state == "custom_money":
+            if event.type == pygame.MOUSEBUTTONUP and gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                character.money = starting_money_input.manager.value
