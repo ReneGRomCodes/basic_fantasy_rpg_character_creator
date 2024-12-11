@@ -167,10 +167,10 @@ def initialize_screen_elements(screen):
     starting_money_screen_title_text = "- STARTING MONEY -"
     starting_money_screen_title = so.TextField(screen, starting_money_screen_title_text, text_large)
     # Choice buttons.
-    random_gold_button_text = "Roll the dice for your starting money (3d6 x 10)"
-    custom_gold_button_text = "Choose your own amount of gold pieces"
-    random_gold_button = so.Button(screen, random_gold_button_text, text_standard)
-    custom_gold_button = so.Button(screen, custom_gold_button_text, text_standard)
+    random_money_button_text = "Roll the dice for your starting money (3d6 x 10)"
+    custom_money_button_text = "Choose your own amount of gold pieces"
+    random_money_button = so.Button(screen, random_money_button_text, text_standard)
+    custom_money_button = so.Button(screen, custom_money_button_text, text_standard)
     # 'pygame_textinput' and 'TextInputField' instances.
     money_input_prompt_message = "Enter amount of gold for your character"
     money_input_prompt = so.TextField(screen, money_input_prompt_message, text_standard)
@@ -222,7 +222,7 @@ def initialize_screen_elements(screen):
         "character_name_input": [character_name_input, character_name_field],
         # Starting money screen.
         "starting_money_title": starting_money_screen_title,
-        "starting_money_choices": [random_gold_button, custom_gold_button],
+        "starting_money_choices": [random_money_button, custom_money_button],
         "money_amount_input": [money_amount_input, money_amount_field, money_input_prompt],
     }
 

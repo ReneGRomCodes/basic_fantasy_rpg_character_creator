@@ -226,13 +226,13 @@ def select_race_class(available_choices, selected_race, selected_class, reset_bu
 def position_money_screen_elements(screen, gui_elements):
     """Position and draw objects from 'gui_elements' for starting money screen."""
     # Positioning of button instances.
-    gold_button_width = screen.get_rect().width / 3
-    gold_button_pos_y = screen.get_rect().height / 3
-    random_gold_button, custom_gold_button = gui_elements["starting_money_choices"][0], gui_elements["starting_money_choices"][1]
-    random_gold_button.button_rect.width = gold_button_width
-    custom_gold_button.button_rect.width = gold_button_width
-    random_gold_button.button_rect.top, random_gold_button.button_rect.centerx = gold_button_pos_y, screen.get_rect().centerx * 0.5
-    custom_gold_button.button_rect.top, custom_gold_button.button_rect.centerx = gold_button_pos_y, screen.get_rect().centerx * 1.5
+    money_button_width = screen.get_rect().width / 3
+    money_button_pos_y = screen.get_rect().height / 3
+    random_money_button, custom_money_button = gui_elements["starting_money_choices"][0], gui_elements["starting_money_choices"][1]
+    random_money_button.button_rect.width = money_button_width
+    custom_money_button.button_rect.width = money_button_width
+    random_money_button.button_rect.top, random_money_button.button_rect.centerx = money_button_pos_y, screen.get_rect().centerx * 0.5
+    custom_money_button.button_rect.top, custom_money_button.button_rect.centerx = money_button_pos_y, screen.get_rect().centerx * 1.5
 
     # Positioning of text input and text field instances.
     money_input_prompt = gui_elements["money_amount_input"][2]
