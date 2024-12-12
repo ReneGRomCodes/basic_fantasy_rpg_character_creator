@@ -14,13 +14,13 @@ character = char.Character()
 possible_characters = None
 selected_race = None
 selected_class = None
-random_money = False
-custom_money = False
+random_money_flag = False
+custom_money_flag = False
 
 
 def custom_character(screen, state, gui_elements, mouse_pos):
     """Create custom character based on user input and return state for main loop."""
-    global character, possible_characters, selected_race, selected_class, random_money, custom_money
+    global character, possible_characters, selected_race, selected_class, random_money_flag, custom_money_flag
 
     if state == "set_abilities":
         # Generate dictionary for character abilities.
@@ -60,9 +60,10 @@ def custom_character(screen, state, gui_elements, mouse_pos):
 
     elif state == "set_starting_money":
         # Display starting money screen.
-        random_money, custom_money = gui.show_starting_money_screen(screen, gui_elements, random_money, custom_money, mouse_pos)
+        random_money_flag, custom_money_flag = gui.show_starting_money_screen(screen, gui_elements, random_money_flag,
+                                                                              custom_money_flag, mouse_pos)
         possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos, possible_characters,
-                                                                random_money, custom_money)
+                                                                random_money_flag, custom_money_flag)
 
     # State for code that has yet to be migrated to Pygame.
     elif state == "TODO":

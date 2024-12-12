@@ -88,7 +88,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
                     if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                         state = "show_abilities"
 
-                    # Only continue if race AND class are selected (context1=selected race, context2=selected_class).
+                    # Only continue if race AND class are selected (context1=selected_race, context2=selected_class).
                     if context1 and context2:
                         if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                             # Set race, class and their specific values in character object after confirmation.
@@ -104,7 +104,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
                     if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                         state = "name_character"
 
-                    # Only continue if a money option is selected (context1=random money, context2=custom money).
+                    # Only continue if a money option is selected (context1=random_money, context2=custom_money).
                     if context1 or context2:
                         if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                             state = "TODO"
