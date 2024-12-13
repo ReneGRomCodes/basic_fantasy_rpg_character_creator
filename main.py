@@ -31,7 +31,7 @@ def run_character_creator():
         state = eh.main_events(screen, state, gui_elements, mouse_pos)
 
         custom_character_states = ["set_abilities", "show_abilities", "race_class_selection", "name_character",
-                                   "set_starting_money", "TODO"]
+                                   "set_starting_money", "custom_money", "TODO"]
 
         if state == "title_screen":
             gui.show_title_screen(screen, gui_elements)

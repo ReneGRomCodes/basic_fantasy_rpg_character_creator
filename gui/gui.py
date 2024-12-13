@@ -190,7 +190,7 @@ def show_naming_screen(screen, gui_elements, mouse_pos):
     continue_button.draw_button(mouse_pos)
 
 
-def show_starting_money_screen(screen, gui_elements, random_money_flag, custom_money_flag, mouse_pos):
+def show_starting_money_screen(screen, gui_elements, random_money_flag, custom_money_flag, starting_money, mouse_pos):
     """Display character naming screen and prompt user for input."""
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["starting_money_title"]
@@ -232,4 +232,4 @@ def show_starting_money_screen(screen, gui_elements, random_money_flag, custom_m
     else:
         inactive_continue_button.draw_button(mouse_pos)
 
-    return random_money_flag, custom_money_flag
+    return random_money_flag, custom_money_flag, starting_money

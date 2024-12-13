@@ -104,10 +104,14 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
                     if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                         state = "name_character"
 
-                    # Only continue if a money option is selected (context1=random_money, context2=custom_money).
-                    if context1 or context2:
+                    # Allow to continue to next state if 'context1' (random_money) is 'True' or switch state for user
+                    # input if 'context2' (custom_money) is 'True'.
+                    if context1:
                         if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                             state = "TODO"
+                    if context2:
+                        state = "custom_money"
+
                     else:
                         pass
 
@@ -150,8 +154,9 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
     return state
 
 
-def custom_starting_money_events(state, character, gui_elements, mouse_pos):
-    pass
+def custom_starting_money_events(state, gui_elements, starting_money, mouse_pos):
+    """Check and handle text input field events in function 'custom_character()' for state 'custom_money' in
+    'main_functions.py' and return 'starting_money' and new 'state'."""
     starting_money_input = gui_elements["money_amount_input"][0]
     events = pygame.event.get()
     starting_money_input.update(events)
@@ -162,4 +167,7 @@ def custom_starting_money_events(state, character, gui_elements, mouse_pos):
             sys.exit()
         if state == "custom_money":
             if event.type == pygame.MOUSEBUTTONUP and gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                character.money = starting_money_input.manager.value
+                starting_money = starting_money_input.manager.value
+                state = "TODO"
+
+    return starting_money, state

@@ -14,13 +14,14 @@ character = char.Character()
 possible_characters = None
 selected_race = None
 selected_class = None
+starting_money = None
 random_money_flag = False
 custom_money_flag = False
 
 
 def custom_character(screen, state, gui_elements, mouse_pos):
     """Create custom character based on user input and return state for main loop."""
-    global character, possible_characters, selected_race, selected_class, random_money_flag, custom_money_flag
+    global character, possible_characters, selected_race, selected_class, starting_money, random_money_flag, custom_money_flag
 
     if state == "set_abilities":
         # Generate dictionary for character abilities.
@@ -60,10 +61,18 @@ def custom_character(screen, state, gui_elements, mouse_pos):
 
     elif state == "set_starting_money":
         # Display starting money screen.
-        random_money_flag, custom_money_flag = gui.show_starting_money_screen(screen, gui_elements, random_money_flag,
-                                                                              custom_money_flag, mouse_pos)
+        random_money_flag, custom_money_flag, starting_money = gui.show_starting_money_screen(screen, gui_elements,
+                                                                                              random_money_flag, custom_money_flag,
+                                                                                              starting_money, mouse_pos)
         possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos, possible_characters,
                                                                 random_money_flag, custom_money_flag)
+
+    elif state == "custom_money":
+        # Special state for starting money screen to call 'custom_starting_money_events' for user input.
+        random_money_flag, custom_money_flag, starting_money = gui.show_starting_money_screen(screen, gui_elements,
+                                                                                              random_money_flag, custom_money_flag,
+                                                                                              starting_money, mouse_pos)
+        starting_money, state = eh.custom_starting_money_events(state, gui_elements, starting_money, mouse_pos)
 
     # State for code that has yet to be migrated to Pygame.
     elif state == "TODO":
