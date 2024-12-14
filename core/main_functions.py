@@ -21,7 +21,7 @@ custom_money_flag = False
 
 def custom_character(screen, state, gui_elements, mouse_pos):
     """Create custom character based on user input and return state for main loop."""
-    global character, possible_characters, selected_race, selected_class, starting_money, random_money_flag, custom_money_flag
+    global possible_characters, selected_race, selected_class, starting_money, random_money_flag, custom_money_flag
 
     if state == "set_abilities":
         # Generate dictionary for character abilities.
