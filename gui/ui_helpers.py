@@ -235,6 +235,8 @@ def position_money_screen_elements(screen, gui_elements):
     custom_money_button.button_rect.top, custom_money_button.button_rect.centerx = money_button_pos_y, screen.get_rect().centerx * 1.5
 
     # Positioning of text input and text field instances.
+    random_money_field = gui_elements["random_money"]
+    random_money_field.text_rect.centery = screen.get_rect().centery * 1.1
     money_input_prompt = gui_elements["money_amount_input"][2]
     money_input_prompt.text_rect.centery = screen.get_rect().centery * 1.1
     money_amount_field = gui_elements["money_amount_input"][1]

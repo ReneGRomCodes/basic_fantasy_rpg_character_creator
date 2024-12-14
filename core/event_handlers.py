@@ -165,6 +165,7 @@ def custom_starting_money_events(state, gui_elements, starting_money, mouse_pos)
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
         if state == "custom_money":
             if event.type == pygame.MOUSEBUTTONUP and gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                 starting_money = starting_money_input.manager.value

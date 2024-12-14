@@ -93,7 +93,7 @@ def random_character_generator(character):
         character_race_class = race_class_list[random.randint(0, (len(race_list)-1))]
         character.set_race(character_race_class.split(" ")[0])
         character.set_class(character_race_class.split(" ")[1])
-        character.money = func.dice_roll(3, 6) * 10
+        character.money = character.set_starting_money()
         func.set_character_values(character)
 
         # prompt user for name.
