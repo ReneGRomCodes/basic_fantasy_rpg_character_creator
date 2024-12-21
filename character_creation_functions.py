@@ -37,33 +37,6 @@ def show_special_abilities(character):
         print(f" - {special}")
 
 
-def set_starting_money(character):
-    """Prompt user to set starting money for instance of class 'character'."""
-    money_options = ["Roll the dice for your starting money (3d6 x 10)", "Choose your own amount of gold pieces"]
-
-    while True:
-        print("- STARTING MONEY -\n")
-        selection = func.select_from_list(money_options, "\nYour choice: ")
-
-        if selection == money_options[0]:
-            character.money = func.dice_roll(3, 6) * 10
-            print(f"\n\n\tYou receive {character.money} pieces of gold!\n\n\nPress ENTER to continue.")
-            input()
-            break
-        else:
-            while True:
-                try:
-                    character.money = int(input("\nHow many gold pieces do you want to give yourself? "))
-                except ValueError:
-                    continue
-                break
-
-            if func.check_yes_no(f"\nDo you want to start your adventure with {character.money} gold pieces (Y/N): "):
-                break
-
-            continue
-
-
 def show_carrying_capacity(character):
     """Print formatted output of dict 'carrying_capacity' from instance 'character'."""
     for k, v in character.carrying_capacity.items():
