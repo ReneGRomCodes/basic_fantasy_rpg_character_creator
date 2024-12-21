@@ -8,7 +8,7 @@ import core.event_handlers as eh
 """Main functions used in 'main.py'."""
 
 
-# Create instance of class 'Character'.
+# Create instance of class 'Character' .
 character = char.Character()
 # Initialize variables and set starting values for character creation.
 possible_characters = None
@@ -20,7 +20,8 @@ custom_money_flag = False
 
 
 def custom_character(screen, state, gui_elements, mouse_pos):
-    """Create custom character based on user input and return state for main loop."""
+    """Create custom character based on user input. Check and return state for main loop."""
+    # Declare global variables to allow modification of these values within the function.
     global possible_characters, selected_race, selected_class, starting_money, random_money_flag, custom_money_flag
 
     if state == "set_abilities":
@@ -97,8 +98,6 @@ def custom_character(screen, state, gui_elements, mouse_pos):
 
 def random_character():
     """Create character with random values and print character sheet."""
-    global character
-
     os.system('cls')
     # Get random class, race, name and ability scores.
     cf.random_character_generator(character)

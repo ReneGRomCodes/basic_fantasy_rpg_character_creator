@@ -16,7 +16,7 @@ def run_character_creator():
     screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
 
-    # Initialize GUI elements.
+    # Initialize dict with GUI elements. See 'gui/gui_elements' for details.
     gui_elements = initialize_screen_elements(screen)
 
     # Set initial state.

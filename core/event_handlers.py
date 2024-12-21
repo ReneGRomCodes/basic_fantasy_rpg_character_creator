@@ -157,8 +157,13 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
 def custom_starting_money_events(state, gui_elements, starting_money, mouse_pos):
     """Check and handle text input field events in function 'custom_character()' for state 'custom_money' in
     'main_functions.py' and return 'starting_money' and new 'state'."""
+    # Assign 'pygame_textinput' instance stored in dict 'gui_elements' to variable.
     starting_money_input = gui_elements["money_amount_input"][0]
+
+    # Get pygame events and assign it to variable to be shared between 'pygame_textinput' instance and the for-loop.
     events = pygame.event.get()
+
+    # Check and update events for 'pygame_textinput' instance 'character_name_input' before other events are checked.
     starting_money_input.update(events)
 
     for event in events:
@@ -166,6 +171,7 @@ def custom_starting_money_events(state, gui_elements, starting_money, mouse_pos)
             pygame.quit()
             sys.exit()
 
+        # Check of variable 'state' actually unnecessary. Left in for clarity when reading the code.
         if state == "custom_money":
             if event.type == pygame.MOUSEBUTTONUP and gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                 starting_money = starting_money_input.manager.value
