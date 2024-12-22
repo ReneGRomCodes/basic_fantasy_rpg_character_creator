@@ -1,13 +1,11 @@
 import gui.screen_objects as so
 import gui.ui_helpers as ui
-import core.functions as func
 import pygame
 """Screen functions."""
 
 
 def show_title_screen(screen, gui_elements):
     """Show title screen."""
-
     # Assign gui_elements to variables.
     spacing = gui_elements["title_screen_spacing"]
     title = gui_elements["title"]
@@ -22,6 +20,7 @@ def show_title_screen(screen, gui_elements):
     copyright_notice.text_rect.centerx = screen.get_rect().centerx
     copyright_notice.text_rect.bottom = screen.get_rect().bottom - spacing
 
+    # Draw elements on screen.
     title.draw_text()
     subtitle.draw_text()
     copyright_notice.draw_text()
@@ -29,7 +28,6 @@ def show_title_screen(screen, gui_elements):
 
 def show_menu(screen, gui_elements, mouse_pos):
     """Display main menu."""
-
     # Assign gui_elements to variables.
     spacing = gui_elements["menu_title_spacing"]
     main_menu = gui_elements["main_menu_title"]
@@ -80,6 +78,8 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     # Set initial position on y-axis for ability score fields.
     element_pos_y = screen.get_rect().height / 3
 
+    # Loop through each ability field and corresponding stat to format and display the ability name, score and bonus/penalty.
+    # Align and position elements dynamically on the screen.
     for ability, key in zip(abilities, stats):
         # 'Pre-formatting' bonus/penalty to string for easier formatting and better code-readability further down.
         bonus_penalty = f"{stats[key][1]}"
