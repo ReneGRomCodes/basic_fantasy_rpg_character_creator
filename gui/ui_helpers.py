@@ -174,7 +174,7 @@ def draw_available_choices(screen, available_choices, inactive_races, inactive_c
 
 def select_race_class(available_choices, selected_race, selected_class, reset_button, mouse_pos):
     """Selection logic for characters race and class and return selected text field instances in 'selected_race' and
-    selected class.
+    'selected class'.
     ARGS:
         available_choices: dict with instances of interactive text fields for race and class selection.
         selected_race: instance of 'InteractiveText' class representing chosen race.
