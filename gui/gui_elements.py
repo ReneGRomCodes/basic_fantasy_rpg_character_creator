@@ -8,7 +8,29 @@ import pygame_textinput
 def initialize_screen_elements(screen):
     """Initialize instances of classes from 'screen_objects.py' for use in GUI in addition to default size and spacing
     values for automatic scalability of screen objects. Return dict of instances 'gui_elements'.
-    NOTE: Instances created have to be then added manually to dict 'gui_elements'!"""
+    NOTE: Instances created have to be then added manually to dict 'gui_elements'!
+
+
+    Class overview (imported as 'so'):
+    TextField(screen, text, size, bg_color=False, text_color="default", multi_line=False, image_width=0, text_pos=(0,0):
+        Basic text field.
+
+    Button(screen, text, size, bg_color=False):
+        Interactive button field.
+
+    InteractiveText(screen, text, size, bg_color=False, panel=False, select=False):
+        Interactive text field for info panel and/or option to toggle between selected/unselected states based on user
+        input like mouse collision or mouse button event.
+
+    InfoPanel(screen, text, size, bg_color=settings.info_panel_bg_color, text_color="default", multi_line=False, image_width=0,
+        text_pos=(0,0), surface_pos="topright"):
+        Info panel for use in conjunction with an instance of class 'InteractiveText()'.
+
+    TextInputField(screen, input_field_instance, field_width):
+        Text input field for use with 'pygame_textinput' library.
+        NOTE: this class does not create the actual instance for a 'pygame_textinput' object, but instead streamlines the
+        process of drawing it on screen with a white background field and having the input centered in said field.
+    """
 
     # Size and spacing variables that are calculated based on screen size for scalability.
     screen_height, screen_width = screen.get_rect().height, screen.get_rect().width
