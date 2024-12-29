@@ -213,11 +213,9 @@ def show_starting_money_screen(screen, gui_elements, character, random_money_fla
 
     if pygame.mouse.get_pressed()[0]:
         if choices[0].button_rect.collidepoint(mouse_pos):
-            custom_money_flag = False
-            random_money_flag = True
+            random_money_flag, custom_money_flag = True, False
         if choices[1].button_rect.collidepoint(mouse_pos):
-            random_money_flag = False
-            custom_money_flag = True
+            random_money_flag, custom_money_flag = False, True
 
     if random_money_flag:
         random_money_field.draw_text()
