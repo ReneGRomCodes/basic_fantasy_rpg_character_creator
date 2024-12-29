@@ -60,6 +60,11 @@ def custom_character(screen, state, gui_elements, mouse_pos):
         gui.show_naming_screen(screen, gui_elements, mouse_pos)
         state = eh.naming_character_events(state, character, gui_elements, mouse_pos)
 
+        # Unselect money flags, set variables to 'False' if user returns to naming screen from starting money screen.
+        if random_money_flag or custom_money_flag:
+            random_money_flag = False
+            custom_money_flag = False
+
     elif state == "set_starting_money":
         # Display starting money screen.
         random_money_flag, custom_money_flag, starting_money = gui.show_starting_money_screen(screen, gui_elements, character,
