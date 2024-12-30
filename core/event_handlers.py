@@ -7,13 +7,10 @@ import core.functions as func
 def main_events(screen, state, gui_elements, mouse_pos):
     """Check and handle pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'"""
 
-    # Hashable dict to optimize state checking and improve performance.
-    states_dict = {
-        "title_screen": True,
-        "main_menu": True,
-    }
+    # Hashable set to optimize state checking and improve performance.
+    states_set = {"title_screen", "main_menu"}
 
-    if state in states_dict.keys():
+    if state in states_set:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -55,14 +52,10 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
         state: program state.
     """
 
-    # Hashable dict to optimize state checking and improve performance.
-    states_dict = {
-        "show_abilities": True,
-        "race_class_selection": True,
-        "set_starting_money": True
-    }
+    # Hashable set to optimize state checking and improve performance.
+    states_set = {"show_abilities", "race_class_selection", "set_starting_money"}
 
-    if state in states_dict.keys():
+    if state in states_set:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

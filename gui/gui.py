@@ -64,8 +64,8 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     intelligence = gui_elements["intelligence"]
     wisdom = gui_elements["wisdom"]
     charisma = gui_elements["charisma"]
-    abilities = [strength, dexterity, constitution, intelligence, wisdom, charisma]
-    # Assign dict 'character.abilities' to 'stats' to avoid confusion with list 'abilities' above.
+    abilities = (strength, dexterity, constitution, intelligence, wisdom, charisma)
+    # Assign dict 'character.abilities' to 'stats' to avoid confusion with tuple 'abilities' above.
     stats = character.abilities
     # Create instances of class 'TextField' to show ability scores on screen. Text size is taken from an instance in
     # 'gui_elements' to assure automatic scaling.

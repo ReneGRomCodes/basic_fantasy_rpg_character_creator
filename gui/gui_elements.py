@@ -236,20 +236,20 @@ def initialize_screen_elements(screen):
         # Race/class selection screen.
         "race_class_title": race_class_selection_screen_title,
         "reset_button": reset_button,
-        "possible_races": [race_human_field, race_elf_field, race_dwarf_field, race_halfling_field],
-        "possible_classes": [class_fighter_field, class_cleric_field, class_magic_user_field, class_thief_field,
-                              class_fighter_magic_user_field, class_magic_user_thief_field],
-        "inactive_races": [inactive_human_field, inactive_elf_field, inactive_dwarf_field, inactive_halfling_field],
-        "inactive_classes": [inactive_fighter_field, inactive_cleric_field, inactive_magic_user_field, inactive_thief_field,
-                             inactive_fighter_magic_user_field, inactive_magic_user_thief_field],
+        "possible_races": (race_human_field, race_elf_field, race_dwarf_field, race_halfling_field),
+        "possible_classes": (class_fighter_field, class_cleric_field, class_magic_user_field, class_thief_field,
+                              class_fighter_magic_user_field, class_magic_user_thief_field),
+        "inactive_races": (inactive_human_field, inactive_elf_field, inactive_dwarf_field, inactive_halfling_field),
+        "inactive_classes": (inactive_fighter_field, inactive_cleric_field, inactive_magic_user_field, inactive_thief_field,
+                             inactive_fighter_magic_user_field, inactive_magic_user_thief_field),
         # Character naming screen.
         "naming_title": character_naming_screen_title,
-        "character_name_input": [character_name_input, character_name_field],
+        "character_name_input": (character_name_input, character_name_field),
         # Starting money screen.
         "starting_money_title": starting_money_screen_title,
-        "starting_money_choices": [random_money_button, custom_money_button],
+        "starting_money_choices": (random_money_button, custom_money_button),
         "random_money": random_money_field,
-        "money_amount_input": [money_amount_input, money_amount_field, money_input_prompt],
+        "money_amount_input": (money_amount_input, money_amount_field, money_input_prompt),
     }
 
     return gui_elements
