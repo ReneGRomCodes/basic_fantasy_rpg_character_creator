@@ -19,6 +19,45 @@ def draw_special_button(screen, button, gui_elements, mouse_pos):
     button.draw_button(mouse_pos)
 
 
+"""Background functions for title screen."""
+
+def position_title_screen_elements(screen, gui_elements):
+    """Position objects from 'gui_elements' for title screen."""
+    # Assign gui_elements to variables.
+    spacing = gui_elements["title_screen_spacing"]
+    title = gui_elements["title"]
+    subtitle = gui_elements["subtitle"]
+    copyright_notice = gui_elements["copyright_notice"]
+
+    # Position title, subtitle and copyright notice.
+    title.text_rect.centerx = screen.get_rect().centerx
+    title.text_rect.bottom = screen.get_rect().centery - spacing
+    subtitle.text_rect.centerx = screen.get_rect().centerx
+    subtitle.text_rect.top = screen.get_rect().centery + spacing
+    copyright_notice.text_rect.centerx = screen.get_rect().centerx
+    copyright_notice.text_rect.bottom = screen.get_rect().bottom - spacing
+
+
+"""Background functions for main menu screen."""
+
+def position_main_menu_screen_elements(screen, gui_elements):
+    """Position objects from 'gui_elements' for main menu screen."""
+    # Assign gui_elements to variables.
+    spacing = gui_elements["menu_title_spacing"]
+    main_menu = gui_elements["main_menu_title"]
+    custom = gui_elements["custom"]
+    random = gui_elements["random"]
+
+    # Position buttons and 'main_menu' text field.
+    custom.button_rect.width = screen.get_rect().width / 3
+    custom.button_rect.centerx = screen.get_rect().centerx
+    custom.button_rect.bottom = screen.get_rect().centery
+    random.button_rect.width = screen.get_rect().width / 3
+    random.button_rect.centerx = screen.get_rect().centerx
+    random.button_rect.top = screen.get_rect().centery
+    main_menu.text_rect.bottom = custom.button_rect.top - spacing
+
+
 """Background functions for race/class selection screen."""
 
 def race_class_check(available_choices, possible_races, possible_classes, race_name, class_name):
@@ -224,7 +263,7 @@ def select_race_class(available_choices, selected_race, selected_class, reset_bu
 """Background functions for starting money screen."""
 
 def position_money_screen_elements(screen, gui_elements):
-    """Position and draw objects from 'gui_elements' for starting money screen."""
+    """Position objects from 'gui_elements' for starting money screen."""
     # Positioning of button instances.
     money_button_width = screen.get_rect().width / 3
     money_button_pos_y = screen.get_rect().height / 3
