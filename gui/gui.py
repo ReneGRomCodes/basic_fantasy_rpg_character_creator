@@ -1,6 +1,6 @@
 import gui.screen_objects as so
 import gui.ui_helpers as ui
-from core.functions import dice_roll
+from core.functions import set_starting_money
 import pygame
 """Screen functions."""
 
@@ -201,19 +201,20 @@ def show_starting_money_screen(screen, gui_elements, random_money_flag, custom_m
         choice.draw_button(mouse_pos)
 
     if pygame.mouse.get_pressed()[0]:
+        # Set flags to appropriate values based chosen option.
         if choices[0].button_rect.collidepoint(mouse_pos):
-            # Set flags to appropriate values and generate int value for starting money if random amount is chosen.
             random_money_flag, custom_money_flag = True, False
-            starting_money = dice_roll(3, 6) * 10
+            # Generate int value for 'starting_money' if random amount is chosen.
+            starting_money = set_starting_money()
         if choices[1].button_rect.collidepoint(mouse_pos):
             random_money_flag, custom_money_flag = False, True
 
     if random_money_flag:
         random_money_field.draw_text()
-        # Build string 'starting_money_message' for use as argument in 'random_money_result_field'.
+        # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
         starting_money_message = str(starting_money) + " gold pieces"
+        # Create TextField instance 'random_money_result_field', and position and draw it on screen.
         random_money_result_field = so.TextField(screen, starting_money_message, text_large)
-        # Position and draw random money result on screen.
         random_money_result_field.text_rect.top = random_money_field.text_rect.bottom
         random_money_result_field.draw_text()
     elif custom_money_flag:

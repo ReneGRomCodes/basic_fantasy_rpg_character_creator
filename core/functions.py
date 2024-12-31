@@ -1,6 +1,6 @@
 import os
 import random
-"""Helper and check value functions."""
+"""Helper and check value functions. Functions also generate and return values in accordance to game rules."""
 
 
 def dice_roll(n, m):
@@ -134,6 +134,14 @@ def set_character_values(character):
     character.set_hp()
     character.set_armor_class()
     character.set_carrying_capacity()
+
+
+def set_starting_money():
+    """Generate and return random amount of starting money."""
+    starting_money = dice_roll(3, 6) * 10
+
+    return starting_money
+
 
 
 """Functions still in use by console part of the program. DELETE WHEN OBSOLETE!!!"""
