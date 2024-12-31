@@ -1,5 +1,6 @@
 import gui.screen_objects as so
 import gui.ui_helpers as ui
+from core.functions import dice_roll
 import pygame
 """Screen functions."""
 
@@ -177,9 +178,10 @@ def show_naming_screen(screen, gui_elements, mouse_pos):
     continue_button.draw_button(mouse_pos)
 
 
-def show_starting_money_screen(screen, gui_elements, character, random_money_flag, custom_money_flag, starting_money, mouse_pos):
+def show_starting_money_screen(screen, gui_elements, random_money_flag, custom_money_flag, starting_money, mouse_pos):
     """Display character naming screen and prompt user for input."""
-    # Assign fields and buttons from 'gui_elements' to variables.
+    # Assign text size, fields and buttons from 'gui_elements' to variables.
+    text_large = gui_elements["text_large"]
     screen_title = gui_elements["starting_money_title"]
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
@@ -200,12 +202,20 @@ def show_starting_money_screen(screen, gui_elements, character, random_money_fla
 
     if pygame.mouse.get_pressed()[0]:
         if choices[0].button_rect.collidepoint(mouse_pos):
+            # Set flags to appropriate values and generate int value for starting money if random amount is chosen.
             random_money_flag, custom_money_flag = True, False
+            starting_money = dice_roll(3, 6) * 10
         if choices[1].button_rect.collidepoint(mouse_pos):
             random_money_flag, custom_money_flag = False, True
 
     if random_money_flag:
         random_money_field.draw_text()
+        # Build string 'starting_money_message' for use as argument in 'random_money_result_field'.
+        starting_money_message = str(starting_money) + " gold pieces"
+        random_money_result_field = so.TextField(screen, starting_money_message, text_large)
+        # Position and draw random money result on screen.
+        random_money_result_field.text_rect.top = random_money_field.text_rect.bottom
+        random_money_result_field.draw_text()
     elif custom_money_flag:
         money_input_prompt.draw_text()
         money_amount_field.draw_input_field()

@@ -195,7 +195,7 @@ def initialize_screen_elements(screen):
     custom_money_button = so.Button(screen, custom_money_button_text, text_standard)
     # Random money message field.
     random_money_message = "You receive"
-    random_money_field = so.TextField(screen, random_money_message, text_standard)
+    random_money_field = so.TextField(screen, random_money_message, text_medium)
     # 'pygame_textinput' and 'TextInputField' instances.
     money_input_prompt_message = "Enter amount of gold for your character"
     money_input_prompt = so.TextField(screen, money_input_prompt_message, text_standard)
@@ -206,6 +206,11 @@ def initialize_screen_elements(screen):
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
+        # Default values for text sizes.
+        "text_standard": text_standard,
+        "text_large": text_large,
+        "text_medium": text_medium,
+        "text_small": text_small,
         # Default values for spacing.
         "title_screen_spacing": title_screen_spacing,
         "menu_title_spacing": menu_title_spacing,
