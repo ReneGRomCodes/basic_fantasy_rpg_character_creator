@@ -151,10 +151,8 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     ui.draw_special_button(screen, reset_button, gui_elements, mouse_pos)
     back_button.draw_button(mouse_pos)
     # Show continue button only if race AND class have been selected otherwise show inactive continue button.
-    if selected_race and selected_class:
-        continue_button.draw_button(mouse_pos)
-    else:
-        inactive_continue_button.draw_button(mouse_pos)
+    ui.draw_continue_button_inactive(selected_race, selected_class, continue_button, inactive_continue_button, mouse_pos,
+                                     check_mode="all")
 
     return selected_race, selected_class
 
@@ -224,9 +222,6 @@ def show_starting_money_screen(screen, gui_elements, random_money_flag, custom_m
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)
     # Show continue button only if a money option has been selected otherwise show inactive continue button.
-    if random_money_flag or custom_money_flag:
-        continue_button.draw_button(mouse_pos)
-    else:
-        inactive_continue_button.draw_button(mouse_pos)
+    ui.draw_continue_button_inactive(random_money_flag, custom_money_flag, continue_button, inactive_continue_button, mouse_pos)
 
     return random_money_flag, custom_money_flag, starting_money

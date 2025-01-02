@@ -19,6 +19,28 @@ def draw_special_button(screen, button, gui_elements, mouse_pos):
     button.draw_button(mouse_pos)
 
 
+def draw_continue_button_inactive(condition_1, condition_2, continue_button, inactive_continue_button, mouse_pos,
+                                  check_mode="any"):
+    """Draw either active or inactive instance of continue button from module 'gui_elements'.
+    ARGS:
+        condition_1: first condition to be checked.
+        condition_2: second condition to be checked.
+        continue_button: 'functional' instance of continue button.
+        inactive_continue_button: 'non-functional' instance of continue button.
+        mouse_pos: mouse position on screen.
+        check_mode: Determines whether one or both conditions must be met. Use 'any' to require at least one condition,
+                    or 'all' to require both. Default is 'any'.
+    """
+    # Check if condition_1 and/or condition_2 have valid values and draw appropriate (active/inactive) continue button on
+    # screen.
+    if check_mode == "any" and (condition_1 or condition_2):
+        continue_button.draw_button(mouse_pos)
+    elif check_mode == "all" and (condition_1 and condition_2):
+        continue_button.draw_button(mouse_pos)
+    else:
+        inactive_continue_button.draw_button(mouse_pos)
+
+
 """Background functions for title screen."""
 
 def position_title_screen_elements(screen, gui_elements):
