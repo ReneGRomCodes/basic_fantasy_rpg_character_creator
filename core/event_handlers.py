@@ -103,7 +103,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
                         if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                             state = "TODO"
                     if context2:
-                        state = "custom_money"
+                        state = "custom_input_money"
 
                     else:
                         pass
@@ -165,7 +165,7 @@ def custom_starting_money_events(state, gui_elements, starting_money, mouse_pos)
             sys.exit()
 
         # Check of variable 'state' actually unnecessary. Left in for clarity when reading the code.
-        if state == "custom_money":
+        if state == "custom_input_money":
             if event.type == pygame.MOUSEBUTTONUP:
                 if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     state = "name_character"

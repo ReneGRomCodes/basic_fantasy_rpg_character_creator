@@ -23,7 +23,7 @@ def run_character_creator():
     state = "title_screen"
     # Set of states for custom character creation.
     custom_character_states = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
-                               "set_starting_money", "custom_money", "TODO"}
+                               "set_starting_money", "custom_input_money", "TODO"}
 
     # Start main loop.
     while True:

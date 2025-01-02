@@ -72,7 +72,7 @@ def custom_character(screen, state, gui_elements, mouse_pos):
         possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos, possible_characters,
                                                                 random_money_flag, custom_money_flag)
 
-    elif state == "custom_money":
+    elif state == "custom_input_money":
         # Special state for starting money screen to call 'custom_starting_money_events' for user input.
         random_money_flag, custom_money_flag, starting_money = gui.show_starting_money_screen(screen, gui_elements,
                                                                                               random_money_flag, custom_money_flag,
