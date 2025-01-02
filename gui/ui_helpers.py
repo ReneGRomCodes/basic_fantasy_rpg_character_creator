@@ -1,4 +1,6 @@
 import pygame
+from core.functions import set_starting_money
+import gui.screen_objects as so
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
 
 
@@ -19,18 +21,19 @@ def draw_special_button(screen, button, gui_elements, mouse_pos):
     button.draw_button(mouse_pos)
 
 
-def draw_continue_button_inactive(condition_1, condition_2, continue_button, inactive_continue_button, mouse_pos,
-                                  check_mode="any"):
+def draw_continue_button_inactive(condition_1, condition_2, gui_elements, mouse_pos, check_mode="any"):
     """Draw either active or inactive instance of continue button from module 'gui_elements'.
     ARGS:
         condition_1: first condition to be checked.
         condition_2: second condition to be checked.
-        continue_button: 'functional' instance of continue button.
-        inactive_continue_button: 'non-functional' instance of continue button.
+        gui_elements: dict containing gui element instances.
         mouse_pos: mouse position on screen.
         check_mode: Determines whether one or both conditions must be met. Use 'any' to require at least one condition,
                     or 'all' to require both. Default is 'any'.
     """
+    # Assign buttons from dict 'gui_elements' to variables.
+    continue_button, inactive_continue_button = gui_elements["continue_button"], gui_elements["inactive_continue_button"]
+
     # Check if condition_1 and/or condition_2 have valid values and draw appropriate (active/inactive) continue button on
     # screen.
     if check_mode == "any" and (condition_1 or condition_2):
@@ -302,3 +305,53 @@ def position_money_screen_elements(screen, gui_elements):
     money_input_prompt.text_rect.centery = screen.get_rect().centery * 1.1
     money_amount_field = gui_elements["money_amount_input"][1]
     money_amount_field.input_bg_field.top = screen.get_rect().centery * 1.15
+
+
+def choose_money_option(choices, starting_money, random_money_flag, custom_money_flag, mouse_pos):
+    """Choose option to either generate random amount of money or let user input a custom amount, return 'starting_money'
+    if random amount is chosen, set and return 'random_money_flag'/'custom_money_flag' accordingly.
+        ARGS:
+        choices: List of instances of 'Button' class from dict 'gui_elements'.
+        starting_money: amount of starting money. Starting value is 'None', changes if 'random_money_flag' is 'True'
+        random_money_flag: flag to indicate if randomly generated amount of money is chosen.
+        custom_money_flag: flag to indicate if custom amount of money is chosen.
+        mouse_pos: position of mouse on screen.
+    """
+
+    if pygame.mouse.get_pressed()[0]:
+        # Set flags to appropriate values based chosen option.
+        if choices[0].button_rect.collidepoint(mouse_pos):
+            random_money_flag, custom_money_flag = True, False
+            # Generate int value for 'starting_money' if random amount is chosen.
+            starting_money = set_starting_money()
+        if choices[1].button_rect.collidepoint(mouse_pos):
+            random_money_flag, custom_money_flag = False, True
+
+    return starting_money, random_money_flag, custom_money_flag
+
+
+def draw_chosen_money_option(screen, starting_money, random_money_flag, custom_money_flag, gui_elements):
+    """Draw message for random amount of starting money or show input field for custom amount on screen.
+    ARGS:
+        screen: Pygame window.
+        starting_money: amount of starting money. Starting value is 'None', changes if 'random_money_flag' is 'True'
+        random_money_flag: flag to indicate if randomly generated amount of money is chosen.
+        custom_money_flag: flag to indicate if custom amount of money is chosen.
+        gui_elements: dict containing gui element instances.
+    """
+    # Assign font size and text field instances from dict 'gui_elements' to variables.
+    text_large = gui_elements["text_large"]
+    random_money_field = gui_elements["random_money"]
+    money_amount_field, money_input_prompt = gui_elements["money_amount_input"][1], gui_elements["money_amount_input"][2]
+
+    if random_money_flag:
+        random_money_field.draw_text()
+        # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
+        starting_money_message = str(starting_money) + " gold pieces"
+        # Create TextField instance 'random_money_result_field', and position and draw it on screen.
+        random_money_result_field = so.TextField(screen, starting_money_message, text_large)
+        random_money_result_field.text_rect.top = random_money_field.text_rect.bottom
+        random_money_result_field.draw_text()
+    elif custom_money_flag:
+        money_input_prompt.draw_text()
+        money_amount_field.draw_input_field()
