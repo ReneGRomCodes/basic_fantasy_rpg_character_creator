@@ -202,3 +202,11 @@ def show_starting_money_screen(screen, gui_elements, random_money_flag, custom_m
     ui.draw_continue_button_inactive(random_money_flag, custom_money_flag, gui_elements, mouse_pos)
 
     return random_money_flag, custom_money_flag, starting_money
+
+
+def show_character_complete_screen(screen, gui_elements, mouse_pos):
+    completion_message = gui_elements["completion_message"]
+    continue_to_character_sheet = gui_elements["continue_to_character_sheet"]
+
+    completion_message.draw_text()
+    ui.draw_special_button(screen, continue_to_character_sheet, gui_elements, mouse_pos)

@@ -35,7 +35,8 @@ def main_events(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def custom_character_events(state, character, gui_elements, mouse_pos, possible_characters=None, context1=None, context2=None):
+def custom_character_events(state, character, gui_elements, mouse_pos, possible_characters=None, context1=None,
+                            context2=None, context3=None):
     """Check and handle events in function 'custom_character()' in 'main_functions.py' and return 'state'.
     ARGS:
         state: program state.
@@ -47,6 +48,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
             'race_class_selection' onwards to keep list stored and not have it reset to 'None'.
         context1: context specific argument whose role depends on current state.
         context2: context specific argument whose role depends on current state.
+        context3: context specific argument whose role depends on current state.
     RETURNS:
         possible_characters: see arg above.
         state: program state.
@@ -101,10 +103,18 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
                     # input if 'context2' (custom_money) is 'True'.
                     if context1:
                         if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                            state = "TODO"
+                            # Set starting money to int 'context3' (starting_money) if 'random_money' is 'True'.
+                            character.money = context3
+                            state = "creation_complete"
                     if context2:
                         state = "custom_input_money"
+                    else:
+                        pass
 
+            elif state == "creation_complete":
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if gui_elements["continue_to_character_sheet"].button_rect.collidpoint(mouse_pos):
+                        state = "TODO"
                     else:
                         pass
 
@@ -113,6 +123,9 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
 
     return possible_characters, state
 
+
+"""Event handlers for screens where pygame_textinput library is used so event handling can be split between pygame events
+and pygame_textinput events."""
 
 def naming_character_events(state, character, gui_elements, mouse_pos):
     """Check and handle text input field events in function 'custom_character()' for state 'name_character' in
@@ -172,6 +185,6 @@ def custom_starting_money_events(state, gui_elements, starting_money, mouse_pos)
 
                 if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                     starting_money = starting_money_input.manager.value
-                    state = "TODO"
+                    state = "creation_complete"
 
     return starting_money, state

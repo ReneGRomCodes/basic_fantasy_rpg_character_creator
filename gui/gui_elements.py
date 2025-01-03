@@ -203,6 +203,11 @@ def initialize_screen_elements(screen):
     money_amount_input = pygame_textinput.TextInputVisualizer(font_object=money_input_font)
     money_amount_field = so.TextInputField(screen, money_amount_input, screen_width / 4)
 
+    # Character creation complete screen.
+    completion_message_text = "- CHARACTER CREATION COMPLETE -"
+    completion_message_field = so.TextField(screen, completion_message_text, text_large)
+    continue_to_character_sheet = so.Button(screen, "Continue To Character Sheet", text_medium)
+
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
@@ -255,6 +260,9 @@ def initialize_screen_elements(screen):
         "starting_money_choices": (random_money_button, custom_money_button),
         "random_money": random_money_field,
         "money_amount_input": (money_amount_input, money_amount_field, money_input_prompt),
+        # Character completion screen.
+        "completion_message": completion_message_field,
+        "continue_to_character_sheet": continue_to_character_sheet,
     }
 
     return gui_elements

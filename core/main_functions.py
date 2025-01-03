@@ -70,7 +70,7 @@ def custom_character(screen, state, gui_elements, mouse_pos):
                                                                                               random_money_flag, custom_money_flag,
                                                                                               starting_money, mouse_pos)
         possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos, possible_characters,
-                                                                random_money_flag, custom_money_flag)
+                                                                random_money_flag, custom_money_flag, starting_money)
 
     elif state == "custom_input_money":
         # Special state for starting money screen to call 'custom_starting_money_events' for user input.
@@ -79,7 +79,13 @@ def custom_character(screen, state, gui_elements, mouse_pos):
                                                                                               starting_money, mouse_pos)
         starting_money, state = eh.custom_starting_money_events(state, gui_elements, starting_money, mouse_pos)
 
-    # State for code that has yet to be migrated to Pygame.
+    elif state == "creation_complete":
+        # Display message screen stating that basic character creation is completed.
+        gui.show_character_complete_screen(screen, gui_elements, mouse_pos)
+        possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos, possible_characters)
+
+
+    # State for code that has yet to be migrated to Pygame. Program still proceeds in console.
     elif state == "TODO":
         os.system('cls')
 
