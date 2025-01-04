@@ -55,7 +55,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
     """
 
     # Hashable set to optimize state checking and improve performance.
-    states_set = {"show_abilities", "race_class_selection", "set_starting_money"}
+    states_set = {"show_abilities", "race_class_selection", "set_starting_money", "creation_complete"}
 
     if state in states_set:
 
@@ -113,7 +113,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
 
             elif state == "creation_complete":
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if gui_elements["continue_to_character_sheet"].button_rect.collidpoint(mouse_pos):
+                    if gui_elements["continue_to_character_sheet"].button_rect.collidepoint(mouse_pos):
                         state = "TODO"
                     else:
                         pass

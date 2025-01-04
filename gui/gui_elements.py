@@ -206,7 +206,7 @@ def initialize_screen_elements(screen):
     # Character creation complete screen.
     completion_message_text = "- CHARACTER CREATION COMPLETE -"
     completion_message_field = so.TextField(screen, completion_message_text, text_large)
-    continue_to_character_sheet = so.Button(screen, "Continue To Character Sheet", text_medium)
+    continue_to_character_sheet_button = so.Button(screen, "Continue To Character Sheet", text_medium)
 
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
@@ -262,7 +262,7 @@ def initialize_screen_elements(screen):
         "money_amount_input": (money_amount_input, money_amount_field, money_input_prompt),
         # Character completion screen.
         "completion_message": completion_message_field,
-        "continue_to_character_sheet": continue_to_character_sheet,
+        "continue_to_character_sheet": continue_to_character_sheet_button,
     }
 
     return gui_elements
