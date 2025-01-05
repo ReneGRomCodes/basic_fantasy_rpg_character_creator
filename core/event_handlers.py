@@ -113,7 +113,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
 
             elif state == "creation_complete":
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if gui_elements["continue_to_character_sheet"].button_rect.collidepoint(mouse_pos):
+                    if gui_elements["show_character_sheet"].button_rect.collidepoint(mouse_pos):
                         state = "TODO"
                     else:
                         pass
@@ -124,8 +124,8 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
     return possible_characters, state
 
 
-"""Event handlers for screens where pygame_textinput library is used so event handling can be split between pygame events
-and pygame_textinput events."""
+"""Event handlers for screens where pygame_textinput library is used so 'pygame.event.get()' can be split between pygame
+events and pygame_textinput events."""
 
 def naming_character_events(state, character, gui_elements, mouse_pos):
     """Check and handle text input field events in function 'custom_character()' for state 'name_character' in

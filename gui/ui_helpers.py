@@ -355,3 +355,22 @@ def draw_chosen_money_option(screen, starting_money, random_money_flag, custom_m
     elif custom_money_flag:
         money_input_prompt.draw_text()
         money_amount_field.draw_input_field()
+
+
+"""Background functions for creation complete screen."""
+
+def position_completion_screen_elements(screen, completion_message, show_character_sheet, gui_elements):
+    """Position screen elements for 'character complete' screen.
+    ARGS:
+        screen: pygame window.
+        completion_message: instance of class 'TextField' showing completion message.
+        show_character_sheet: instance of class 'Button' to proceed to character sheet.
+        gui_elements: dict containing gui element instances.
+    """
+    # Assign spacing value from 'gui_elements' to variables.
+    spacing = gui_elements["title_screen_spacing"]
+
+    # Position screen elements.
+    completion_message.text_rect.bottom = screen.get_rect().centery - spacing
+    show_character_sheet.button_rect.top = screen.get_rect().centery + spacing
+    show_character_sheet.button_rect.centerx = screen.get_rect().centerx

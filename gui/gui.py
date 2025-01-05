@@ -205,8 +205,14 @@ def show_starting_money_screen(screen, gui_elements, random_money_flag, custom_m
 
 
 def show_character_complete_screen(screen, gui_elements, mouse_pos):
+    """Show message confirming completion of basic character creation and let user proceed to character sheet."""
+    # Assign text field and button from 'gui_elements' to variables.
     completion_message = gui_elements["completion_message"]
-    continue_to_character_sheet = gui_elements["continue_to_character_sheet"]
+    show_character_sheet = gui_elements["show_character_sheet"]
 
+    # Position screen elements.
+    ui.position_completion_screen_elements(screen, completion_message, show_character_sheet, gui_elements)
+
+    # Draw screen elements on screen.
     completion_message.draw_text()
-    ui.draw_special_button(screen, continue_to_character_sheet, gui_elements, mouse_pos)
+    show_character_sheet.draw_button(mouse_pos)
