@@ -85,51 +85,21 @@ def custom_character(screen, state, gui_elements, mouse_pos):
         possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos, possible_characters)
 
 
-    # State for code that has yet to be migrated to Pygame. Program still proceeds in console.
-    elif state == "TODO":
-        os.system('cls')
-
-        print("\n\n\t\tCharacter creation complete. Press ENTER to show character sheet.")
-        input()
-        os.system('cls')
-
-        # Build character sheet.
-        cf.build_character_sheet(character)
-
-        # Proceed to shop and show final character sheet when finished.
-        input("\n\nPress ENTER to proceed to shop.")
-        os.system('cls')
-        show_main_shop()
-        cf.build_character_sheet(character)
-        input("\n\nPress ENTER to exit.")
-
     return state
 
 
 def random_character():
-    """Create character with random values and print character sheet."""
-    os.system('cls')
-    # Get random class, race, name and ability scores.
-    cf.random_character_generator(character)
+    """Create character with random values."""
+    pass
 
-    print("\n\n\t\tCharacter creation complete. Press ENTER to show character sheet.")
-    input()
-    os.system('cls')
 
-    # Build character sheet.
-    cf.build_character_sheet(character)
-
-    # Proceed to shop and show final character sheet when finished.
-    input("\n\nPress ENTER to proceed to shop.")
-    os.system('cls')
-    show_main_shop()
-    cf.build_character_sheet(character)
-    input("\n\nPress ENTER to exit.")
+def character_sheet(screen, gui_elements):
+    """Show character sheet on screen."""
+    gui.show_character_sheet_screen(screen, gui_elements)
 
 
 def show_main_shop():
     """Main loop for shop 'main menu'."""
-    global character
     shop_sections = ["General Items", "Weapons", "Projectiles", "Armor", "Inventory", "EXIT"]
 
     while True:

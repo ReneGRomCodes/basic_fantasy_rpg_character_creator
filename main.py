@@ -23,7 +23,7 @@ def run_character_creator():
     state = "title_screen"
     # Set of states for custom character creation.
     custom_character_states = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
-                               "set_starting_money", "custom_input_money", "creation_complete", "TODO"}
+                               "set_starting_money", "custom_input_money", "creation_complete"}
 
     # Start main loop.
     while True:
@@ -41,6 +41,8 @@ def run_character_creator():
             state = mf.custom_character(screen, state, gui_elements, mouse_pos)
         elif state == "random_character":
             mf.random_character()
+        elif state == "character_sheet":
+            mf.character_sheet(screen, gui_elements)
 
         pygame.display.flip()
 

@@ -114,7 +114,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
             elif state == "creation_complete":
                 if event.type == pygame.MOUSEBUTTONUP:
                     if gui_elements["show_character_sheet"].button_rect.collidepoint(mouse_pos):
-                        state = "TODO"
+                        state = "character_sheet"
                     else:
                         pass
 

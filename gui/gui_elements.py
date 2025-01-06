@@ -293,6 +293,8 @@ def initialize_screen_elements(screen):
         # Character completion screen.
         "completion_message": completion_message_field,
         "show_character_sheet": show_character_sheet_button,
+        # Character sheet screen.
+        "char_sheet_title": char_sheet_title,
     }
 
     return gui_elements
