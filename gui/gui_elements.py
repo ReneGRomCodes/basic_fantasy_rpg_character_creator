@@ -203,10 +203,40 @@ def initialize_screen_elements(screen):
     money_amount_input = pygame_textinput.TextInputVisualizer(font_object=money_input_font)
     money_amount_field = so.TextInputField(screen, money_amount_input, screen_width / 4)
 
+
     # Character creation complete screen.
     completion_message_text = "CHARACTER CREATION COMPLETE"
     completion_message_field = so.TextField(screen, completion_message_text, text_large)
     show_character_sheet_button = so.Button(screen, "Show Character Sheet", text_medium)
+
+
+    # Character sheet screen.
+    character_sheet_title_text = "- CHARACTER SHEET -"
+    char_sheet_title = so.TextField(screen, character_sheet_title_text, text_large)
+    # Character sheet base elements.
+    char_name = so.TextField(screen, "Name:", text_medium)
+    char_xp = so.TextField(screen, "XP:", text_medium)
+    char_level = so.TextField(screen, "Level:", text_medium)
+    char_next_level_xp = so.TextField(screen, "XP to next level:", text_medium)
+    char_race = so.TextField(screen, "Race:", text_medium)
+    char_class = so.TextField(screen, "Class:", text_medium)
+    char_armor_class = so.TextField(screen, "Armor Class:", text_medium)
+    char_health_points = so.TextField(screen, "Health Points:", text_medium)
+    char_attack_bonus = so.TextField(screen, "Attack Bonus:", text_medium)
+    char_abilities = so.TextField(screen, "Abilities:", text_medium)
+    char_saving_throws = so.TextField(screen, "Saving Throws:", text_medium)
+    char_special_abilities = so.TextField(screen, "Special Abilities:", text_medium)
+    # Spell element for classes 'Magic-User', 'Cleric' or combination classes.
+    char_spells = so.TextField(screen, "Spells:", text_medium)
+    # Inventory elements.
+    char_money = so.TextField(screen, "Money:", text_medium)
+    char_carrying_capacity = so.TextField(screen, "Carrying Capacity:", text_medium)
+    char_weight_carried = so.TextField(screen, "Weight Carried:", text_medium)
+    char_weapons = so.TextField(screen, "Weapons:", text_medium)
+    char_armor = so.TextField(screen, "Armor:", text_medium)
+    char_armor_ac = so.TextField(screen, "AC:", text_medium) # Armor class for worn armor only, not including base armor class for character.
+    char_inventory = so.TextField(screen, "Inventory:", text_medium)
+
 
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
