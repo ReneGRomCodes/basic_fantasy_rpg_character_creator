@@ -41,6 +41,26 @@ def initialize_cs_elements(screen, gui_elements):
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     cs_elements = {
         "title": title,
+        "name": name,
+        "xp": xp,
+        "level": level,
+        "next_level_xp": next_level_xp,
+        "race": char_race,
+        "class": char_class,
+        "armor_class": armor_class,
+        "health_point": health_points,
+        "attack_bonus": attack_bonus,
+        "abilities": abilities,
+        "saving_throws": saving_throws,
+        "special_abilities": special_abilities,
+        "spells": spells,
+        "money": money,
+        "carrying_capacity": carrying_capacity,
+        "weight_carried": weight_carried,
+        "weapons": weapons,
+        "armor": armor,
+        "armor_ac": armor_ac,
+        "inventory": inventory,
     }
 
     return cs_elements
