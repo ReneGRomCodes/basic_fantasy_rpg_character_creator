@@ -3,6 +3,16 @@ import gui.screen_objects as so
 
 
 def initialize_cs_elements(screen, gui_elements):
+    """Initialize instances of classes from 'screen_objects.py' for use in character sheet in addition to default size
+    and spacing values for automatic scalability of screen objects. Return dict of instances 'cs_elements'.
+    NOTE: Instances created have to be then added manually to dict 'cs_elements'!
+
+
+    Class overview (imported as 'so'):
+    TextField(screen, text, size, bg_color=False, text_color="default", multi_line=False, image_width=0, text_pos=(0,0):
+        Basic text field.
+    """
+
     # Size and spacing variables from dict 'gui_elements' that are calculated based on screen size for scalability.
     screen_height, screen_width = screen.get_rect().height, screen.get_rect().width
     text_standard = gui_elements["text_standard"]
