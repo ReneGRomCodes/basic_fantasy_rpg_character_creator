@@ -1,10 +1,10 @@
 import os
 import core.character_model as char
-import character_creation_functions as cf
 import gui.gui as gui
 import core.functions as func
 import shop_functions as sf
 import core.event_handlers as eh
+from gui.character_sheet.character_sheet import show_character_sheet_screen
 """Main functions used in 'main.py'."""
 
 
@@ -93,9 +93,9 @@ def random_character():
     pass
 
 
-def character_sheet(screen, gui_elements):
-    """Show character sheet on screen."""
-    gui.show_character_sheet_screen(screen, gui_elements)
+def show_character_sheet(screen, cs_elements, gui_elements):
+    """Show character sheet."""
+    show_character_sheet_screen(screen, cs_elements, gui_elements)
 
 
 def show_main_shop():

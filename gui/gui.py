@@ -216,9 +216,3 @@ def show_character_complete_screen(screen, gui_elements, mouse_pos):
     # Draw screen elements on screen.
     completion_message.draw_text()
     show_character_sheet.draw_button(mouse_pos)
-
-
-def show_character_sheet_screen(screen, gui_elements):
-    screen_title = gui_elements["char_sheet_title"]
-
-    ui.draw_screen_title(screen, screen_title, gui_elements)

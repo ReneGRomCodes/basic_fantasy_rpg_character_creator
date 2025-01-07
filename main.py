@@ -4,6 +4,7 @@ import gui.gui as gui
 import core.event_handlers as eh
 from core.settings import Settings
 from gui.gui_elements import initialize_screen_elements
+from gui.character_sheet.cs_elements import initialize_cs_elements
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
 It initializes the program and starts the main functionality."""
 
@@ -16,8 +17,10 @@ def run_character_creator():
     screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
 
-    # Initialize dict with GUI elements. See 'gui/gui_elements' for details.
+    # Initialize dicts with GUI elements. See package 'gui' for details.
     gui_elements = initialize_screen_elements(screen)
+    # Elements for character sheet.
+    cs_elements = initialize_cs_elements(screen, gui_elements)
 
     # Set initial state.
     state = "title_screen"
@@ -42,7 +45,7 @@ def run_character_creator():
         elif state == "random_character":
             mf.random_character()
         elif state == "character_sheet":
-            mf.character_sheet(screen, gui_elements)
+            mf.show_character_sheet(screen, cs_elements, gui_elements)
 
         pygame.display.flip()
 
