@@ -19,6 +19,8 @@ random_money_flag = False
 custom_money_flag = False
 
 
+"""State manager for custom character creation."""
+
 def custom_character(screen, state, gui_elements, mouse_pos):
     """Create custom character based on user input. Check and return state for main loop."""
     # Declare global variables to allow modification of these values within the function.
@@ -88,13 +90,29 @@ def custom_character(screen, state, gui_elements, mouse_pos):
     return state
 
 
+"""State manager for random character creation."""
+
 def random_character():
     """Create character with random values."""
-    pass
+    possible_characters = None
+
+    # Get ability scores and valid race-class combinations.
+    while True:
+        # Generate dictionary for character abilities.
+        character.set_ability_dict()
+        # Check if character abilities allow for any valid race-class combinations.
+        race_list, class_list = func.get_race_class_lists(character)
+        if func.check_valid_race_class(race_list, class_list):
+            possible_characters = func.build_possible_characters_list(race_list, class_list)
+            break
+        else:
+            continue
+
+
 
 
 def show_character_sheet(screen, cs_elements, gui_elements):
-    """Show character sheet."""
+    """Show character sheet. Package 'gui/character_sheet' is used here as opposed to the more general 'gui'."""
     show_character_sheet_screen(screen, cs_elements, gui_elements)
 
 
