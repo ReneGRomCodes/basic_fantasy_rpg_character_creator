@@ -44,7 +44,7 @@ def run_character_creator():
         elif state in custom_character_states:
             state = mf.custom_character(screen, state, gui_elements, mouse_pos)
         elif state in random_character_state:
-            mf.random_character(state)
+            state = mf.random_character(state)
         elif state == "character_sheet":
             mf.show_character_sheet(screen, cs_elements, gui_elements)
 

@@ -9,7 +9,7 @@ import random
 """Main functions/state managers used in 'main.py'."""
 
 
-# Create instance of class 'Character' .
+# Create instance of class 'Character'.
 character = char.Character()
 # Initialize variables and set starting values for character creation.
 possible_characters = None
@@ -103,8 +103,8 @@ def random_character(state):
         if not possible_characters:
             # Generate dictionary for character abilities.
             character.set_ability_dict()
-            # Check if character abilities allow for any valid race-class combinations.
 
+            # Check if character abilities allow for any valid race-class combinations.
             race_list, class_list = func.get_race_class_lists(character)
             if func.check_valid_race_class(race_list, class_list):
                 # Build list of possible characters, choose an entry at random, assign race/class to character object and
@@ -118,7 +118,6 @@ def random_character(state):
 
             else:
                 state = "random_character"
-
 
     elif state == "random_state_1":
         pass
