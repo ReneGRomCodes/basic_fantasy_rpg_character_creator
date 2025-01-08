@@ -5,7 +5,8 @@ import core.functions as func
 import shop_functions as sf
 import core.event_handlers as eh
 from gui.character_sheet.character_sheet import show_character_sheet_screen
-"""Main functions used in 'main.py'."""
+import random
+"""Main functions/state managers used in 'main.py'."""
 
 
 # Create instance of class 'Character' .
@@ -92,22 +93,38 @@ def custom_character(screen, state, gui_elements, mouse_pos):
 
 """State manager for random character creation."""
 
-def random_character():
+def random_character(state):
     """Create character with random values."""
-    possible_characters = None
+    # Declare global variables to allow modification of these values within the function.
+    global possible_characters, selected_race, selected_class
 
-    # Get ability scores and valid race-class combinations.
-    while True:
-        # Generate dictionary for character abilities.
-        character.set_ability_dict()
-        # Check if character abilities allow for any valid race-class combinations.
-        race_list, class_list = func.get_race_class_lists(character)
-        if func.check_valid_race_class(race_list, class_list):
-            possible_characters = func.build_possible_characters_list(race_list, class_list)
-            break
-        else:
-            continue
+    if state == "random_character":
+        # Get ability scores and valid race-class combinations.
+        if not possible_characters:
+            # Generate dictionary for character abilities.
+            character.set_ability_dict()
+            # Check if character abilities allow for any valid race-class combinations.
 
+            race_list, class_list = func.get_race_class_lists(character)
+            if func.check_valid_race_class(race_list, class_list):
+                # Build list of possible characters, choose an entry at random, assign race/class to character object and
+                # set corresponding attributes for character.
+                possible_characters = func.build_possible_characters_list(race_list, class_list)
+                selected_race, selected_class = random.choice(possible_characters).split()
+                character.set_race(selected_race)
+                character.set_class(selected_class)
+                func.set_character_values(character)
+                state = "random_state_1"
+
+            else:
+                state = "random_character"
+
+
+    elif state == "random_state_1":
+        pass
+
+
+    return state
 
 
 

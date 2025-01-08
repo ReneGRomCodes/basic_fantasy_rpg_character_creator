@@ -24,9 +24,10 @@ def run_character_creator():
 
     # Set initial state.
     state = "title_screen"
-    # Set of states for custom character creation.
+    # Set of states for character creation.
     custom_character_states = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
                                "set_starting_money", "custom_input_money", "creation_complete"}
+    random_character_state = {"random_character", "random_state_1"}
 
     # Start main loop.
     while True:
@@ -42,8 +43,8 @@ def run_character_creator():
             gui.show_menu(screen, gui_elements, mouse_pos)
         elif state in custom_character_states:
             state = mf.custom_character(screen, state, gui_elements, mouse_pos)
-        elif state == "random_character":
-            mf.random_character()
+        elif state in random_character_state:
+            mf.random_character(state)
         elif state == "character_sheet":
             mf.show_character_sheet(screen, cs_elements, gui_elements)
 
