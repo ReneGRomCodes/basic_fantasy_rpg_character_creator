@@ -177,8 +177,8 @@ def initialize_screen_elements(screen):
 
 
     # Character naming screen.
-    character_naming_title_text = "- NAME YOUR CHARACTER -"
-    character_naming_screen_title = so.TextField(screen, character_naming_title_text, text_large)
+    character_naming_prompt_text = "Name your"
+    character_naming_prompt = so.TextField(screen, character_naming_prompt_text, text_medium)
     # 'pygame_textinput' and 'TextInputField' instances.
     character_input_font = pygame.font.SysFont(None, text_medium)
     character_name_input = pygame_textinput.TextInputVisualizer(font_object=character_input_font)
@@ -254,7 +254,7 @@ def initialize_screen_elements(screen):
         "inactive_classes": (inactive_fighter_field, inactive_cleric_field, inactive_magic_user_field, inactive_thief_field,
                              inactive_fighter_magic_user_field, inactive_magic_user_thief_field),
         # Character naming screen.
-        "naming_title": character_naming_screen_title,
+        "naming_prompt": character_naming_prompt,
         "character_name_input": (character_name_input, character_name_field),
         # Starting money screen.
         "starting_money_title": starting_money_screen_title,

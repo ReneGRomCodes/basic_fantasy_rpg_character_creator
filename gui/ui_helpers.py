@@ -285,6 +285,30 @@ def select_race_class(available_choices, selected_race, selected_class, reset_bu
     return selected_race, selected_class
 
 
+"""Background functions for character naming screen."""
+
+def build_and_position_prompt(screen, naming_prompt, character):
+    """Change text from 'TextField' instance 'naming_prompt' to include characters race and class, and position it on
+    screen.
+    ARGS:
+        screen: pygame window.
+        naming_prompt: instance of 'TextField' class prompting the user to input a character name.
+        character: instance of 'Character' class.
+    """
+
+    # Check if naming prompt has already been changed in previous iteration.
+    if character.class_name in naming_prompt.text:
+        pass
+    else:
+        # Add character race and class to naming prompt and re-render text_rect.
+        naming_prompt.text += f" {character.race_name} {character.class_name}"
+        naming_prompt.text_image = naming_prompt.font.render(naming_prompt.text, True, naming_prompt.text_color)
+        naming_prompt.text_rect = naming_prompt.text_image.get_rect()
+
+    # Position changed naming prompt on screen.
+    naming_prompt.text_rect.centerx, naming_prompt.text_rect.centery = screen.get_rect().centerx, screen.get_rect().centery / 1.15
+
+
 """Background functions for starting money screen."""
 
 def position_money_screen_elements(screen, gui_elements):
