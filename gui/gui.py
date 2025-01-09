@@ -160,7 +160,7 @@ def show_naming_screen(screen, character, gui_elements, mouse_pos):
     continue_button = gui_elements["continue_button"]
     character_name_field = gui_elements["character_name_input"][1]
 
-    # Change text attribute for naming prompt object to include chosen race and class, and position it on screen.
+    # Create text attribute for naming prompt object to include chosen race and class, and position it on screen.
     ui.build_and_position_prompt(screen, naming_prompt, character)
     # Draw naming prompt.
     naming_prompt.draw_text()

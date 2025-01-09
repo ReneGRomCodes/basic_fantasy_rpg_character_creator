@@ -177,8 +177,11 @@ def initialize_screen_elements(screen):
 
 
     # Character naming screen.
-    character_naming_prompt_text = "Name your"
-    character_naming_prompt = so.TextField(screen, character_naming_prompt_text, text_medium)
+    # NOTE: 'character_naming_prompt' has an empty string as text attribute. The final text will be assigned in function
+    # 'ui_helpers.py/build_and_position_prompt()' for the naming screen to include character race/class. This allows the
+    # function to reset the prompt and prevents it from retaining previous race/class selections if user goes back and
+    # forth between selection and naming screen. Shit gets out of hand otherwise.
+    character_naming_prompt = so.TextField(screen, "", text_medium)
     # 'pygame_textinput' and 'TextInputField' instances.
     character_input_font = pygame.font.SysFont(None, text_medium)
     character_name_input = pygame_textinput.TextInputVisualizer(font_object=character_input_font)
