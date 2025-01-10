@@ -93,7 +93,7 @@ def custom_character(screen, state, gui_elements, mouse_pos):
 
 """State manager for random character creation."""
 
-def random_character(state):
+def random_character(screen, state, gui_elements, mouse_pos):
     """Create character with random values."""
     # Declare global variables to allow modification of these values within the function.
     global possible_characters, selected_race, selected_class
@@ -114,13 +114,21 @@ def random_character(state):
                 character.set_race(selected_race)
                 character.set_class(selected_class)
                 func.set_character_values(character)
-                state = "random_state_1"
+                state = "set_random_money"
 
             else:
                 state = "random_character"
 
-    elif state == "random_state_1":
-        pass
+    elif state == "set_random_money":
+        # Set random amount of starting money in the background without UI.
+        character.money = func.set_starting_money()
+        state = "name_random_character"
+
+    elif state == "name_random_character":
+        # Display character naming screen.
+        # 'creation_complete' state that follows afterward is handled in 'custom_character()' to avoid duplicate code.
+        gui.show_naming_screen(screen, character, gui_elements, mouse_pos)
+        state = eh.naming_character_events(state, character, gui_elements, mouse_pos)
 
 
     return state

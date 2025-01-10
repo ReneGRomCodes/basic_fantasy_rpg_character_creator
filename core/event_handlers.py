@@ -1,6 +1,7 @@
 import pygame
 import sys
 import core.functions as func
+from character_creation_functions import build_character_sheet
 """Contains event handler functions."""
 
 
@@ -67,6 +68,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
             if state == "show_abilities":
                 if event.type == pygame.MOUSEBUTTONUP:
                     if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                        character.full_reset_character()
                         state = "main_menu"
 
                     if gui_elements["reroll_button"].button_rect.collidepoint(mouse_pos):
@@ -114,6 +116,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
             elif state == "creation_complete":
                 if event.type == pygame.MOUSEBUTTONUP:
                     if gui_elements["show_character_sheet"].button_rect.collidepoint(mouse_pos):
+                        build_character_sheet(character)  # TODO Character sheet in console for checks. Remove when done.
                         state = "character_sheet"
                     else:
                         pass
@@ -128,8 +131,16 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
 events and pygame_textinput events."""
 
 def naming_character_events(state, character, gui_elements, mouse_pos):
-    """Check and handle text input field events in function 'custom_character()' for state 'name_character' in
-    'main_functions.py' and return new 'state'."""
+    """Check and handle text input field events in functions 'custom_character()' and 'random_character' for each naming
+    character state.
+    ARGS:
+        state: program state. Entry and exit state differs based on custom or random character creation.
+        character: instance of class 'Character'.
+        gui_elements: dict of GUI elements.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        state: program state
+    """
     # Assign 'pygame_textinput' instance stored in dict 'gui_elements' to variable.
     character_name_input = gui_elements["character_name_input"][0]
     # Get pygame events and assign it to variable to be shared between 'pygame_textinput' instance and the for-loop.
@@ -143,19 +154,26 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
             pygame.quit()
             sys.exit()
 
-        # Check of variable 'state' actually unnecessary. Left in for clarity when reading the code.
-        if state == "name_character":
-            if event.type == pygame.MOUSEBUTTONUP:
-                if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+        if event.type == pygame.MOUSEBUTTONUP:
+            if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                # Different state value is checked and set depending on whether custom or random character is created.
+                if state == "name_character":
                     character.reset_character()
                     state = "race_class_selection"
+                elif state == "name_random_character":
+                    character.full_reset_character()
+                    state = "main_menu"
 
-                if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                    character.set_name(character_name_input.manager.value)
+            if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                character.set_name(character_name_input.manager.value)
+                # Different state value is checked and set depending on whether custom or random character is created.
+                if state == "name_character":
                     state = "set_starting_money"
+                elif state == "name_random_character":
+                    state = "creation_complete"
 
-                else:
-                    pass
+            else:
+                pass
 
     return state
 

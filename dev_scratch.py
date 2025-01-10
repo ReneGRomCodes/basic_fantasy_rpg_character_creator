@@ -5,3 +5,4 @@
 # TODO fully implement weapons shop within 'shop_functions.py'
 # TODO keep an eye on functions in 'core\functions.py' and 'character_creation_functions.py' that will be obsolete after migration.
 # TODO rework docstrings in gui/gui.py.
+# TODO Remove function call 'build_character_sheet()' from event handler when final character sheet is done.
