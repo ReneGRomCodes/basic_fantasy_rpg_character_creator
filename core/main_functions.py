@@ -19,6 +19,16 @@ starting_money = None
 random_money_flag = False
 custom_money_flag = False
 
+# Following function is imported into and called in event handler 'naming_character_events()' when returning to main menu
+# from 'name_random_character' state. This resolves an issue that caused the program to freeze when returning from naming
+# screen to main menu.
+def fix_my_messy_globals():
+    """Reset variables with default values."""
+    global possible_characters, selected_race, selected_class
+    possible_characters = None
+    selected_race = None
+    selected_class = None
+
 
 """State manager for custom character creation."""
 

@@ -119,36 +119,6 @@ class Character:
         self.weight_carried = 0
         self.specials = []
 
-    def full_reset_character(self):
-        """Set all values to default for a 'hard' reset of the character. Specifically used when returning to main menu
-        during character creation."""
-        self.race_name = None
-        self.max_hit_die = False
-        self.race_specials = []
-        self.bonuses = []
-        self.class_name = None
-        self.class_hit_die = 0
-        self.class_specials = []
-        self.class_saving_throws = []
-        self.name = None
-        self.abilities = {}
-        self.armor_class = None
-        self.attack_bonus = 1
-        self.specials = []
-        self.hit_die = 0
-        self.next_level_xp = 0
-        self.specials = []
-        self.saving_throws = {}
-        self.spells = False
-        self.hp = 0
-        self.carrying_capacity = {}
-        self.weight_carried = 0
-        self.money = 0
-        self.inventory = []
-        self.armor = item_inst.no_armor
-        self.shield = item_inst.no_shield
-        self.weapon = item_inst.no_weapon
-
     def set_name(self, char_name):
         """Set name for character."""
         self.name = char_name

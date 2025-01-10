@@ -68,7 +68,6 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
             if state == "show_abilities":
                 if event.type == pygame.MOUSEBUTTONUP:
                     if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
-                        character.full_reset_character()
                         state = "main_menu"
 
                     if gui_elements["reroll_button"].button_rect.collidepoint(mouse_pos):
@@ -157,11 +156,15 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
         if event.type == pygame.MOUSEBUTTONUP:
             if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                 # Different state value is checked and set depending on whether custom or random character is created.
+                character.reset_character()
                 if state == "name_character":
-                    character.reset_character()
                     state = "race_class_selection"
                 elif state == "name_random_character":
-                    character.full_reset_character()
+                    # Import and call function to reset "messy globals" in 'main_functions.py' before returning to main
+                    # menu. Not a pretty solution, but it resolves the freezing issue when coming back from the naming
+                    # screen.
+                    from core.main_functions import fix_my_messy_globals
+                    fix_my_messy_globals()
                     state = "main_menu"
 
             if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
