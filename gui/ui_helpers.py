@@ -330,7 +330,7 @@ def position_money_screen_elements(screen, gui_elements):
 def choose_money_option(choices, starting_money, random_money_flag, custom_money_flag, mouse_pos):
     """Choose option to either generate random amount of money or let user input a custom amount, return 'starting_money'
     if random amount is chosen, set and return 'random_money_flag'/'custom_money_flag' accordingly.
-        ARGS:
+    ARGS:
         choices: List of instances of 'Button' class from dict 'gui_elements'.
         starting_money: amount of starting money. Starting value is 'None', changes if 'random_money_flag' is 'True'
         random_money_flag: flag to indicate if randomly generated amount of money is chosen.

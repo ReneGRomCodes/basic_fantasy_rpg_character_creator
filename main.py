@@ -14,6 +14,7 @@ def run_character_creator():
     # Initialize pygame and create a window.
     pygame.init()
     settings = Settings()
+    clock = pygame.time.Clock()
     screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
 
@@ -49,6 +50,7 @@ def run_character_creator():
             mf.show_character_sheet(screen, cs_elements, gui_elements)
 
         pygame.display.flip()
+        clock.tick(30)
 
 
 run_character_creator()
