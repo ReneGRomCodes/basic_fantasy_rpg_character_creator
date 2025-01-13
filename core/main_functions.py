@@ -19,21 +19,9 @@ starting_money = None
 random_money_flag = False
 custom_money_flag = False
 
-# Following function is imported into and called in event handler 'naming_character_events()' when returning to main menu
-# from 'name_random_character' state. This resolves an issue that caused the program to freeze when returning from naming
-# screen to main menu.
-def fix_my_messy_globals():
-    """Reset variables with default values."""
-    global possible_characters, selected_race, selected_class
-    possible_characters = None
-    selected_race = None
-    selected_class = None
-
-
-"""State manager for custom character creation."""
 
 def custom_character(screen, state, gui_elements, mouse_pos):
-    """Create custom character based on user input. Check and return state for main loop."""
+    """State manager for custom character creation based on user input."""
     # Declare global variables to allow modification of these values within the function.
     global possible_characters, selected_race, selected_class, starting_money, random_money_flag, custom_money_flag
 
@@ -101,10 +89,8 @@ def custom_character(screen, state, gui_elements, mouse_pos):
     return state
 
 
-"""State manager for random character creation."""
-
 def random_character(screen, state, gui_elements, mouse_pos):
-    """Create character with random values."""
+    """State manager for random character creation."""
     # Declare global variables to allow modification of these values within the function.
     global possible_characters, selected_race, selected_class
 
@@ -144,11 +130,14 @@ def random_character(screen, state, gui_elements, mouse_pos):
     return state
 
 
-
 def show_character_sheet(screen, cs_elements, gui_elements):
     """Show character sheet. Package 'gui/character_sheet' is used here as opposed to the more general 'gui'."""
     show_character_sheet_screen(screen, cs_elements, gui_elements)
 
+
+"""
+OLD MAIN SHOP FUNCTION FOR CONSOLE PART OF THE PROGRAM. DELETE WHEN MIGRATED TO PYGAME.
+"""
 
 def show_main_shop():
     """Main loop for shop 'main menu'."""
@@ -171,3 +160,17 @@ def show_main_shop():
             sf.set_shop(character, shop_section)
         else:
             break
+
+
+"""
+Following function is imported into and called in event handler 'naming_character_events()' when returning to main menu
+from 'name_random_character' state. This resolves an issue that caused the program to freeze when returning from naming
+screen to main menu.
+"""
+
+def fix_my_messy_globals():
+    """Reset variables with default values."""
+    global possible_characters, selected_race, selected_class
+    possible_characters = None
+    selected_race = None
+    selected_class = None

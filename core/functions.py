@@ -1,6 +1,6 @@
 import os
 import random
-"""Helper and check value functions. Functions also generate and return values in accordance to game rules."""
+"""Helper and check functions to generate and return values in accordance to game rules."""
 
 
 def dice_roll(n, m):
@@ -144,7 +144,9 @@ def set_starting_money():
 
 
 
-"""Functions still in use by console part of the program. DELETE WHEN OBSOLETE!!!"""
+"""
+Functions still in use by console part of the program. DELETE WHEN OBSOLETE!!!
+"""
 
 def check_yes_no(prompt):
     """Take string 'prompt' for user input and check for y/n answer. Return 'True' for y, 'False'

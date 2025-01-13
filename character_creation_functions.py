@@ -1,7 +1,5 @@
-import core.functions as func
-import random
 from item_instances import no_shield
-"""Console functions. DELETE WHEN OBSOLETE!!!"""
+"""Console functions for use in character sheet and shop. DELETE WHEN OBSOLETE!!!"""
 
 
 def show_ability_scores(character):
