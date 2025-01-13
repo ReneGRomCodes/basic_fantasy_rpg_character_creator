@@ -182,30 +182,43 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
 
 
 def custom_starting_money_events(state, gui_elements, starting_money, mouse_pos):
-    """Check and handle text input field events in function 'custom_character()' for state 'custom_money' in
+    """Check and handle text input field events in function 'custom_character()' for state 'custom_input_money' in
     'main_functions.py' and return 'starting_money' and new 'state'."""
     # Assign 'pygame_textinput' instance stored in dict 'gui_elements' to variable.
     starting_money_input = gui_elements["money_amount_input"][0]
 
-    # Get pygame events and assign it to variable to be shared between 'pygame_textinput' instance and the for-loop.
+    # Get pygame events and assign it to variable to be shared between 'pygame_textinput' instance and the for-loops.
     events = pygame.event.get()
 
-    # Check and update events for 'pygame_textinput' instance 'character_name_input' before other events are checked.
-    starting_money_input.update(events)
+    # Set of valid keys for numeric only input.
+    valid_keys = {pygame.K_0, pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4,
+                  pygame.K_5, pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9,
+                  pygame.K_KP0, pygame.K_KP1, pygame.K_KP2, pygame.K_KP3, pygame.K_KP4,
+                  pygame.K_KP5, pygame.K_KP6, pygame.K_KP7, pygame.K_KP8, pygame.K_KP9,
+                  pygame.K_DELETE, pygame.K_BACKSPACE, pygame.K_LEFT, pygame.K_RIGHT}
+
+    # Filter events for valid keys list to be passed to the input field.
+    filtered_keys = []
+    for event in events:
+        # Allow only text input with numeric keys.
+        if event.type == pygame.KEYDOWN and event.key not in valid_keys:
+            continue
+        filtered_keys.append(event)
+
+    # Check and update events for 'pygame_textinput' instance 'starting_money_input' before other events are checked.
+    starting_money_input.update(filtered_keys)
 
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-        # Check of variable 'state' actually unnecessary. Left in for clarity when reading the code.
-        if state == "custom_input_money":
-            if event.type == pygame.MOUSEBUTTONUP:
-                if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
-                    state = "name_character"
+        if event.type == pygame.MOUSEBUTTONUP:
+            if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                state = "name_character"
 
-                if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                    starting_money = starting_money_input.manager.value
-                    state = "creation_complete"
+            if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                starting_money = starting_money_input.manager.value
+                state = "creation_complete"
 
     return starting_money, state
