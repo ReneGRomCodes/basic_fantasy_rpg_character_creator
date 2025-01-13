@@ -181,7 +181,7 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
     return state
 
 
-def custom_starting_money_events(state, gui_elements, starting_money, mouse_pos):
+def custom_starting_money_events(state, character, gui_elements, mouse_pos):
     """Check and handle text input field events in function 'custom_character()' for state 'custom_input_money' in
     'main_functions.py' and return 'starting_money' and new 'state'."""
     # Assign 'pygame_textinput' instance stored in dict 'gui_elements' to variable.
@@ -201,19 +201,22 @@ def custom_starting_money_events(state, gui_elements, starting_money, mouse_pos)
             sys.exit()
 
         # Allow only text input with numeric keys and populate 'filtered_key' with valid inputs.
-        if event.type == pygame.KEYDOWN and event.key not in valid_keys:
-            continue
-        filtered_keys.append(event)
+        if event.type == pygame.KEYDOWN and event.key in valid_keys:
+            filtered_keys.append(event)
 
         if event.type == pygame.MOUSEBUTTONUP:
             if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                 state = "name_character"
 
             if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                starting_money = starting_money_input.manager.value
+                # Set characters starting money to '0' if input field is left empty.
+                if starting_money_input.manager.value:
+                    character.money = int(starting_money_input.manager.value)
+                else:
+                    character.money = 0
                 state = "creation_complete"
 
     # Check and update events for 'pygame_textinput' instance 'starting_money_input'
     starting_money_input.update(filtered_keys)
 
-    return starting_money, state
+    return state

@@ -90,7 +90,7 @@ def custom_character(screen, state, gui_elements, mouse_pos):
         random_money_flag, custom_money_flag, starting_money = gui.show_starting_money_screen(screen, gui_elements,
                                                                                               random_money_flag, custom_money_flag,
                                                                                               starting_money, mouse_pos)
-        starting_money, state = eh.custom_starting_money_events(state, gui_elements, starting_money, mouse_pos)
+        state = eh.custom_starting_money_events(state, character, gui_elements, mouse_pos)
 
     elif state == "creation_complete":
         # Display message screen stating that basic character creation is completed.

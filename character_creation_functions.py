@@ -49,31 +49,6 @@ def show_inventory(character):
         print(f" - {item.name:<30}{f"{item.weight} lbs":>7}")
 
 
-def random_character_generator(character):
-    """Create random character, prompt user for 'char_name' and set values for Character instance."""
-    while True:
-
-        # Generate dictionary for character abilities.
-        character.set_ability_dict()
-
-        # Check if abilities allow for valid race-class combinations.
-        race_list, class_list = func.get_race_class_lists(character)
-        if not func.check_valid_race_class(race_list, class_list):
-            continue
-        race_class_list = func.build_possible_characters_list(race_list, class_list)
-
-        # Generate random character and set values.
-        character_race_class = race_class_list[random.randint(0, (len(race_list)-1))]
-        character.set_race(character_race_class.split(" ")[0])
-        character.set_class(character_race_class.split(" ")[1])
-        character.money = character.set_starting_money()
-        func.set_character_values(character)
-
-        # prompt user for name.
-        #ui.name_character(character)  # Uses obsolete function. Replaced with pygame screen!!!
-        break
-
-
 def build_character_sheet(character):
     """Take instance 'character' and print character sheet."""
 
