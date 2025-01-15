@@ -131,7 +131,8 @@ def random_character(screen, state, gui_elements, mouse_pos):
 
 
 def show_character_sheet(screen, cs_elements, gui_elements):
-    """Show character sheet. Package 'gui/character_sheet' is used here as opposed to the more general 'gui'."""
+    """State manager for character sheet. Package 'gui/character_sheet' (as 'cs_elements') is used here in addition to
+    the general 'gui' package."""
     show_character_sheet_screen(screen, cs_elements, gui_elements)
 
 
