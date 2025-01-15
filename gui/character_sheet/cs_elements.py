@@ -58,7 +58,7 @@ def initialize_cs_elements(screen, gui_elements):
         "race": char_race,
         "class": char_class,
         "armor_class": armor_class,
-        "health_point": health_points,
+        "health_points": health_points,
         "attack_bonus": attack_bonus,
         "abilities": abilities,
         "saving_throws": saving_throws,
