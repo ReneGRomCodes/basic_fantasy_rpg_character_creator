@@ -6,8 +6,9 @@ def get_element_variables(screen, cs_elements, gui_elements):
     """Assign values from dicts 'cs_elements' and 'gui_elements' to variables and return them to avoid assigning them
     repeatedly in multiple functions within this module."""
 
-    # Assign screen variables.
+    # Assign screen rect variable.
     screen_rect = screen.get_rect()
+
     # Assign 'gui_elements' variables.
     title_spacing = gui_elements["menu_title_spacing"]
     spacing_screen_edge = gui_elements["default_edge_spacing"]

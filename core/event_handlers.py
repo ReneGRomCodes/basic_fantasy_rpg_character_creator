@@ -183,7 +183,15 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
 
 def custom_starting_money_events(state, character, gui_elements, mouse_pos):
     """Check and handle text input field events in function 'custom_character()' for state 'custom_input_money' in
-    'main_functions.py' and return 'starting_money' and new 'state'."""
+    'main_functions.py'.
+        ARGS:
+        state: program state. Entry and exit state differs based on custom or random character creation.
+        character: instance of class 'Character'.
+        gui_elements: dict of GUI elements.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        state: program state
+    """
     # Assign 'pygame_textinput' instance stored in dict 'gui_elements' to variable.
     starting_money_input = gui_elements["money_amount_input"][0]
 
