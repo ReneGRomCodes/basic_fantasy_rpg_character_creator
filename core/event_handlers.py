@@ -116,7 +116,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
                 if event.type == pygame.MOUSEBUTTONUP:
                     if gui_elements["show_character_sheet"].button_rect.collidepoint(mouse_pos):
                         build_character_sheet(character)  # TODO Character sheet in console for checks. Remove when done.
-                        state = "character_sheet"
+                        state = "initialize_character_sheet"
                     else:
                         pass
 
