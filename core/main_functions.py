@@ -141,7 +141,7 @@ def initialize_character_sheet(screen, gui_elements):
     global cs_elements
 
     # Populate 'cs_elements' with initialized screen elements specific to the character sheet.
-    cs_elements = initialize_cs_elements(screen, gui_elements)
+    cs_elements = initialize_cs_elements(screen, character, gui_elements)
 
     state = "character_sheet"
 

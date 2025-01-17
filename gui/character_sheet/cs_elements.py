@@ -2,7 +2,7 @@ import gui.screen_objects as so
 """Initialize instances of classes from 'screen_objects.py' for use in GUI."""
 
 
-def initialize_cs_elements(screen, gui_elements):
+def initialize_cs_elements(screen, character, gui_elements):
     """Initialize instances of classes from 'screen_objects.py' for use in character sheet in addition to default size
     and spacing values for automatic scalability of screen objects. Return dict of instances 'cs_elements'.
     NOTE: Instances created have to be then added manually to dict 'cs_elements'!
@@ -14,23 +14,27 @@ def initialize_cs_elements(screen, gui_elements):
     """
 
     # Size and spacing variables from dict 'gui_elements' that are calculated based on screen size for scalability.
-    screen_height, screen_width = screen.get_rect().height, screen.get_rect().width
     text_standard = gui_elements["text_standard"]
     text_large = gui_elements["text_large"]
     text_medium = gui_elements["text_medium"]
     text_small = gui_elements["text_small"]
-    spacing_screen_edge = gui_elements["default_edge_spacing"]  # Default value for distance to edge of screen for GUI objects.
 
     # Initialize screen elements.
-    title_text = "- CHARACTER SHEET -"
-    title = so.TextField(screen, title_text, text_medium)
-    # Character sheet base elements.
-    name = so.TextField(screen, "Name:", text_standard)
-    xp = so.TextField(screen, "XP:", text_standard)
-    level = so.TextField(screen, "Level:", text_standard)
-    next_level_xp = so.TextField(screen, "XP to next level:", text_standard)
-    char_race = so.TextField(screen, "Race:", text_standard)
-    char_class = so.TextField(screen, "Class:", text_standard)
+    title = so.TextField(screen, "- CHARACTER SHEET -", text_medium)
+    # Character sheet base info elements.
+    name_field = so.TextField(screen, "Name: ", text_standard)
+    name_char = so.TextField(screen, character.name, text_standard)
+    xp_field = so.TextField(screen, "XP: ", text_standard)
+    xp_char = so.TextField(screen, str(character.xp), text_standard)
+    race_field = so.TextField(screen, "Race: ", text_standard)
+    race_char = so.TextField(screen, character.race_name, text_standard)
+    class_field = so.TextField(screen, "Class: ", text_standard)
+    class_char = so.TextField(screen, character.class_name, text_standard)
+    level_field = so.TextField(screen, "Level: ", text_standard)
+    level_char = so.TextField(screen, str(character.level), text_standard)
+    next_lvl_xp_field = so.TextField(screen, "XP to next level: ", text_standard)
+    next_lvl_xp_char = so.TextField(screen, str(character.next_level_xp), text_standard)
+    # Abilities and combat related info elements.
     armor_class = so.TextField(screen, "Armor Class:", text_standard)
     health_points = so.TextField(screen, "Health Points:", text_standard)
     attack_bonus = so.TextField(screen, "Attack Bonus:", text_standard)
@@ -50,20 +54,25 @@ def initialize_cs_elements(screen, gui_elements):
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     cs_elements = {
+        # Screen title.
         "title": title,
-        "name": name,
-        "xp": xp,
-        "level": level,
-        "next_level_xp": next_level_xp,
-        "race": char_race,
-        "class": char_class,
+        # Basic info elements.
+        "name": (name_field, name_char),
+        "xp": (xp_field, xp_char),
+        "level": (level_field, level_char),
+        "next_level_xp": (next_lvl_xp_field, next_lvl_xp_char),
+        "race": (race_field, race_char),
+        "class": (class_field, class_char),
+        # Abilities and combat elements.
         "armor_class": armor_class,
         "health_points": health_points,
         "attack_bonus": attack_bonus,
         "abilities": abilities,
         "saving_throws": saving_throws,
         "special_abilities": special_abilities,
+        # Spells.
         "spells": spells,
+        # Inventory elements.
         "money": money,
         "carrying_capacity": carrying_capacity,
         "weight_carried": weight_carried,

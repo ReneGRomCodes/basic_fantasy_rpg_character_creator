@@ -26,6 +26,8 @@ class Character:
         self.attack_bonus = 1  # Default attack bonus of +1 for Lvl characters.
         self.specials = []
         self.hit_die = 0
+        self.xp = 0
+        self.level = 1
         self.next_level_xp = 0
         self.specials = []
         self.saving_throws = {}
