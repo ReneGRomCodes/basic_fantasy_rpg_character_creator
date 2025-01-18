@@ -4,7 +4,6 @@ import gui.gui as gui
 import core.functions as func
 import shop_functions as sf
 import core.event_handlers as eh
-from gui.character_sheet.character_sheet import show_character_sheet_screen
 from gui.character_sheet.cs_model import CharacterSheet
 import random
 """Main functions/state managers used in 'main.py'."""
@@ -146,7 +145,8 @@ def initialize_character_sheet(screen, gui_elements):
 def show_character_sheet(screen, cs_sheet, gui_elements):
     """State manager for character sheet. Helper class 'CharacterSheet' (as 'cs_sheet') is used here in addition to
     the general 'gui_elements' to manage character sheet specific screen elements."""
-    show_character_sheet_screen(screen, cs_sheet, gui_elements)
+    cs_sheet.position_cs_elements()
+    cs_sheet.show_character_sheet_screen(screen, gui_elements)
 
 
 """

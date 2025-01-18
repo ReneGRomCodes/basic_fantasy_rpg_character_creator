@@ -1,4 +1,5 @@
 import gui.screen_objects as so
+from gui.ui_helpers import draw_screen_title
 """Helper class to organize and access character sheet objects as attributes."""
 
 
@@ -80,3 +81,24 @@ class CharacterSheet:
             self.level_char.text_rect.top, self.screen_width * 0.75)
         self.next_lvl_xp_char.text_rect.top, self.next_lvl_xp_char.text_rect.left =(
             self.next_lvl_xp_field.text_rect.top, self.next_lvl_xp_field.text_rect.right)
+
+    def show_character_sheet_screen(self, screen, gui_elements):
+        # Draw screen title.
+        draw_screen_title(screen, self.title, gui_elements)
+
+        self.position_cs_elements()
+
+        # Draw character sheet elements on screen.
+        # Basic character info fields.
+        self.name_field.draw_text()
+        self.name_char.draw_text()
+        self.xp_field.draw_text()
+        self.xp_char.draw_text()
+        self.race_field.draw_text()
+        self.race_char.draw_text()
+        self.class_field.draw_text()
+        self.class_char.draw_text()
+        self.level_field.draw_text()
+        self.level_char.draw_text()
+        self.next_lvl_xp_field.draw_text()
+        self.next_lvl_xp_char.draw_text()
