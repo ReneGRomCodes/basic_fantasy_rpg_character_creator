@@ -4,7 +4,7 @@ import gui.gui as gui
 import core.functions as func
 import shop_functions as sf
 import core.event_handlers as eh
-from gui.character_sheet.cs_model import CharacterSheet
+from gui.cs_model import CharacterSheet
 import random
 """Main functions/state managers used in 'main.py'."""
 
@@ -131,8 +131,8 @@ def random_character(screen, state, gui_elements, mouse_pos):
 
 
 def initialize_character_sheet(screen, gui_elements):
-    """Create and return instance of class 'CharacterSheet' with screen elements for the character sheet and set the state to
-    'character_sheet'.
+    """Create and return instance of class 'CharacterSheet' with screen elements for the character sheet, call position
+    method and set the state to 'character_sheet'.
     This function ensures that 'cs_sheet' is created only once and after the character creation process is complete,
     to avoid showing empty or uninitialized values on the screen."""
 
