@@ -137,16 +137,10 @@ def initialize_character_sheet(screen, gui_elements):
     to avoid showing empty or uninitialized values on the screen."""
 
     cs_sheet = CharacterSheet(screen, character, gui_elements)
+    cs_sheet.position_cs_elements()
     state = "character_sheet"
 
     return cs_sheet, state
-
-
-def show_character_sheet(screen, cs_sheet, gui_elements):
-    """State manager for character sheet. Helper class 'CharacterSheet' (as 'cs_sheet') is used here in addition to
-    the general 'gui_elements' to manage character sheet specific screen elements."""
-    cs_sheet.position_cs_elements()
-    cs_sheet.show_character_sheet_screen(screen, gui_elements)
 
 
 """

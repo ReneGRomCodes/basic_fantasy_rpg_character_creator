@@ -1,5 +1,4 @@
 import gui.screen_objects as so
-from gui.ui_helpers import draw_screen_title
 """Helper class to organize and access character sheet objects as attributes."""
 
 
@@ -20,6 +19,9 @@ class CharacterSheet:
         self.text_small = gui_elements["text_small"]
         self.title_spacing = gui_elements["menu_title_spacing"]
         self.spacing_screen_edge = gui_elements["default_edge_spacing"]
+
+        # Following character sheet elements are paired, with attributes having the suffix '_field' representing the
+        # field label, while '_char' represent the value from the 'Character' class object.
 
         # Initialize character sheet elements.
         self.title = so.TextField(screen, "- CHARACTER SHEET -", self.text_medium)
@@ -57,9 +59,13 @@ class CharacterSheet:
     def position_cs_elements(self):
         """Position instances of class 'TextField' on screen."""
 
+        # Position screen title.
+        self.title.text_rect.top, self.title.text_rect.centerx = (self.screen_rect.top + self.spacing_screen_edge,
+                                                                  self.screen_rect.centerx)
+
         # Positioning for basic character info fields. Primary 'anchor' object for positioning all elements is 'name_field'.
         self.name_field.text_rect.top, self.name_field.text_rect.left =(
-            self.title.text_rect.bottom + self.title_spacing, self.screen_rect.left +self.spacing_screen_edge)
+            self.title.text_rect.bottom + self.title_spacing, self.screen_rect.left + self.spacing_screen_edge)
         self.name_char.text_rect.top, self.name_char.text_rect.left =(
             self.name_field.text_rect.top, self.name_field.text_rect.right)
         self.xp_field.text_rect.top, self.xp_field.text_rect.left =(
@@ -82,13 +88,11 @@ class CharacterSheet:
         self.next_lvl_xp_char.text_rect.top, self.next_lvl_xp_char.text_rect.left =(
             self.next_lvl_xp_field.text_rect.top, self.next_lvl_xp_field.text_rect.right)
 
-    def show_character_sheet_screen(self, screen, gui_elements):
+    def show_character_sheet_screen(self):
         # Draw screen title.
-        draw_screen_title(screen, self.title, gui_elements)
+        self.title.draw_text()
 
-        self.position_cs_elements()
-
-        # Draw character sheet elements on screen.
+        # Draw character sheet elements.
         # Basic character info fields.
         self.name_field.draw_text()
         self.name_char.draw_text()

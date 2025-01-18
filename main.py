@@ -50,7 +50,7 @@ def run_character_creator():
         elif state == "initialize_character_sheet":
             cs_sheet, state = mf.initialize_character_sheet(screen, gui_elements)
         elif state == "character_sheet":
-            mf.show_character_sheet(screen, cs_sheet, gui_elements)
+            cs_sheet.show_character_sheet_screen()
 
         pygame.display.flip()
         clock.tick(30)
