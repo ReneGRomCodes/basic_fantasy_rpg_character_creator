@@ -19,6 +19,8 @@ def run_character_creator():
 
     # Initialize dicts with GUI elements. See package 'gui' for details.
     gui_elements = initialize_screen_elements(screen)
+    # Create placeholder variable for later 'CharacterSheet' class object.
+    cs_sheet = None
 
     # Set initial state.
     state = "title_screen"
@@ -39,14 +41,16 @@ def run_character_creator():
             gui.show_title_screen(screen, gui_elements)
         elif state == "main_menu":
             gui.show_menu(screen, gui_elements, mouse_pos)
+        # Character creation states.
         elif state in custom_character_states:
             state = mf.custom_character(screen, state, gui_elements, mouse_pos)
         elif state in random_character_state:
             state = mf.random_character(screen, state, gui_elements, mouse_pos)
+        # Character sheet states.
         elif state == "initialize_character_sheet":
-            state = mf.initialize_character_sheet(screen, gui_elements)
+            cs_sheet, state = mf.initialize_character_sheet(screen, gui_elements)
         elif state == "character_sheet":
-            mf.show_character_sheet(screen, gui_elements)
+            mf.show_character_sheet(screen, cs_sheet, gui_elements)
 
         pygame.display.flip()
         clock.tick(30)

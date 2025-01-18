@@ -20,7 +20,7 @@ class CharacterSheet:
         self.title_spacing = gui_elements["menu_title_spacing"]
         self.spacing_screen_edge = gui_elements["default_edge_spacing"]
 
-        # Initialize screen elements.
+        # Initialize character sheet elements.
         self.title = so.TextField(screen, "- CHARACTER SHEET -", self.text_medium)
         # Character sheet base info elements.
         self.name_field = so.TextField(screen, "Name: ", self.text_standard)
@@ -54,6 +54,8 @@ class CharacterSheet:
         self.inventory = so.TextField(screen, "Inventory:", self.text_standard)
 
     def position_cs_elements(self):
+        """Position instances of class 'TextField' on screen."""
+
         # Positioning for basic character info fields. Primary 'anchor' object for positioning all elements is 'name_field'.
         self.name_field.text_rect.top, self.name_field.text_rect.left =(
             self.title.text_rect.bottom + self.title_spacing, self.screen_rect.left +self.spacing_screen_edge)

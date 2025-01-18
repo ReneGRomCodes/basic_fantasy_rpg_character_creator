@@ -19,8 +19,6 @@ selected_class = None
 starting_money = None
 random_money_flag = False
 custom_money_flag = False
-# Set variable for later instance of class 'CharacterSheet' to be created when all character attributes are set.
-cs_sheet = False
 
 
 def custom_character(screen, state, gui_elements, mouse_pos):
@@ -134,21 +132,18 @@ def random_character(screen, state, gui_elements, mouse_pos):
 
 
 def initialize_character_sheet(screen, gui_elements):
-    """Create instance of class 'CharacterSheet' with screen elements for the character sheet and set the state to
+    """Create and return instance of class 'CharacterSheet' with screen elements for the character sheet and set the state to
     'character_sheet'.
-
     This function ensures that 'cs_sheet' is created only once and after the character creation process is complete,
     to avoid showing empty or uninitialized values on the screen."""
-    global cs_sheet
 
     cs_sheet = CharacterSheet(screen, character, gui_elements)
-
     state = "character_sheet"
 
-    return state
+    return cs_sheet, state
 
 
-def show_character_sheet(screen, gui_elements):
+def show_character_sheet(screen, cs_sheet, gui_elements):
     """State manager for character sheet. Helper class 'CharacterSheet' (as 'cs_sheet') is used here in addition to
     the general 'gui_elements' to manage character sheet specific screen elements."""
     show_character_sheet_screen(screen, cs_sheet, gui_elements)
