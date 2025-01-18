@@ -4,8 +4,8 @@ import gui.gui as gui
 import core.functions as func
 import shop_functions as sf
 import core.event_handlers as eh
-from gui.character_sheet.cs_elements import initialize_cs_elements
 from gui.character_sheet.character_sheet import show_character_sheet_screen
+from gui.character_sheet.cs_model import CharacterSheet
 import random
 """Main functions/state managers used in 'main.py'."""
 
@@ -19,7 +19,8 @@ selected_class = None
 starting_money = None
 random_money_flag = False
 custom_money_flag = False
-cs_elements = None
+# Set variable for later instance of class 'CharacterSheet' to be created when all character attributes are set.
+cs_sheet = False
 
 
 def custom_character(screen, state, gui_elements, mouse_pos):
@@ -133,15 +134,14 @@ def random_character(screen, state, gui_elements, mouse_pos):
 
 
 def initialize_character_sheet(screen, gui_elements):
-    """Populate 'cs_elements' with screen elements for the character sheet and set the state to 'character_sheet'.
+    """Create instance of class 'CharacterSheet' with screen elements for the character sheet and set the state to
+    'character_sheet'.
 
-    This function ensures that 'cs_elements' is populated only once and after the character creation process is complete,
-    to avoid showing empty or uninitialized values on the screen. The 'initialize_cs_elements()' function handles
-    the actual creation of these elements."""
-    global cs_elements
+    This function ensures that 'cs_sheet' is created only once and after the character creation process is complete,
+    to avoid showing empty or uninitialized values on the screen."""
+    global cs_sheet
 
-    # Populate 'cs_elements' with initialized screen elements specific to the character sheet.
-    cs_elements = initialize_cs_elements(screen, character, gui_elements)
+    cs_sheet = CharacterSheet(screen, character, gui_elements)
 
     state = "character_sheet"
 
@@ -149,9 +149,9 @@ def initialize_character_sheet(screen, gui_elements):
 
 
 def show_character_sheet(screen, gui_elements):
-    """State manager for character sheet. Package 'gui/character_sheet' (as 'cs_elements') is used here in addition to
-    the general 'gui' package."""
-    show_character_sheet_screen(screen, cs_elements, gui_elements)
+    """State manager for character sheet. Helper class 'CharacterSheet' (as 'cs_sheet') is used here in addition to
+    the general 'gui_elements' to manage character sheet specific screen elements."""
+    show_character_sheet_screen(screen, cs_sheet, gui_elements)
 
 
 """

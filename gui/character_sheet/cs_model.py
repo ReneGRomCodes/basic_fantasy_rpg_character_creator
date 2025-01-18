@@ -8,11 +8,17 @@ class CharacterSheet:
     def __init__(self, screen, character, gui_elements):
         """Initialize the CharacterSheet object with elements."""
 
+        # Assign screen rect attributes.
+        self.screen_rect = screen.get_rect()
+        self.screen_height, self.screen_width = self.screen_rect.height, self.screen_rect.width
+
         # Size and spacing variables from dict 'gui_elements' that are calculated based on screen size for scalability.
         self.text_standard = gui_elements["text_standard"]
         self.text_large = gui_elements["text_large"]
         self.text_medium = gui_elements["text_medium"]
         self.text_small = gui_elements["text_small"]
+        self.title_spacing = gui_elements["menu_title_spacing"]
+        self.spacing_screen_edge = gui_elements["default_edge_spacing"]
 
         # Initialize screen elements.
         self.title = so.TextField(screen, "- CHARACTER SHEET -", self.text_medium)
@@ -46,3 +52,29 @@ class CharacterSheet:
         self.armor = so.TextField(screen, "Armor:", self.text_standard)
         self.armor_ac = so.TextField(screen, "AC:", self.text_standard) # Armor class for worn armor only, not including base armor class for character.
         self.inventory = so.TextField(screen, "Inventory:", self.text_standard)
+
+    def position_cs_elements(self):
+        # Positioning for basic character info fields. Primary 'anchor' object for positioning all elements is 'name_field'.
+        self.name_field.text_rect.top, self.name_field.text_rect.left =(
+            self.title.text_rect.bottom + self.title_spacing, self.screen_rect.left +self.spacing_screen_edge)
+        self.name_char.text_rect.top, self.name_char.text_rect.left =(
+            self.name_field.text_rect.top, self.name_field.text_rect.right)
+        self.xp_field.text_rect.top, self.xp_field.text_rect.left =(
+            self.name_field.text_rect.top, self.screen_width * 0.75)
+        self.xp_char.text_rect.top, self.xp_char.text_rect.left = self.xp_field.text_rect.top, self.xp_field.text_rect.right
+        self.race_field.text_rect.top, self.race_field.text_rect.left =(
+            self.name_field.text_rect.bottom, self.name_field.text_rect.left)
+        self.race_char.text_rect.top, self.race_char.text_rect.left =(
+            self.race_field.text_rect.top, self.race_field.text_rect.right)
+        self.class_field.text_rect.top, self.class_field.text_rect.left =(
+            self.race_char.text_rect.top, self.screen_width * 0.25)
+        self.class_char.text_rect.top, self.class_char.text_rect.left =(
+            self.class_field.text_rect.top, self.class_field.text_rect.right)
+        self.level_field.text_rect.top, self.level_field.text_rect.left =(
+            self.class_char.text_rect.top, self.screen_width * 0.5)
+        self.level_char.text_rect.top, self.level_char.text_rect.left =(
+            self.level_field.text_rect.top, self.level_field.text_rect.right)
+        self.next_lvl_xp_field.text_rect.top, self.next_lvl_xp_field.text_rect.left =(
+            self.level_char.text_rect.top, self.screen_width * 0.75)
+        self.next_lvl_xp_char.text_rect.top, self.next_lvl_xp_char.text_rect.left =(
+            self.next_lvl_xp_field.text_rect.top, self.next_lvl_xp_field.text_rect.right)
