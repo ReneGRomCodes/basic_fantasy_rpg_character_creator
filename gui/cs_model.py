@@ -38,10 +38,14 @@ class CharacterSheet:
         self.level_char = so.TextField(screen, str(character.level), self.text_standard)
         self.next_lvl_xp_field = so.TextField(screen, "XP to next level: ", self.text_standard)
         self.next_lvl_xp_char = so.TextField(screen, str(character.next_level_xp), self.text_standard)
-        # Abilities and combat related info elements.
-        self.armor_class = so.TextField(screen, "Armor Class:", self.text_standard)
-        self.health_points = so.TextField(screen, "Health Points:", self.text_standard)
-        self.attack_bonus = so.TextField(screen, "Attack Bonus:", self.text_standard)
+        # Combat related info elements.
+        self.armor_class_field = so.TextField(screen, "Armor Class: ", self.text_standard)
+        self.armor_class_char = so.TextField(screen, str(character.armor_class), self.text_standard)
+        self.health_points_field = so.TextField(screen, "Health Points: ", self.text_standard)
+        self.health_points_char = so.TextField(screen, str(character.hp), self.text_standard)
+        self.attack_bonus_field = so.TextField(screen, "Attack Bonus: +", self.text_standard)
+        self.attack_bonus_char = so.TextField(screen, str(character.attack_bonus), self.text_standard)
+        # Abilities info elements
         self.abilities = so.TextField(screen, "Abilities:", self.text_standard)
         self.saving_throws = so.TextField(screen, "Saving Throws:", self.text_standard)
         self.special_abilities = so.TextField(screen, "Special Abilities:", self.text_standard)
@@ -72,8 +76,7 @@ class CharacterSheet:
         # Position attribute for first row on y-axis based on screen title object.
         y_row_0 = self.title.text_rect.bottom + self.title_spacing
 
-        # Positioning for basic character info fields group. Primary 'anchor' object for positioning all elements is
-        # 'name_field'.
+        # Positioning for basic character info fields group.
         # First row of group.
         self.name_field.text_rect.top, self.name_field.text_rect.left = y_row_0, x_column_0
         self.name_char.text_rect.top, self.name_char.text_rect.left = y_row_0, self.name_field.text_rect.right
@@ -90,6 +93,16 @@ class CharacterSheet:
         self.level_char.text_rect.top, self.level_char.text_rect.left = y_row_1, self.level_field.text_rect.right
         self.next_lvl_xp_field.text_rect.top, self.next_lvl_xp_field.text_rect.left = y_row_1, x_column_3
         self.next_lvl_xp_char.text_rect.top, self.next_lvl_xp_char.text_rect.left = y_row_1, self.next_lvl_xp_field.text_rect.right
+
+        # Positioning for combat info fields group.
+        y_row_2 = y_row_1 + self.spacing_screen_edge
+        # Group starting on 'x_column_1', 'y_row_2'.
+        self.armor_class_field.text_rect.top, self.armor_class_field.text_rect.left = y_row_2, x_column_1
+        self.armor_class_char.text_rect.top, self.armor_class_char.text_rect.left = y_row_2, self.armor_class_field.text_rect.right
+        self.health_points_field.text_rect.top, self.health_points_field.text_rect.left = y_row_2, x_column_2
+        self.health_points_char.text_rect.top, self.health_points_char.text_rect.left = y_row_2, self.health_points_field.text_rect.right
+        self.attack_bonus_field.text_rect.top, self.attack_bonus_field.text_rect.left = y_row_2, x_column_3
+        self.attack_bonus_char.text_rect.top, self.attack_bonus_char.text_rect.left = y_row_2, self.attack_bonus_field.text_rect.right
 
     def show_character_sheet_screen(self):
         """Draw character sheet elements on screen."""
@@ -110,3 +123,10 @@ class CharacterSheet:
         self.level_char.draw_text()
         self.next_lvl_xp_field.draw_text()
         self.next_lvl_xp_char.draw_text()
+        # Draw combat info fields.
+        self.armor_class_field.draw_text()
+        self.armor_class_char.draw_text()
+        self.health_points_field.draw_text()
+        self.attack_bonus_field.draw_text()
+        self.health_points_char.draw_text()
+        self.attack_bonus_char.draw_text()
