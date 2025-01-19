@@ -59,36 +59,40 @@ class CharacterSheet:
     def position_cs_elements(self):
         """Position instances of class 'TextField' on screen."""
 
-        # Position screen title.
+        # Position screen title first.
         self.title.text_rect.top, self.title.text_rect.centerx = (self.screen_rect.top + self.spacing_screen_edge,
                                                                   self.screen_rect.centerx)
 
-        # Positioning for basic character info fields. Primary 'anchor' object for positioning all elements is 'name_field'.
-        self.name_field.text_rect.top, self.name_field.text_rect.left =(
-            self.title.text_rect.bottom + self.title_spacing, self.screen_rect.left + self.spacing_screen_edge)
-        self.name_char.text_rect.top, self.name_char.text_rect.left =(
-            self.name_field.text_rect.top, self.name_field.text_rect.right)
-        self.xp_field.text_rect.top, self.xp_field.text_rect.left =(
-            self.name_field.text_rect.top, self.screen_width * 0.75)
-        self.xp_char.text_rect.top, self.xp_char.text_rect.left = self.xp_field.text_rect.top, self.xp_field.text_rect.right
-        self.race_field.text_rect.top, self.race_field.text_rect.left =(
-            self.name_field.text_rect.bottom, self.name_field.text_rect.left)
-        self.race_char.text_rect.top, self.race_char.text_rect.left =(
-            self.race_field.text_rect.top, self.race_field.text_rect.right)
-        self.class_field.text_rect.top, self.class_field.text_rect.left =(
-            self.race_char.text_rect.top, self.screen_width * 0.25)
-        self.class_char.text_rect.top, self.class_char.text_rect.left =(
-            self.class_field.text_rect.top, self.class_field.text_rect.right)
-        self.level_field.text_rect.top, self.level_field.text_rect.left =(
-            self.class_char.text_rect.top, self.screen_width * 0.5)
-        self.level_char.text_rect.top, self.level_char.text_rect.left =(
-            self.level_field.text_rect.top, self.level_field.text_rect.right)
-        self.next_lvl_xp_field.text_rect.top, self.next_lvl_xp_field.text_rect.left =(
-            self.level_char.text_rect.top, self.screen_width * 0.75)
-        self.next_lvl_xp_char.text_rect.top, self.next_lvl_xp_char.text_rect.left =(
-            self.next_lvl_xp_field.text_rect.top, self.next_lvl_xp_field.text_rect.right)
+        # General position attributes for x-axis.
+        x_column_0 = self.screen_rect.left + self.spacing_screen_edge
+        x_column_1 = self.screen_width * 0.25
+        x_column_2 = self.screen_width * 0.5
+        x_column_3 = self.screen_width * 0.75
+
+        # Position attribute for first row on y-axis based on screen title object.
+        y_row_0 = self.title.text_rect.bottom + self.title_spacing
+
+        # Positioning for basic character info fields group. Primary 'anchor' object for positioning all elements is
+        # 'name_field'.
+        # First row of group.
+        self.name_field.text_rect.top, self.name_field.text_rect.left = y_row_0, x_column_0
+        self.name_char.text_rect.top, self.name_char.text_rect.left = y_row_0, self.name_field.text_rect.right
+        self.xp_field.text_rect.top, self.xp_field.text_rect.left = y_row_0, x_column_3
+        self.xp_char.text_rect.top, self.xp_char.text_rect.left = y_row_0, self.xp_field.text_rect.right
+        # Position attribute for second row on y-axis based on 'anchor' object.
+        y_row_1 = self.name_field.text_rect.bottom
+        # Second row of group.
+        self.race_field.text_rect.top, self.race_field.text_rect.left = y_row_1, x_column_0
+        self.race_char.text_rect.top, self.race_char.text_rect.left = y_row_1, self.race_field.text_rect.right
+        self.class_field.text_rect.top, self.class_field.text_rect.left = y_row_1, x_column_1
+        self.class_char.text_rect.top, self.class_char.text_rect.left = y_row_1, self.class_field.text_rect.right
+        self.level_field.text_rect.top, self.level_field.text_rect.left = y_row_1, x_column_2
+        self.level_char.text_rect.top, self.level_char.text_rect.left = y_row_1, self.level_field.text_rect.right
+        self.next_lvl_xp_field.text_rect.top, self.next_lvl_xp_field.text_rect.left = y_row_1, x_column_3
+        self.next_lvl_xp_char.text_rect.top, self.next_lvl_xp_char.text_rect.left = y_row_1, self.next_lvl_xp_field.text_rect.right
 
     def show_character_sheet_screen(self):
+        """Draw character sheet elements on screen."""
         # Draw screen title.
         self.title.draw_text()
 
