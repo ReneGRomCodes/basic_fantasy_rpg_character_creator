@@ -75,6 +75,8 @@ class CharacterSheet:
                                (self.int_field, self.int_score, self.int_bonus_penalty),
                                (self.wis_field, self.wis_score, self.wis_bonus_penalty),
                                (self.cha_field, self.cha_score, self.cha_bonus_penalty))
+        # Format ability bonus/penalty output. See method docstring for details.
+        self.format_ability_bonus_penalty()
 
         # Further ability info elements.
         self.saving_throws = so.TextField(screen, "Saving Throws:", self.text_standard)
@@ -197,6 +199,7 @@ class CharacterSheet:
             elif int(group[2].text) > 0:
                 group[2].text = "+" + group[2].text
 
-            # Re-render 'group[2].text_image' after the change. Original 'text_image' appears on screen if only 'text'
-            # attribute is changed.
+            # Update 'group[2].text_image' and 'group[2].text_rect' after the change. Original 'text_image' and
+            # 'text_rect'-position appear on screen if only 'text' attribute is changed.
             group[2].text_image = group[2].font.render(group[2].text, True, group[2].text_color)
+            group[2].text_rect = group[2].text_image.get_rect()
