@@ -196,3 +196,7 @@ class CharacterSheet:
                 group[2].text = ""
             elif int(group[2].text) > 0:
                 group[2].text = "+" + group[2].text
+
+            # Re-render 'group[2].text_image' after the change. Original 'text_image' appears on screen if only 'text'
+            # attribute is changed.
+            group[2].text_image = group[2].font.render(group[2].text, True, group[2].text_color)
