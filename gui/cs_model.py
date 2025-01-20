@@ -45,8 +45,27 @@ class CharacterSheet:
         self.health_points_char = so.TextField(screen, str(character.hp), self.text_standard)
         self.attack_bonus_field = so.TextField(screen, "Attack Bonus: +", self.text_standard)
         self.attack_bonus_char = so.TextField(screen, str(character.attack_bonus), self.text_standard)
-        # Abilities info elements
-        self.abilities = so.TextField(screen, "Abilities:", self.text_standard)
+        # Abilities info elements.
+        self.abilities_title = so.TextField(screen, "ABILITIES", self.text_standard)
+        self.str_field = so.TextField(screen, "str", self.text_standard)
+        self.str_score = so.TextField(screen, str(character.abilities["str"][0]), self.text_standard)
+        self.str_bonus_penalty = so.TextField(screen, str(character.abilities["str"][1]), self.text_standard)
+        self.dex_field = so.TextField(screen, "dex", self.text_standard)
+        self.dex_score = so.TextField(screen, str(character.abilities["dex"][0]), self.text_standard)
+        self.dex_bonus_penalty = so.TextField(screen, str(character.abilities["dex"][1]), self.text_standard)
+        self.con_field = so.TextField(screen, "con", self.text_standard)
+        self.con_score = so.TextField(screen, str(character.abilities["con"][0]), self.text_standard)
+        self.con_bonus_penalty = so.TextField(screen, str(character.abilities["con"][1]), self.text_standard)
+        self.int_field = so.TextField(screen, "int", self.text_standard)
+        self.int_score = so.TextField(screen, str(character.abilities["int"][0]), self.text_standard)
+        self.int_bonus_penalty = so.TextField(screen, str(character.abilities["int"][1]), self.text_standard)
+        self.wis_field = so.TextField(screen, "wis", self.text_standard)
+        self.wis_score = so.TextField(screen, str(character.abilities["wis"][0]), self.text_standard)
+        self.wis_bonus_penalty = so.TextField(screen, str(character.abilities["wis"][1]), self.text_standard)
+        self.cha_field = so.TextField(screen, "cha", self.text_standard)
+        self.cha_score = so.TextField(screen, str(character.abilities["cha"][0]), self.text_standard)
+        self.cha_bonus_penalty = so.TextField(screen, str(character.abilities["cha"][1]), self.text_standard)
+        # Further ability info elements.
         self.saving_throws = so.TextField(screen, "Saving Throws:", self.text_standard)
         self.special_abilities = so.TextField(screen, "Special Abilities:", self.text_standard)
         # Spell element for classes 'Magic-User', 'Cleric' or combination classes.
@@ -82,7 +101,7 @@ class CharacterSheet:
         self.name_char.text_rect.top, self.name_char.text_rect.left = y_row_0, self.name_field.text_rect.right
         self.xp_field.text_rect.top, self.xp_field.text_rect.left = y_row_0, x_column_3
         self.xp_char.text_rect.top, self.xp_char.text_rect.left = y_row_0, self.xp_field.text_rect.right
-        # Position attribute for second row on y-axis based on 'anchor' object.
+        # Position attribute for second row on y-axis based on 'name_field' object.
         y_row_1 = self.name_field.text_rect.bottom
         # Second row of group.
         self.race_field.text_rect.top, self.race_field.text_rect.left = y_row_1, x_column_0
@@ -94,7 +113,7 @@ class CharacterSheet:
         self.next_lvl_xp_field.text_rect.top, self.next_lvl_xp_field.text_rect.left = y_row_1, x_column_3
         self.next_lvl_xp_char.text_rect.top, self.next_lvl_xp_char.text_rect.left = y_row_1, self.next_lvl_xp_field.text_rect.right
 
-        # Positioning for combat info fields group.
+        # Position attribute for row on y-axis for combat info fields group.
         y_row_2 = y_row_1 + self.spacing_screen_edge
         # Group starting on 'x_column_1', 'y_row_2'.
         self.armor_class_field.text_rect.top, self.armor_class_field.text_rect.left = y_row_2, x_column_1
@@ -103,6 +122,22 @@ class CharacterSheet:
         self.health_points_char.text_rect.top, self.health_points_char.text_rect.left = y_row_2, self.health_points_field.text_rect.right
         self.attack_bonus_field.text_rect.top, self.attack_bonus_field.text_rect.left = y_row_2, x_column_3
         self.attack_bonus_char.text_rect.top, self.attack_bonus_char.text_rect.left = y_row_2, self.attack_bonus_field.text_rect.right
+
+        # Ability scores group.
+        # Using 'abilities_title' rect for reference and easier positioning.
+        group_ref_rect = self.abilities_title.text_rect
+        # Group starting on 'x_column_0', 'y_row_2' by positioning 'abilities_title' first. Further elements use separate
+        # column system specific to ability scores as assigned further down.
+        group_ref_rect.top, group_ref_rect.left = y_row_2, x_column_0
+        # Position attributes for ability scores.
+        y_row_3 = group_ref_rect.bottom
+        ab_column_0 = group_ref_rect.left
+        ab_column_1 = ab_column_0 + group_ref_rect.width
+        ab_column_2 = ab_column_1 + group_ref_rect.width
+        # Ability scores positioning.
+        self.str_field.text_rect.top, self.str_field.text_rect.left = y_row_3, ab_column_0
+        self.str_score.text_rect.top, self.str_score.text_rect.left = y_row_3, ab_column_1
+        self.str_bonus_penalty.text_rect.top, self. str_bonus_penalty.text_rect.left = y_row_3, ab_column_2
 
     def show_character_sheet_screen(self):
         """Draw character sheet elements on screen."""
@@ -130,3 +165,8 @@ class CharacterSheet:
         self.attack_bonus_field.draw_text()
         self.health_points_char.draw_text()
         self.attack_bonus_char.draw_text()
+        # Draw ability scores fields.
+        self.abilities_title.draw_text()
+        self.str_field.draw_text()
+        self.str_score.draw_text()
+        self.str_bonus_penalty.draw_text()

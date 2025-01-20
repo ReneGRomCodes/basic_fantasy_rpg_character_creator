@@ -29,7 +29,6 @@ class Character:
         self.xp = 0
         self.level = 1
         self.next_level_xp = 0
-        self.specials = []
         self.saving_throws = {}
         self.spells = False
         self.hp = 0
