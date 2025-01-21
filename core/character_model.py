@@ -29,7 +29,7 @@ class Character:
         self.xp = 0
         self.level = 1
         self.next_level_xp = 0
-        self.saving_throws = {}
+        self.saving_throws = []
         self.spells = False
         self.hp = 0
         # Attributes related to inventory.
@@ -153,13 +153,18 @@ class Character:
                 self.specials.append(v)
 
     def set_saving_throws(self):
-        """Get saving throw values and add them to attribute dict 'self.saving_throws'."""
+        """Get saving throw names and values, then add them to attribute array 'self.saving_throws'.
+        Index '0' contains the name of the ability, index '1' the value"""
         # List of saving throws.
         throws_list = ["Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"]
 
         for item in throws_list:
+            throws_group = []
             index = throws_list.index(item)
-            self.saving_throws[item] = self.bonuses[index] + self.class_saving_throws[index]
+
+            throws_group.append(item)
+            throws_group.append(self.bonuses[index] + self.class_saving_throws[index])
+            self.saving_throws.append(throws_group)
 
     def set_hp(self):
         """Set HP and adds constitution bonus/penalty."""

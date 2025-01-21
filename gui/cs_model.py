@@ -47,8 +47,8 @@ class CharacterSheet:
         self.attack_bonus_field = so.TextField(screen, "Attack Bonus: +", self.text_standard)
         self.attack_bonus_char = so.TextField(screen, str(character.attack_bonus), self.text_standard)
 
-        # Abilities info elements. Suffixes '_score' and '_bonus_penalty' indicate objects with values from the
-        # 'Character' class object.
+        # Abilities info elements.
+        # Suffixes '_score' and '_bonus_penalty' indicate objects with values from the 'Character' class object.
         self.abilities_title = so.TextField(screen, "ABILITIES", self.text_standard)
         self.str_field = so.TextField(screen, "str", self.text_standard)
         self.str_score = so.TextField(screen, str(character.abilities["str"][0]), self.text_standard)
