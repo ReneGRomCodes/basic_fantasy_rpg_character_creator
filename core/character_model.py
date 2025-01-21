@@ -11,13 +11,13 @@ class Character:
         # Race specific attributes.
         self.race_name = None
         self.max_hit_die = False
-        self.race_specials = []
-        self.bonuses = []
+        self.race_specials = ()
+        self.bonuses = ()
         # Class specific attributes.
         self.class_name = None
         self.class_hit_die = 0
-        self.class_specials = []
-        self.class_saving_throws = []
+        self.class_specials = ()
+        self.class_saving_throws = ()
 
         # Character attributes. Values set based on race and class.
         self.name = None
@@ -47,25 +47,25 @@ class Character:
 
         if race_selection == "Dwarf":
             self.max_hit_die = False
-            self.race_specials = ["Darkvision 60'",
-                                  "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"]
-            self.bonuses = [4, 4, 4, 3, 4]
+            self.race_specials = ("Darkvision 60'",
+                                  "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6")
+            self.bonuses = (4, 4, 4, 3, 4)
         elif race_selection == "Elf":
             self.max_hit_die = 6
-            self.race_specials = ["Darkvision 60'",
+            self.race_specials = ("Darkvision 60'",
                                   "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
-                                  "Range reduction by 1 for surprise checks"]
-            self.bonuses = [0, 2, 1, 0, 2]
+                                  "Range reduction by 1 for surprise checks")
+            self.bonuses = (0, 2, 1, 0, 2)
         elif race_selection == "Halfling":
             self.max_hit_die = 6
-            self.race_specials = ["+1 attack bonus on ranged weapons",
+            self.race_specials = ("+1 attack bonus on ranged weapons",
                                   "+1 to initiative die rolls",
-                                  "Hide (10% chance to be detected outdoors, 30% chance to be detected indoors"]
-            self.bonuses = [4, 4, 4, 3, 4]
+                                  "Hide (10% chance to be detected outdoors, 30% chance to be detected indoors")
+            self.bonuses = (4, 4, 4, 3, 4)
         elif race_selection == "Human":
             self.max_hit_die = False
-            self.race_specials = ["+10% to all earned XP"]
-            self.bonuses = [0, 0, 0, 0, 0]
+            self.race_specials = ("+10% to all earned XP", )
+            self.bonuses = (0, 0, 0, 0, 0)
 
     def set_class(self, class_selection):
         """Set class-specific values based on chosen class."""
@@ -74,41 +74,41 @@ class Character:
         if class_selection == "Cleric":
             self.class_hit_die = 6
             self.next_level_xp = 1500
-            self.class_specials = ["Turn the Undead"]
-            self.class_saving_throws = [11, 12, 14, 16, 15]
+            self.class_specials = ("Turn the Undead", )
+            self.class_saving_throws = (11, 12, 14, 16, 15)
             self.spells = "None"
         elif class_selection == "Fighter":
             self.class_hit_die = 8
             self.next_level_xp = 2000
-            self.class_specials = [False]
-            self.class_saving_throws = [12, 13, 14, 15, 17]
+            self.class_specials = (False, )
+            self.class_saving_throws = (12, 13, 14, 15, 17)
         elif class_selection == "Magic-User":
             self.class_hit_die = 4
             self.next_level_xp = 2500
-            self.class_specials = [False]
-            self.class_saving_throws = [13, 14, 13, 16, 15]
+            self.class_specials = (False, )
+            self.class_saving_throws = (13, 14, 13, 16, 15)
             self.spells = "Read Magic"
             self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Thief":
             self.class_hit_die = 4
             self.next_level_xp = 1250
-            self.class_specials = ["Sneak Attack", "Thief Abilities"]
-            self.class_saving_throws = [13, 14, 13, 16, 15]
+            self.class_specials = ("Sneak Attack", "Thief Abilities")
+            self.class_saving_throws = (13, 14, 13, 16, 15)
         # Elf specific combination classes.
         elif class_selection == "Fighter/Magic-User":
             self.class_hit_die = 6
             self.next_level_xp = 4500
-            self.class_specials = [False]
-            self.class_saving_throws = [13, 14, 14, 16, 17]
+            self.class_specials = (False, )
+            self.class_saving_throws = (13, 14, 14, 16, 17)
             self.spells = "Read Magic"
             self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Magic-User/Thief":
             self.class_hit_die = 4
             self.next_level_xp = 3750
-            self.class_specials = ["Sneak Attack", "Thief Abilities"]
-            self.class_saving_throws = [13, 14, 13, 16, 15]
+            self.class_specials = ("Sneak Attack", "Thief Abilities")
+            self.class_saving_throws = (13, 14, 13, 16, 15)
             self.spells = "Read Magic"
             self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
@@ -127,7 +127,7 @@ class Character:
     def set_ability_dict(self):
         """Build attribute dictionary 'self.abilities' for character abilities. Values are lists with base score at
         index 0 and bonus/penalty at index 1."""
-        ability_names = ["str", "dex", "con", "int", "wis", "cha"]
+        ability_names = ("str", "dex", "con", "int", "wis", "cha")
 
         for item in ability_names:
             # Adding default INT bonus of +1.
@@ -155,7 +155,7 @@ class Character:
     def set_saving_throws(self):
         """Get saving throw values and add them to attribute dict 'self.saving_throws'."""
         # List of saving throws.
-        throws_list = ["Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"]
+        throws_list = ("Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells")
 
         for item in throws_list:
             index = throws_list.index(item)
