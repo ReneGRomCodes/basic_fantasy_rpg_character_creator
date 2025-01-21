@@ -78,8 +78,28 @@ class CharacterSheet:
         # Format ability bonus/penalty output. See method docstring for details.
         self.format_ability_bonus_penalty()
 
-        # Further ability info elements.
-        self.saving_throws = so.TextField(screen, "Saving Throws:", self.text_standard)
+        # Saving throws info elements.
+        self.saving_throws_title = so.TextField(screen, "SAVING THROWS", self.text_standard)
+        self.saving_throw_0_field = so.TextField(screen, character.saving_throws[0][0], self.text_standard)
+        self.saving_throw_0_score = so.TextField(screen, str(character.saving_throws[0][1]), self.text_standard)
+        self.saving_throw_1_field = so.TextField(screen, character.saving_throws[1][0], self.text_standard)
+        self.saving_throw_1_score = so.TextField(screen, str(character.saving_throws[1][1]), self.text_standard)
+        self.saving_throw_2_field = so.TextField(screen, character.saving_throws[2][0], self.text_standard)
+        self.saving_throw_2_score = so.TextField(screen, str(character.saving_throws[2][1]), self.text_standard)
+        self.saving_throw_3_field = so.TextField(screen, character.saving_throws[3][0], self.text_standard)
+        self.saving_throw_3_score = so.TextField(screen, str(character.saving_throws[3][1]), self.text_standard)
+        self.saving_throw_4_field = so.TextField(screen, character.saving_throws[4][0], self.text_standard)
+        self.saving_throw_4_score = so.TextField(screen, str(character.saving_throws[4][1]), self.text_standard)
+        # Array of saving throws groups for cleaner positioning/drawing in class methods.
+        self.saving_throw_groups = ((self.saving_throw_0_field, self.saving_throw_0_score),
+                                    (self.saving_throw_1_field, self.saving_throw_1_score),
+                                    (self.saving_throw_2_field, self.saving_throw_2_score),
+                                    (self.saving_throw_3_field, self.saving_throw_3_score),
+                                    (self.saving_throw_4_field, self.saving_throw_4_score))
+        # Format saving throw score output. See method docstring for details.
+        self.format_saving_throw_scores()
+
+        # Special abilities info elements.
         self.special_abilities = so.TextField(screen, "Special Abilities:", self.text_standard)
         # Spell element for classes 'Magic-User', 'Cleric' or combination classes.
         self.spells = so.TextField(screen, "Spells:", self.text_standard)
@@ -154,8 +174,14 @@ class CharacterSheet:
             group[2].text_rect.top, group[2].text_rect.right = y_row_3, ab_column_2
             # Move row position down for next group.
             y_row_3 = group[0].text_rect.bottom
+
         # Reset 'y_row_3' to starting position.
         y_row_3 = group_ref_rect.bottom
+
+        # Saving throws group.
+        # Using 'saving_throws_title' rect for reference and easier positioning.
+        group_ref_rect = self.saving_throws_title.text_rect
+        group_ref_rect.top, group_ref_rect.left = y_row_3, x_column_1
 
     def show_character_sheet_screen(self):
         """Draw character sheet elements on screen."""
@@ -189,6 +215,8 @@ class CharacterSheet:
             group[0].draw_text()
             group[1].draw_text()
             group[2].draw_text()
+        # Draw saving throw fields.
+        self.saving_throws_title.draw_text()
 
     def format_ability_bonus_penalty(self):
         """Format output for 0/positive values of ability score's bonus and penalty. Remove value if it is '0' or add '+'
@@ -203,3 +231,13 @@ class CharacterSheet:
             # 'text_rect'-position appear on screen if only 'text' attribute is changed.
             group[2].text_image = group[2].font.render(group[2].text, True, group[2].text_color)
             group[2].text_rect = group[2].text_image.get_rect()
+
+    def format_saving_throw_scores(self):
+        """Format output for saving throws by adding a '+' to the score."""
+        for group in self.saving_throw_groups:
+            group[1].text = "+" + group[1].text
+
+            # Update 'group[1].text_image' and 'group[1].text_rect' after the change. Original 'text_image' and
+            # 'text_rect'-position appear on screen if only 'text' attribute is changed.
+            group[1].text_image = group[1].font.render(group[1].text, True, group[1].text_color)
+            group[1].text_rect = group[1].text_image.get_rect()
