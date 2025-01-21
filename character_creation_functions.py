@@ -25,8 +25,8 @@ def show_ability_scores(character):
 
 def show_saving_throws(character):
     """Print formatted output of dict 'saving_throws' from instance 'character'."""
-    for group in character.saving_throws:
-        print(f" - {group[0]:<22} +{group[1]:>2}")
+    for k, v in character.saving_throws.items():
+        print(f" - {k:<22} +{v:>2}")
 
 
 def show_special_abilities(character):

@@ -79,17 +79,17 @@ class CharacterSheet:
         self.format_ability_bonus_penalty()
 
         # Saving throws info elements.
-        self.saving_throws_title = so.TextField(screen, "SAVING THROWS", self.text_standard)
-        self.saving_throw_0_field = so.TextField(screen, character.saving_throws[0][0], self.text_standard)
-        self.saving_throw_0_score = so.TextField(screen, str(character.saving_throws[0][1]), self.text_standard)
-        self.saving_throw_1_field = so.TextField(screen, character.saving_throws[1][0], self.text_standard)
-        self.saving_throw_1_score = so.TextField(screen, str(character.saving_throws[1][1]), self.text_standard)
-        self.saving_throw_2_field = so.TextField(screen, character.saving_throws[2][0], self.text_standard)
-        self.saving_throw_2_score = so.TextField(screen, str(character.saving_throws[2][1]), self.text_standard)
-        self.saving_throw_3_field = so.TextField(screen, character.saving_throws[3][0], self.text_standard)
-        self.saving_throw_3_score = so.TextField(screen, str(character.saving_throws[3][1]), self.text_standard)
-        self.saving_throw_4_field = so.TextField(screen, character.saving_throws[4][0], self.text_standard)
-        self.saving_throw_4_score = so.TextField(screen, str(character.saving_throws[4][1]), self.text_standard)
+        self.saving_throws_title = so.TextField(screen, "SAVING THROWS:", self.text_standard)
+        self.saving_throw_0_field = so.TextField(screen, "Death Ray or Poison:", self.text_standard)
+        self.saving_throw_0_score = so.TextField(screen, str(character.saving_throws["Death Ray or Poison"]), self.text_standard)
+        self.saving_throw_1_field = so.TextField(screen, "Magic Wands:", self.text_standard)
+        self.saving_throw_1_score = so.TextField(screen, str(character.saving_throws["Magic Wands"]), self.text_standard)
+        self.saving_throw_2_field = so.TextField(screen, "Paralysis or Petrify:", self.text_standard)
+        self.saving_throw_2_score = so.TextField(screen, str(character.saving_throws["Paralysis or Petrify"]), self.text_standard)
+        self.saving_throw_3_field = so.TextField(screen, "Dragon Breath:", self.text_standard)
+        self.saving_throw_3_score = so.TextField(screen, str(character.saving_throws["Dragon Breath"]), self.text_standard)
+        self.saving_throw_4_field = so.TextField(screen, "Spells:", self.text_standard)
+        self.saving_throw_4_score = so.TextField(screen, str(character.saving_throws["Spells"]), self.text_standard)
         # Array of saving throws groups for cleaner positioning/drawing in class methods.
         self.saving_throw_groups = ((self.saving_throw_0_field, self.saving_throw_0_score),
                                     (self.saving_throw_1_field, self.saving_throw_1_score),
