@@ -107,8 +107,7 @@ class CharacterSheet:
         # 'special_ability' object has it's text and position dynamically modified in method
         # 'dynamic_format_special_abilities()' to account for the fact that number of abilities in 'character.specials'
         # is unpredictable at the start of the character creation.
-        self.special_ability = so.TextField(screen, "", self.text_standard, multi_line=True,
-                                                  image_width=self.screen_width / 3)
+        self.special_ability = so.TextField(screen, "", self.text_standard, multi_line=True, image_width=self.screen_width / 3)
 
         # Spell element for classes 'Magic-User', 'Cleric' or combination classes.
         self.spells = so.TextField(screen, "Spells:", self.text_standard)
@@ -285,11 +284,10 @@ class CharacterSheet:
         start_pos_y = self.special_abilities_title.text_rect.bottom
         start_pos_x = self.special_abilities_title.text_rect.left
 
-        if character.specials:
-            for special in character.specials:
-                ability.text = special
-                ability.text_image = ability.render_multiline_image()
-                ability.text_rect = ability.text_image.get_rect()
-                ability.top, ability.left = start_pos_y, start_pos_x
-                ability.draw_text()
-                start_pos_y = ability.text_rect.bottom
+        for special in character.specials:
+            ability.text = "- " + special
+            ability.text_image = ability.render_multiline_image()
+            ability.text_rect = ability.text_image.get_rect()
+            ability.text_rect.top, ability.text_rect.left = start_pos_y, start_pos_x
+            ability.draw_text()
+            start_pos_y = ability.text_rect.bottom
