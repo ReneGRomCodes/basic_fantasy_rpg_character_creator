@@ -1,4 +1,5 @@
 import gui.screen_objects as so
+from gui.ui_helpers import render_new_text_image
 """Helper class to organize and access character sheet objects as attributes."""
 
 
@@ -104,10 +105,13 @@ class CharacterSheet:
 
         # Special abilities info elements.
         self.special_abilities_title = so.TextField(screen, "SPECIAL ABILITIES", self.text_standard)
-        # 'special_ability' object has it's text and position dynamically modified in method
-        # 'dynamic_format_special_abilities()' to account for the fact that number of abilities in 'character.specials'
-        # is unpredictable at the start of the character creation.
+        # 'special_ability' object has its text dynamically modified in method 'dynamic_format_special_abilities()'
+        # to account for the fact that number of abilities in 'character.specials' is unpredictable at the start of the
+        # character creation.
         self.special_ability = so.TextField(screen, "", self.text_standard, multi_line=True, image_width=self.screen_width / 3)
+        # List to store y-position values for each state of 'self.special_ability' as created in method
+        # 'get_position_special_abilities'. See method docstring for details.
+        self.ability_pos_y_list = []
 
         # Spell element for classes 'Magic-User', 'Cleric' or combination classes.
         self.spells = so.TextField(screen, "Spells:", self.text_standard)
@@ -259,35 +263,46 @@ class CharacterSheet:
             elif int(group[2].text) > 0:
                 group[2].text = "+" + group[2].text
 
-            # Update 'group[2].text_image' and 'group[2].text_rect' after the change. Original 'text_image' and
-            # 'text_rect'-position appear on screen if only 'text' attribute is changed.
-            group[2].text_image = group[2].font.render(group[2].text, True, group[2].text_color)
-            group[2].text_rect = group[2].text_image.get_rect()
+            # Update 'group[2].text_image' and get new rect.
+            render_new_text_image(group[2])
 
     def format_saving_throw_scores(self):
         """Format output for saving throws by adding a '+' to the score."""
         for group in self.saving_throw_groups:
             group[1].text = "+" + group[1].text
 
-            # Update 'group[1].text_image' and 'group[1].text_rect' after the change. Original 'text_image' and
-            # 'text_rect'-position appear on screen if only 'text' attribute is changed.
-            group[1].text_image = group[1].font.render(group[1].text, True, group[1].text_color)
-            group[1].text_rect = group[1].text_image.get_rect()
+            # Update 'group[1].text_image' and get new rect.
+            render_new_text_image(group[1])
 
-    def dynamic_format_special_abilities(self):
-        """Dynamically change 'text' attribute and position for 'self.special_ability' based on list
-        'self.character.specials', and draw it on screen"""
+    def get_position_special_abilities(self):
+        """Populate list 'self.ability_pos_y_list' with y-positions for each state of 'self.special_ability'."""
         # Assign helper variables for better readability.
         character = self.character
         ability = self.special_ability
         # Use 'special_abilities_title' rect as reference for starting position.
-        start_pos_y = self.special_abilities_title.text_rect.bottom
-        start_pos_x = self.special_abilities_title.text_rect.left
+        pos_y = self.special_abilities_title.text_rect.bottom
 
         for special in character.specials:
-            ability.text = "- " + special
-            ability.text_image = ability.render_multiline_image()
-            ability.text_rect = ability.text_image.get_rect()
-            ability.text_rect.top, ability.text_rect.left = start_pos_y, start_pos_x
+            ability.text = " - " + special
+            # Update 'ability.text_image' and get new rect.
+            render_new_text_image(ability)
+            ability.text_rect.top = pos_y
+            pos_y = ability.text_rect.bottom
+            self.ability_pos_y_list.append(pos_y)
+
+    def dynamic_format_special_abilities(self):
+        """Dynamically change 'text' attribute for 'self.special_ability' based on list 'self.character.specials',
+        and draw it on screen."""
+        # Assign helper variables for better readability.
+        character = self.character
+        ability = self.special_ability
+        # Use 'special_abilities_title' rect as reference for starting position.
+        pos_x = self.special_abilities_title.text_rect.left
+
+        for special in character.specials:
+            index = character.specials.index(special)
+            ability.text = " - " + special
+            # Update 'ability.text_image' and get new rect.
+            render_new_text_image(ability)
+            ability.text_rect.top, ability.text_rect.left = self.ability_pos_y_list[index], pos_x
             ability.draw_text()
-            start_pos_y = ability.text_rect.bottom

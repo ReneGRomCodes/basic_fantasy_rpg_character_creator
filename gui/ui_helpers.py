@@ -44,6 +44,21 @@ def draw_continue_button_inactive(condition_1, condition_2, gui_elements, mouse_
         inactive_continue_button.draw_button(mouse_pos)
 
 
+def render_new_text_image(element):
+    """Re-render 'text_image' attribute from instance of class 'TextField' and get new 'text_rect'. This function is for
+    use after an already created instance has its 'text' attribute changed to ensure further changes to, for example,
+    its position are applied to the modified instance."""
+
+    # Check if element has 'multi_line' attribute set to 'True' and render 'text_image' accordingly, using class method
+    # '.render_multiline_image()' if element is multi line normal render method otherwise.
+    if element.multi_line:
+        element.text_image = element.render_multiline_image()
+    else:
+        element.text_image = element.font.render(element.text, True, element.text_color)
+
+    element.text_rect = element.text_image.get_rect()
+
+
 """Background functions for title screen."""
 
 def position_title_screen_elements(screen, gui_elements):

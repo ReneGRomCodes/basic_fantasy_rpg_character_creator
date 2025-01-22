@@ -132,12 +132,13 @@ def random_character(screen, state, gui_elements, mouse_pos):
 
 def initialize_character_sheet(screen, gui_elements):
     """Create and return instance of class 'CharacterSheet' with screen elements for the character sheet, call position
-    method and set the state to 'character_sheet'.
+    methods and set the state to 'character_sheet'.
     This function ensures that 'cs_sheet' is created only once and after the character creation process is complete,
     to avoid showing empty or uninitialized values on the screen."""
 
     cs_sheet = CharacterSheet(screen, character, gui_elements)
     cs_sheet.position_cs_elements()
+    cs_sheet.get_position_special_abilities()
     state = "character_sheet"
 
     return cs_sheet, state
