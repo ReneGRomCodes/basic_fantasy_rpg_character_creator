@@ -8,6 +8,9 @@ class CharacterSheet:
     def __init__(self, screen, character, gui_elements):
         """Initialize the CharacterSheet object with elements."""
 
+        # Assign character object to attribute.
+        self.character = character
+
         # Assign screen rect attributes.
         self.screen_rect = screen.get_rect()
         self.screen_height, self.screen_width = self.screen_rect.height, self.screen_rect.width
@@ -101,6 +104,9 @@ class CharacterSheet:
 
         # Special abilities info elements.
         self.special_abilities_title = so.TextField(screen, "SPECIAL ABILITIES", self.text_standard)
+        # 'special_ability' object has it's text and position dynamically modified in method
+        # 'dynamic_format_special_abilities()' to account for the fact that number of abilities in 'character.specials'
+        # is unpredictable at the start of the character creation.
         self.special_ability = so.TextField(screen, "", self.text_standard, multi_line=True,
                                                   image_width=self.screen_width / 3)
 
@@ -112,7 +118,8 @@ class CharacterSheet:
         self.weight_carried = so.TextField(screen, "Weight Carried:", self.text_standard)
         self.weapons = so.TextField(screen, "Weapons:", self.text_standard)
         self.armor = so.TextField(screen, "Armor:", self.text_standard)
-        self.armor_ac = so.TextField(screen, "AC:", self.text_standard) # Armor class for worn armor only, not including base armor class for character.
+        self.armor_ac = so.TextField(screen, "AC:", self.text_standard) # Armor class for worn armor only, not including
+                                                                        # base armor class for character.
         self.inventory = so.TextField(screen, "Inventory:", self.text_standard)
 
     def position_cs_elements(self):
@@ -242,6 +249,7 @@ class CharacterSheet:
             group[1].draw_text()
         # Draw special abilities fields.
         self.special_abilities_title.draw_text()
+        self.dynamic_format_special_abilities()
 
     def format_ability_bonus_penalty(self):
         """Format output for 0/positive values of ability score's bonus and penalty. Remove value if it is '0' or add '+'
@@ -266,3 +274,22 @@ class CharacterSheet:
             # 'text_rect'-position appear on screen if only 'text' attribute is changed.
             group[1].text_image = group[1].font.render(group[1].text, True, group[1].text_color)
             group[1].text_rect = group[1].text_image.get_rect()
+
+    def dynamic_format_special_abilities(self):
+        """Dynamically change 'text' attribute and position for 'self.special_ability' based on list
+        'self.character.specials', and draw it on screen"""
+        # Assign helper variables for better readability.
+        character = self.character
+        ability = self.special_ability
+        # Use 'special_abilities_title' rect as reference for starting position.
+        start_pos_y = self.special_abilities_title.text_rect.bottom
+        start_pos_x = self.special_abilities_title.text_rect.left
+
+        if character.specials:
+            for special in character.specials:
+                ability.text = special
+                ability.text_image = ability.render_multiline_image()
+                ability.text_rect = ability.text_image.get_rect()
+                ability.top, ability.left = start_pos_y, start_pos_x
+                ability.draw_text()
+                start_pos_y = ability.text_rect.bottom
