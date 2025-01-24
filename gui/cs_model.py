@@ -283,15 +283,15 @@ class CharacterSheet:
         pos_y = self.special_abilities_title.text_rect.bottom
 
         for index, special in enumerate(character.specials):
+            # Expand 'ability.text', update 'ability.text_image' and get new rect.
             ability.text = " - " + special
-            # Update 'ability.text_image' and get new rect.
             render_new_text_image(ability)
 
             # Append default position for first special ability to list.
             if index == 0:
                 self.ability_pos_y_list.append(pos_y)
 
-            # Calculate and append 'pos_y' for following iteration.
+            # Calculate and append new 'pos_y' for following iteration.
             else:
                 pos_y = self.ability_pos_y_list[index-1] + self.ability_pos_y_list[index]
                 self.ability_pos_y_list[index] = pos_y
@@ -310,8 +310,9 @@ class CharacterSheet:
         pos_x = self.special_abilities_title.text_rect.left
 
         for index, special in enumerate(character.specials):
+            # Expand 'ability.text', update 'ability.text_image' and get new rect.
             ability.text = " - " + special
-            # Update 'ability.text_image' and get new rect.
             render_new_text_image(ability)
+
             ability.text_rect.top, ability.text_rect.left = self.ability_pos_y_list[index], pos_x
             ability.draw_text()
