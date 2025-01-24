@@ -276,31 +276,40 @@ class CharacterSheet:
 
     def get_position_special_abilities(self):
         """Populate list 'self.ability_pos_y_list' with y-positions for each state of 'self.special_ability'."""
-        # Assign helper variables for better readability.
+        # Helper variables.
         character = self.character
         ability = self.special_ability
-        # Use 'special_abilities_title' rect as reference for starting position.
+        # Use 'special_abilities_title' rect as reference for starting row.
         pos_y = self.special_abilities_title.text_rect.bottom
 
-        for special in character.specials:
+        for index, special in enumerate(character.specials):
             ability.text = " - " + special
             # Update 'ability.text_image' and get new rect.
             render_new_text_image(ability)
-            ability.text_rect.top = pos_y
-            pos_y = ability.text_rect.bottom
-            self.ability_pos_y_list.append(pos_y)
+
+            # Append default position for first special ability to list.
+            if index == 0:
+                self.ability_pos_y_list.append(pos_y)
+
+            # Calculate and append 'pos_y' for following iteration.
+            else:
+                pos_y = self.ability_pos_y_list[index-1] + self.ability_pos_y_list[index]
+                self.ability_pos_y_list[index] = pos_y
+
+            # Append height of current 'text_rect' to list for use in following iteration where it will then be overwritten
+            # with the newly calculated 'pos_y'.
+            self.ability_pos_y_list.append(ability.text_rect.height)
 
     def dynamic_format_special_abilities(self):
         """Dynamically change 'text' attribute for 'self.special_ability' based on list 'self.character.specials',
         and draw it on screen."""
-        # Assign helper variables for better readability.
+        # Helper variables.
         character = self.character
         ability = self.special_ability
-        # Use 'special_abilities_title' rect as reference for starting position.
+        # Use 'special_abilities_title' rect as reference for starting column.
         pos_x = self.special_abilities_title.text_rect.left
 
-        for special in character.specials:
-            index = character.specials.index(special)
+        for index, special in enumerate(character.specials):
             ability.text = " - " + special
             # Update 'ability.text_image' and get new rect.
             render_new_text_image(ability)
