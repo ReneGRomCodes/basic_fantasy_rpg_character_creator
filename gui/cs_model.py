@@ -209,10 +209,10 @@ class CharacterSheet:
         y_row_4 = group_ref_rect.bottom
 
         # Special abilities group.
-        # Using 'special_abilities_title' rect for reference and easier positioning.
-        group_ref_rect = self.special_abilities_title.text_rect
-        # Group starting on 'x_column_2', 'y_row_3' by positioning 'special_abilities_title' first.
-        group_ref_rect.top, group_ref_rect.left = y_row_3, x_column_2
+        # Only the group title object is positioned here, the other fields are handled by 'get_position_special_abilities()'
+        # method.
+        # Group starting on 'x_column_2', 'y_row_3'.
+        self.special_abilities_title.text_rect.top, self.special_abilities_title.text_rect.left = y_row_3, x_column_2
 
     def show_character_sheet_screen(self):
         """Draw character sheet elements on screen."""
@@ -253,7 +253,7 @@ class CharacterSheet:
             group[1].draw_text()
         # Draw special abilities fields.
         self.special_abilities_title.draw_text()
-        self.dynamic_format_special_abilities()
+        self.dynamic_format_special_abilities()  # Formats AND draws dynamically modified special ability field.
 
     def format_ability_bonus_penalty(self):
         """Format output for 0/positive values of ability score's bonus and penalty. Remove value if it is '0' or add '+'
