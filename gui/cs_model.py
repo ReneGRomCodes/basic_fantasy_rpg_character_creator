@@ -13,6 +13,7 @@ class CharacterSheet:
         self.character = character
 
         # Assign screen rect attributes.
+        self.screen = screen
         self.screen_rect = screen.get_rect()
         self.screen_height, self.screen_width = self.screen_rect.height, self.screen_rect.width
 
@@ -283,6 +284,9 @@ class CharacterSheet:
         pos_y = self.special_abilities_title.text_rect.bottom
 
         for index, special in enumerate(character.specials):
+            # Create object with default values to 'hard reset' the 'ability' object. Quick and dirty fix for 'ability'
+            # refusing to be reset any other way.
+            default_object = so.TextField(self.screen, "", self.text_standard, multi_line=True, image_width=self.screen_width / 3)
             # Expand 'ability.text', update 'ability.text_image' and get new rect.
             ability.text = " - " + special
             render_new_text_image(ability)
@@ -299,6 +303,8 @@ class CharacterSheet:
             # Append height of current 'text_rect' to list for use in following iteration where it will then be overwritten
             # with the newly calculated 'pos_y'.
             self.ability_pos_y_list.append(ability.text_rect.height)
+            # Reset 'ability' to default values.
+            ability = default_object
 
     def dynamic_format_special_abilities(self):
         """Dynamically change 'text' attribute for 'self.special_ability' based on list 'self.character.specials',
