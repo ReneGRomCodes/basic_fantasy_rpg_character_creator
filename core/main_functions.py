@@ -136,9 +136,12 @@ def initialize_character_sheet(screen, gui_elements):
     This function ensures that 'cs_sheet' is created only once and after the character creation process is complete,
     to avoid showing empty or uninitialized values on the screen."""
 
+    # Create instance of class 'CharacterSheet'.
     cs_sheet = CharacterSheet(screen, character, gui_elements)
+    # Set positions for character sheet elements on screen.
     cs_sheet.position_cs_elements()
-    cs_sheet.get_position_special_abilities()
+    cs_sheet.ability_pos_y_list = cs_sheet.get_position_dynamic_field(cs_sheet.special_ability, character.specials,
+                                                                      cs_sheet.special_abilities_title, text_prefix=" - ")
     state = "character_sheet"
 
     return cs_sheet, state

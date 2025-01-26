@@ -106,12 +106,12 @@ class CharacterSheet:
 
         # Special abilities info elements.
         self.special_abilities_title = so.TextField(screen, "SPECIAL ABILITIES", self.text_standard)
-        # 'special_ability' object has its text dynamically modified in method 'dynamic_format_special_abilities()'
-        # to account for the fact that number of abilities in 'character.specials' is unpredictable at the start of the
-        # character creation.
-        self.special_ability = so.TextField(screen, "", self.text_standard, multi_line=True, image_width=self.screen_width / 3)
-        # List to store y-position values for each state of 'self.special_ability' as created in method
-        # 'get_position_special_abilities'. See method docstring for details.
+        # 'special_ability' object has its text dynamically modified in method 'draw_format_dynamic_field()' to account
+        # for the fact that number of abilities in 'character.specials' is unpredictable at the start of the character
+        # creation. 'draw_format_dynamic_field()' is called from 'show_character_sheet_screen()'.
+        self.special_ability = so.TextField(screen, "", self.text_standard, multi_line=False, image_width=self.screen_width / 3)
+        # List to store y-position values for each state of 'self.special_ability' as created in function
+        # 'initialize_character_sheet()' in 'main_functions.py'.
         self.ability_pos_y_list = []
 
         # Spell elements for classes 'Magic-User', 'Cleric' or combination classes.
@@ -292,36 +292,48 @@ class CharacterSheet:
         # Group starting on 'x_column_3, 'y_row_5'
         group_ref_rect.top, group_ref_rect.left = y_row_5, x_column_3
 
-    def get_position_special_abilities(self):
-        """Populate list 'self.ability_pos_y_list' with y-positions for each state of 'self.special_ability'."""
-        # Helper variables.
-        character = self.character
-        ability = self.special_ability
-        # Use 'special_abilities_title' rect as reference for starting row.
-        pos_y = self.special_abilities_title.text_rect.bottom
+    def get_position_dynamic_field(self, field_object, char_attr_list, anchor, text_prefix=None):
+        """
+        Create, populate and return list 'pos_y_list' with y-positions for each state of 'field_object'.
+        ARGS:
+            field_object: instance of class 'TextField' to be dynamically modified using values from 'char_attr_list'.
+            char_attr_list: attribute of type LIST or TUPLE from instance of 'Character' containing strings to be
+                            dynamically added to 'field_object'.
+            anchor: anchor object for thematic group that 'field_object' belongs to. Used for positioning along x-axis.
+            text_prefix: string with prefix to be added to 'field_object.text' together with 'char_attr_item', i.e. " - ".
+                         Default is 'None'.
+        RETURNS:
+            pos_y_list: list with y-positions for use in positioning of 'field_object' in method 'draw_format_dynamic_field()'
+        """
+        # Use 'anchor' rect as reference for starting row.
+        pos_y = anchor.text_rect.bottom
+        # Create list to be returned.
+        pos_y_list = []
 
-        for index, special in enumerate(character.specials):
-            # Create object with default values to 'hard reset' the 'ability' object. Quick and dirty fix for 'ability'
-            # refusing to be reset any other way.
-            default_object = so.TextField(self.screen, "", self.text_standard, multi_line=True, image_width=self.screen_width / 3)
-            # Expand 'ability.text', update 'ability.text_image' and get new rect.
-            ability.text = " - " + special
-            render_new_text_image(ability)
+        for index, char_attr_item in enumerate(char_attr_list):
+            # Assign text to and expand 'field_object.text', update 'field_object.text_image' and get new rect.
+            field_object.text = text_prefix + char_attr_item
+            render_new_text_image(field_object)
 
-            # Append default position for first special ability to list.
+            # Append default position for first 'field_object' to list.
             if index == 0:
-                self.ability_pos_y_list.append(pos_y)
-
+                pos_y_list.append(pos_y)
             # Calculate and append new 'pos_y' in subsequent iterations.
             else:
-                pos_y = self.ability_pos_y_list[index-1] + self.ability_pos_y_list[index]
-                self.ability_pos_y_list[index] = pos_y
+                pos_y = pos_y_list[index - 1] + pos_y_list[index]
+                pos_y_list[index] = pos_y
 
             # Append height of current 'text_rect' to list for use in following iteration where it will then be overwritten
             # with the newly calculated 'pos_y'.
-            self.ability_pos_y_list.append(ability.text_rect.height)
-            # Reset 'ability' to default values.
-            ability = default_object
+            pos_y_list.append(field_object.text_rect.height)
+
+            # Create object with default values to 'hard reset' 'field_object'. Quick and dirty fix for 'field_object'
+            # refusing to be reset any other way if 'multi_line' is 'True'.
+            if field_object.multi_line:
+                default_object = so.TextField(self.screen, "", self.text_standard, multi_line=True, image_width=self.screen_width / 3)
+                field_object = default_object
+
+        return pos_y_list
 
 
     """Helper methods for use within this class."""
@@ -346,14 +358,14 @@ class CharacterSheet:
             # Update 'group[1].text_image' and get new rect.
             render_new_text_image(group[1])
 
-    def draw_format_dynamic_field(self, field_object, char_attr_list, x_anchor, pos_y_list, text_prefix=None):
+    def draw_format_dynamic_field(self, field_object, char_attr_list, anchor, pos_y_list, text_prefix=None):
         """Dynamically change 'text' attribute for 'field_object' based on list/tuple 'char_attr_list', and draw it on
         screen.
         ARGS:
             field_object: instance of class 'TextField' to be dynamically modified using values from 'char_attr_list'.
             char_attr_list: attribute of type LIST or TUPLE from instance of 'Character' containing strings to be
                             dynamically added to 'field_object'.
-            x_anchor: anchor object for thematic group that 'field_object' belongs to. Used for positioning along x-axis.
+            anchor: anchor object for thematic group that 'field_object' belongs to. Used for positioning along x-axis.
             pos_y_list: list containing y-positions for 'field_object' as populated by function 'get_position_dynamic_field'
             text_prefix: string with prefix to be added to 'field_object.text' together with 'char_attr_item', i.e. " - ".
                          Default is 'None'.
@@ -364,5 +376,5 @@ class CharacterSheet:
             render_new_text_image(field_object)
 
             # Position and draw 'field_object'.
-            field_object.text_rect.top, field_object.text_rect.left = pos_y_list[index], x_anchor.text_rect.left
+            field_object.text_rect.top, field_object.text_rect.left = pos_y_list[index], anchor.text_rect.left
             field_object.draw_text()
