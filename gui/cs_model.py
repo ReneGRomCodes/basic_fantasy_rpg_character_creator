@@ -176,7 +176,8 @@ class CharacterSheet:
             group[1].draw_text()
         # Draw special abilities fields.
         self.special_abilities_title.draw_text()
-        self.dynamic_format_special_abilities()  # Formats AND draws dynamically modified special ability field.
+        self.draw_format_dynamic_field(self.special_ability, self.character.specials, self.special_abilities_title,
+                                       self.ability_pos_y_list, text_prefix=" - ")
         # Draw spells fields only if character is magic based, i.e. Magic-User, Cleric or combination class.
         if self.character.spells:
             self.spells_title.draw_text()
@@ -345,19 +346,23 @@ class CharacterSheet:
             # Update 'group[1].text_image' and get new rect.
             render_new_text_image(group[1])
 
-    def dynamic_format_special_abilities(self):
-        """Dynamically change 'text' attribute for 'self.special_ability' based on list 'self.character.specials',
-        and draw it on screen."""
-        # Helper variables.
-        character = self.character
-        ability = self.special_ability
-        # Use 'special_abilities_title' rect as reference for starting column.
-        pos_x = self.special_abilities_title.text_rect.left
+    def draw_format_dynamic_field(self, field_object, char_attr_list, x_anchor, pos_y_list, text_prefix=None):
+        """Dynamically change 'text' attribute for 'field_object' based on list/tuple 'char_attr_list', and draw it on
+        screen.
+        ARGS:
+            field_object: instance of class 'TextField' to be dynamically modified using values from 'char_attr_list'.
+            char_attr_list: attribute of type LIST or TUPLE from instance of 'Character' containing strings to be
+                            dynamically added to 'field_object'.
+            x_anchor: anchor object for thematic group that 'field_object' belongs to. Used for positioning along x-axis.
+            pos_y_list: list containing y-positions for 'field_object' as populated by function 'get_position_dynamic_field'
+            text_prefix: string with prefix to be added to 'field_object.text' together with 'char_attr_item', i.e. " - ".
+                         Default is 'None'.
+        """
+        for index, char_attr_item in enumerate(char_attr_list):
+            # Assign text to and expand 'field_object.text', update 'field_object.text_image' and get new rect.
+            field_object.text = text_prefix + char_attr_item
+            render_new_text_image(field_object)
 
-        for index, special in enumerate(character.specials):
-            # Expand 'ability.text', update 'ability.text_image' and get new rect.
-            ability.text = " - " + special
-            render_new_text_image(ability)
-
-            ability.text_rect.top, ability.text_rect.left = self.ability_pos_y_list[index], pos_x
-            ability.draw_text()
+            # Position and draw 'field_object'.
+            field_object.text_rect.top, field_object.text_rect.left = pos_y_list[index], x_anchor.text_rect.left
+            field_object.draw_text()
