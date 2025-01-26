@@ -80,12 +80,12 @@ class Character:
         elif class_selection == "Fighter":
             self.class_hit_die = 8
             self.next_level_xp = 2000
-            self.class_specials = (False, )
+            self.class_specials = ()
             self.class_saving_throws = (12, 13, 14, 15, 17)
         elif class_selection == "Magic-User":
             self.class_hit_die = 4
             self.next_level_xp = 2500
-            self.class_specials = (False, )
+            self.class_specials = ()
             self.class_saving_throws = (13, 14, 13, 16, 15)
             self.spells = "Read Magic"
             self.inventory.append(item_inst.spellbook)
@@ -99,7 +99,7 @@ class Character:
         elif class_selection == "Fighter/Magic-User":
             self.class_hit_die = 6
             self.next_level_xp = 4500
-            self.class_specials = (False, )
+            self.class_specials = ()
             self.class_saving_throws = (13, 14, 14, 16, 17)
             self.spells = "Read Magic"
             self.inventory.append(item_inst.spellbook)
