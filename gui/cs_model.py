@@ -114,8 +114,10 @@ class CharacterSheet:
         # 'get_position_special_abilities'. See method docstring for details.
         self.ability_pos_y_list = []
 
-        # Spell element for classes 'Magic-User', 'Cleric' or combination classes.
-        self.spells = so.TextField(screen, "Spells:", self.text_standard)
+        # Spell elements for classes 'Magic-User', 'Cleric' or combination classes.
+        self.spells_title = so.TextField(screen, "SPELLS", self.text_standard)
+        self.spell = so.TextField(screen, str(character.spells), self.text_standard)
+
         # Inventory elements.
         self.money = so.TextField(screen, "Money:", self.text_standard)
         self.carrying_capacity = so.TextField(screen, "Carrying Capacity:", self.text_standard)
@@ -205,14 +207,19 @@ class CharacterSheet:
             # Move row position down for next group.
             y_row_4 = group[0].text_rect.bottom
 
-        # Reset 'y_row_4' to starting position.
-        y_row_4 = group_ref_rect.bottom
-
         # Special abilities group.
         # Only the group title object is positioned here, the other fields are handled by 'get_position_special_abilities()'
         # method.
         # Group starting on 'x_column_2', 'y_row_3'.
         self.special_abilities_title.text_rect.top, self.special_abilities_title.text_rect.left = y_row_3, x_column_2
+
+        # Spells group.
+        # Using 'spells' rect for reference and easier positioning.
+        group_ref_rect = self.spells_title.text_rect
+        # Group starting on 'x_column_2', 'y_row_5'
+        y_row_5 = self.screen_height / 2
+        group_ref_rect.top, group_ref_rect.left = y_row_5, x_column_2
+        self.spell.text_rect.top, self.spell.text_rect.left = group_ref_rect.bottom, x_column_2
 
     def show_character_sheet_screen(self):
         """Draw character sheet elements on screen."""
@@ -254,6 +261,10 @@ class CharacterSheet:
         # Draw special abilities fields.
         self.special_abilities_title.draw_text()
         self.dynamic_format_special_abilities()  # Formats AND draws dynamically modified special ability field.
+        # Draw spells fields only if character is magic based (Magic-User, Cleric or combination class).
+        if self.character.spells:
+            self.spells_title.draw_text()
+            self.spell.draw_text()
 
     def format_ability_bonus_penalty(self):
         """Format output for 0/positive values of ability score's bonus and penalty. Remove value if it is '0' or add '+'
@@ -295,7 +306,7 @@ class CharacterSheet:
             if index == 0:
                 self.ability_pos_y_list.append(pos_y)
 
-            # Calculate and append new 'pos_y' for following iteration.
+            # Calculate and append new 'pos_y' in subsequent iterations.
             else:
                 pos_y = self.ability_pos_y_list[index-1] + self.ability_pos_y_list[index]
                 self.ability_pos_y_list[index] = pos_y
