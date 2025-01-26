@@ -120,6 +120,7 @@ class CharacterSheet:
 
         # Class specials elements.
         self.class_specials_title = so.TextField(screen, character.class_name.upper() + " SPECIALS", self.text_standard)
+        self.class_special = so.TextField(screen, "", self.text_standard)
 
         # Inventory elements.
         self.money = so.TextField(screen, "Money:", self.text_standard)
@@ -132,6 +133,62 @@ class CharacterSheet:
         self.armor = so.TextField(screen, "Armor:", self.text_standard)
         self.armor_ac = so.TextField(screen, "AC:", self.text_standard) # Armor class for worn armor only, not including
                                                                         # base armor class for character.
+
+
+    """Main method to show character sheet. Called from main loop in 'main.py'."""
+
+    def show_character_sheet_screen(self):
+        """Draw character sheet elements on screen."""
+        # Draw screen title.
+        self.title.draw_text()
+
+        # Draw character sheet elements.
+        # Basic character info fields.
+        self.name_field.draw_text()
+        self.name_char.draw_text()
+        self.xp_field.draw_text()
+        self.xp_char.draw_text()
+        self.race_field.draw_text()
+        self.race_char.draw_text()
+        self.class_field.draw_text()
+        self.class_char.draw_text()
+        self.level_field.draw_text()
+        self.level_char.draw_text()
+        self.next_lvl_xp_field.draw_text()
+        self.next_lvl_xp_char.draw_text()
+        # Draw combat info fields.
+        self.armor_class_field.draw_text()
+        self.armor_class_char.draw_text()
+        self.health_points_field.draw_text()
+        self.attack_bonus_field.draw_text()
+        self.health_points_char.draw_text()
+        self.attack_bonus_char.draw_text()
+        # Draw ability scores fields.
+        self.abilities_title.draw_text()
+        for group in self.ability_groups:
+            group[0].draw_text()
+            group[1].draw_text()
+            group[2].draw_text()
+        # Draw saving throw fields.
+        self.saving_throws_title.draw_text()
+        for group in self.saving_throw_groups:
+            group[0].draw_text()
+            group[1].draw_text()
+        # Draw special abilities fields.
+        self.special_abilities_title.draw_text()
+        self.dynamic_format_special_abilities()  # Formats AND draws dynamically modified special ability field.
+        # Draw spells fields only if character is magic based, i.e. Magic-User, Cleric or combination class.
+        if self.character.spells:
+            self.spells_title.draw_text()
+            self.spell.draw_text()
+
+        # Draw class specials fields only if character is Thief, Cleric or Thief/Magic-User.
+        if self.character.class_specials:
+            self.class_specials_title.draw_text()
+
+
+    """Positioning methods for use in 'initialize_character_sheet()' function in 'core/main_functions.py' when the final
+    character sheet is initialized."""
 
     def position_cs_elements(self):
         """Position instances of class 'TextField' on screen."""
@@ -234,74 +291,6 @@ class CharacterSheet:
         # Group starting on 'x_column_3, 'y_row_5'
         group_ref_rect.top, group_ref_rect.left = y_row_5, x_column_3
 
-    def show_character_sheet_screen(self):
-        """Draw character sheet elements on screen."""
-        # Draw screen title.
-        self.title.draw_text()
-
-        # Draw character sheet elements.
-        # Basic character info fields.
-        self.name_field.draw_text()
-        self.name_char.draw_text()
-        self.xp_field.draw_text()
-        self.xp_char.draw_text()
-        self.race_field.draw_text()
-        self.race_char.draw_text()
-        self.class_field.draw_text()
-        self.class_char.draw_text()
-        self.level_field.draw_text()
-        self.level_char.draw_text()
-        self.next_lvl_xp_field.draw_text()
-        self.next_lvl_xp_char.draw_text()
-        # Draw combat info fields.
-        self.armor_class_field.draw_text()
-        self.armor_class_char.draw_text()
-        self.health_points_field.draw_text()
-        self.attack_bonus_field.draw_text()
-        self.health_points_char.draw_text()
-        self.attack_bonus_char.draw_text()
-        # Draw ability scores fields.
-        self.abilities_title.draw_text()
-        for group in self.ability_groups:
-            group[0].draw_text()
-            group[1].draw_text()
-            group[2].draw_text()
-        # Draw saving throw fields.
-        self.saving_throws_title.draw_text()
-        for group in self.saving_throw_groups:
-            group[0].draw_text()
-            group[1].draw_text()
-        # Draw special abilities fields.
-        self.special_abilities_title.draw_text()
-        self.dynamic_format_special_abilities()  # Formats AND draws dynamically modified special ability field.
-        # Draw spells fields only if character is magic based, i.e. Magic-User, Cleric or combination class.
-        if self.character.spells:
-            self.spells_title.draw_text()
-            self.spell.draw_text()
-
-        # Draw class specials fields only if character is Thief, Cleric or Thief/Magic-User.
-        self.class_specials_title.draw_text()
-
-    def format_ability_bonus_penalty(self):
-        """Format output for 0/positive values of ability score's bonus and penalty. Remove value if it is '0' or add '+'
-        if value is positive."""
-        for group in self.ability_groups:
-            if int(group[2].text) == 0:
-                group[2].text = ""
-            elif int(group[2].text) > 0:
-                group[2].text = "+" + group[2].text
-
-            # Update 'group[2].text_image' and get new rect.
-            render_new_text_image(group[2])
-
-    def format_saving_throw_scores(self):
-        """Format output for saving throws by adding a '+' to the score."""
-        for group in self.saving_throw_groups:
-            group[1].text = "+" + group[1].text
-
-            # Update 'group[1].text_image' and get new rect.
-            render_new_text_image(group[1])
-
     def get_position_special_abilities(self):
         """Populate list 'self.ability_pos_y_list' with y-positions for each state of 'self.special_ability'."""
         # Helper variables.
@@ -332,6 +321,29 @@ class CharacterSheet:
             self.ability_pos_y_list.append(ability.text_rect.height)
             # Reset 'ability' to default values.
             ability = default_object
+
+
+    """Helper methods for use within this class."""
+
+    def format_ability_bonus_penalty(self):
+        """Format output for 0/positive values of ability score's bonus and penalty. Remove value if it is '0' or add '+'
+        if value is positive."""
+        for group in self.ability_groups:
+            if int(group[2].text) == 0:
+                group[2].text = ""
+            elif int(group[2].text) > 0:
+                group[2].text = "+" + group[2].text
+
+            # Update 'group[2].text_image' and get new rect.
+            render_new_text_image(group[2])
+
+    def format_saving_throw_scores(self):
+        """Format output for saving throws by adding a '+' to the score."""
+        for group in self.saving_throw_groups:
+            group[1].text = "+" + group[1].text
+
+            # Update 'group[1].text_image' and get new rect.
+            render_new_text_image(group[1])
 
     def dynamic_format_special_abilities(self):
         """Dynamically change 'text' attribute for 'self.special_ability' based on list 'self.character.specials',
