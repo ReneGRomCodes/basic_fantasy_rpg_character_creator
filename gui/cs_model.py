@@ -120,7 +120,13 @@ class CharacterSheet:
 
         # Class specials elements.
         self.class_specials_title = so.TextField(screen, character.class_name.upper() + " SPECIALS", self.text_standard)
+        # 'class_special' object has its text dynamically modified in method 'draw_format_dynamic_field()' to account
+        # for the fact that number of specials in 'character.class_specials' is unpredictable at the start of the
+        # character creation. 'draw_format_dynamic_field()' is called from 'show_character_sheet_screen()'.
         self.class_special = so.TextField(screen, "", self.text_standard)
+        # List to store y-position values for each state of 'self.class_special' as created in function
+        # 'initialize_character_sheet()' in 'main_functions.py'.
+        self.class_special_pos_y_list = []
 
         # Inventory elements.
         self.money = so.TextField(screen, "Money:", self.text_standard)
@@ -182,10 +188,11 @@ class CharacterSheet:
         if self.character.spells:
             self.spells_title.draw_text()
             self.spell.draw_text()
-
         # Draw class specials fields only if character is Thief, Cleric or Thief/Magic-User.
         if self.character.class_specials:
             self.class_specials_title.draw_text()
+            self.draw_format_dynamic_field(self.class_special, self.character.class_specials, self.class_specials_title,
+                                       self.class_special_pos_y_list)
 
 
     """Positioning methods for use in 'initialize_character_sheet()' function in 'core/main_functions.py' when the final
@@ -292,7 +299,7 @@ class CharacterSheet:
         # Group starting on 'x_column_3, 'y_row_5'
         group_ref_rect.top, group_ref_rect.left = y_row_5, x_column_3
 
-    def get_position_dynamic_field(self, field_object, char_attr_list, anchor, text_prefix=None):
+    def get_position_dynamic_field(self, field_object, char_attr_list, anchor, text_prefix=""):
         """
         Create, populate and return list 'pos_y_list' with y-positions for each state of 'field_object'.
         ARGS:
@@ -301,7 +308,7 @@ class CharacterSheet:
                             dynamically added to 'field_object'.
             anchor: anchor object for thematic group that 'field_object' belongs to. Used for positioning along x-axis.
             text_prefix: string with prefix to be added to 'field_object.text' together with 'char_attr_item', i.e. " - ".
-                         Default is 'None'.
+                         Default is "".
         RETURNS:
             pos_y_list: list with y-positions for use in positioning of 'field_object' in method 'draw_format_dynamic_field()'
         """
@@ -358,7 +365,7 @@ class CharacterSheet:
             # Update 'group[1].text_image' and get new rect.
             render_new_text_image(group[1])
 
-    def draw_format_dynamic_field(self, field_object, char_attr_list, anchor, pos_y_list, text_prefix=None):
+    def draw_format_dynamic_field(self, field_object, char_attr_list, anchor, pos_y_list, text_prefix=""):
         """
         Dynamically change 'text' attribute for 'field_object' based on list/tuple 'char_attr_list', and draw it on
         screen.
@@ -369,7 +376,7 @@ class CharacterSheet:
             anchor: anchor object for thematic group that 'field_object' belongs to. Used for positioning along x-axis.
             pos_y_list: list containing y-positions for 'field_object' as populated by function 'get_position_dynamic_field'
             text_prefix: string with prefix to be added to 'field_object.text' together with 'char_attr_item', i.e. " - ".
-                         Default is 'None'.
+                         Default is "".
         """
         for index, char_attr_item in enumerate(char_attr_list):
             # Assign text to and expand 'field_object.text', update 'field_object.text_image' and get new rect.

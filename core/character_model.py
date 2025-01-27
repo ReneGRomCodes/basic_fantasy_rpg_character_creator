@@ -76,7 +76,7 @@ class Character:
             self.next_level_xp = 1500
             self.class_specials = ("Turn the Undead", )
             self.class_saving_throws = (11, 12, 14, 16, 15)
-            self.spells = "None"
+            self.spells = "No Spells"
         elif class_selection == "Fighter":
             self.class_hit_die = 8
             self.next_level_xp = 2000

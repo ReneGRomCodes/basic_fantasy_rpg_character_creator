@@ -142,6 +142,9 @@ def initialize_character_sheet(screen, gui_elements):
     cs_sheet.position_cs_elements()
     cs_sheet.ability_pos_y_list = cs_sheet.get_position_dynamic_field(cs_sheet.special_ability, character.specials,
                                                                       cs_sheet.special_abilities_title, text_prefix=" - ")
+    cs_sheet.class_special_pos_y_list = cs_sheet.get_position_dynamic_field(cs_sheet.class_special, character.class_specials,
+                                                                      cs_sheet.class_specials_title)
+
     state = "character_sheet"
 
     return cs_sheet, state
