@@ -63,7 +63,7 @@ def initialize_screen_elements(screen):
     # Title screen.
     title_message = "BASIC FANTASY ROLE-PLAYING GAME"
     subtitle_message = "Character Creator"
-    copyright_message = ("Basic Fantasy Role-Playing Game, Copyright 2006-2024 Chris Gonnerman. All Rights reserved. "
+    copyright_message = ("Basic Fantasy Role-Playing Game, Copyright 2006-2025 Chris Gonnerman. All Rights reserved. "
                          "Distributed under CC BY-SA license. www.basicfantasy.com")
     title = so.TextField(screen, title_message, title_size)
     subtitle = so.TextField(screen, subtitle_message, text_large)

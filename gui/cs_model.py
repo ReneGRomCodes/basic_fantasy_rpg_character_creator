@@ -127,7 +127,7 @@ class CharacterSheet:
         # List to store y-position values for each state of 'self.class_special' as created in function
         # 'initialize_character_sheet()' in 'main_functions.py'.
         self.class_special_pos_y_list = []
-
+        # TODO ignore me... I am just a marker so the idiot coding this knows where he is at right now.
         # Inventory elements.
         self.money = so.TextField(screen, "Money:", self.text_standard)
         self.carrying_capacity = so.TextField(screen, "Carrying Capacity:", self.text_standard)
