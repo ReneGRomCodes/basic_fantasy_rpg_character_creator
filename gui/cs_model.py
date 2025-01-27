@@ -109,7 +109,7 @@ class CharacterSheet:
         # 'special_ability' object has its text dynamically modified in method 'draw_format_dynamic_field()' to account
         # for the fact that number of abilities in 'character.specials' is unpredictable at the start of the character
         # creation. 'draw_format_dynamic_field()' is called from 'show_character_sheet_screen()'.
-        self.special_ability = so.TextField(screen, "", self.text_standard, multi_line=False, image_width=self.screen_width / 3)
+        self.special_ability = so.TextField(screen, "", self.text_standard, multi_line=True, image_width=self.screen_width / 3)
         # List to store y-position values for each state of 'self.special_ability' as created in function
         # 'initialize_character_sheet()' in 'main_functions.py'.
         self.ability_pos_y_list = []
@@ -359,7 +359,8 @@ class CharacterSheet:
             render_new_text_image(group[1])
 
     def draw_format_dynamic_field(self, field_object, char_attr_list, anchor, pos_y_list, text_prefix=None):
-        """Dynamically change 'text' attribute for 'field_object' based on list/tuple 'char_attr_list', and draw it on
+        """
+        Dynamically change 'text' attribute for 'field_object' based on list/tuple 'char_attr_list', and draw it on
         screen.
         ARGS:
             field_object: instance of class 'TextField' to be dynamically modified using values from 'char_attr_list'.
