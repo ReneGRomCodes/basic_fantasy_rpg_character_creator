@@ -62,7 +62,7 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     ui.draw_screen_title(screen, screen_title, gui_elements)
 
     # Set initial position on y-axis for ability score fields.
-    element_pos_y = screen.get_rect().height / 3
+    element_pos_y = screen.get_rect().height / 4
 
     # Loop through each ability field and corresponding stat to format and display the ability name, score and bonus/penalty.
     # Align and position elements dynamically on the screen.
