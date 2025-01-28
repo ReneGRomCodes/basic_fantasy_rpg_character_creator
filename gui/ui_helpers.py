@@ -325,7 +325,7 @@ def build_and_position_prompt(screen, naming_prompt, character):
 def position_money_screen_elements(screen, gui_elements):
     """Position objects from 'gui_elements' for starting money screen."""
     # Positioning of button instances.
-    money_button_width = screen.get_rect().width / 3
+    money_button_width = screen.get_rect().width / 2.5
     money_button_pos_y = screen.get_rect().height / 3
     random_money_button, custom_money_button = gui_elements["starting_money_choices"][0], gui_elements["starting_money_choices"][1]
     random_money_button.button_rect.width = money_button_width
