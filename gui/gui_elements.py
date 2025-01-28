@@ -5,7 +5,7 @@ import pygame_textinput
 """Initialize instances of classes from 'screen_objects.py' for use in GUI."""
 
 
-def initialize_screen_elements(screen):
+def initialize_screen_elements(screen, settings):
     """Initialize instances of classes from 'screen_objects.py' for use in GUI in addition to default size and spacing
     values for automatic scalability of screen objects. Return dict of instances 'gui_elements'.
     NOTE: Instances created have to be then added manually to dict 'gui_elements'!
@@ -38,7 +38,7 @@ def initialize_screen_elements(screen):
     text_standard = int(screen_height / 45)
     text_large = int(screen_height / 30)
     text_medium = int(screen_height / 37)
-    text_small = int(screen_height / 60)
+    text_small = int(screen_height / 70)
     info_panel_width = int(screen_width / 4)
     title_screen_spacing = int(screen_height / 60)  # Spacing between main title and subtitle on title screen.
     menu_title_spacing = int(screen_height / 45)  # Default spacing between menu title and GUI objects.
@@ -183,7 +183,7 @@ def initialize_screen_elements(screen):
     # forth between selection and naming screen. Shit gets out of hand otherwise.
     character_naming_prompt = so.TextField(screen, "", text_medium)
     # 'pygame_textinput' and 'TextInputField' instances.
-    character_input_font = pygame.font.SysFont(None, text_medium)
+    character_input_font = pygame.font.Font(settings.font, text_medium)
     character_name_input = pygame_textinput.TextInputVisualizer(font_object=character_input_font)
     character_name_field = so.TextInputField(screen, character_name_input, screen_width/2)
 
@@ -202,7 +202,7 @@ def initialize_screen_elements(screen):
     # 'pygame_textinput' and 'TextInputField' instances.
     money_input_prompt_message = "Enter amount of gold for your character"
     money_input_prompt = so.TextField(screen, money_input_prompt_message, text_standard)
-    money_input_font = pygame.font.SysFont(None, text_medium)
+    money_input_font = pygame.font.Font(settings.font, text_medium)
     money_amount_input = pygame_textinput.TextInputVisualizer(font_object=money_input_font)
     money_amount_field = so.TextInputField(screen, money_amount_input, screen_width / 4)
 

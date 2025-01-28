@@ -18,7 +18,7 @@ def run_character_creator():
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
 
     # Initialize dicts with GUI elements. See package 'gui' for details.
-    gui_elements = initialize_screen_elements(screen)
+    gui_elements = initialize_screen_elements(screen, settings)
     # Create placeholder variable for later 'CharacterSheet' class object.
     cs_sheet = None
 
