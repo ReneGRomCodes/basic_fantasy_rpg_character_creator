@@ -38,7 +38,7 @@ class TextField:
             self.text_color = settings.greyed_out_text_color
         else:
             self.text_color = text_color
-        self.font = pygame.font.SysFont(None, self.size)
+        self.font = pygame.font.Font(settings.font, self.size)
         # Set padding for text fields with background color.
         self.padding = int(self.screen_rect.width / 40)
 
