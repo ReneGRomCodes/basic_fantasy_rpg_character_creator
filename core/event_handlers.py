@@ -9,7 +9,7 @@ def main_events(screen, state, gui_elements, mouse_pos):
     """Check and handle pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'"""
 
     # Hashable set to optimize state checking and improve performance.
-    states_set = {"title_screen", "main_menu"}
+    states_set = {"title_screen", "character_menu"}
 
     if state in states_set:
 
@@ -20,18 +20,21 @@ def main_events(screen, state, gui_elements, mouse_pos):
 
             if state == "title_screen":
                 if event.type == pygame.KEYUP:
-                    state = "main_menu"
+                    state = "character_menu"
                 elif event.type == pygame.MOUSEBUTTONUP:
                     if screen.get_rect().collidepoint(mouse_pos):
-                        state = "main_menu"
+                        state = "character_menu"
 
-            elif state == "main_menu":
+            elif state == "character_menu":
                 if event.type == pygame.MOUSEBUTTONUP:
                     if gui_elements["custom"].button_rect.collidepoint(mouse_pos):
                         state = "set_abilities"
 
                     if gui_elements["random"].button_rect.collidepoint(mouse_pos):
                         state = "random_character"
+
+                    if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                        pass
 
     return state
 
@@ -68,7 +71,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
             if state == "show_abilities":
                 if event.type == pygame.MOUSEBUTTONUP:
                     if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
-                        state = "main_menu"
+                        state = "character_menu"
 
                     if gui_elements["reroll_button"].button_rect.collidepoint(mouse_pos):
                         state = "set_abilities"
@@ -165,7 +168,7 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
                     # screen.
                     from core.main_functions import fix_my_messy_globals
                     fix_my_messy_globals()
-                    state = "main_menu"
+                    state = "character_menu"
 
             if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                 character.set_name(character_name_input.manager.value)

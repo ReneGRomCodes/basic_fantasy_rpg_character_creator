@@ -70,9 +70,15 @@ def initialize_screen_elements(screen, settings):
     copyright_notice = so.TextField(screen, copyright_message, text_small)
 
 
-    # Main menu.
+    # Main Menu.
     main_menu_title_text = "- MAIN MENU -"
     main_menu_screen_title = so.TextField(screen, main_menu_title_text, text_large)
+    start_button = so.Button(screen, "Create a Character", text_medium)
+    settings_button = so.Button(screen, "Settings", text_medium)
+    credits_button = so.Button(screen, "Credits", text_medium)
+
+
+    # Character menu.
     custom = so.Button(screen, "Create Custom Character", text_medium)
     random = so.Button(screen, "Create Random Character", text_medium)
 
@@ -236,6 +242,10 @@ def initialize_screen_elements(screen, settings):
         "copyright_notice": copyright_notice,
         # Main menu.
         "main_menu_title": main_menu_screen_title,
+        "start_button": start_button,
+        "settings_button": settings_button,
+        "credits_button": credits_button,
+        # Character menu.
         "custom": custom,
         "random": random,
         # Ability scores screen.

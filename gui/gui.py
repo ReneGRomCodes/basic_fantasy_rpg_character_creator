@@ -19,20 +19,38 @@ def show_title_screen(screen, gui_elements):
     copyright_notice.draw_text()
 
 
-def show_menu(screen, gui_elements, mouse_pos):
+def show_main_menu(screen, gui_elements, mouse_pos):
     """Display main menu."""
     # Assign gui_elements to variables.
-    main_menu = gui_elements["main_menu_title"]
-    custom = gui_elements["custom"]
-    random = gui_elements["random"]
+    title = gui_elements["main_menu_title"]
+    start = gui_elements["start_button"]
+    settings = gui_elements["settings_button"]
+    show_credits = gui_elements["credits_button"]
 
-    # Position buttons and 'main_menu' text field.
+    # Position buttons and main menu title field.
     ui.position_main_menu_screen_elements(screen, gui_elements)
 
     # Draw elements on screen.
-    main_menu.draw_text()
+    title.draw_text()
+    start.draw_button(mouse_pos)
+    settings.draw_button(mouse_pos)
+    show_credits.draw_button(mouse_pos)
+
+
+def show_character_menu(screen, gui_elements, mouse_pos):
+    """Display character menu."""
+    # Assign gui_elements to variables.
+    custom = gui_elements["custom"]
+    random = gui_elements["random"]
+    back_button = gui_elements["back_button"]
+
+    # Position buttons.
+    ui.position_character_menu_screen_elements(screen, gui_elements)
+
+    # Draw elements on screen.
     custom.draw_button(mouse_pos)
     random.draw_button(mouse_pos)
+    back_button.draw_button(mouse_pos)
 
 
 def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):

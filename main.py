@@ -39,8 +39,8 @@ def run_character_creator():
 
         if state == "title_screen":
             gui.show_title_screen(screen, gui_elements)
-        elif state == "main_menu":
-            gui.show_menu(screen, gui_elements, mouse_pos)
+        elif state == "character_menu":
+            gui.show_character_menu(screen, gui_elements, mouse_pos)
         # Character creation states.
         elif state in custom_character_states:
             state = mf.custom_character(screen, state, gui_elements, mouse_pos)

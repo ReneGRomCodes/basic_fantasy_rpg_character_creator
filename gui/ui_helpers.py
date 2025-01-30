@@ -82,9 +82,14 @@ def position_title_screen_elements(screen, gui_elements):
 
 def position_main_menu_screen_elements(screen, gui_elements):
     """Position objects from 'gui_elements' for main menu screen."""
+    pass
+
+
+"""Background functions for character menu screen."""
+
+def position_character_menu_screen_elements(screen, gui_elements):
+    """Position objects from 'gui_elements' for character menu screen."""
     # Assign gui_elements to variables.
-    spacing = gui_elements["menu_title_spacing"]
-    main_menu = gui_elements["main_menu_title"]
     custom = gui_elements["custom"]
     random = gui_elements["random"]
 
@@ -95,7 +100,6 @@ def position_main_menu_screen_elements(screen, gui_elements):
     random.button_rect.width = screen.get_rect().width / 3
     random.button_rect.centerx = screen.get_rect().centerx
     random.button_rect.top = screen.get_rect().centery
-    main_menu.text_rect.bottom = custom.button_rect.top - spacing
 
 
 """Background functions for race/class selection screen."""
