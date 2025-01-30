@@ -7,45 +7,39 @@ from character_creation_functions import build_character_sheet
 
 def main_events(screen, state, gui_elements, mouse_pos):
     """Check and handle pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'"""
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
 
-    # Hashable set to optimize state checking and improve performance.
-    states_set = {"title_screen", "main_menu", "character_menu"}
+        if state == "title_screen":
+            if event.type == pygame.KEYUP:
+                state = "character_menu"
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if screen.get_rect().collidepoint(mouse_pos):
+                    state = "main_menu"
 
-    if state in states_set:
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-            if state == "title_screen":
-                if event.type == pygame.KEYUP:
+        elif state == "main_menu":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if gui_elements["start_button"].button_rect.collidepoint(mouse_pos):
                     state = "character_menu"
-                elif event.type == pygame.MOUSEBUTTONUP:
-                    if screen.get_rect().collidepoint(mouse_pos):
-                        state = "main_menu"
 
-            elif state == "main_menu":
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if gui_elements["start_button"].button_rect.collidepoint(mouse_pos):
-                        state = "character_menu"
+                if gui_elements["settings_button"].button_rect.collidepoint(mouse_pos):
+                    pass
 
-                    if gui_elements["settings_button"].button_rect.collidepoint(mouse_pos):
-                        pass
+                if gui_elements["credits_button"].button_rect.collidepoint(mouse_pos):
+                    pass
 
-                    if gui_elements["credits_button"].button_rect.collidepoint(mouse_pos):
-                        pass
+        elif state == "character_menu":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if gui_elements["custom"].button_rect.collidepoint(mouse_pos):
+                    state = "set_abilities"
 
-            elif state == "character_menu":
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if gui_elements["custom"].button_rect.collidepoint(mouse_pos):
-                        state = "set_abilities"
+                if gui_elements["random"].button_rect.collidepoint(mouse_pos):
+                    state = "random_character"
 
-                    if gui_elements["random"].button_rect.collidepoint(mouse_pos):
-                        state = "random_character"
-
-                    if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
-                        state = "main_menu"
+                if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                    state = "main_menu"
 
     return state
 

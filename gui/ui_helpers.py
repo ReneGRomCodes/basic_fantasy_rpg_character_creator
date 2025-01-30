@@ -81,7 +81,7 @@ def position_title_screen_elements(screen, gui_elements):
 """Background functions for main menu screen."""
 
 def position_main_menu_screen_elements(screen, gui_elements):
-    """Position objects from 'gui_elements' for main menu screen."""
+    """Format and position objects from 'gui_elements' for main menu screen."""
     # Assign gui_elements to variables.
     spacing = gui_elements["title_screen_spacing"]
     title = gui_elements["main_menu_title"]
@@ -90,9 +90,9 @@ def position_main_menu_screen_elements(screen, gui_elements):
     show_credits = gui_elements["credits_button"]
 
     # Position buttons and title text field.
-    title.text_rect.centery = screen.get_rect().height / 3
+    title.text_rect.centery = screen.get_rect().height / 4
     title.text_rect.centerx = screen.get_rect().centerx
-    start.button_rect.width = screen.get_rect().width / 3
+    start.button_rect.width = screen.get_rect().width / 4
     start.button_rect.centerx = screen.get_rect().centerx
     start.button_rect.bottom = screen.get_rect().centery - spacing
     settings.button_rect.width = screen.get_rect().width / 6

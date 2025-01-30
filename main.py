@@ -25,6 +25,7 @@ def run_character_creator():
     # Set initial state.
     state = "title_screen"
     # Set of states for character creation.
+    main_states = {"title_screen", "main_menu", "character_menu"}
     custom_character_states = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
                                "set_starting_money", "custom_input_money", "creation_complete"}
     random_character_state = {"random_character", "set_random_money", "name_random_character"}
@@ -35,15 +36,19 @@ def run_character_creator():
         mouse_pos = pygame.mouse.get_pos()
 
         screen.fill(settings.bg_color)
-        state = eh.main_events(screen, state, gui_elements, mouse_pos)
 
+        # Main event handler.
+        if state in main_states:
+            state = eh.main_events(screen, state, gui_elements, mouse_pos)
+
+        # Main states.
         if state == "title_screen":
             gui.show_title_screen(screen, gui_elements)
         elif state == "main_menu":
             gui.show_main_menu(screen, gui_elements, mouse_pos)
+        # Character creation states.
         elif state == "character_menu":
             gui.show_character_menu(screen, gui_elements, mouse_pos)
-        # Character creation states.
         elif state in custom_character_states:
             state = mf.custom_character(screen, state, gui_elements, mouse_pos)
         elif state in random_character_state:

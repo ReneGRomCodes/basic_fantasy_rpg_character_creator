@@ -72,7 +72,7 @@ def initialize_screen_elements(screen, settings):
 
     # Main Menu.
     main_menu_title_text = "- MAIN MENU -"
-    main_menu_screen_title = so.TextField(screen, main_menu_title_text, text_large)
+    main_menu_screen_title = so.TextField(screen, main_menu_title_text, title_size)
     start_button = so.Button(screen, "Create a Character", text_medium)
     settings_button = so.Button(screen, "Settings", text_medium)
     credits_button = so.Button(screen, "Credits", text_medium)
