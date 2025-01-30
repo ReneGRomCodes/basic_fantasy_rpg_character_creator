@@ -82,7 +82,25 @@ def position_title_screen_elements(screen, gui_elements):
 
 def position_main_menu_screen_elements(screen, gui_elements):
     """Position objects from 'gui_elements' for main menu screen."""
-    pass
+    # Assign gui_elements to variables.
+    spacing = gui_elements["title_screen_spacing"]
+    title = gui_elements["main_menu_title"]
+    start = gui_elements["start_button"]
+    settings = gui_elements["settings_button"]
+    show_credits = gui_elements["credits_button"]
+
+    # Position buttons and title text field.
+    title.text_rect.centery = screen.get_rect().height / 3
+    title.text_rect.centerx = screen.get_rect().centerx
+    start.button_rect.width = screen.get_rect().width / 3
+    start.button_rect.centerx = screen.get_rect().centerx
+    start.button_rect.bottom = screen.get_rect().centery - spacing
+    settings.button_rect.width = screen.get_rect().width / 6
+    settings.button_rect.centerx = screen.get_rect().centerx
+    settings.button_rect.top = screen.get_rect().centery + spacing * 2
+    show_credits.button_rect.width = screen.get_rect().width / 6
+    show_credits.button_rect.centerx = screen.get_rect().centerx
+    show_credits.button_rect.top = settings.button_rect.bottom
 
 
 """Background functions for character menu screen."""
@@ -93,7 +111,7 @@ def position_character_menu_screen_elements(screen, gui_elements):
     custom = gui_elements["custom"]
     random = gui_elements["random"]
 
-    # Position buttons and 'main_menu' text field.
+    # Position buttons.
     custom.button_rect.width = screen.get_rect().width / 3
     custom.button_rect.centerx = screen.get_rect().centerx
     custom.button_rect.bottom = screen.get_rect().centery
