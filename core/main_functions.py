@@ -20,6 +20,24 @@ random_money_flag = False
 custom_money_flag = False
 
 
+def main_state_manager(screen, state, gui_elements, mouse_pos):
+    """State manager for main states, i.e. 'title_screen', 'main_menu', etc."""
+    # Call main event handler and get program state.
+    state = eh.main_events(screen, state, gui_elements, mouse_pos)
+
+    if state == "title_screen":
+        # Display title screen.
+        gui.show_title_screen(screen, gui_elements)
+    elif state == "main_menu":
+        # Display main menu screen.
+        gui.show_main_menu(screen, gui_elements, mouse_pos)
+    elif state == "character_menu":
+        # Display character menu screen
+        gui.show_character_menu(screen, gui_elements, mouse_pos)
+
+    return state
+
+
 def custom_character(screen, state, gui_elements, mouse_pos):
     """State manager for custom character creation based on user input."""
     # Declare global variables to allow modification of these values within the function.
@@ -178,9 +196,9 @@ def show_main_shop():
 
 
 """
-Following function is imported into and called in event handler 'naming_character_events()' when returning to main menu
-from 'name_random_character' state. This resolves an issue that caused the program to freeze when returning from naming
-screen to main menu.
+Following function is imported into and called in event handler 'naming_character_events()' when returning to character
+menu from 'name_random_character' state. This resolves an issue that caused the program to freeze when returning from
+naming screen to character menu.
 """
 
 def fix_my_messy_globals():

@@ -37,18 +37,10 @@ def run_character_creator():
 
         screen.fill(settings.bg_color)
 
-        # Main event handler.
-        if state in main_states:
-            state = eh.main_events(screen, state, gui_elements, mouse_pos)
-
         # Main states.
-        if state == "title_screen":
-            gui.show_title_screen(screen, gui_elements)
-        elif state == "main_menu":
-            gui.show_main_menu(screen, gui_elements, mouse_pos)
+        if state in main_states:
+            state = mf.main_state_manager(screen, state, gui_elements, mouse_pos)
         # Character creation states.
-        elif state == "character_menu":
-            gui.show_character_menu(screen, gui_elements, mouse_pos)
         elif state in custom_character_states:
             state = mf.custom_character(screen, state, gui_elements, mouse_pos)
         elif state in random_character_state:
