@@ -140,9 +140,7 @@ class Character:
     def set_specials(self):
         """Get special abilities and add them to attribute list 'self.specials'."""
 
-        for v in self.race_specials + self.class_specials:
-            if v:
-                self.specials.append(v)
+        self.specials = self.race_specials + self.class_specials
 
     def set_saving_throws(self):
         """Get saving throw values and add them to attribute dict 'self.saving_throws'."""
