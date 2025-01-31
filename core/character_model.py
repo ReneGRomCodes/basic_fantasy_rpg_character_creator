@@ -140,16 +140,8 @@ class Character:
     def set_specials(self):
         """Get special abilities and add them to attribute list 'self.specials'."""
 
-        for v in self.race_specials:
-            if not v:
-                pass
-            else:
-                self.specials.append(v)
-
-        for v in self.class_specials:
-            if not v:
-                pass
-            else:
+        for v in self.race_specials + self.class_specials:
+            if v:
                 self.specials.append(v)
 
     def set_saving_throws(self):

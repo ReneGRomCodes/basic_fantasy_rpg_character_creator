@@ -115,8 +115,6 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
             bonus_penalty = f"+{bonus_penalty}"
         elif stats[key][1] == 0:
             bonus_penalty = ""
-        else:
-            pass
 
         # Position and draw copied rect for item from list 'abilities'.
         ability_rect = ability.text_rect.copy()

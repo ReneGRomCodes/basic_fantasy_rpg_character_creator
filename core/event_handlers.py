@@ -106,8 +106,6 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
                             character.set_class(context2.text)
                             func.set_character_values(character)
                             state = "name_character"
-                    else:
-                        pass
 
             elif state == "set_starting_money":
                 if event.type == pygame.MOUSEBUTTONUP:
@@ -123,19 +121,12 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
                             state = "creation_complete"
                     if context2:
                         state = "custom_input_money"
-                    else:
-                        pass
 
             elif state == "creation_complete":
                 if event.type == pygame.MOUSEBUTTONUP:
                     if gui_elements["show_character_sheet"].button_rect.collidepoint(mouse_pos):
                         build_character_sheet(character)  # TODO Character sheet in console for checks. Remove when done.
                         state = "initialize_character_sheet"
-                    else:
-                        pass
-
-            else:
-                pass
 
     return possible_characters, state
 
@@ -188,9 +179,6 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
                     state = "set_starting_money"
                 elif state == "name_random_character":
                     state = "creation_complete"
-
-            else:
-                pass
 
     return state
 
