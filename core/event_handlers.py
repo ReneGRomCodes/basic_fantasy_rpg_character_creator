@@ -6,18 +6,15 @@ from character_creation_functions import build_character_sheet
 
 
 def main_events(screen, state, gui_elements, mouse_pos):
-    """Check and handle pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'"""
+    """Check and handle main pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
         if state == "title_screen":
-            if event.type == pygame.KEYUP:
-                state = "character_menu"
-            elif event.type == pygame.MOUSEBUTTONUP:
-                if screen.get_rect().collidepoint(mouse_pos):
-                    state = "main_menu"
+            if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP and screen.get_rect().collidepoint(mouse_pos):
+                state = "main_menu"
 
         elif state == "main_menu":
             if event.type == pygame.MOUSEBUTTONUP:
@@ -25,10 +22,19 @@ def main_events(screen, state, gui_elements, mouse_pos):
                     state = "character_menu"
 
                 if gui_elements["settings_button"].button_rect.collidepoint(mouse_pos):
-                    pass
+                    state = "settings_screen"
 
                 if gui_elements["credits_button"].button_rect.collidepoint(mouse_pos):
-                    pass
+                    state = "credits"
+
+        elif state == "settings_screen":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                    state = "main_menu"
+
+        elif state == "credits":
+            if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP and screen.get_rect().collidepoint(mouse_pos):
+                state = "main_menu"
 
         elif state == "character_menu":
             if event.type == pygame.MOUSEBUTTONUP:

@@ -31,6 +31,12 @@ def main_state_manager(screen, state, gui_elements, mouse_pos):
     elif state == "main_menu":
         # Display main menu screen.
         gui.show_main_menu(screen, gui_elements, mouse_pos)
+    elif state == "settings_screen":
+        # Display settings screen.
+        gui.show_settings(screen, gui_elements, mouse_pos)
+    elif state == "credits":
+        # Display credits screen.
+        gui.show_credits(screen, gui_elements)
     elif state == "character_menu":
         # Display character menu screen
         gui.show_character_menu(screen, gui_elements, mouse_pos)

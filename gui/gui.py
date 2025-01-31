@@ -1,5 +1,6 @@
 import gui.screen_objects as so
 import gui.ui_helpers as ui
+
 """Screen functions."""
 
 
@@ -35,6 +36,26 @@ def show_main_menu(screen, gui_elements, mouse_pos):
     start.draw_button(mouse_pos)
     settings.draw_button(mouse_pos)
     show_credits.draw_button(mouse_pos)
+
+
+def show_settings(screen, gui_elements, mouse_pos):
+    """Display settings screen."""
+    # Assign gui_elements to variables.
+    title = gui_elements["settings_title"]
+    back_button = gui_elements["back_button"]
+
+    # Draw elements on screen.
+    ui.draw_screen_title(screen, title, gui_elements)
+    back_button.draw_button(mouse_pos)
+
+
+def show_credits(screen, gui_elements):
+    """Display credits screen."""
+    # Assign gui_elements to variables.
+    title = gui_elements["credits_title"]
+
+    # Draw elements on screen.
+    ui.draw_screen_title(screen, title, gui_elements)
 
 
 def show_character_menu(screen, gui_elements, mouse_pos):

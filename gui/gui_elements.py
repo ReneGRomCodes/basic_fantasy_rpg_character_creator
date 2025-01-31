@@ -78,6 +78,16 @@ def initialize_screen_elements(screen, settings):
     credits_button = so.Button(screen, "Credits", text_medium)
 
 
+    # Settings.
+    settings_title_text = "- SETTINGS -"
+    settings_title = so.TextField(screen, settings_title_text, title_size)
+
+
+    # Credits.
+    credits_title_text = "- CREDITS -"
+    credits_title = so.TextField(screen, credits_title_text, title_size)
+
+
     # Character menu.
     custom = so.Button(screen, "Create Custom Character", text_medium)
     random = so.Button(screen, "Create Random Character", text_medium)
@@ -245,6 +255,10 @@ def initialize_screen_elements(screen, settings):
         "start_button": start_button,
         "settings_button": settings_button,
         "credits_button": credits_button,
+        # Settings.
+        "settings_title": settings_title,
+        # Credits.
+        "credits_title": credits_title,
         # Character menu.
         "custom": custom,
         "random": random,
