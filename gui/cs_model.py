@@ -112,7 +112,7 @@ class CharacterSheet:
         self.special_ability = so.TextField(screen, "", self.text_standard, multi_line=True, image_width=self.screen_width / 3)
         # List to store y-position values for each state of 'self.special_ability' as created in function
         # 'initialize_character_sheet()' in 'main_functions.py'.
-        self.ability_pos_y_list = []
+        self.specials_pos_y_list = []
 
         # Spell elements for classes 'Magic-User', 'Cleric' or combination classes.
         self.spells_title = so.TextField(screen, "SPELLS", self.text_standard)
@@ -183,7 +183,7 @@ class CharacterSheet:
         # Draw special abilities fields.
         self.special_abilities_title.draw_text()
         self.draw_format_dynamic_field(self.special_ability, self.character.specials, self.special_abilities_title,
-                                       self.ability_pos_y_list, text_prefix=" - ")
+                                       self.specials_pos_y_list, text_prefix=" - ")
         # Draw spells fields only if character is magic based, i.e. Magic-User, Cleric or combination class.
         if self.character.spells:
             self.spells_title.draw_text()

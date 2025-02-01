@@ -27,3 +27,5 @@ class Settings:
         self.rect_clicked_color = (255, 220, 140)
         self.rect_selected_color = (160, 90, 40)
         self.text_input_field_color = (245, 230, 190)
+        self.inactive_continue_button_hover_color = (220, 150, 150)
+        self.inactive_continue_button_click_color = (200, 50, 50)

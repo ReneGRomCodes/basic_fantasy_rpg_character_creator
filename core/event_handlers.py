@@ -15,6 +15,7 @@ def main_events(screen, state, gui_elements, mouse_pos):
     RETURNS:
         state: program state.
     """
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()

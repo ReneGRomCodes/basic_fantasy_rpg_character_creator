@@ -245,7 +245,8 @@ class InfoPanel(TextField):
             "topleft",
             "topright",
             "bottomleft",
-            "bottomright".
+            "bottomright",
+            "center".
             Default position is 'topright'.
         """
         super().__init__(screen, text, size, bg_color, text_color, multi_line, image_width, text_pos)
@@ -257,6 +258,8 @@ class InfoPanel(TextField):
             self.background_rect.bottomleft = screen.get_rect().bottomleft
         elif surface_pos == "bottomright":
             self.background_rect.bottomright = screen.get_rect().bottomright
+        elif surface_pos == "center":
+            self.background_rect.center = screen.get_rect().center
 
     def draw_info_panel(self):
         """Draw info panel on screen."""
