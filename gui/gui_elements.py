@@ -81,6 +81,11 @@ def initialize_screen_elements(screen, settings):
     # Settings.
     settings_title_text = "- SETTINGS -"
     settings_title = so.TextField(screen, settings_title_text, title_size)
+    window_size_field = so.TextField(screen, "Window Size", text_large)
+    window_size_button_small = so.InteractiveText(screen, "1280x720", text_medium, select=True)
+    window_size_button_medium = so.InteractiveText(screen, "1600x900", text_medium, select=True)
+    window_size_button_large = so.InteractiveText(screen, "1920x1080", text_medium, select=True)
+    window_size_button_full = so.InteractiveText(screen, "Full Screen", text_medium, select=True)
 
 
     # Credits.
@@ -257,6 +262,9 @@ def initialize_screen_elements(screen, settings):
         "credits_button": credits_button,
         # Settings.
         "settings_title": settings_title,
+        "window_size": window_size_field,
+        "window_size_buttons": (window_size_button_small, window_size_button_medium, window_size_button_large,
+                                window_size_button_full),
         # Credits.
         "credits_title": credits_title,
         # Character menu.

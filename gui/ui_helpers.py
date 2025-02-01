@@ -103,6 +103,34 @@ def position_main_menu_screen_elements(screen, gui_elements):
     show_credits.button_rect.top = settings.button_rect.bottom
 
 
+"""Background functions for settings screen."""
+
+def position_settings_screen_elements(screen, gui_elements):
+    """Position objects from 'gui_elements' for settings screen."""
+    # Assign elements to variables.
+    window_size_field = gui_elements["window_size"]
+    window_size_buttons = gui_elements["window_size_buttons"]
+    spacing = gui_elements["default_edge_spacing"]
+    screen_x = screen.get_rect().centerx
+    screen_y = screen.get_rect().centery
+    # Assign anchor object 'window_size_buttons[0].text_rect' (small window) and further options to variables for easier
+    # positioning and better readability.
+    window_size_anchor = window_size_buttons[0].text_rect
+    window_size_medium = window_size_buttons[1].text_rect
+    window_size_large = window_size_buttons[2].text_rect
+    window_size_full = window_size_buttons[3].text_rect
+
+    # Position window size section label.
+    window_size_field.text_rect.centery = screen_y
+    window_size_field.text_rect.right = screen_x - spacing
+    # Position selection fields for window sizes. 'window_size_anchor' is placed first as anchor for positioning
+    # of further buttons. To move the entire block only the anchor has to be moved.
+    window_size_anchor.left, window_size_anchor.bottom = screen_x + spacing, screen_y - spacing / 2
+    window_size_medium.left, window_size_medium.bottom = window_size_anchor.right + spacing * 2, window_size_anchor.bottom
+    window_size_large.left, window_size_large.top = window_size_anchor.left, window_size_anchor.bottom + spacing
+    window_size_full.top, window_size_full.left = window_size_anchor.bottom + spacing, window_size_anchor.right + spacing * 2
+
+
 """Background functions for character menu screen."""
 
 def position_character_menu_screen_elements(screen, gui_elements):

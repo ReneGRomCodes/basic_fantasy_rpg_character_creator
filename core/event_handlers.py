@@ -6,7 +6,15 @@ from character_creation_functions import build_character_sheet
 
 
 def main_events(screen, state, gui_elements, mouse_pos):
-    """Check and handle main pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'"""
+    """Check and handle main pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'.
+    ARGS:
+        screen: PyGame window.
+        state: program state.
+        gui_elements: dict of GUI elements.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        state: program state.
+    """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
