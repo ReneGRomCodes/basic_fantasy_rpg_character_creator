@@ -46,8 +46,8 @@ def show_settings(screen, gui_elements, mouse_pos):
     window_size_buttons = gui_elements["window_size_buttons"]
     back_button = gui_elements["back_button"]
 
-    # Position elements on screen.
-    ui.position_settings_screen_elements(screen, gui_elements)
+    # Format elements on screen.
+    ui.format_settings_screen_elements(screen, gui_elements)
 
     # Draw basic elements on screen.
     ui.draw_screen_title(screen, title, gui_elements)

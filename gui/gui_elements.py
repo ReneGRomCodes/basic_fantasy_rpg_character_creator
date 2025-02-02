@@ -86,6 +86,8 @@ def initialize_screen_elements(screen, settings):
     window_size_button_medium = so.InteractiveText(screen, "1600x900", text_medium, select=True)
     window_size_button_large = so.InteractiveText(screen, "1920x1080", text_medium, select=True)
     window_size_button_full = so.InteractiveText(screen, "Full Screen", text_medium, select=True)
+    # Set 'window_size_button_small.selected' to True to reflect default selection in settings menu.
+    window_size_button_small.selected = True
 
 
     # Credits.

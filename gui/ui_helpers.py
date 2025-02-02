@@ -105,8 +105,8 @@ def position_main_menu_screen_elements(screen, gui_elements):
 
 """Background functions for settings screen."""
 
-def position_settings_screen_elements(screen, gui_elements):
-    """Position objects from 'gui_elements' for settings screen."""
+def format_settings_screen_elements(screen, gui_elements):
+    """Format and position objects from 'gui_elements' for settings screen."""
     # Assign elements to variables.
     window_size_field = gui_elements["window_size"]
     window_size_buttons = gui_elements["window_size_buttons"]
@@ -119,6 +119,10 @@ def position_settings_screen_elements(screen, gui_elements):
     window_size_medium = window_size_buttons[1].text_rect
     window_size_large = window_size_buttons[2].text_rect
     window_size_full = window_size_buttons[3].text_rect
+
+    # Set button size.
+    for button in window_size_buttons:
+        button.text_rect.width, button.text_rect.height = screen.get_rect().width / 8, screen.get_rect().height  / 12
 
     # Position window size section label.
     window_size_field.text_rect.centery = screen_y
