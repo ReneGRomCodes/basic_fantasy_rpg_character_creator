@@ -182,29 +182,33 @@ class InteractiveText(TextField):
         self.rect_hover_color = settings.rect_hover_color
         self.rect_clicked_color = settings.rect_clicked_color
         self.rect_selected_color = settings.rect_selected_color
+        # Create rect for field to allow for easier positioning of the 'text_rect' if field size is changed later.
+        self.interactive_rect = self.text_image.get_rect()
 
     def draw_interactive_text(self, mouse_pos):
         """Draw interactive text field on the screen."""
         # Draw background rect if 'bg_color' is specified or use 'rect_selected_color' if 'selected' is True.
         if self.selected:
-            pygame.draw.rect(self.screen, self.rect_selected_color, self.text_rect)
+            pygame.draw.rect(self.screen, self.rect_selected_color, self.interactive_rect)
         elif self.bg_color:
-            pygame.draw.rect(self.screen, self.bg_color, self.text_rect)
+            pygame.draw.rect(self.screen, self.bg_color, self.interactive_rect)
 
         # Change field color based on mouse hover.
-        if self.text_rect.collidepoint(mouse_pos):
+        if self.interactive_rect.collidepoint(mouse_pos):
             self.handle_mouse_interaction()
 
+        # Draw the text on top of the interactive text field.
+        self.text_rect.center = self.interactive_rect.center
         self.screen.blit(self.text_image, self.text_rect)
 
     def handle_mouse_interaction(self):
         """Handle interactive functions for the class object like info panel and selectablility."""
         # Color change when mouse is pressed (only if 'self.select' is True).
         if self.select and pygame.mouse.get_pressed()[0]:
-            pygame.draw.rect(self.screen, self.rect_clicked_color, self.text_rect)
+            pygame.draw.rect(self.screen, self.rect_clicked_color, self.interactive_rect)
         # Normal hover color when mouse is hovering but not pressed.
         else:
-            pygame.draw.rect(self.screen, self.rect_hover_color, self.text_rect)
+            pygame.draw.rect(self.screen, self.rect_hover_color, self.interactive_rect)
 
         # Check for and draw info panel.
         if self.panel:

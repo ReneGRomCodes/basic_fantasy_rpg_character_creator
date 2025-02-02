@@ -115,14 +115,14 @@ def format_settings_screen_elements(screen, gui_elements):
     screen_y = screen.get_rect().centery
     # Assign anchor object 'window_size_buttons[0].text_rect' (small window) and further options to variables for easier
     # positioning and better readability.
-    window_size_anchor = window_size_buttons[0].text_rect
-    window_size_medium = window_size_buttons[1].text_rect
-    window_size_large = window_size_buttons[2].text_rect
-    window_size_full = window_size_buttons[3].text_rect
+    window_size_anchor = window_size_buttons[0].interactive_rect
+    window_size_medium = window_size_buttons[1].interactive_rect
+    window_size_large = window_size_buttons[2].interactive_rect
+    window_size_full = window_size_buttons[3].interactive_rect
 
     # Set button size.
     for button in window_size_buttons:
-        button.text_rect.width, button.text_rect.height = screen.get_rect().width / 8, screen.get_rect().height  / 12
+        button.interactive_rect.width, button.interactive_rect.height = screen.get_rect().width / 8, screen.get_rect().height  / 12
 
     # Position window size section label.
     window_size_field.text_rect.centery = screen_y
@@ -130,9 +130,9 @@ def format_settings_screen_elements(screen, gui_elements):
     # Position selection fields for window sizes. 'window_size_anchor' is placed first as anchor for positioning
     # of further buttons. To move the entire block only the anchor has to be moved.
     window_size_anchor.left, window_size_anchor.bottom = screen_x + spacing, screen_y - spacing / 2
-    window_size_medium.left, window_size_medium.bottom = window_size_anchor.right + spacing * 2, window_size_anchor.bottom
+    window_size_medium.left, window_size_medium.bottom = window_size_anchor.right + spacing, window_size_anchor.bottom
     window_size_large.left, window_size_large.top = window_size_anchor.left, window_size_anchor.bottom + spacing
-    window_size_full.top, window_size_full.left = window_size_anchor.bottom + spacing, window_size_anchor.right + spacing * 2
+    window_size_full.left, window_size_full.top = window_size_anchor.right + spacing, window_size_anchor.bottom + spacing
 
 
 """Background functions for character menu screen."""
