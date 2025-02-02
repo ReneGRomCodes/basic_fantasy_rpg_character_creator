@@ -288,7 +288,7 @@ def draw_available_choices(screen, available_choices, inactive_races, inactive_c
     for race in inactive_races:
         if race.text in check_list:
             for r in available_choices["races"]:
-                r.text_rect.centerx, r.text_rect.centery = position_race_class_elements(screen, r, inactive_races)
+                r.interactive_rect.centerx, r.interactive_rect.centery = position_race_class_elements(screen, r, inactive_races)
                 r.draw_interactive_text(mouse_pos)
         else:
             race.text_rect.centerx, race.text_rect.centery = position_race_class_elements(screen, race, inactive_races)
@@ -298,7 +298,7 @@ def draw_available_choices(screen, available_choices, inactive_races, inactive_c
     for cls in inactive_classes:
         if cls.text in check_list:
             for c in available_choices["classes"]:
-                c.text_rect.centerx, c.text_rect.centery = position_race_class_elements(screen, c, inactive_races)
+                c.interactive_rect.centerx, c.interactive_rect.centery = position_race_class_elements(screen, c, inactive_races)
                 c.draw_interactive_text(mouse_pos)
         else:
             cls.text_rect.centerx, cls.text_rect.centery = position_race_class_elements(screen, cls, inactive_races)

@@ -126,12 +126,12 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
             bonus_penalty = ""
 
         # Position and draw copied rect for item from list 'abilities'.
-        ability_rect = ability.text_rect.copy()
+        ability_rect = ability.interactive_rect.copy()
         ability_rect.top = screen.get_rect().top + element_pos_y
         ability_rect.width = screen.get_rect().width / 6
         ability_rect.right = screen.get_rect().centerx
         # Position ability rect within copied rect for left-alignment.
-        ability.text_rect.topleft = ability_rect.topleft
+        ability.interactive_rect.topleft = ability_rect.topleft
         ability.draw_interactive_text(mouse_pos)
 
         # Change contents and get rect of 'TextField' instances for each ability score stat.
