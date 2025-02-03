@@ -113,8 +113,8 @@ def format_settings_screen_elements(screen, gui_elements):
     spacing = gui_elements["default_edge_spacing"]
     screen_x = screen.get_rect().centerx
     screen_y = screen.get_rect().centery
-    # Assign anchor object 'window_size_buttons[0].text_rect' (small window) and further options to variables for easier
-    # positioning and better readability.
+    # Assign anchor object 'window_size_buttons[0].interactive_rect' (small window) and further options to variables for
+    # easier positioning and better readability.
     window_size_anchor = window_size_buttons[0].interactive_rect
     window_size_medium = window_size_buttons[1].interactive_rect
     window_size_large = window_size_buttons[2].interactive_rect
@@ -133,6 +133,32 @@ def format_settings_screen_elements(screen, gui_elements):
     window_size_medium.left, window_size_medium.bottom = window_size_anchor.right + spacing, window_size_anchor.bottom
     window_size_large.left, window_size_large.top = window_size_anchor.left, window_size_anchor.bottom + spacing
     window_size_full.left, window_size_full.top = window_size_anchor.right + spacing, window_size_anchor.bottom + spacing
+
+
+def select_window_size(window_sizes, selected_window_size, mouse_pos):
+    """Selection logic for programs window size and return selected text field instances in 'selected_window_size'.
+    ARGS:
+        window_sizes: list with instances of interactive text fields for window size selection.
+        selected_window_size: instance of 'InteractiveText' class representing chosen window size.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    """
+    # Check if the left mouse button is pressed before proceeding with selection logic.
+    if pygame.mouse.get_pressed()[0]:
+        # Loop through each available window size option to see which one is selected.
+        for size in window_sizes:
+            if size.interactive_rect.collidepoint(mouse_pos):
+                selected_window_size = size
+                break
+
+        if selected_window_size:
+            # Unselect the previous selected size.
+            for size in window_sizes:
+                if size.selected:
+                    size.selected = False  # Set the selected attribute of the previously selected size to False.
+            # Select the new size.
+            selected_window_size.selected = True
+
+    return selected_window_size
 
 
 """Background functions for character menu screen."""

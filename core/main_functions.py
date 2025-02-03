@@ -11,6 +11,8 @@ import random
 
 # Create instance of class 'Character'.
 character = char.Character()
+# Initialize variables for settings screen.
+selected_window_size = None
 # Initialize variables and set starting values for character creation.
 possible_characters = None
 selected_race = None
@@ -22,6 +24,9 @@ custom_money_flag = False
 
 def main_state_manager(screen, state, gui_elements, mouse_pos):
     """State manager for main states, i.e. 'title_screen', 'main_menu', etc."""
+    # Declare global variables to allow modification of these values within the function.
+    global selected_window_size
+
     # Call main event handler and get program state.
     state = eh.main_events(screen, state, gui_elements, mouse_pos)
 
@@ -33,7 +38,7 @@ def main_state_manager(screen, state, gui_elements, mouse_pos):
         gui.show_main_menu(screen, gui_elements, mouse_pos)
     elif state == "settings_screen":
         # Display settings screen.
-        gui.show_settings(screen, gui_elements, mouse_pos)
+        selected_window_size = gui.show_settings(screen, gui_elements, selected_window_size, mouse_pos)
     elif state == "credits":
         # Display credits screen.
         gui.show_credits(screen, gui_elements)
