@@ -12,12 +12,8 @@ class Settings:
         self.small_screen = (1280,720)
         self.medium_screen = (1600,900)
         self.large_screen = (1920,1080)
-        # Set default screen size to 'self.small_screen'.
-        self.selected_screen_size = self.small_screen
-
         # Background color for screen.
         self.bg_color = (240, 220, 170)
-
         # Color settings for screen objects.
         self.text_color = (55, 40, 25)
         self.font = "gui/font/EagleLake-Regular.ttf"
@@ -29,3 +25,16 @@ class Settings:
         self.text_input_field_color = (245, 230, 190)
         self.inactive_continue_button_hover_color = (220, 150, 150)
         self.inactive_continue_button_click_color = (200, 50, 50)
+
+        # Value collection for use in settings screen when resetting to default.
+        self.default_settings = (self.small_screen, )
+
+        # Empty starting attributes. Values are assigned first in 'run_character_creator()' in 'main.py' by calling the
+        # 'set_default()' method.
+        # This approach ensures easier maintainability if changes are made to 'self.default_settings' as everything else
+        # is handled by 'set_default()' method.
+        self.screen_size = None
+
+    def set_default(self):
+        """Set all settings variables to default values as defined in 'self.default_settings'."""
+        self.screen_size = self.default_settings[0]

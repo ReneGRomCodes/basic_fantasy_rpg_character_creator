@@ -8,11 +8,14 @@ It initializes the program and starts the main functionality."""
 
 def run_character_creator():
     """Initialize Pygame, create a window, instantiate character and start the character creator."""
-    # Initialize pygame and create a window.
+    # Initialize pygame.
     pygame.init()
+    # Create settings object and initialize default values.
     settings = Settings()
+    settings.set_default()
+    # Create Clock object and pygame window.
     clock = pygame.time.Clock()
-    screen = pygame.display.set_mode(settings.selected_screen_size)
+    screen = pygame.display.set_mode(settings.screen_size)
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
 
     # Initialize dicts with GUI elements. See package 'gui' for details.

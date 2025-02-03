@@ -35,7 +35,7 @@ def main_state_manager(screen, state, gui_elements, mouse_pos):
         gui.show_main_menu(screen, gui_elements, mouse_pos)
     elif state == "credits":
         # Display credits screen.
-        gui.show_credits(screen, gui_elements)
+        gui.show_credits_screen(screen, gui_elements)
     elif state == "character_menu":
         # Display character menu screen
         gui.show_character_menu(screen, gui_elements, mouse_pos)
@@ -48,7 +48,7 @@ def settings_screen(screen, state, gui_elements, mouse_pos):
     # Declare global variables to allow modification of these values within the function.
     global selected_window_size
 
-    # Call main event handler and get program state.
+    # Call event handler and get program state.
     state = eh.settings_screen_events(state, gui_elements, mouse_pos)
 
     # Display settings screen.

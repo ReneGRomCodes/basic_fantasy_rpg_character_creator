@@ -63,7 +63,7 @@ def show_settings(screen, gui_elements, selected_window_size, mouse_pos):
     return selected_window_size
 
 
-def show_credits(screen, gui_elements):
+def show_credits_screen(screen, gui_elements):
     """Display credits screen."""
     # Assign gui_elements to variables.
     title = gui_elements["credits_title"]
