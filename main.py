@@ -12,7 +12,7 @@ def run_character_creator():
     pygame.init()
     settings = Settings()
     clock = pygame.time.Clock()
-    screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
+    screen = pygame.display.set_mode(settings.selected_screen_size)
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
 
     # Initialize dicts with GUI elements. See package 'gui' for details.
@@ -23,7 +23,7 @@ def run_character_creator():
     # Set initial state.
     state = "title_screen"
     # Set of states for character creation.
-    main_states = {"title_screen", "main_menu", "settings_screen", "credits", "character_menu"}
+    main_states = {"title_screen", "main_menu", "credits", "character_menu"}
     custom_character_states = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
                                "set_starting_money", "custom_input_money", "creation_complete"}
     random_character_state = {"random_character", "set_random_money", "name_random_character"}
@@ -35,19 +35,26 @@ def run_character_creator():
 
         screen.fill(settings.bg_color)
 
+
         # Main states.
         if state in main_states:
             state = mf.main_state_manager(screen, state, gui_elements, mouse_pos)
+        # Settings state.
+        elif state == "settings_screen":
+            state = mf.settings_screen(screen, state, gui_elements, mouse_pos)
+
         # Character creation states.
         elif state in custom_character_states:
             state = mf.custom_character(screen, state, gui_elements, mouse_pos)
         elif state in random_character_state:
             state = mf.random_character(screen, state, gui_elements, mouse_pos)
+
         # Character sheet states.
         elif state == "initialize_character_sheet":
             cs_sheet, state = mf.initialize_character_sheet(screen, gui_elements)
         elif state == "character_sheet":
             cs_sheet.show_character_sheet_screen()
+
 
         pygame.display.flip()
         clock.tick(30)

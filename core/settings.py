@@ -13,7 +13,7 @@ class Settings:
         self.medium_screen = (1600,900)
         self.large_screen = (1920,1080)
         # Set default screen size to 'self.small_screen'.
-        self.screen_width, self.screen_height = self.small_screen
+        self.selected_screen_size = self.small_screen
 
         # Background color for screen.
         self.bg_color = (240, 220, 170)

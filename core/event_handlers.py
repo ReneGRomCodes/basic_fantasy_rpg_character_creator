@@ -59,6 +59,28 @@ def main_events(screen, state, gui_elements, mouse_pos):
     return state
 
 
+def settings_screen_events(state, gui_elements, mouse_pos):
+    """Check and handle events in function 'settings_screen()' in 'main_functions.py' and return state.
+        ARGS:
+        state: program state.
+        gui_elements: dict of GUI elements.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        state: program state.
+    """
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        if event.type == pygame.MOUSEBUTTONUP:
+            if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                state = "main_menu"
+
+    return state
+
+
 def custom_character_events(state, character, gui_elements, mouse_pos, possible_characters=None, context1=None,
                             context2=None, context3=None):
     """Check and handle events in function 'custom_character()' in 'main_functions.py' and return 'state'.
