@@ -38,8 +38,15 @@ def show_main_menu(screen, gui_elements, mouse_pos):
     show_credits.draw_button(mouse_pos)
 
 
-def show_settings(screen, gui_elements, selected_window_size, mouse_pos):
-    """Display settings screen."""
+def show_settings(screen, settings, gui_elements, selected_window_size, mouse_pos):
+    """Display settings screen.
+    ARGS:
+        screen: PyGame window.
+        settings: instance of class 'Settings'.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'
+        selected_window_size: instance of 'InteractiveText' class representing chosen window size.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    """
     # Assign gui_elements to variables.
     title = gui_elements["settings_title"]
     window_size_field = gui_elements["window_size"]
@@ -50,7 +57,7 @@ def show_settings(screen, gui_elements, selected_window_size, mouse_pos):
     ui.format_settings_screen_elements(screen, gui_elements)
 
     # Select window size.
-    selected_window_size = ui.select_window_size(window_size_buttons, selected_window_size, mouse_pos)
+    selected_window_size = ui.select_window_size(settings, window_size_buttons, selected_window_size, mouse_pos)
 
     # Draw basic elements on screen.
     ui.draw_screen_title(screen, title, gui_elements)

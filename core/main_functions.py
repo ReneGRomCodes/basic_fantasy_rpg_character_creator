@@ -13,7 +13,7 @@ import random
 character = char.Character()
 # Initialize variables for settings screen.
 selected_window_size = None
-# Initialize variables and set starting values for character creation.
+# Initialize variables for character creation.
 possible_characters = None
 selected_race = None
 selected_class = None
@@ -43,7 +43,7 @@ def main_state_manager(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def settings_screen(screen, state, gui_elements, mouse_pos):
+def settings_screen(screen, state, settings, gui_elements, mouse_pos):
     """State manager for settings screen state 'settings_screen'."""
     # Declare global variables to allow modification of these values within the function.
     global selected_window_size
@@ -52,7 +52,7 @@ def settings_screen(screen, state, gui_elements, mouse_pos):
     state = eh.settings_screen_events(state, gui_elements, mouse_pos)
 
     # Display settings screen.
-    selected_window_size = gui.show_settings(screen, gui_elements, selected_window_size, mouse_pos)
+    selected_window_size = gui.show_settings(screen, settings, gui_elements, selected_window_size, mouse_pos)
 
     return state
 

@@ -135,13 +135,20 @@ def format_settings_screen_elements(screen, gui_elements):
     window_size_full.left, window_size_full.top = window_size_anchor.right + spacing, window_size_anchor.bottom + spacing
 
 
-def select_window_size(window_sizes, selected_window_size, mouse_pos):
+def select_window_size(settings, window_sizes, selected_window_size, mouse_pos):
     """Selection logic for programs window size and return selected text field instances in 'selected_window_size'.
     ARGS:
+        settings: instance of class 'Settings'.
         window_sizes: list with instances of interactive text fields for window size selection.
         selected_window_size: instance of 'InteractiveText' class representing chosen window size.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        Instance of newly selected window size to appear as selected on screen.
     """
+    # Tuple to store window size UI objects and corresponding 'settings' attributes.
+    object_attribute_pairs = ((window_sizes[0], settings.small_screen), (window_sizes[1], settings.medium_screen),
+                              (window_sizes[2], settings.large_screen), (window_sizes[3], None))
+
     # Check if the left mouse button is pressed before proceeding with selection logic.
     if pygame.mouse.get_pressed()[0]:
         # Loop through each available window size option to see which one is selected.
@@ -150,13 +157,12 @@ def select_window_size(window_sizes, selected_window_size, mouse_pos):
                 selected_window_size = size
                 break
 
-        if selected_window_size:
-            # Unselect the previous selected size.
-            for size in window_sizes:
-                if size.selected:
-                    size.selected = False  # Set the selected attribute of the previously selected size to False.
-            # Select the new size.
-            selected_window_size.selected = True
+        # Unselect the previous selected size.
+        for size in window_sizes:
+            if size.selected:
+                size.selected = False  # Set the selected attribute of the previously selected size to False.
+        # Select the new size.
+        selected_window_size.selected = True
 
     return selected_window_size
 

@@ -44,7 +44,7 @@ def run_character_creator():
             state = mf.main_state_manager(screen, state, gui_elements, mouse_pos)
         # Settings state.
         elif state == "settings_screen":
-            state = mf.settings_screen(screen, state, gui_elements, mouse_pos)
+            state = mf.settings_screen(screen, state, settings, gui_elements, mouse_pos)
 
         # Character creation states.
         elif state in custom_character_states:
