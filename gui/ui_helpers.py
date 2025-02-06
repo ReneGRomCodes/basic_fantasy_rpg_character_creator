@@ -148,7 +148,7 @@ def select_window_size(settings, window_sizes, selected_window_size, mouse_pos):
     """
     # Tuple to store window size UI objects and corresponding 'settings' attributes.
     object_attribute_pairs = ((window_sizes[0], settings.small_screen), (window_sizes[1], settings.medium_screen),
-                              (window_sizes[2], settings.large_screen), (window_sizes[3], None))
+                              (window_sizes[2], settings.large_screen), (window_sizes[3], False))
 
     # Check if the left mouse button is pressed before proceeding with selection logic.
     if pygame.mouse.get_pressed()[0]:
@@ -171,8 +171,14 @@ def select_window_size(settings, window_sizes, selected_window_size, mouse_pos):
     for pair in object_attribute_pairs:
         if pair[0].selected == True and pair[1] != settings.screen_size:
             settings.screen_size = pair[1]
+            # Check if 'pair[1]' has a window size assigned, otherwise set window to full screen.
             if pair[1]:
                 pygame.display.set_mode(settings.screen_size)
+            else:
+                pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+            # Wait 200ms to avoid immediate click registration directly after new window size is set. Window could be
+            # accidentally changed again otherwise.
+            pygame.time.wait(200)
 
     return selected_window_size
 
