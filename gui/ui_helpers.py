@@ -1,7 +1,6 @@
 import pygame
 from core.functions import set_starting_money
 import gui.screen_objects as so
-from gui.gui_elements import initialize_screen_elements
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
 
 
@@ -162,8 +161,9 @@ def select_window_size(settings, window_sizes, selected_window_size, mouse_pos):
         for size in window_sizes:
             if size.selected:
                 size.selected = False  # Set the selected attribute of the previously selected size to False.
-        # Select the new size.
-        selected_window_size.selected = True
+
+    # Select the new size.
+    selected_window_size.selected = True
 
     # Iterate through 'object_attribute_pairs' and check if currently selected UI object corresponds with window size set
     # in 'Settings' object. Change 'settings.screen_size' and change 'pygame.display' to selected value if pairs don't
