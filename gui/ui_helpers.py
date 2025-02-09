@@ -149,6 +149,10 @@ def select_window_size(settings, window_sizes, selected_window_size, mouse_pos):
     object_attribute_pairs = ((window_sizes[0], settings.small_screen), (window_sizes[1], settings.medium_screen),
                               (window_sizes[2], settings.large_screen), (window_sizes[3], False))
 
+    # Assign default object (small window) to 'selected_window_size' if it is 'None'.
+    if not selected_window_size:
+        selected_window_size = object_attribute_pairs[0][0]
+
     # Check if the left mouse button is pressed before proceeding with selection logic.
     if pygame.mouse.get_pressed()[0]:
         # Loop through each available window size option to see which one is selected.
@@ -163,7 +167,8 @@ def select_window_size(settings, window_sizes, selected_window_size, mouse_pos):
                 size.selected = False  # Set the selected attribute of the previously selected size to False.
 
     # Select the new size.
-    selected_window_size.selected = True
+    if not selected_window_size.selected:
+        selected_window_size.selected = True
 
     # Iterate through 'object_attribute_pairs' and check if currently selected UI object corresponds with window size set
     # in 'Settings' object. Change 'settings.screen_size' and change 'pygame.display' to selected value if pairs don't

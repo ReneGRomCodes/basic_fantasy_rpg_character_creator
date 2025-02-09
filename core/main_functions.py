@@ -48,10 +48,6 @@ def settings_screen(screen, state, settings, gui_elements, mouse_pos):
     # Declare global variables to allow modification of these values within the function.
     global selected_window_size
 
-    # Assign default object (small window) to 'selected_window_size'.
-    if not selected_window_size:
-        selected_window_size = gui_elements["window_size_buttons"][0]
-
     # Call event handler and get program state.
     state = eh.settings_screen_events(state, gui_elements, mouse_pos)
 
