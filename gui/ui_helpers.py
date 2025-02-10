@@ -145,9 +145,14 @@ def select_window_size(settings, window_sizes, selected_window_size, mouse_pos):
     RETURNS:
         Instance of newly selected window size to appear as selected on screen.
     """
-    # Tuple to store window size UI objects and corresponding 'settings' attributes.
+    # Tuple to store window size UI objects and corresponding 'settings' attributes. Last item represents full screen,
+    # and has no settings attribute assigned, instead using 'pygame.FULLSCREEN' when setting window size.
     object_attribute_pairs = ((window_sizes[0], settings.small_screen), (window_sizes[1], settings.medium_screen),
                               (window_sizes[2], settings.large_screen), (window_sizes[3], False))
+
+    # Set 'window_sizes[0].selected' to True to show default selection in settings menu when screen is first shown.
+    if settings.screen_size == settings.default_settings[0]:
+        window_sizes[0].selected = True
 
     # Assign default object (small window) to 'selected_window_size' if it is 'None'.
     if not selected_window_size:
