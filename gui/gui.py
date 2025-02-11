@@ -57,7 +57,8 @@ def show_settings(screen, settings, gui_elements, selected_window_size, mouse_po
     ui.format_settings_screen_elements(screen, gui_elements)
 
     # Select window size.
-    selected_window_size = ui.select_window_size(settings, window_size_buttons, selected_window_size, mouse_pos)
+    gui_elements, selected_window_size = ui.select_window_size(screen, settings, gui_elements, window_size_buttons,
+                                                               selected_window_size, mouse_pos)
 
     # Draw basic elements on screen.
     ui.draw_screen_title(screen, title, gui_elements)
@@ -67,7 +68,7 @@ def show_settings(screen, settings, gui_elements, selected_window_size, mouse_po
     for button in window_size_buttons:
         button.draw_interactive_text(mouse_pos)
 
-    return selected_window_size
+    return gui_elements, selected_window_size
 
 
 def show_credits_screen(screen, gui_elements):

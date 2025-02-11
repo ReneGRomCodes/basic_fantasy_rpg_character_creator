@@ -1,6 +1,7 @@
 import pygame
 from core.functions import set_starting_money
 import gui.screen_objects as so
+from gui.gui_elements import initialize_screen_elements
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
 
 
@@ -135,7 +136,7 @@ def format_settings_screen_elements(screen, gui_elements):
     window_size_full.left, window_size_full.top = window_size_anchor.right + spacing, window_size_anchor.bottom + spacing
 
 
-def select_window_size(settings, window_size_buttons, selected_window_size, mouse_pos):
+def select_window_size(screen, settings, gui_elements, window_size_buttons, selected_window_size, mouse_pos):
     """Selection logic for programs window size and return selected text field instances in 'selected_window_size'.
     ARGS:
         settings: instance of class 'Settings'.
@@ -189,8 +190,10 @@ def select_window_size(settings, window_size_buttons, selected_window_size, mous
             # Wait 200ms to avoid immediate click registration directly after new window size is set. Window could be
             # accidentally changed again otherwise.
             pygame.time.wait(200)
+            # Re-initialize dict 'gui_elements' for proper size and positions of gui objects based on screen size.
+            gui_elements = initialize_screen_elements(screen, settings)
 
-    return selected_window_size
+    return gui_elements, selected_window_size
 
 
 """Background functions for character menu screen."""

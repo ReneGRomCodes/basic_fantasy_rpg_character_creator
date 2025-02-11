@@ -52,9 +52,9 @@ def settings_screen(screen, state, settings, gui_elements, mouse_pos):
     state = eh.settings_screen_events(state, gui_elements, mouse_pos)
 
     # Display settings screen.
-    selected_window_size = gui.show_settings(screen, settings, gui_elements, selected_window_size, mouse_pos)
+    gui_elements, selected_window_size = gui.show_settings(screen, settings, gui_elements, selected_window_size, mouse_pos)
 
-    return state
+    return gui_elements, state
 
 
 def custom_character(screen, state, gui_elements, mouse_pos):
