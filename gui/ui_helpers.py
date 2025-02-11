@@ -139,11 +139,14 @@ def format_settings_screen_elements(screen, gui_elements):
 def select_window_size(screen, settings, gui_elements, window_size_buttons, selected_window_size, mouse_pos):
     """Selection logic for programs window size and return selected text field instances in 'selected_window_size'.
     ARGS:
+        screen: PyGame window.
         settings: instance of class 'Settings'.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         window_size_buttons: list with instances of interactive text fields for window size selection.
         selected_window_size: instance of 'InteractiveText' class representing chosen window size.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
+        Re-initialized dict 'gui_elements'.
         Instance of newly selected window size to appear as selected on screen.
     """
     # Tuple to store window size UI objects and corresponding 'settings' attributes. Last item represents full screen,

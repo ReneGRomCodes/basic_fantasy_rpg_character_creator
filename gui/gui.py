@@ -43,7 +43,7 @@ def show_settings(screen, settings, gui_elements, selected_window_size, mouse_po
     ARGS:
         screen: PyGame window.
         settings: instance of class 'Settings'.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         selected_window_size: instance of 'InteractiveText' class representing chosen window size.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
