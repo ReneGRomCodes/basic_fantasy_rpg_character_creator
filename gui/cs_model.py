@@ -1,5 +1,4 @@
 import gui.screen_objects as so
-from gui.ui_helpers import render_new_text_image
 """Helper class to organize and access character sheet objects as attributes."""
 
 
@@ -320,7 +319,7 @@ class CharacterSheet:
         for index, char_attr_item in enumerate(char_attr_list):
             # Assign text to and expand 'field_object.text', update 'field_object.text_image' and get new rect.
             field_object.text = text_prefix + char_attr_item
-            render_new_text_image(field_object)
+            field_object.render_new_text_image()
 
             # Append default position for first 'field_object' to list.
             if index == 0:
@@ -355,7 +354,7 @@ class CharacterSheet:
                 group[2].text = "+" + group[2].text
 
             # Update 'group[2].text_image' and get new rect.
-            render_new_text_image(group[2])
+            group[2].render_new_text_image()
 
     def format_saving_throw_scores(self):
         """Format output for saving throws by adding a '+' to the score."""
@@ -363,7 +362,7 @@ class CharacterSheet:
             group[1].text = "+" + group[1].text
 
             # Update 'group[1].text_image' and get new rect.
-            render_new_text_image(group[1])
+            group[1].render_new_text_image()
 
     def draw_format_dynamic_field(self, field_object, char_attr_list, anchor, pos_y_list, text_prefix=""):
         """
@@ -381,7 +380,7 @@ class CharacterSheet:
         for index, char_attr_item in enumerate(char_attr_list):
             # Assign text to and expand 'field_object.text', update 'field_object.text_image' and get new rect.
             field_object.text = text_prefix + char_attr_item
-            render_new_text_image(field_object)
+            field_object.render_new_text_image()
 
             # Position and draw 'field_object'.
             field_object.text_rect.top, field_object.text_rect.left = pos_y_list[index], anchor.text_rect.left

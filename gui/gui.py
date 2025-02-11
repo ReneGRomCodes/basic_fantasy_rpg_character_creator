@@ -149,9 +149,9 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
 
         # Change contents and get rect of 'TextField' instances for each ability score stat.
         ability_score_text.text = str(stats[key][0])
-        ui.render_new_text_image(ability_score_text)
+        ability_score_text.render_new_text_image()
         bonus_penalty_text.text = bonus_penalty
-        ui.render_new_text_image(bonus_penalty_text)
+        bonus_penalty_text.render_new_text_image()
 
         # Position and draw copied rects for each stat and bonus/penalty field.
         ability_score_rect = ability_score_text.text_rect.copy()

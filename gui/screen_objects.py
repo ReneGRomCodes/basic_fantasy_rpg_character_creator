@@ -116,6 +116,20 @@ class TextField:
 
         return text_image, x, y
 
+    def render_new_text_image(self):
+        """Re-render 'text_image' attribute and get new 'text_rect'. This method is for use after an already created
+        instance has its 'text' attribute changed to ensure further changes to, for example, its position are applied to
+        the modified instance."""
+
+        # Check if element has 'multi_line' attribute set to 'True' and render 'text_image' accordingly, using class method
+        # '.render_multiline_image()' if element is multi line normal render method otherwise.
+        if self.multi_line:
+            self.text_image = self.render_multiline_image()
+        else:
+            self.text_image = self.font.render(self.text, True, self.text_color)
+
+        self.text_rect = self.text_image.get_rect()
+
 
 class Button(TextField):
     """Represent an interactive button."""
