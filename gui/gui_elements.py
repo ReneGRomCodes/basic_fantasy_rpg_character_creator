@@ -43,7 +43,7 @@ def initialize_screen_elements(screen, settings):
     title_screen_spacing = int(screen_height / 60)  # Spacing between main title and subtitle on title screen.
     menu_title_spacing = int(screen_height / 45)  # Default spacing between menu title and GUI objects.
     spacing_screen_edge = screen_width / 37  # Default value for distance to edge of screen for GUI objects.
-    # Standard buttons, size and default positions.
+    # Standard buttons, size.
     button_width = screen_width / 6
     continue_button = so.Button(screen, "Continue", text_medium)
     continue_button.button_rect.width = button_width
@@ -91,6 +91,12 @@ def initialize_screen_elements(screen, settings):
     # Credits.
     credits_title_text = "- CREDITS -"
     credits_title = so.TextField(screen, credits_title_text, title_size)
+    programmer_title = so.TextField(screen, "Programming & UI Design", text_large)
+    programmer_name = so.TextField(screen, "René Grewe Romero", text_medium)
+    concept_creator_title = so.TextField(screen, "Based on 'Basic Tabletop RPG'", text_large)
+    concept_creator_name = so.TextField(screen, "by Chris Gonnerman", text_medium)
+    font_creator_title = so.TextField(screen, "Font 'Eagle Lake'", text_large)
+    font_creator_name = so.TextField(screen, "by Brian J. Bonislawsky", text_medium)
 
 
     # Character menu.
@@ -264,6 +270,8 @@ def initialize_screen_elements(screen, settings):
                                 window_size_button_full),
         # Credits.
         "credits_title": credits_title,
+        "credits": ((programmer_title, programmer_name), (concept_creator_title, concept_creator_name),
+                    (font_creator_title, font_creator_name)),
         # Character menu.
         "custom": custom,
         "random": random,

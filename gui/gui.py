@@ -78,6 +78,7 @@ def show_credits_screen(screen, gui_elements):
 
     # Draw elements on screen.
     ui.draw_screen_title(screen, title, gui_elements)
+    ui.position_and_show_credits(screen, gui_elements)
 
 
 def show_character_menu(screen, gui_elements, mouse_pos):
