@@ -270,7 +270,8 @@ def initialize_screen_elements(screen, settings):
                                 window_size_button_full),
         # Credits.
         "credits_title": credits_title,
-        "credits": ((programmer_title, programmer_name), (concept_creator_title, concept_creator_name),
+        "credits": ((programmer_title, programmer_name),
+                    (concept_creator_title, concept_creator_name),
                     (font_creator_title, font_creator_name)),
         # Character menu.
         "custom": custom,

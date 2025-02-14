@@ -187,27 +187,25 @@ def select_window_size(screen, settings, gui_elements, window_size_buttons, sele
 """Background functions for credits screen."""
 
 def position_and_show_credits(screen, gui_elements):
-    # Assign gui_elements to variables.
-    programmer_credits = gui_elements["credits"][0]
-    concept_credits = gui_elements["credits"][1]
-    font_credits = gui_elements["credits"][2]
-    # Assign further helper variables.
-    title_pos = screen.get_rect().centerx + screen.get_rect().width / 12
-    name_pos = screen.get_rect().centerx
+    # Assign credits array to variable.
+    credits_elements = gui_elements["credits"]
+    # Assign array items to variables.
+    programmer_credits = credits_elements[0]
+    concept_credits = credits_elements[1]
+    font_credits = credits_elements[2]
+    # Positioning variables.
+    credits_pos_y_start = screen.get_rect().height / 3
+    title_pos_x = screen.get_rect().centerx + screen.get_rect().width / 12
+    name_pos_x = screen.get_rect().centerx
     category_spacing = screen.get_rect().height / 20
 
-    programmer_credits[0].text_rect.right = title_pos
-    programmer_credits[1].text_rect.top, programmer_credits[1].text_rect.left = programmer_credits[0].text_rect.bottom, name_pos
+    programmer_credits[0].text_rect.top = credits_pos_y_start
+    concept_credits[0].text_rect.top = programmer_credits[1].text_rect.bottom + category_spacing
+    font_credits[0].text_rect.top = concept_credits[1].text_rect.bottom + category_spacing
 
-    concept_credits[0].text_rect.top, concept_credits[0].text_rect.right = (programmer_credits[1].text_rect.bottom + category_spacing,
-                                                                            title_pos)
-    concept_credits[1].text_rect.top, concept_credits[1].text_rect.left = concept_credits[0].text_rect.bottom, name_pos
-
-    font_credits[0].text_rect.top, font_credits[0].text_rect.right = (concept_credits[1].text_rect.bottom + category_spacing,
-                                                                            title_pos)
-    font_credits[1].text_rect.top, font_credits[1].text_rect.left = font_credits[0].text_rect.bottom, name_pos
-
-    for category in gui_elements["credits"]:
+    for category in credits_elements:
+        category[0].text_rect.right = title_pos_x
+        category[1].text_rect.left, category[1].text_rect.top = name_pos_x, category[0].text_rect.bottom
         for item in category:
             item.draw_text()
 
