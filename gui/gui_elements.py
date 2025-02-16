@@ -89,6 +89,8 @@ def initialize_screen_elements(screen, settings):
 
 
     # Credits.
+    # 'gui_elements["credits"]' is an array of tuples. Each inner tuple representing a credit category, with the element
+    # at index [0] being the category title and the following elements being the credited names.
     credits_title_text = "- CREDITS -"
     credits_title = so.TextField(screen, credits_title_text, title_size)
     programmer_title = so.TextField(screen, "Programming & UI Design", text_large)
