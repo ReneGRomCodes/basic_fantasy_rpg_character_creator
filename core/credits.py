@@ -10,9 +10,7 @@ class Credits:
 
     def __init__(self, screen, gui_elements):
         """Initialize credits screen elements."""
-        # Assign credits array to variable.
-        # NOTE: 'gui_elements["credits"]' is an array of tuples. Each inner tuple representing a credit category, with the
-        # element at index [0] being the category title and the following elements being the credited names.
+        # Assign text sizes from 'gui_elements' to attributes.
         self.title_size, self.text_large, self.text_medium = (gui_elements["title_size"], gui_elements["text_large"],
                                                               gui_elements["text_medium"])
         # Positioning variables.
