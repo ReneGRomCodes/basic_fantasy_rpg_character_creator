@@ -48,7 +48,8 @@ def main_state_manager(screen, state, gui_elements, mouse_pos):
 
 def credits_state_manager(screen, state, gui_elements):
     """'Secondary' state manager for use in 'main_state_manager' to handle credits screen object."""
-    # Declare global variable to allow modification of these values within the function.
+    # Declare global variable to assign instance of class 'Credits' and allow for easier resetting of instance when
+    # appropriate.
     global credits_screen
 
     if state == "init_credits":
