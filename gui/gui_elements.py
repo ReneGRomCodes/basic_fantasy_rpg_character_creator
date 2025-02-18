@@ -242,6 +242,7 @@ def initialize_screen_elements(screen, settings):
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
         # Default values for text sizes.
+        "title_size": title_size,
         "text_standard": text_standard,
         "text_large": text_large,
         "text_medium": text_medium,
