@@ -184,41 +184,6 @@ def select_window_size(screen, settings, gui_elements, window_size_buttons, sele
     return gui_elements, selected_window_size
 
 
-"""Background functions for credits screen."""
-
-def position_and_show_credits(screen, gui_elements):
-    # Assign credits array to variable.
-    # NOTE: 'gui_elements["credits"]' is an array of tuples. Each inner tuple representing a credit category, with the
-    # element at index [0] being the category title and the following elements being the credited names.
-    credits_elements = gui_elements["credits"]
-
-    # Positioning variables.
-    credits_pos_y_start = screen.get_rect().height / 3
-    title_pos_x = screen.get_rect().centerx + screen.get_rect().width / 12
-    name_pos_x = screen.get_rect().centerx
-    category_spacing = screen.get_rect().height / 10
-    # Dynamically changing y-position variable.
-    dynamic_pos_y = credits_pos_y_start
-
-    # Iterate through 'credits_elements' array, set positioning and spacing, and draw objects on screen.
-    for category in credits_elements:
-        for item in category:
-            # Position category title.
-            if item == category[0]:
-                item.text_rect.top, item.text_rect.right = dynamic_pos_y, title_pos_x
-                dynamic_pos_y += item.text_rect.height
-            # Position last credited name and add spacing between it and next category.
-            elif item == category[-1]:
-                item.text_rect.top, item.text_rect.left = dynamic_pos_y, name_pos_x
-                dynamic_pos_y += category_spacing
-            # Position credited names.
-            else:
-                item.text_rect.top, item.text_rect.left = dynamic_pos_y, name_pos_x
-                dynamic_pos_y += item.text_rect.height
-
-            item.draw_text()
-
-
 """Background functions for character menu screen."""
 
 def position_character_menu_screen_elements(screen, gui_elements):

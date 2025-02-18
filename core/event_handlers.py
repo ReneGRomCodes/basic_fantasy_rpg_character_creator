@@ -61,7 +61,7 @@ def main_events(screen, state, gui_elements, mouse_pos):
 
 def settings_screen_events(state, gui_elements, mouse_pos):
     """Check and handle events in function 'settings_screen()' in 'main_functions.py' and return state.
-        ARGS:
+    ARGS:
         state: program state.
         gui_elements: dict of GUI elements.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.

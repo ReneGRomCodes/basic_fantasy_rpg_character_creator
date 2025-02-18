@@ -1,5 +1,6 @@
 import os
-import core.character_model as char
+from core.character_model import Character
+from core.credits import Credits
 import gui.gui as gui
 import core.functions as func
 import shop_functions as sf
@@ -10,7 +11,7 @@ import random
 
 
 # Create instance of class 'Character'.
-character = char.Character()
+character = Character()
 # Initialize variables for settings screen.
 selected_window_size = None
 # Initialize variables for character creation.
@@ -34,8 +35,9 @@ def main_state_manager(screen, state, gui_elements, mouse_pos):
         # Display main menu screen.
         gui.show_main_menu(screen, gui_elements, mouse_pos)
     elif state == "credits":
-        # Display credits screen.
-        gui.show_credits_screen(screen, gui_elements)
+        # Initialize Credits object and display credits screen.
+        credit_screen = Credits(screen, gui_elements)
+        credit_screen.show_credits(screen, gui_elements)
     elif state == "character_menu":
         # Display character menu screen
         gui.show_character_menu(screen, gui_elements, mouse_pos)

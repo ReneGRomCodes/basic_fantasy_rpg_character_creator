@@ -71,16 +71,6 @@ def show_settings(screen, settings, gui_elements, selected_window_size, mouse_po
     return gui_elements, selected_window_size
 
 
-def show_credits_screen(screen, gui_elements):
-    """Display credits screen."""
-    # Assign gui_elements to variables.
-    title = gui_elements["credits_title"]
-
-    # Draw elements on screen.
-    ui.draw_screen_title(screen, title, gui_elements)
-    ui.position_and_show_credits(screen, gui_elements)
-
-
 def show_character_menu(screen, gui_elements, mouse_pos):
     """Display character menu."""
     # Assign gui_elements to variables.
