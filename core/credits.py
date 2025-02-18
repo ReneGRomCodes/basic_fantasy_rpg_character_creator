@@ -62,3 +62,6 @@ class Credits:
                     self.dynamic_pos_y += item.text_rect.height
 
                 item.draw_text()
+
+        # TODO this line is temporary to avoid text 'falling' of screen. Remove when text is animated!!!
+        self.dynamic_pos_y = self.credits_pos_y_start

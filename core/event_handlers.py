@@ -34,7 +34,9 @@ def main_events(screen, state, gui_elements, mouse_pos):
                     state = "settings_screen"
 
                 if gui_elements["credits_button"].button_rect.collidepoint(mouse_pos):
-                    state = "credits"
+                    # Event switches to state 'init_credits' which creates 'Credits' object before proceeding to final
+                    # 'credits' state from within main state manager.
+                    state = "init_credits"
 
         elif state == "settings_screen":
             if event.type == pygame.MOUSEBUTTONUP:

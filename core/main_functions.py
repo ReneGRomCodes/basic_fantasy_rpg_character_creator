@@ -12,6 +12,8 @@ import random
 
 # Create instance of class 'Character'.
 character = Character()
+# Create 'None' variable for later instance of credits screen object.
+credits_screen = None
 # Initialize variables for settings screen.
 selected_window_size = None
 # Initialize variables for character creation.
@@ -34,13 +36,29 @@ def main_state_manager(screen, state, gui_elements, mouse_pos):
     elif state == "main_menu":
         # Display main menu screen.
         gui.show_main_menu(screen, gui_elements, mouse_pos)
-    elif state == "credits":
-        # Initialize Credits object and display credits screen.
-        credit_screen = Credits(screen, gui_elements)
-        credit_screen.show_credits(screen, gui_elements)
+    elif state in {"init_credits", "credits"}:
+        # Use of 'secondary' state manager for credits screen.
+        state = credits_state_manager(screen, state, gui_elements)
     elif state == "character_menu":
         # Display character menu screen
         gui.show_character_menu(screen, gui_elements, mouse_pos)
+
+    return state
+
+
+def credits_state_manager(screen, state, gui_elements):
+    """'Secondary' state manager for use in 'main_state_manager' to handle credits screen object."""
+    # Declare global variable to allow modification of these values within the function.
+    global credits_screen
+
+    if state == "init_credits":
+        # Initialize Credits object every time before credits screen is displayed to reset starting positions of text
+        # elements and to account for changes to 'gui_elements' if window size has been changed in settings screen.
+        credits_screen = Credits(screen, gui_elements)
+        state = "credits"
+    # Display credits screen.
+    else:
+        credits_screen.show_credits(screen, gui_elements)
 
     return state
 
