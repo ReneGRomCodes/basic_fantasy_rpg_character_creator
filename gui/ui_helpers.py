@@ -74,6 +74,7 @@ def position_main_menu_screen_elements(screen, gui_elements):
     start = gui_elements["start_button"]
     settings = gui_elements["settings_button"]
     show_credits = gui_elements["credits_button"]
+    quit_program = gui_elements["quit_button"]
 
     # Position buttons and title text field.
     title.text_rect.centery = screen.get_rect().height / 4
@@ -87,6 +88,9 @@ def position_main_menu_screen_elements(screen, gui_elements):
     show_credits.button_rect.width = screen.get_rect().width / 6
     show_credits.button_rect.centerx = screen.get_rect().centerx
     show_credits.button_rect.top = settings.button_rect.bottom
+    quit_program.button_rect.width = screen.get_rect().width / 6
+    quit_program.button_rect.centerx = screen.get_rect().centerx
+    quit_program.button_rect.top = show_credits.button_rect.bottom
 
 
 """Background functions for settings screen."""

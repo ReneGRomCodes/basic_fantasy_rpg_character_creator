@@ -38,6 +38,10 @@ def main_events(screen, state, gui_elements, mouse_pos):
                     # 'credits' state from within main state manager.
                     state = "init_credits"
 
+                if gui_elements["quit_button"].button_rect.collidepoint(mouse_pos):
+                    pygame.quit()
+                    sys.exit()
+
         elif state == "settings_screen":
             if event.type == pygame.MOUSEBUTTONUP:
                 if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):

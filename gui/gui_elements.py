@@ -76,6 +76,7 @@ def initialize_screen_elements(screen, settings):
     start_button = so.Button(screen, "Create a Character", text_medium)
     settings_button = so.Button(screen, "Settings", text_medium)
     credits_button = so.Button(screen, "Credits", text_medium)
+    quit_button = so.Button(screen, "Quit", text_medium)
 
 
     # Settings.
@@ -266,6 +267,8 @@ def initialize_screen_elements(screen, settings):
         "start_button": start_button,
         "settings_button": settings_button,
         "credits_button": credits_button,
+        "quit_button": quit_button,
+
         # Settings.
         "settings_title": settings_title,
         "window_size": window_size_field,
