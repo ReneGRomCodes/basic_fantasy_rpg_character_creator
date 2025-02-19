@@ -14,7 +14,8 @@ class Credits:
         self.title_size, self.text_large, self.text_medium = (gui_elements["title_size"], gui_elements["text_large"],
                                                               gui_elements["text_medium"])
         # Positioning variables.
-        self.credits_pos_y_start = screen.get_rect().height / 3
+        self.credits_pos_y_start = screen.get_rect().bottom + 5
+        #self.credits_pos_y_start = screen.get_rect().height / 3
         self.title_pos_x = screen.get_rect().centerx + screen.get_rect().width / 12
         self.name_pos_x = screen.get_rect().centerx
         self.category_spacing = screen.get_rect().height / 10
@@ -61,5 +62,11 @@ class Credits:
 
                 item.draw_text()
 
-        # TODO this line is temporary to avoid text 'falling' of screen. Remove when text is animated!!!
+        # Change starting y-position for each frame and set new starting value for dynamically changed y-position to
+        # make text move across the screen.
+        self.credits_pos_y_start -= screen.get_rect().height / 300
         self.dynamic_pos_y = self.credits_pos_y_start
+
+        if self.credits_elements[-1][-1].text_rect.bottom <= screen.get_rect().top:
+            self.credits_pos_y_start = screen.get_rect().bottom + 5
+            self.dynamic_pos_y = self.credits_pos_y_start

@@ -58,7 +58,7 @@ def credits_state_manager(screen, state, gui_elements):
         credits_screen = Credits(screen, gui_elements)
         state = "credits"
     # Display credits screen.
-    else:
+    elif state == "credits":
         credits_screen.show_credits(screen, gui_elements)
 
     return state
