@@ -265,9 +265,7 @@ def initialize_screen_elements(screen, settings):
         # Main menu.
         "main_menu_title": main_menu_screen_title,
         "start_button": start_button,
-        "settings_button": settings_button,
-        "credits_button": credits_button,
-        "quit_button": quit_button,
+        "menu_buttons": (settings_button, credits_button, quit_button),
 
         # Settings.
         "settings_title": settings_title,

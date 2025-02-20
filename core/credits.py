@@ -67,6 +67,7 @@ class Credits:
         self.credits_pos_y_start -= screen.get_rect().height / 300
         self.dynamic_pos_y = self.credits_pos_y_start
 
+        # Reset y-positions when last credit left top of the screen to start over again from the bottom.
         if self.credits_elements[-1][-1].text_rect.bottom <= screen.get_rect().top:
             self.credits_pos_y_start = screen.get_rect().bottom + 5
             self.dynamic_pos_y = self.credits_pos_y_start

@@ -30,15 +30,15 @@ def main_events(screen, state, gui_elements, mouse_pos):
                 if gui_elements["start_button"].button_rect.collidepoint(mouse_pos):
                     state = "character_menu"
 
-                if gui_elements["settings_button"].button_rect.collidepoint(mouse_pos):
+                if gui_elements["menu_buttons"][0].button_rect.collidepoint(mouse_pos):
                     state = "settings_screen"
 
-                if gui_elements["credits_button"].button_rect.collidepoint(mouse_pos):
+                if gui_elements["menu_buttons"][1].button_rect.collidepoint(mouse_pos):
                     # Event switches to state 'init_credits' which creates 'Credits' object before proceeding to final
                     # 'credits' state from within main state manager.
                     state = "init_credits"
 
-                if gui_elements["quit_button"].button_rect.collidepoint(mouse_pos):
+                if gui_elements["menu_buttons"][2].button_rect.collidepoint(mouse_pos):
                     pygame.quit()
                     sys.exit()
 

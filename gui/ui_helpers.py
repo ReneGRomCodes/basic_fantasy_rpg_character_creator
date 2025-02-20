@@ -72,25 +72,24 @@ def position_main_menu_screen_elements(screen, gui_elements):
     spacing = gui_elements["title_screen_spacing"]
     title = gui_elements["main_menu_title"]
     start = gui_elements["start_button"]
-    settings = gui_elements["settings_button"]
-    show_credits = gui_elements["credits_button"]
-    quit_program = gui_elements["quit_button"]
+    menu_buttons = gui_elements["menu_buttons"]
 
-    # Position buttons and title text field.
+    # Format/position title text field and start button.
     title.text_rect.centery = screen.get_rect().height / 4
     title.text_rect.centerx = screen.get_rect().centerx
     start.button_rect.width = screen.get_rect().width / 4
     start.button_rect.centerx = screen.get_rect().centerx
     start.button_rect.bottom = screen.get_rect().centery - spacing
-    settings.button_rect.width = screen.get_rect().width / 6
-    settings.button_rect.centerx = screen.get_rect().centerx
-    settings.button_rect.top = screen.get_rect().centery + spacing * 2
-    show_credits.button_rect.width = screen.get_rect().width / 6
-    show_credits.button_rect.centerx = screen.get_rect().centerx
-    show_credits.button_rect.top = settings.button_rect.bottom
-    quit_program.button_rect.width = screen.get_rect().width / 6
-    quit_program.button_rect.centerx = screen.get_rect().centerx
-    quit_program.button_rect.top = show_credits.button_rect.bottom
+
+    # Format, position and draw additional menu buttons.
+    for index, button in enumerate(menu_buttons):
+        button.button_rect.width = screen.get_rect().width / 6
+        button.button_rect.centerx = screen.get_rect().centerx
+
+        if index == 0:
+            button.button_rect.top = screen.get_rect().centery + spacing * 2
+        else:
+            button.button_rect.top = menu_buttons[index - 1].button_rect.bottom
 
 
 """Background functions for settings screen."""

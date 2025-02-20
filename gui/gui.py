@@ -25,9 +25,7 @@ def show_main_menu(screen, gui_elements, mouse_pos):
     # Assign gui_elements to variables.
     title = gui_elements["main_menu_title"]
     start = gui_elements["start_button"]
-    settings = gui_elements["settings_button"]
-    show_credits = gui_elements["credits_button"]
-    quit_program = gui_elements["quit_button"]
+    menu_buttons = gui_elements["menu_buttons"]
 
     # Position buttons and main menu title field.
     ui.position_main_menu_screen_elements(screen, gui_elements)
@@ -35,9 +33,10 @@ def show_main_menu(screen, gui_elements, mouse_pos):
     # Draw elements on screen.
     title.draw_text()
     start.draw_button(mouse_pos)
-    settings.draw_button(mouse_pos)
-    show_credits.draw_button(mouse_pos)
-    quit_program.draw_button(mouse_pos)
+
+    # Draw additional menu buttons on screen.
+    for button in menu_buttons:
+        button.draw_button(mouse_pos)
 
 
 def show_settings(screen, settings, gui_elements, selected_window_size, mouse_pos):
