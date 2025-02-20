@@ -62,6 +62,11 @@ class Credits:
 
                 item.draw_text()
 
+        # Call function to have credits scroll from bottom to top over the screen.
+        self.dynamic_credits_position(screen)
+
+    def dynamic_credits_position(self, screen):
+        """Dynamically change position of credits elements for scrolling effect."""
         # Change starting y-position for each frame and set new starting value for dynamically changed y-position to
         # make text move across the screen.
         self.credits_pos_y_start -= screen.get_rect().height / 300
