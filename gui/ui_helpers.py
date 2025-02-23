@@ -146,7 +146,8 @@ def select_window_size(screen, settings, gui_elements, window_size_buttons, sele
     if settings.screen_size == settings.default_settings[0]:
         window_size_buttons[0].selected = True
 
-    # Assign default object (small window) to 'selected_window_size' if it is 'None'.
+    # Assign default object (small window) to 'selected_window_size' if it is 'None' in case of first access to the
+    # settings screen.
     if not selected_window_size:
         selected_window_size = object_attribute_pairs[0][0]
 
@@ -158,19 +159,11 @@ def select_window_size(screen, settings, gui_elements, window_size_buttons, sele
                 selected_window_size = size
                 break
 
-        # Unselect the previous selected size.
-        for size in window_size_buttons:
-            if size.selected:
-                size.selected = False  # Set the 'selected' attribute of the previously selected size to False.
-
-    # Select the new size.
-    if not selected_window_size.selected:
-        selected_window_size.selected = True
-
     # Iterate through 'object_attribute_pairs' and check if currently selected UI object corresponds with window size set
     # in 'Settings' object. Change 'settings.screen_size' and change 'pygame.display' to selected value if pairs don't
     # correspond.
     for pair in object_attribute_pairs:
+
         if pair[0].selected == True and pair[1] != settings.screen_size:
             settings.screen_size = pair[1]
             # Check if 'pair[1]' has a window size assigned, otherwise set window to full screen.
@@ -181,8 +174,16 @@ def select_window_size(screen, settings, gui_elements, window_size_buttons, sele
             # Wait 200ms to avoid immediate click registration directly after new window size is set. Window could be
             # accidentally changed again otherwise.
             pygame.time.wait(200)
+
             # Re-initialize dict 'gui_elements' for proper size and positions of gui objects based on screen size.
             gui_elements = initialize_screen_elements(screen, settings)
+
+        # Re-assign window size to 'selected_window_size' by comparing 'text' attributes with 'pair[0]', replacing
+        # 'selected_window_size' with equivalent object and set its attribute to 'True'. Re-initialization of dict
+        # 'gui_elements' above leads to 'selected_window_size' pointing to obsolete object otherwise.
+        if selected_window_size.text == pair[0].text:
+            selected_window_size = pair[0]
+            selected_window_size.selected = True
 
     return gui_elements, selected_window_size
 
