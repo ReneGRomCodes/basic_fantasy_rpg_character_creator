@@ -70,7 +70,7 @@ def settings_screen(screen, state, settings, gui_elements, mouse_pos):
     global selected_window_size
 
     # Call event handler and get program state.
-    state = eh.settings_screen_events(state, gui_elements, mouse_pos)
+    state = eh.main_events(screen, state, gui_elements, mouse_pos)
 
     # Display settings screen.
     gui_elements, selected_window_size = gui.show_settings(screen, settings, gui_elements, selected_window_size, mouse_pos)

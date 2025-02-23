@@ -12,11 +12,12 @@ class Settings:
         self.small_screen = (1280,720)
         self.medium_screen = (1600,900)
         self.large_screen = (1920,1080)
+        # Default font.
+        self.font = "gui/font/EagleLake-Regular.ttf"
         # Background color for screen.
         self.bg_color = (240, 220, 170)
         # Color settings for screen objects.
         self.text_color = (55, 40, 25)
-        self.font = "gui/font/EagleLake-Regular.ttf"
         self.greyed_out_text_color = (140, 120, 100)
         self.info_panel_bg_color = (210, 180, 130)
         self.rect_hover_color = (180, 140, 80)

@@ -161,7 +161,7 @@ def select_window_size(screen, settings, gui_elements, window_size_buttons, sele
         # Unselect the previous selected size.
         for size in window_size_buttons:
             if size.selected:
-                size.selected = False  # Set the selected attribute of the previously selected size to False.
+                size.selected = False  # Set the 'selected' attribute of the previously selected size to False.
 
     # Select the new size.
     if not selected_window_size.selected:
