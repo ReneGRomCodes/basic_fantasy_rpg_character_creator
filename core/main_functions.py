@@ -1,6 +1,6 @@
 import os
 from core.character_model import Character
-from core.credits import Credits
+from gui.credits import Credits
 import gui.gui as gui
 import core.functions as func
 import shop_functions as sf

@@ -51,7 +51,6 @@ project_root/
 │   ├── event_handlers.py  # Handles input events
 │   ├── main_functions.py  # Manages application states
 │   ├── functions.py       # Defines mechanics for character creation based on game rules
-│   └── credits.py         # (To be moved to gui/) Credits screen logic
 │   └── character_model.py # Player character class for creation process
 │
 │── descr/                 # String-based descriptions (races, classes, abilities, etc.)
@@ -61,7 +60,8 @@ project_root/
 │   ├── cs_model.py        # Character sheet class and GUI logic
 │   ├── gui_elements.py    # Creates GUI elements and returns them as a dictionary
 │   ├── gui.py             # Functions for drawing elements on screen
-│   └── ui_helpers.py      # Helper functions for positioning elements
+│   ├── ui_helpers.py      # Helper functions for positioning elements
+│   └── credits.py         # Credits screen logic
 │
 └── README.md              # You are here
 ```
