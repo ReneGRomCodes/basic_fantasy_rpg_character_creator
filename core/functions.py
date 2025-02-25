@@ -20,25 +20,20 @@ def get_ability_score():
 
     if ability_score[0] <= 3:
         ability_score.append(-3)
-        return ability_score
     elif ability_score[0] <= 5:
         ability_score.append(-2)
-        return ability_score
     elif ability_score[0] <= 8:
         ability_score.append(-1)
-        return ability_score
     elif ability_score[0] <= 12:
         ability_score.append(0)
-        return ability_score
     elif ability_score[0] <= 15:
         ability_score.append(1)
-        return ability_score
     elif ability_score[0] <= 17:
         ability_score.append(2)
-        return ability_score
     else:
         ability_score.append(3)
-        return ability_score
+
+    return ability_score
 
 
 def check_race(character):

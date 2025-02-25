@@ -42,13 +42,13 @@ def initialize_screen_elements(screen, settings):
     info_panel_width = int(screen_width / 4)
     title_screen_spacing = int(screen_height / 60)  # Spacing between main title and subtitle on title screen.
     menu_title_spacing = int(screen_height / 45)  # Default spacing between menu title and GUI objects.
-    spacing_screen_edge = screen_width / 37  # Default value for distance to edge of screen for GUI objects.
+    default_edge_spacing = screen_width / 37  # Default value for distance to between most GUI objects edges.
     # Standard buttons, size.
     button_width = screen_width / 6
     continue_button = so.Button(screen, "Continue", text_medium)
     continue_button.button_rect.width = button_width
-    continue_button.button_rect.bottomright = (screen.get_rect().right - spacing_screen_edge,
-                                               screen.get_rect().bottom - spacing_screen_edge)
+    continue_button.button_rect.bottomright = (screen.get_rect().right - default_edge_spacing,
+                                               screen.get_rect().bottom - default_edge_spacing)
     inactive_continue_button = so.Button(screen, "Continue", text_medium)
     inactive_continue_button.button_rect.width = button_width
     inactive_continue_button.button_rect.bottomright = continue_button.button_rect.bottomright
@@ -56,15 +56,15 @@ def initialize_screen_elements(screen, settings):
     inactive_continue_button.rect_clicked_color = settings.inactive_continue_button_click_color
     back_button = so.Button(screen, "Back", text_medium)
     back_button.button_rect.width = button_width
-    back_button.button_rect.bottomleft = (screen.get_rect().left + spacing_screen_edge,
-                                          screen.get_rect().bottom - spacing_screen_edge)
+    back_button.button_rect.bottomleft = (screen.get_rect().left + default_edge_spacing,
+                                          screen.get_rect().bottom - default_edge_spacing)
 
 
     # Title screen.
     title = so.TextField(screen, "BASIC FANTASY ROLE-PLAYING GAME", title_size)
     subtitle = so.TextField(screen, "Character Creator", text_large)
     copyright_notice = so.TextField(screen, "Basic Fantasy Role-Playing Game, Copyright 2006-2025 Chris Gonnerman. All"
-                                            "Rights reserved. Distributed under CC BY-SA license. www.basicfantasy.com",
+                                            " Rights reserved. Distributed under CC BY-SA license. www.basicfantasy.com",
                                     text_small)
 
 
@@ -239,7 +239,7 @@ def initialize_screen_elements(screen, settings):
         "title_screen_spacing": title_screen_spacing,
         "menu_title_spacing": menu_title_spacing,
         "default_button_width": button_width,
-        "default_edge_spacing": spacing_screen_edge,
+        "default_edge_spacing": default_edge_spacing,
         # Standard buttons.
         "continue_button": continue_button,
         "inactive_continue_button": inactive_continue_button,

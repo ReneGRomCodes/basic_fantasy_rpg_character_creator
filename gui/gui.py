@@ -47,6 +47,9 @@ def show_settings(screen, settings, gui_elements, selected_window_size, mouse_po
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         selected_window_size: instance of 'InteractiveText' class representing chosen window size.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        Re-initialized dict 'gui_elements'.
+        Instance of newly selected window size to appear as selected on screen.
     """
     # Assign gui_elements to variables.
     title = gui_elements["settings_title"]
@@ -168,7 +171,18 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
 
 
 def show_race_class_selection_screen(screen, possible_characters, selected_race, selected_class, gui_elements, mouse_pos):
-    """Display race/class selection on screen."""
+    """Display race/class selection on screen.
+    ARGS:
+        screen: PyGame window.
+        possible_characters: list of possible race-class combinations as strings.
+        selected_race: instance of 'InteractiveText' class representing chosen race.
+        selected_class: instance of 'InteractiveText' class representing chosen class.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        selected_race
+        selected_class
+    """
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["race_class_title"]
     reset_button = gui_elements["reset_button"]
@@ -223,7 +237,19 @@ def show_naming_screen(screen, character, gui_elements, mouse_pos):
 
 
 def show_starting_money_screen(screen, gui_elements, random_money_flag, custom_money_flag, starting_money, mouse_pos):
-    """Display character naming screen and prompt user for input."""
+    """Display money input screen and prompt user to choose random or custom amount of money.
+    ARGS:
+        screen: PyGame window.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        random_money_flag: boolean from 'main_functions.py' to reflect user choice.
+        custom_money_flag: boolean from 'main_functions.py' to reflect user choice.
+        starting_money: int amount of starting money.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        random_money_flag
+        custom_money_flag
+        starting_money
+    """
     # Assign text fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["starting_money_title"]
     back_button = gui_elements["back_button"]
