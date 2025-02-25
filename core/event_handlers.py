@@ -84,64 +84,59 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
         state: program state.
     """
 
-    # Hashable set to optimize state checking and improve performance.
-    states_set = {"show_abilities", "race_class_selection", "set_starting_money", "creation_complete"}
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
 
-    if state in states_set:
+        if state == "show_abilities":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                    state = "character_menu"
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                if gui_elements["reroll_button"].button_rect.collidepoint(mouse_pos):
+                    state = "set_abilities"
 
-            if state == "show_abilities":
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
-                        state = "character_menu"
+                if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                    # Set and return available races/classes and state after confirmation of ability scores.
+                    race_list, class_list = func.get_race_class_lists(character)
+                    possible_characters = func.build_possible_characters_list(race_list, class_list)
+                    state = "race_class_selection"
 
-                    if gui_elements["reroll_button"].button_rect.collidepoint(mouse_pos):
-                        state = "set_abilities"
+        elif state == "race_class_selection":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                    state = "show_abilities"
 
+                # Only continue if race AND class are selected (context1=selected_race, context2=selected_class).
+                if context1 and context2:
                     if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                        # Set and return available races/classes and state after confirmation of ability scores.
-                        race_list, class_list = func.get_race_class_lists(character)
-                        possible_characters = func.build_possible_characters_list(race_list, class_list)
-                        state = "race_class_selection"
-
-            elif state == "race_class_selection":
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
-                        state = "show_abilities"
-
-                    # Only continue if race AND class are selected (context1=selected_race, context2=selected_class).
-                    if context1 and context2:
-                        if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                            # Set race, class and their specific values in character object after confirmation.
-                            character.set_race(context1.text)
-                            character.set_class(context2.text)
-                            func.set_character_values(character)
-                            state = "name_character"
-
-            elif state == "set_starting_money":
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                        # Set race, class and their specific values in character object after confirmation.
+                        character.set_race(context1.text)
+                        character.set_class(context2.text)
+                        func.set_character_values(character)
                         state = "name_character"
 
-                    # Allow to continue to next state if 'context1' (random_money) is 'True' or switch state for user
-                    # input if 'context2' (custom_money) is 'True'.
-                    if context1:
-                        if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                            # Set starting money to int 'context3' (starting_money) if 'random_money' is 'True'.
-                            character.money = context3
-                            state = "creation_complete"
-                    if context2:
-                        state = "custom_input_money"
+        elif state == "set_starting_money":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                    state = "name_character"
 
-            elif state == "creation_complete":
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if gui_elements["show_character_sheet"].button_rect.collidepoint(mouse_pos):
-                        build_character_sheet(character)  # TODO Character sheet in console for checks. Remove when done.
-                        state = "initialize_character_sheet"
+                # Allow to continue to next state if 'context1' (random_money) is 'True' or switch state for user
+                # input if 'context2' (custom_money) is 'True'.
+                if context1:
+                    if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                        # Set starting money to int 'context3' (starting_money) if 'random_money' is 'True'.
+                        character.money = context3
+                        state = "creation_complete"
+                if context2:
+                    state = "custom_input_money"
+
+        elif state == "creation_complete":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if gui_elements["show_character_sheet"].button_rect.collidepoint(mouse_pos):
+                    build_character_sheet(character)  # TODO Character sheet in console for checks. Remove when done.
+                    state = "initialize_character_sheet"
 
     return possible_characters, state
 

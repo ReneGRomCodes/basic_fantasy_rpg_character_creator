@@ -23,8 +23,7 @@ class Credits:
         self.dynamic_pos_y = self.credits_pos_y_start
 
         # Credits screen title.
-        self.credits_title_text = "- CREDITS -"
-        self.credits_title = so.TextField(screen, self.credits_title_text, self.title_size)
+        self.credits_title = so.TextField(screen, "- CREDITS -", self.title_size)
         # Credits.
         self.programmer_title = so.TextField(screen, "Programming & UI Design", self.text_large)
         self.programmer_name = so.TextField(screen, "René Grewe Romero", self.text_medium)

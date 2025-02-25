@@ -115,10 +115,10 @@ def build_possible_characters_list(race_list, class_list):
     for char_race in race_list:
         for char_class in class_list:
             # Exclude Dwarves and Halflings from class 'Magic-User'.
-            if char_race in ["Dwarf", "Halfling"] and char_class == "Magic-User":
+            if char_race in {"Dwarf", "Halfling"} and char_class == "Magic-User":
                 pass
             # Assure that combination classes are only shown for Elves.
-            elif char_race != "Elf" and char_class in ["Fighter/Magic-User", "Magic-User/Thief"]:
+            elif char_race != "Elf" and char_class in {"Fighter/Magic-User", "Magic-User/Thief"}:
                 pass
             else:
                 race_class = char_race + " " + char_class

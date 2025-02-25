@@ -118,8 +118,8 @@ class TextField:
 
     def render_new_text_image(self):
         """Re-render 'text_image' attribute and get new 'text_rect'. This method is for use after an already created
-        instance has its 'text' attribute changed to ensure further changes to, for example, its position are applied to
-        the modified instance."""
+        instance has its 'text' attribute changed to ensure that further changes to, for example, its position are applied
+        to the modified instance."""
 
         # Check if element has 'multi_line' attribute set to 'True' and render 'text_image' accordingly, using class method
         # '.render_multiline_image()' if element is multi line normal render method otherwise.
@@ -289,7 +289,8 @@ class InfoPanel(TextField):
 class TextInputField:
     """Represent a text input field.
     NOTE: this class does not create the actual instance for a 'pygame_textinput' object, but instead streamlines the
-    process of drawing it on screen with a white background field and having the input centered in said field."""
+    process of drawing it on screen with a colored background field (color is set in 'Settings' class as attribute
+    'self.text_input_field_color') and having the input centered in said field."""
 
     def __init__(self, screen, input_field_instance, field_width):
         """Initialize text input field.

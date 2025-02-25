@@ -61,18 +61,15 @@ def initialize_screen_elements(screen, settings):
 
 
     # Title screen.
-    title_message = "BASIC FANTASY ROLE-PLAYING GAME"
-    subtitle_message = "Character Creator"
-    copyright_message = ("Basic Fantasy Role-Playing Game, Copyright 2006-2025 Chris Gonnerman. All Rights reserved. "
-                         "Distributed under CC BY-SA license. www.basicfantasy.com")
-    title = so.TextField(screen, title_message, title_size)
-    subtitle = so.TextField(screen, subtitle_message, text_large)
-    copyright_notice = so.TextField(screen, copyright_message, text_small)
+    title = so.TextField(screen, "BASIC FANTASY ROLE-PLAYING GAME", title_size)
+    subtitle = so.TextField(screen, "Character Creator", text_large)
+    copyright_notice = so.TextField(screen, "Basic Fantasy Role-Playing Game, Copyright 2006-2025 Chris Gonnerman. All"
+                                            "Rights reserved. Distributed under CC BY-SA license. www.basicfantasy.com",
+                                    text_small)
 
 
     # Main Menu.
-    main_menu_title_text = "- MAIN MENU -"
-    main_menu_screen_title = so.TextField(screen, main_menu_title_text, title_size)
+    main_menu_screen_title = so.TextField(screen, "- MAIN MENU -", title_size)
     start_button = so.Button(screen, "Create a Character", text_medium)
     settings_button = so.Button(screen, "Settings", text_medium)
     credits_button = so.Button(screen, "Credits", text_medium)
@@ -80,8 +77,7 @@ def initialize_screen_elements(screen, settings):
 
 
     # Settings.
-    settings_title_text = "- SETTINGS -"
-    settings_title = so.TextField(screen, settings_title_text, title_size)
+    settings_title = so.TextField(screen, "- SETTINGS -", title_size)
     window_size_field = so.TextField(screen, "Window Size", text_large)
     window_size_button_small = so.InteractiveText(screen, "1280x720", text_medium, select=True)
     window_size_button_medium = so.InteractiveText(screen, "1600x900", text_medium, select=True)
@@ -92,8 +88,7 @@ def initialize_screen_elements(screen, settings):
     # Credits.
     # 'gui_elements["credits"]' is an array of tuples. Each inner tuple representing a credit category, with the element
     # at index [0] being the category title and the following elements being the credited names.
-    credits_title_text = "- CREDITS -"
-    credits_title = so.TextField(screen, credits_title_text, title_size)
+    credits_title = so.TextField(screen, "- CREDITS -", title_size)
     programmer_title = so.TextField(screen, "Programming & UI Design", text_large)
     programmer_name = so.TextField(screen, "René Grewe Romero", text_medium)
     concept_creator_title = so.TextField(screen, "Based on 'Basic Tabletop RPG'", text_large)
@@ -108,8 +103,7 @@ def initialize_screen_elements(screen, settings):
 
 
     # Ability scores screen.
-    ability_scores_title_text = "- ABILITIES -"
-    ability_scores_screen_title = so.TextField(screen, ability_scores_title_text, text_large)
+    ability_scores_screen_title = so.TextField(screen, "- ABILITIES -", text_large)
     reroll_button = so.Button(screen, "Roll Again", text_medium)
     # Initialize dictionaries from 'descr' package.
     ability_descr = abilities.get_ability_descr()
@@ -132,8 +126,7 @@ def initialize_screen_elements(screen, settings):
 
 
     # Race/class selection screen.
-    race_class_selection_title_text = "- RACE / CLASS SELECTION -"
-    race_class_selection_screen_title = so.TextField(screen, race_class_selection_title_text, text_large)
+    race_class_selection_screen_title = so.TextField(screen, "- RACE / CLASS SELECTION -", text_large)
     reset_button = so.Button(screen, "RESET", text_medium)
     # Race info Panels.
     humans_info = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True, image_width=info_panel_width,
@@ -216,27 +209,21 @@ def initialize_screen_elements(screen, settings):
 
 
     # Starting money screen.
-    starting_money_screen_title_text = "- STARTING MONEY -"
-    starting_money_screen_title = so.TextField(screen, starting_money_screen_title_text, text_large)
+    starting_money_screen_title = so.TextField(screen, "- STARTING MONEY -", text_large)
     # Choice buttons.
-    random_money_button_text = "Roll the dice for your starting money (3d6 x 10)"
-    custom_money_button_text = "Choose your own amount of gold pieces"
-    random_money_button = so.Button(screen, random_money_button_text, text_standard)
-    custom_money_button = so.Button(screen, custom_money_button_text, text_standard)
+    random_money_button = so.Button(screen, "Roll the dice for your starting money (3d6 x 10)", text_standard)
+    custom_money_button = so.Button(screen, "Choose your own amount of gold pieces", text_standard)
     # Random money message field.
-    random_money_message = "You receive"
-    random_money_field = so.TextField(screen, random_money_message, text_medium)
+    random_money_field = so.TextField(screen, "You receive", text_medium)
     # 'pygame_textinput' and 'TextInputField' instances.
-    money_input_prompt_message = "Enter amount of gold for your character"
-    money_input_prompt = so.TextField(screen, money_input_prompt_message, text_standard)
+    money_input_prompt = so.TextField(screen, "Enter amount of gold for your character", text_standard)
     money_input_font = pygame.font.Font(settings.font, text_medium)
     money_amount_input = pygame_textinput.TextInputVisualizer(font_object=money_input_font)
     money_amount_field = so.TextInputField(screen, money_amount_input, screen_width / 4)
 
 
     # Character creation complete screen.
-    completion_message_text = "CHARACTER CREATION COMPLETE"
-    completion_message_field = so.TextField(screen, completion_message_text, text_large)
+    completion_message_field = so.TextField(screen, "CHARACTER CREATION COMPLETE", text_large)
     show_character_sheet_button = so.Button(screen, "Show Character Sheet", text_medium)
 
 

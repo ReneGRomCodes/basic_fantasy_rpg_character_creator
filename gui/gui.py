@@ -89,7 +89,7 @@ def show_character_menu(screen, gui_elements, mouse_pos):
 
 
 def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
-    """Display character ability scores and bonus/penalty on screen."""
+    """Display ability scores from 'Character' class instance 'character' and bonus/penalty on screen."""
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["abilities_title"]
     reroll_button = gui_elements["reroll_button"]
