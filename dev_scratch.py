@@ -13,4 +13,3 @@ this point it has become mostly a dumping ground for 'todos'."""
 
 # PRIORITIES:
 # TODO refactor function 'show_ability_scores_screen' in 'gui/gui.py'.
-# TODO have a look at overhauling the way class 'Character' handles some values, i.e. 'abilities' (try replacing dicts!)

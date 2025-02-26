@@ -73,12 +73,14 @@ class CharacterSheet:
         self.cha_score = so.TextField(screen, str(character.abilities["cha"][0]), self.text_standard)
         self.cha_bonus_penalty = so.TextField(screen, str(character.abilities["cha"][1]), self.text_standard)
         # Array of ability groups for cleaner positioning/drawing in class methods.
-        self.ability_groups = ((self.str_field, self.str_score, self.str_bonus_penalty),
-                               (self.dex_field, self.dex_score, self.dex_bonus_penalty),
-                               (self.con_field, self.con_score, self.con_bonus_penalty),
-                               (self.int_field, self.int_score, self.int_bonus_penalty),
-                               (self.wis_field, self.wis_score, self.wis_bonus_penalty),
-                               (self.cha_field, self.cha_score, self.cha_bonus_penalty))
+        self.ability_groups = (
+            (self.str_field, self.str_score, self.str_bonus_penalty),
+            (self.dex_field, self.dex_score, self.dex_bonus_penalty),
+            (self.con_field, self.con_score, self.con_bonus_penalty),
+            (self.int_field, self.int_score, self.int_bonus_penalty),
+            (self.wis_field, self.wis_score, self.wis_bonus_penalty),
+            (self.cha_field, self.cha_score, self.cha_bonus_penalty),
+        )
         # Format ability bonus/penalty output. See method docstring for details.
         self.format_ability_bonus_penalty()
 
@@ -95,11 +97,13 @@ class CharacterSheet:
         self.saving_throw_4_field = so.TextField(screen, "Spells:", self.text_standard)
         self.saving_throw_4_score = so.TextField(screen, str(character.saving_throws["Spells"]), self.text_standard)
         # Array of saving throws groups for cleaner positioning/drawing in class methods.
-        self.saving_throw_groups = ((self.saving_throw_0_field, self.saving_throw_0_score),
-                                    (self.saving_throw_1_field, self.saving_throw_1_score),
-                                    (self.saving_throw_2_field, self.saving_throw_2_score),
-                                    (self.saving_throw_3_field, self.saving_throw_3_score),
-                                    (self.saving_throw_4_field, self.saving_throw_4_score))
+        self.saving_throw_groups = (
+            (self.saving_throw_0_field, self.saving_throw_0_score),
+            (self.saving_throw_1_field, self.saving_throw_1_score),
+            (self.saving_throw_2_field, self.saving_throw_2_score),
+            (self.saving_throw_3_field, self.saving_throw_3_score),
+            (self.saving_throw_4_field, self.saving_throw_4_score),
+        )
         # Format saving throw score output. See method docstring for details.
         self.format_saving_throw_scores()
 

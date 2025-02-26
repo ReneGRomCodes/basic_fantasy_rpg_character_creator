@@ -99,51 +99,50 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
 
-    # Assign further gui_elements to variables and add them to list 'abilities'.
-    strength = gui_elements["strength"]
-    dexterity = gui_elements["dexterity"]
-    constitution = gui_elements["constitution"]
-    intelligence = gui_elements["intelligence"]
-    wisdom = gui_elements["wisdom"]
-    charisma = gui_elements["charisma"]
-    abilities = (strength, dexterity, constitution, intelligence, wisdom, charisma)
-    # Assign dict 'character.abilities' to 'stats' to avoid confusion with tuple 'abilities' above.
-    stats = character.abilities
-    # Create instances of class 'TextField' to show ability scores on screen. Text size is taken from an instance in
-    # 'gui_elements' to assure automatic scaling.
-    ability_score_text = so.TextField(screen, "score", strength.size)
-    bonus_penalty_text = so.TextField(screen, "bonus_penalty", strength.size)
+    # Array of ability fields. Each item is a tuple with the GUI element at index 0 and the corresponding attribute from
+    # character object at index 1. 'character.abilities[]' stores values in a dict as lists with base score at index 0
+    # and bonus/penalty at index 1.
+    abilities_array = (
+        (gui_elements["strength"], character.abilities["str"]),
+        (gui_elements["dexterity"], character.abilities["dex"]),
+        (gui_elements["constitution"], character.abilities["con"]),
+        (gui_elements["intelligence"], character.abilities["int"]),
+        (gui_elements["wisdom"], character.abilities["wis"]),
+        (gui_elements["charisma"], character.abilities["cha"]),
+    )
 
-    # Draw screen title.
-    ui.draw_screen_title(screen, screen_title, gui_elements)
+    # Create instances of class 'TextField' to show ability scores on screen. Text string is placeholder and text size
+    # is taken from an instance in 'gui_elements' to assure automatic scaling.
+    ability_score_text = so.TextField(screen, "score", gui_elements["strength"].size)
+    bonus_penalty_text = so.TextField(screen, "bonus_penalty", gui_elements["strength"].size)
 
     # Set initial position on y-axis for ability score fields.
     element_pos_y = screen.get_rect().height / 4
 
-    # Loop through each ability field and corresponding stat to format and display the ability name, score and bonus/penalty.
-    # Align and position elements dynamically on the screen.
-    for ability, key in zip(abilities, stats):
+    # Loop through each ability field (as they are grouped in 'abilities_array') and corresponding stats to format,
+    # position and display the ability name, score and bonus/penalty as they are grouped in 'abilities_array'.
+    for ability_ui, ability_attribute in abilities_array:
         # 'Pre-formatting' bonus/penalty to string for easier formatting and better code-readability further down.
-        bonus_penalty = f"{stats[key][1]}"
+        bonus_penalty = f"{ability_attribute[1]}"
 
         # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
         # string if bonus_penalty is 0.
-        if stats[key][1] > 0:
+        if ability_attribute[1] > 0:
             bonus_penalty = f"+{bonus_penalty}"
-        elif stats[key][1] == 0:
+        elif ability_attribute[1] == 0:
             bonus_penalty = ""
 
         # Position and draw copied rect for item from list 'abilities'.
-        ability_rect = ability.interactive_rect.copy()
+        ability_rect = ability_ui.interactive_rect.copy()
         ability_rect.top = screen.get_rect().top + element_pos_y
         ability_rect.width = screen.get_rect().width / 6
         ability_rect.right = screen.get_rect().centerx
         # Position ability rect within copied rect for left-alignment.
-        ability.interactive_rect.topleft = ability_rect.topleft
-        ability.draw_interactive_text(mouse_pos)
+        ability_ui.interactive_rect.topleft = ability_rect.topleft
+        ability_ui.draw_interactive_text(mouse_pos)
 
         # Change contents and get rect of 'TextField' instances for each ability score stat.
-        ability_score_text.text = str(stats[key][0])
+        ability_score_text.text = str(ability_attribute[0])
         ability_score_text.render_new_text_image()
         bonus_penalty_text.text = bonus_penalty
         bonus_penalty_text.render_new_text_image()
@@ -164,7 +163,8 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
 
         element_pos_y += ability_score_text.text_rect.height * 2
 
-    # Draw buttons on screen.
+    # Draw title and buttons on screen.
+    ui.draw_screen_title(screen, screen_title, gui_elements)
     ui.draw_special_button(screen, reroll_button, gui_elements, mouse_pos)
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
