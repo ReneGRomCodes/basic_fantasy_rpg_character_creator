@@ -22,7 +22,7 @@ class CharacterSheet:
         self.text_medium = gui_elements["text_medium"]
         self.text_small = gui_elements["text_small"]
         self.title_spacing = gui_elements["menu_title_spacing"]
-        self.spacing_screen_edge = gui_elements["default_edge_spacing"]
+        self.default_spacing = gui_elements["default_edge_spacing"]
 
         # Following character sheet elements are paired, with attributes having the suffix '_field' representing the
         # field label, while '_char' represent the value from the 'Character' class object.
@@ -201,11 +201,11 @@ class CharacterSheet:
         """Position instances of class 'TextField' on screen."""
 
         # Position screen title first.
-        self.title.text_rect.top, self.title.text_rect.centerx = (self.screen_rect.top + self.spacing_screen_edge,
+        self.title.text_rect.top, self.title.text_rect.centerx = (self.screen_rect.top + self.default_spacing,
                                                                   self.screen_rect.centerx)
 
         # General position attributes for x-axis.
-        x_column_0 = self.screen_rect.left + self.spacing_screen_edge
+        x_column_0 = self.screen_rect.left + self.default_spacing
         x_column_1 = self.screen_width * 0.25
         x_column_2 = self.screen_width * 0.5
         x_column_3 = self.screen_width * 0.75
@@ -232,7 +232,7 @@ class CharacterSheet:
         self.next_lvl_xp_char.text_rect.top, self.next_lvl_xp_char.text_rect.left = y_row_1, self.next_lvl_xp_field.text_rect.right
 
         # Position attribute for row on y-axis for combat info fields group.
-        y_row_2 = y_row_1 + self.spacing_screen_edge
+        y_row_2 = y_row_1 + self.default_spacing
         # Group starting on 'x_column_1', 'y_row_2'.
         self.armor_class_field.text_rect.top, self.armor_class_field.text_rect.left = y_row_2, x_column_1
         self.armor_class_char.text_rect.top, self.armor_class_char.text_rect.left = y_row_2, self.armor_class_field.text_rect.right

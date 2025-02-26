@@ -144,10 +144,10 @@ class Character:
     def set_saving_throws(self):
         """Get saving throw values and add them to attribute dict 'self.saving_throws'."""
         # List of saving throws.
-        throws_list = ("Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells")
+        throws = ("Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells")
 
-        for item in throws_list:
-            index = throws_list.index(item)
+        for index, item in enumerate(throws):
+            index = throws.index(item)
             self.saving_throws[item] = self.bonuses[index] + self.class_saving_throws[index]
 
     def set_hp(self):
