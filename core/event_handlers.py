@@ -1,6 +1,6 @@
 import pygame
 import sys
-import core.functions as func
+import core.rules as rls
 from character_creation_functions import build_character_sheet
 """Contains event handler functions."""
 
@@ -67,14 +67,14 @@ def main_events(screen, state, gui_elements, mouse_pos):
 
 def custom_character_events(state, character, gui_elements, mouse_pos, possible_characters=None, context1=None,
                             context2=None, context3=None):
-    """Check and handle events in function 'custom_character()' in 'main_functions.py' and return 'state'.
+    """Check and handle events in function 'custom_character()' in 'state_manager.py' and return 'state'.
     ARGS:
         state: program state.
         character: instance of class 'Character'.
         gui_elements: dict of GUI elements.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
         possible_characters: list of possible race-class combinations. Default is 'None'.
-            NOTE: arg must always be passed in function 'custom_character()' in 'main_functions.py' from state
+            NOTE: arg must always be passed in function 'custom_character()' in 'state_manager.py' from state
             'race_class_selection' onwards to keep list stored and not have it reset to 'None'.
         context1: context specific argument whose role depends on current state.
         context2: context specific argument whose role depends on current state.
@@ -99,8 +99,8 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
 
                 if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                     # Set and return available races/classes and state after confirmation of ability scores.
-                    race_list, class_list = func.get_race_class_lists(character)
-                    possible_characters = func.build_possible_characters_list(race_list, class_list)
+                    race_list, class_list = rls.get_race_class_lists(character)
+                    possible_characters = rls.build_possible_characters_list(race_list, class_list)
                     state = "race_class_selection"
 
         elif state == "race_class_selection":
@@ -114,7 +114,7 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
                         # Set race, class and their specific values in character object after confirmation.
                         character.set_race(context1.text)
                         character.set_class(context2.text)
-                        func.set_character_values(character)
+                        rls.set_character_values(character)
                         state = "name_character"
 
         elif state == "set_starting_money":
@@ -175,10 +175,10 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
                 if state == "name_character":
                     state = "race_class_selection"
                 elif state == "name_random_character":
-                    # Import and call function to reset "messy globals" in 'main_functions.py' before returning to main
+                    # Import and call function to reset "messy globals" in 'state_manager.py' before returning to main
                     # menu. Not a pretty solution, but it resolves the freezing issue when coming back from the naming
                     # screen.
-                    from core.main_functions import fix_my_messy_globals
+                    from core.state_manager import fix_my_messy_globals
                     fix_my_messy_globals()
                     state = "character_menu"
 
@@ -195,7 +195,7 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
 
 def custom_starting_money_events(state, character, gui_elements, mouse_pos):
     """Check and handle text input field events in function 'custom_character()' for state 'custom_input_money' in
-    'main_functions.py'.
+    'state_manager.py'.
         ARGS:
         state: program state. Entry and exit state differs based on custom or random character creation.
         character: instance of class 'Character'.

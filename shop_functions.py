@@ -1,6 +1,6 @@
 import item_instances
 import os
-import core.functions as func
+import core.rules as rls
 import item_model
 """Functions used for the item shop."""
 
@@ -16,7 +16,7 @@ def set_shop(character, shop_name):
     """Set 'instance_list' and 'table_header' for formatted output based on selected shop 'shop_name' and call function
     'trade_items()' to initialize trade loop."""
 
-    # Set 'shop_name' to uppercase. Function is called from function 'show_main_shop' in module 'main_functions.py' with
+    # Set 'shop_name' to uppercase. Function is called from function 'show_main_shop' in module 'state_manager.py' with
     # the argument given as title case string, but further use in uppercase necessary in this module.
     shop_name = shop_name.upper()
 
@@ -257,7 +257,7 @@ def choose_buy_sell(character, selected_item):
         buy_sell_list = [f"Buy '{selected_item.name}'", f"Sell '{selected_item.name}'"]
 
         # Show buy and sell options if item is in inventory.
-        if func.select_from_list(buy_sell_list, buy_sell_prompt) == buy_sell_list[0]:
+        if rls.select_from_list(buy_sell_list, buy_sell_prompt) == buy_sell_list[0]:
             amount = int(input(buy_amount_prompt))
             buy_and_equip(selected_item, character, amount)
         else:
@@ -283,7 +283,7 @@ def buy_and_equip(selected_item, character, amount):
     added_to_inventory_message = (f"\n\t{amount} '{selected_item.name}(s)' added to your inventory. Press 'Enter' to "
                                   f"continue.")
 
-    if func.check_yes_no(confirm_buy_prompt):
+    if rls.check_yes_no(confirm_buy_prompt):
         if character.buy_item(selected_item, amount):
             input(added_to_inventory_message)
             os.system('cls')
@@ -291,7 +291,7 @@ def buy_and_equip(selected_item, character, amount):
             # Check if item is instance of class Armor and prompt user to equip item if similar item is not equipped yet.
             if (isinstance(selected_item, item_model.Armor) and selected_item != character.armor
                     and selected_item != character.shield):
-                if func.check_yes_no(confirm_equip_prompt):
+                if rls.check_yes_no(confirm_equip_prompt):
                     character.equip_item(selected_item)
         else:
             input()
@@ -327,7 +327,7 @@ def sell(selected_item, character, amount):
     sale_abort_message = "\n\tTrade cancelled. Press 'Enter to return to shop."
 
     os.system('cls')
-    if func.check_yes_no(confirm_sale_prompt):
+    if rls.check_yes_no(confirm_sale_prompt):
         os.system('cls')
         character.sell_item(selected_item, amount)
         input(sale_confirmed_message)

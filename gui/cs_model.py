@@ -114,7 +114,7 @@ class CharacterSheet:
         # creation. 'draw_format_dynamic_field()' is called from 'show_character_sheet_screen()'.
         self.special_ability = so.TextField(screen, "", self.text_standard, multi_line=True, image_width=self.screen_width / 3)
         # List to store y-position values for each state of 'self.special_ability' as created in function
-        # 'initialize_character_sheet()' in 'main_functions.py'.
+        # 'initialize_character_sheet()' in 'state_manager.py'.
         self.specials_pos_y_list = []
 
         # Spell elements for classes 'Magic-User', 'Cleric' or combination classes.
@@ -128,7 +128,7 @@ class CharacterSheet:
         # character creation. 'draw_format_dynamic_field()' is called from 'show_character_sheet_screen()'.
         self.class_special = so.TextField(screen, "", self.text_standard)
         # List to store y-position values for each state of 'self.class_special' as created in function
-        # 'initialize_character_sheet()' in 'main_functions.py'.
+        # 'initialize_character_sheet()' in 'state_manager.py'.
         self.class_special_pos_y_list = []
         # TODO ignore me... I am just a marker so the idiot coding this knows where he is at right now.
         # Inventory elements.
@@ -198,7 +198,7 @@ class CharacterSheet:
                                        self.class_special_pos_y_list)
 
 
-    """Positioning methods for use in 'initialize_character_sheet()' function in 'core/main_functions.py' when the final
+    """Positioning methods for use in 'initialize_character_sheet()' function in 'core/state_manager.py' when the final
     character sheet is initialized."""
 
     def position_cs_elements(self):

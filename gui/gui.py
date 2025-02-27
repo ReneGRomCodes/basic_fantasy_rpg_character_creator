@@ -111,10 +111,23 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
         (gui_elements["charisma"], character.abilities["cha"]),
     )
 
+    # TESTCODE FOR ADAPTIVE POSITIONING!!!
+    n_abilities = len(abilities_array)
+    if n_abilities % 2 == 0:
+        print("even")
+        anchor_object_index = n_abilities / 2
+        print(anchor_object_index)
+    else:
+        print("odd")
+        anchor_object_index = n_abilities // 2
+        print(anchor_object_index)
+
+
     # Create instances of class 'TextField' to show ability scores on screen. Text string is placeholder and text size
-    # is taken from an instance in 'gui_elements' to assure automatic scaling.
-    ability_score_text = so.TextField(screen, "score", gui_elements["strength"].size)
-    bonus_penalty_text = so.TextField(screen, "bonus_penalty", gui_elements["strength"].size)
+    # is taken from first 'gui_elements' entry in 'abilities_array' to assure correct scaling.
+    field_text_size = abilities_array[0][0].size
+    ability_score_text = so.TextField(screen, "score", field_text_size)
+    bonus_penalty_text = so.TextField(screen, "bonus_penalty", field_text_size)
 
     # Set initial position on y-axis for ability score fields.
     element_pos_y = screen.get_rect().height / 4
@@ -241,8 +254,8 @@ def show_starting_money_screen(screen, gui_elements, random_money_flag, custom_m
     ARGS:
         screen: PyGame window.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
-        random_money_flag: boolean from 'main_functions.py' to reflect user choice.
-        custom_money_flag: boolean from 'main_functions.py' to reflect user choice.
+        random_money_flag: boolean from 'state_manager.py' to reflect user choice.
+        custom_money_flag: boolean from 'state_manager.py' to reflect user choice.
         starting_money: int amount of starting money.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:

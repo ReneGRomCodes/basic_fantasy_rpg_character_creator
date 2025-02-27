@@ -1,5 +1,5 @@
 import pygame
-from core.functions import set_starting_money
+from core.rules import set_starting_money
 import gui.screen_objects as so
 from gui.gui_elements import initialize_screen_elements
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""

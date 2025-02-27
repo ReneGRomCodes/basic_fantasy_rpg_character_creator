@@ -2,7 +2,7 @@ import os
 from core.character_model import Character
 from gui.credits import Credits
 import gui.gui as gui
-import core.functions as func
+import core.rules as rls
 import shop_functions as sf
 import core.event_handlers as eh
 from gui.cs_model import CharacterSheet
@@ -87,8 +87,8 @@ def custom_character(screen, state, gui_elements, mouse_pos):
         # Generate dictionary for character abilities.
         character.set_ability_dict()
         # Check if character abilities allow for any valid race-class combinations.
-        race_list, class_list = func.get_race_class_lists(character)
-        if func.check_valid_race_class(race_list, class_list):
+        race_list, class_list = rls.get_race_class_lists(character)
+        if rls.check_valid_race_class(race_list, class_list):
             state = "show_abilities"
         else:
             state = "set_abilities"
@@ -159,15 +159,15 @@ def random_character(screen, state, gui_elements, mouse_pos):
             character.set_ability_dict()
 
             # Check if character abilities allow for any valid race-class combinations.
-            race_list, class_list = func.get_race_class_lists(character)
-            if func.check_valid_race_class(race_list, class_list):
+            race_list, class_list = rls.get_race_class_lists(character)
+            if rls.check_valid_race_class(race_list, class_list):
                 # Build list of possible characters, choose an entry at random, assign race/class to character object and
                 # set corresponding attributes for character.
-                possible_characters = func.build_possible_characters_list(race_list, class_list)
+                possible_characters = rls.build_possible_characters_list(race_list, class_list)
                 selected_race, selected_class = random.choice(possible_characters).split()
                 character.set_race(selected_race)
                 character.set_class(selected_class)
-                func.set_character_values(character)
+                rls.set_character_values(character)
                 state = "set_random_money"
 
             else:
@@ -175,7 +175,7 @@ def random_character(screen, state, gui_elements, mouse_pos):
 
     elif state == "set_random_money":
         # Set random amount of starting money in the background without UI.
-        character.money = func.set_starting_money()
+        character.money = rls.set_starting_money()
         state = "name_random_character"
 
     elif state == "name_random_character":
@@ -218,7 +218,7 @@ def show_main_shop():
 
     while True:
         print(" - SHOP -\n")
-        shop_section = func.select_from_list(shop_sections, "\nWhat items do you want to buy? ")
+        shop_section = rls.select_from_list(shop_sections, "\nWhat items do you want to buy? ")
         os.system('cls')
 
         if shop_section == "General Items":

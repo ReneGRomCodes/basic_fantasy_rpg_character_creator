@@ -1,5 +1,5 @@
 import pygame
-import core.main_functions as mf
+import core.state_manager as sm
 from core.settings import Settings
 from gui.gui_elements import initialize_screen_elements
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
@@ -41,20 +41,20 @@ def run_character_creator():
 
         # Main states.
         if state in main_states:
-            state = mf.main_state_manager(screen, state, gui_elements, mouse_pos)
+            state = sm.main_state_manager(screen, state, gui_elements, mouse_pos)
         # Settings state.
         elif state == "settings_screen":
-            gui_elements, state = mf.settings_screen(screen, state, settings, gui_elements, mouse_pos)
+            gui_elements, state = sm.settings_screen(screen, state, settings, gui_elements, mouse_pos)
 
         # Character creation states.
         elif state in custom_character_states:
-            state = mf.custom_character(screen, state, gui_elements, mouse_pos)
+            state = sm.custom_character(screen, state, gui_elements, mouse_pos)
         elif state in random_character_state:
-            state = mf.random_character(screen, state, gui_elements, mouse_pos)
+            state = sm.random_character(screen, state, gui_elements, mouse_pos)
 
         # Character sheet states.
         elif state == "initialize_character_sheet":
-            cs_sheet, state = mf.initialize_character_sheet(screen, gui_elements)
+            cs_sheet, state = sm.initialize_character_sheet(screen, gui_elements)
         elif state == "character_sheet":
             cs_sheet.show_character_sheet_screen()
 
