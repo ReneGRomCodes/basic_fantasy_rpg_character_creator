@@ -205,6 +205,75 @@ def position_character_menu_screen_elements(screen, gui_elements):
     random.button_rect.top = screen.get_rect().centery
 
 
+
+"""Background functions for ability scores screen."""
+
+def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
+
+    """
+    # TESTCODE FOR ADAPTIVE POSITIONING.
+    n_abilities = len(abilities_array)
+    if n_abilities % 2 == 0:
+        anchor_object_index = int(n_abilities / 2)
+    else:
+        anchor_object_index = n_abilities // 2
+    """
+
+    # Create instances of class 'TextField' to show ability scores on screen. Text string is placeholder and text size
+    # is 'field_text_size' as retrieved from first 'gui_elements' entry in 'abilities_array' to ensure correct scaling.
+    field_text_size = abilities_array[0][0].size
+    ability_score_text = so.TextField(screen, "score", field_text_size)
+    bonus_penalty_text = so.TextField(screen, "bonus_penalty", field_text_size)
+
+    # Set initial position on y-axis for ability score fields and offset value for spacing between elements.
+    element_pos_y = screen.get_rect().height / 4
+    element_position_offset = ability_score_text.text_rect.height * 2
+
+    # Loop through each ability field (as they are grouped in 'abilities_array') and corresponding stats to format,
+    # position and display the ability name, score and bonus/penalty as they are grouped in 'abilities_array'.
+    for ability_ui, ability_attribute in abilities_array:
+        # 'Pre-formatting' bonus/penalty to string for easier formatting and better code-readability further down.
+        bonus_penalty = f"{ability_attribute[1]}"
+
+        # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
+        # string if bonus_penalty is 0.
+        if ability_attribute[1] > 0:
+            bonus_penalty = f"+{bonus_penalty}"
+        elif ability_attribute[1] == 0:
+            bonus_penalty = ""
+
+        # Position and draw copied rect for item from list 'abilities'.
+        ability_rect = ability_ui.interactive_rect.copy()
+        ability_rect.top = element_pos_y
+        ability_rect.width = screen.get_rect().width / 6
+        ability_rect.right = screen.get_rect().centerx
+        # Position ability rect within copied rect for left-alignment.
+        ability_ui.interactive_rect.topleft = ability_rect.topleft
+        ability_ui.draw_interactive_text(mouse_pos)
+
+        # Change contents and get rect of 'TextField' instances for each ability score stat.
+        ability_score_text.text = str(ability_attribute[0])
+        ability_score_text.render_new_text_image()
+        bonus_penalty_text.text = bonus_penalty
+        bonus_penalty_text.render_new_text_image()
+
+        # Position and draw copied rects for each stat and bonus/penalty field.
+        ability_score_rect = ability_score_text.text_rect.copy()
+        ability_score_rect.width = screen.get_rect().width / 12
+        ability_score_rect.topleft = ability_rect.topright
+        bonus_penalty_rect = bonus_penalty_text.text_rect.copy()
+        bonus_penalty_rect.width = screen.get_rect().width / 12
+        bonus_penalty_rect.topleft = ability_score_rect.topright
+        # Position stat and bonus/penalty rects within copied rects for right-alignment.
+        ability_score_text.text_rect.topright = ability_score_rect.topright
+        bonus_penalty_text.text_rect.topright = bonus_penalty_rect.topright
+
+        ability_score_text.draw_text()
+        bonus_penalty_text.draw_text()
+
+        element_pos_y += element_position_offset
+
+
 """Background functions for race/class selection screen."""
 
 def race_class_check(available_choices, possible_races, possible_classes, race_name, class_name):

@@ -12,4 +12,3 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO pop-up texts overlap with underlying text on some screens.
 
 # PRIORITIES:
-# TODO refactor function 'show_ability_scores_screen' in 'gui/gui.py'.
