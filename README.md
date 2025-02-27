@@ -49,8 +49,8 @@ project_root/
 │── core/                  # Core game logic (non-GUI modules)
 │   ├── settings.py        # Stores configuration values (screen size, etc.)
 │   ├── event_handlers.py  # Handles input events
-│   ├── main_functions.py  # Manages application states
-│   ├── functions.py       # Defines mechanics for character creation based on game rules
+│   ├── state_manager.py   # Manages application states
+│   ├── rules.py           # Defines mechanics for character creation based on game rules
 │   └── character_model.py # Player character class for creation process
 │
 │── descr/                 # String-based descriptions (races, classes, abilities, etc.)
@@ -76,7 +76,7 @@ Choose an appropriate GUI class from screen_objects.py
 
 Instantiate the new element in gui_elements.py according to documentation within the module.
 
-Call the new element in the relevant screen module (e.g., gui.py).
+Implement the new element in the relevant screen module (e.g., gui.py).
 
 ## Work in Progress
 
