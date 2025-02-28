@@ -76,7 +76,7 @@ Choose an appropriate GUI class from screen_objects.py
 
 Instantiate the new element in gui_elements.py according to documentation within the module.
 
-Implement the new element in the relevant screen module (e.g., gui.py).
+Implement the new element in the relevant modules (e.g., gui.py).
 
 ## Work in Progress
 

@@ -12,3 +12,5 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO pop-up texts overlap with underlying text on some screens.
 
 # PRIORITIES:
+# TODO finish character sheet screen ffs!!!
+# TODO add similar adaptability from 'ability scores screen' to other screens where it might apply

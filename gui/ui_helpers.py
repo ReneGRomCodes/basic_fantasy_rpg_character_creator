@@ -219,28 +219,8 @@ def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
     ability_score_text = so.TextField(screen, "score", field_text_size)
     bonus_penalty_text = so.TextField(screen, "bonus_penalty", field_text_size)
 
-
-    # Set reference variables for adaptive positioning.
-    screen_center_y = screen.get_rect().height / 2
-    n_abilities = len(abilities_array)
-
-    # Find item in, or after, the middle position in 'abilities_array' as reference object for further positioning.
-    if n_abilities % 2 == 0:
-        # Even number of elements in 'abilities_array'.
-        center_object_index = int(n_abilities / 2)
-        abilities_array[center_object_index][0].text_rect.top = screen_center_y
-    else:
-        # Odd number of elements in 'abilities_array'.
-        center_object_index = n_abilities // 2
-        abilities_array[center_object_index][0].text_rect.centery = screen_center_y
-
-    # Draw line on screens center-y for test and reference. REMOVE LATER!!!
-    pygame.draw.line(screen, (0,0,0), (0, screen_center_y), (500, screen_center_y))
-
-    # Set initial position on y-axis for ability score fields and offset value for spacing between elements.
-    element_position_offset = ability_score_text.text_rect.height * 2
-    element_pos_y = abilities_array[center_object_index][0].text_rect.top - (int(n_abilities / 2) * element_position_offset)
-
+    # Get y-position for first ability object and position offset value for further objects.
+    element_pos_y, pos_y_offset = set_ability_pos_y_values(screen, abilities_array)
 
     # Loop through each ability field (as they are grouped in 'abilities_array') and corresponding stats to format,
     # position and display the ability name, score and bonus/penalty as they are grouped in 'abilities_array'.
@@ -284,7 +264,37 @@ def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
         ability_score_text.draw_text()
         bonus_penalty_text.draw_text()
 
-        element_pos_y += element_position_offset
+        element_pos_y += pos_y_offset
+
+
+def set_ability_pos_y_values(screen, abilities_array):
+    """Dynamically set starting y-position to draw ability elements on ability scores screen.
+    ARGS:
+        screen: PyGame window.
+        abilities_array: Array to store ability objects. Initialized in function 'show_ability_scores_screen()' in 'gui.py'
+    RETURNS:
+        elements_pos_y: Y-position for first ability element on screen.
+        pos_y_offset: Offset value to position following elements.
+    """
+    # Set reference variables for positioning.
+    screen_center_y = screen.get_rect().height / 2
+    n_abilities = len(abilities_array)
+
+    # Find item in, or after, the middle position in 'abilities_array' as reference object for further positioning.
+    if n_abilities % 2 == 0:
+        # Even number of elements in 'abilities_array'.
+        center_object_index = int(n_abilities / 2)
+        abilities_array[center_object_index][0].text_rect.top = screen_center_y
+    else:
+        # Odd number of elements in 'abilities_array'.
+        center_object_index = n_abilities // 2
+        abilities_array[center_object_index][0].text_rect.centery = screen_center_y
+
+    # Set initial position on y-axis for ability score fields and offset value for spacing between elements.
+    pos_y_offset = abilities_array[0][0].text_rect.height * 2
+    element_pos_y = abilities_array[center_object_index][0].text_rect.top - (int(n_abilities / 2) * pos_y_offset)
+
+    return element_pos_y, pos_y_offset
 
 
 """Background functions for race/class selection screen."""
