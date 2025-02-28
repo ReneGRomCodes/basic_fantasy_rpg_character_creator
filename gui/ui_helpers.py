@@ -209,25 +209,38 @@ def position_character_menu_screen_elements(screen, gui_elements):
 """Background functions for ability scores screen."""
 
 def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
+    """Position and draw objects for ability scores screen. 'abilities_array' stores ability objects in function
+    'show_ability_scores_screen()'."""
 
-    """
-    # TESTCODE FOR ADAPTIVE POSITIONING.
-    n_abilities = len(abilities_array)
-    if n_abilities % 2 == 0:
-        anchor_object_index = int(n_abilities / 2)
-    else:
-        anchor_object_index = n_abilities // 2
-    """
-
-    # Create instances of class 'TextField' to show ability scores on screen. Text string is placeholder and text size
-    # is 'field_text_size' as retrieved from first 'gui_elements' entry in 'abilities_array' to ensure correct scaling.
+    # Create instances of class 'TextField' to show ability scores and bonus/penalty on screen. Text string is placeholder
+    # and text size is 'field_text_size' as retrieved from first 'gui_elements' entry in 'abilities_array' to ensure
+    # correct scaling. Placeholder text is dynamically changed for each ability in for-loop further down.
     field_text_size = abilities_array[0][0].size
     ability_score_text = so.TextField(screen, "score", field_text_size)
     bonus_penalty_text = so.TextField(screen, "bonus_penalty", field_text_size)
 
+
+    # Set reference variables for adaptive positioning.
+    screen_center_y = screen.get_rect().height / 2
+    n_abilities = len(abilities_array)
+
+    # Find item in, or after, the middle position in 'abilities_array' as reference object for further positioning.
+    if n_abilities % 2 == 0:
+        # Even number of elements in 'abilities_array'.
+        center_object_index = int(n_abilities / 2)
+        abilities_array[center_object_index][0].text_rect.top = screen_center_y
+    else:
+        # Odd number of elements in 'abilities_array'.
+        center_object_index = n_abilities // 2
+        abilities_array[center_object_index][0].text_rect.centery = screen_center_y
+
+    # Draw line on screens center-y for test and reference. REMOVE LATER!!!
+    pygame.draw.line(screen, (0,0,0), (0, screen_center_y), (500, screen_center_y))
+
     # Set initial position on y-axis for ability score fields and offset value for spacing between elements.
-    element_pos_y = screen.get_rect().height / 4
     element_position_offset = ability_score_text.text_rect.height * 2
+    element_pos_y = abilities_array[center_object_index][0].text_rect.top - (int(n_abilities / 2) * element_position_offset)
+
 
     # Loop through each ability field (as they are grouped in 'abilities_array') and corresponding stats to format,
     # position and display the ability name, score and bonus/penalty as they are grouped in 'abilities_array'.
