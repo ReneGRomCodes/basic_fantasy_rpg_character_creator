@@ -85,18 +85,6 @@ def initialize_screen_elements(screen, settings):
     window_size_button_full = so.InteractiveText(screen, "Full Screen", text_medium, select=True)
 
 
-    # Credits.
-    # 'gui_elements["credits"]' is an array of tuples. Each inner tuple representing a credit category, with the element
-    # at index [0] being the category title and the following elements being the credited names.
-    credits_title = so.TextField(screen, "- CREDITS -", title_size)
-    programmer_title = so.TextField(screen, "Programming & UI Design", text_large)
-    programmer_name = so.TextField(screen, "René Grewe Romero", text_medium)
-    concept_creator_title = so.TextField(screen, "Based on 'Basic Tabletop RPG'", text_large)
-    concept_creator_name = so.TextField(screen, "by Chris Gonnerman", text_medium)
-    font_creator_title = so.TextField(screen, "Font 'Eagle Lake'", text_large)
-    font_creator_name = so.TextField(screen, "by Brian J. Bonislawsky", text_medium)
-
-
     # Character menu.
     custom = so.Button(screen, "Create Custom Character", text_medium)
     random = so.Button(screen, "Create Random Character", text_medium)
@@ -259,11 +247,6 @@ def initialize_screen_elements(screen, settings):
         "window_size": window_size_field,
         "window_size_buttons": (window_size_button_small, window_size_button_medium, window_size_button_large,
                                 window_size_button_full),
-        # Credits.
-        "credits_title": credits_title,
-        "credits": ((programmer_title, programmer_name),
-                    (concept_creator_title, concept_creator_name),
-                    (font_creator_title, font_creator_name)),
         # Character menu.
         "custom": custom,
         "random": random,
