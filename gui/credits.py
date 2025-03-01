@@ -33,7 +33,7 @@ class Credits:
         self.font_creator_name = so.TextField(screen, "by Brian J. Bonislawsky", self.text_medium)
 
         # Array of objects to be shown on screen as instantiated above. Each inner tuple representing a credit category,
-        # with the element at index [0] being the category title and the following elements being the credited names
+        # with the element at index [0] being the category title and the following elements being the credited names.
         self.credits_elements = ((self.programmer_title, self.programmer_name),
                                  (self.concept_creator_title, self.concept_creator_name),
                                  (self.font_creator_title, self.font_creator_name))

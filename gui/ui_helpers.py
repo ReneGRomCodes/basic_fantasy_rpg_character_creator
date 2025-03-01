@@ -209,7 +209,7 @@ def position_character_menu_screen_elements(screen, gui_elements):
 """Background functions for ability scores screen."""
 
 def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
-    """Position and draw objects for ability scores screen. 'abilities_array' stores ability objects in function
+    """Position, format and draw objects for ability scores screen. 'abilities_array' stores ability objects in function
     'show_ability_scores_screen()'."""
 
     # Create instances of class 'TextField' to show ability scores and bonus/penalty on screen. Text string is placeholder
@@ -271,7 +271,7 @@ def set_ability_pos_y_values(screen, abilities_array):
     """Dynamically set starting y-position to draw ability elements on ability scores screen.
     ARGS:
         screen: PyGame window.
-        abilities_array: Array to store ability objects. Initialized in function 'show_ability_scores_screen()' in 'gui.py'
+        abilities_array: Array to store ability objects.
     RETURNS:
         elements_pos_y: Y-position for first ability element on screen.
         pos_y_offset: Offset value to position following elements.
@@ -290,8 +290,16 @@ def set_ability_pos_y_values(screen, abilities_array):
         center_object_index = n_abilities // 2
         abilities_array[center_object_index][0].text_rect.centery = screen_center_y
 
+    # Calculate offset multiplier for use in 'pos_y_offset' based on number of abilities in 'abilities_array'.
+    if n_abilities <= 8:
+        offset_multiplier = 2
+    elif n_abilities <= 11:
+        offset_multiplier = 1.5
+    else:
+        offset_multiplier = 1
+
     # Set initial position on y-axis for ability score fields and offset value for spacing between elements.
-    pos_y_offset = abilities_array[0][0].text_rect.height * 2
+    pos_y_offset = abilities_array[0][0].text_rect.height * offset_multiplier
     element_pos_y = abilities_array[center_object_index][0].text_rect.top - (int(n_abilities / 2) * pos_y_offset)
 
     return element_pos_y, pos_y_offset
