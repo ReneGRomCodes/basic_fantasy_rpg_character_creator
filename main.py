@@ -23,16 +23,15 @@ def run_character_creator():
     gui_elements = initialize_screen_elements(screen, settings)
     # Instantiate further GUI objects.
     settings_gui = SettingsGUI(screen, gui_elements)
-    # Create placeholder variable for later 'CharacterSheet' class object.
-    cs_sheet = None
 
     # Set initial state.
     state = "title_screen"
     # Set of states for character creation.
-    main_states = {"title_screen", "main_menu", "init_credits", "credits", "character_menu"}
+    main_states = {"title_screen", "main_menu", "init_credits", "credits", "character_menu", "init_character_sheet",
+                   "character_sheet"}
     custom_character_states = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
                                "set_starting_money", "custom_input_money", "creation_complete"}
-    random_character_state = {"random_character", "set_random_money", "name_random_character"}
+    random_character_states = {"random_character", "set_random_money", "name_random_character"}
 
     # Start main loop.
     while True:
@@ -40,7 +39,6 @@ def run_character_creator():
         mouse_pos = pygame.mouse.get_pos()
 
         screen.fill(settings.bg_color)
-
 
         # Main states.
         if state in main_states:
@@ -52,15 +50,8 @@ def run_character_creator():
         # Character creation states.
         elif state in custom_character_states:
             state = sm.custom_character(screen, state, gui_elements, mouse_pos)
-        elif state in random_character_state:
+        elif state in random_character_states:
             state = sm.random_character(screen, state, gui_elements, mouse_pos)
-
-        # Character sheet states.
-        elif state == "initialize_character_sheet":
-            cs_sheet, state = sm.initialize_character_sheet(screen, gui_elements)
-        elif state == "character_sheet":
-            cs_sheet.show_character_sheet_screen()
-
 
         pygame.display.flip()
         clock.tick(30)

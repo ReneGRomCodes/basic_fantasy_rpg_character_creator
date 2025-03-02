@@ -14,6 +14,8 @@ import random
 character = Character()
 # Create 'None' variable for later instance of credits screen object.
 credits_screen = None
+# Create 'None' variable for later instance of settings screen object.
+cs_sheet = None
 # Initialize variables for character creation.
 possible_characters = None
 selected_race = None
@@ -40,6 +42,9 @@ def main_state_manager(screen, state, gui_elements, mouse_pos):
     elif state == "character_menu":
         # Display character menu screen
         gui.show_character_menu(screen, gui_elements, mouse_pos)
+    elif state in {"init_character_sheet", "character_sheet"}:
+        # Use of 'secondary' state manager for character sheet screen.
+        state = character_sheet_state_manager(screen, state, gui_elements)
 
     return state
 
@@ -184,24 +189,31 @@ def random_character(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def initialize_character_sheet(screen, gui_elements):
-    """Create and return instance of class 'CharacterSheet' with screen elements for the character sheet, call position
-    methods and set the state to 'character_sheet'.
-    This function ensures that 'cs_sheet' is created only once and after the character creation process is complete,
-    to avoid showing empty or uninitialized values on the screen."""
+def character_sheet_state_manager(screen, state, gui_elements):
+    """'Secondary' state manager for use in 'main_state_manager' to create and return instance of class 'CharacterSheet'
+    with screen elements for the character sheet, call position methods and set the state to 'character_sheet'.
+    This function ensures that 'cs_sheet' is always created before the character sheet screen is displayed, reinitializing
+    it each time the screen is accessed. This prevents issues such as uninitialized values or incorrect text scaling after
+    a window size change."""
+    # Declare global variable to assign instance of class 'CharacterSheet'.
+    global cs_sheet
 
-    # Create instance of class 'CharacterSheet'.
-    cs_sheet = CharacterSheet(screen, character, gui_elements)
-    # Set positions for character sheet elements on screen.
-    cs_sheet.position_cs_elements()
-    cs_sheet.specials_pos_y_list = cs_sheet.get_position_dynamic_field(cs_sheet.special_ability, character.specials,
-                                                                      cs_sheet.special_abilities_title, text_prefix=" - ")
-    cs_sheet.class_special_pos_y_list = cs_sheet.get_position_dynamic_field(cs_sheet.class_special, character.class_specials,
-                                                                      cs_sheet.class_specials_title)
+    if state == "init_character_sheet":
+        # Create instance of class 'CharacterSheet'.
+        cs_sheet = CharacterSheet(screen, character, gui_elements)
+        # Set positions for character sheet elements on screen.
+        cs_sheet.position_cs_elements()
+        cs_sheet.specials_pos_y_list = cs_sheet.get_position_dynamic_field(cs_sheet.special_ability, character.specials,
+                                                                          cs_sheet.special_abilities_title, text_prefix=" - ")
+        cs_sheet.class_special_pos_y_list = cs_sheet.get_position_dynamic_field(cs_sheet.class_special, character.class_specials,
+                                                                          cs_sheet.class_specials_title)
 
-    state = "character_sheet"
+        state = "character_sheet"
 
-    return cs_sheet, state
+    elif state == "character_sheet":
+        cs_sheet.show_character_sheet_screen()
+
+    return state
 
 
 """
