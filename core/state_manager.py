@@ -14,7 +14,7 @@ import random
 character = Character()
 # Create 'None' variable for later instance of credits screen object.
 credits_screen = None
-# Create 'None' variable for later instance of settings screen object.
+# Create 'None' variable for later instance of character sheet screen object.
 cs_sheet = None
 # Initialize variables for character creation.
 possible_characters = None

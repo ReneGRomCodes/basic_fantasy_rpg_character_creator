@@ -7,8 +7,8 @@ from gui.gui_elements import initialize_screen_elements
 It initializes the program and starts the main functionality."""
 
 
-def run_character_creator():
-    """Initialize Pygame, create a window, instantiate character and start the character creator."""
+def initialize_character_creator():
+    """Initialize Pygame, settings, screen, and GUI elements."""
     # Initialize pygame.
     pygame.init()
     # Create settings object and initialize default values.
@@ -19,10 +19,19 @@ def run_character_creator():
     screen = pygame.display.set_mode(settings.screen_size)
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
 
-    # Initialize dicts with GUI elements. See package 'gui' for details.
+    # Initialize dict with GUI elements. See package 'gui' for details.
     gui_elements = initialize_screen_elements(screen, settings)
-    # Instantiate further GUI objects.
+    # Create instance for settings screen.
     settings_gui = SettingsGUI(screen, gui_elements)
+
+    return settings, screen, clock, gui_elements, settings_gui
+
+
+def run_character_creator():
+    """Start the character creator."""
+
+    # Initialize Pygame, settings, screen, and GUI elements.
+    settings, screen, clock, gui_elements, settings_gui = initialize_character_creator()
 
     # Set initial state.
     state = "title_screen"
