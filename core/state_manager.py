@@ -14,8 +14,6 @@ import random
 character = Character()
 # Create 'None' variable for later instance of credits screen object.
 credits_screen = None
-# Initialize variables for settings screen.
-selected_window_size = None
 # Initialize variables for character creation.
 possible_characters = None
 selected_race = None
@@ -64,16 +62,14 @@ def credits_state_manager(screen, state, gui_elements):
     return state
 
 
-def settings_screen(screen, state, settings, gui_elements, mouse_pos):
+def settings_screen(screen, state, settings, settings_gui, gui_elements, mouse_pos):
     """State manager for settings screen state 'settings_screen'."""
-    # Declare global variables to allow modification of these values within the function.
-    global selected_window_size
 
     # Call event handler and get program state.
     state = eh.main_events(screen, state, gui_elements, mouse_pos)
 
     # Display settings screen.
-    gui_elements, selected_window_size = gui.show_settings(screen, settings, gui_elements, selected_window_size, mouse_pos)
+    gui_elements = settings_gui.show_settings(screen, settings, gui_elements, mouse_pos)
 
     return gui_elements, state
 

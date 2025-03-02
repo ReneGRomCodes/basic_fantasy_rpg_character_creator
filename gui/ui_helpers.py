@@ -1,7 +1,6 @@
 import pygame
 from core.rules import set_starting_money
 import gui.screen_objects as so
-from gui.gui_elements import initialize_screen_elements
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
 
 
@@ -90,102 +89,6 @@ def position_main_menu_screen_elements(screen, gui_elements):
             button.button_rect.top = screen.get_rect().centery + spacing * 2
         else:
             button.button_rect.top = menu_buttons[index - 1].button_rect.bottom
-
-
-"""Background functions for settings screen."""
-
-def format_settings_screen_elements(screen, gui_elements):
-    """Format and position objects from 'gui_elements' for settings screen."""
-    # Assign elements to variables.
-    window_size_field = gui_elements["window_size"]
-    window_size_buttons = gui_elements["window_size_buttons"]
-    spacing = gui_elements["default_edge_spacing"]
-    screen_x = screen.get_rect().centerx
-    screen_y = screen.get_rect().centery
-    # Assign anchor object 'window_size_buttons[0].interactive_rect' (small window) and further options to variables for
-    # easier positioning and better readability.
-    window_size_anchor = window_size_buttons[0].interactive_rect
-    window_size_medium = window_size_buttons[1].interactive_rect
-    window_size_large = window_size_buttons[2].interactive_rect
-    window_size_full = window_size_buttons[3].interactive_rect
-
-    # Set button size.
-    for button in window_size_buttons:
-        button.interactive_rect.width, button.interactive_rect.height = screen.get_rect().width / 8, screen.get_rect().height  / 12
-
-    # Position window size section label.
-    window_size_field.text_rect.centery = screen_y
-    window_size_field.text_rect.right = screen_x - spacing
-    # Position selection fields for window sizes. 'window_size_anchor' is placed first as anchor for positioning
-    # of further buttons. To move the entire block only the anchor has to be moved.
-    window_size_anchor.left, window_size_anchor.bottom = screen_x + spacing, screen_y - spacing / 2
-    window_size_medium.left, window_size_medium.bottom = window_size_anchor.right + spacing, window_size_anchor.bottom
-    window_size_large.left, window_size_large.top = window_size_anchor.left, window_size_anchor.bottom + spacing
-    window_size_full.left, window_size_full.top = window_size_anchor.right + spacing, window_size_anchor.bottom + spacing
-
-
-def select_window_size(screen, settings, gui_elements, window_size_buttons, selected_window_size, mouse_pos):
-    """Selection logic for programs window size and return selected text field instances in 'selected_window_size'.
-    ARGS:
-        screen: PyGame window.
-        settings: instance of class 'Settings'.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
-        window_size_buttons: list with instances of interactive text fields for window size selection.
-        selected_window_size: instance of 'InteractiveText' class representing chosen window size.
-        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-    RETURNS:
-        Re-initialized dict 'gui_elements'.
-        Instance of newly selected window size to appear as selected on screen.
-    """
-    # Tuple to store window size UI objects and corresponding 'settings' attributes. Last item represents full screen,
-    # and has no settings attribute assigned, instead using 'pygame.FULLSCREEN' when setting window size.
-    object_attribute_pairs = ((window_size_buttons[0], settings.small_screen), (window_size_buttons[1], settings.medium_screen),
-                              (window_size_buttons[2], settings.large_screen), (window_size_buttons[3], False))
-
-    # Set 'window_sizes[0].selected' to 'True' to show default selection in settings menu when screen is first shown.
-    if settings.screen_size == settings.default_settings[0]:
-        window_size_buttons[0].selected = True
-
-    # Assign default object (small window) to 'selected_window_size' if it is 'None' in case of first access to the
-    # settings screen.
-    if not selected_window_size:
-        selected_window_size = object_attribute_pairs[0][0]
-
-    # Check if the left mouse button is pressed before proceeding with selection logic.
-    if pygame.mouse.get_pressed()[0]:
-        # Loop through each available window size option to see which one is selected.
-        for size in window_size_buttons:
-            if size.interactive_rect.collidepoint(mouse_pos):
-                selected_window_size = size
-                break
-
-    # Iterate through 'object_attribute_pairs' and check if currently selected UI object corresponds with window size set
-    # in 'Settings' object. Change 'settings.screen_size' and change 'pygame.display' to selected value if pairs don't
-    # correspond.
-    for pair in object_attribute_pairs:
-
-        if pair[0].selected == True and pair[1] != settings.screen_size:
-            settings.screen_size = pair[1]
-            # Check if 'pair[1]' has a window size assigned, otherwise set window to full screen.
-            if pair[1]:
-                pygame.display.set_mode(settings.screen_size)
-            else:
-                pygame.display.set_mode((0,0), pygame.FULLSCREEN)
-            # Wait 200ms to avoid immediate click registration directly after new window size is set. Window could be
-            # accidentally changed again otherwise.
-            pygame.time.wait(200)
-
-            # Re-initialize dict 'gui_elements' for proper size and positions of gui objects based on screen size.
-            gui_elements = initialize_screen_elements(screen, settings)
-
-        # Re-assign window size to 'selected_window_size' by comparing 'text' attributes with 'pair[0]', replacing
-        # 'selected_window_size' with equivalent object and set its attribute to 'True'. Re-initialization of dict
-        # 'gui_elements' above leads to 'selected_window_size' pointing to obsolete object otherwise.
-        if selected_window_size.text == pair[0].text:
-            selected_window_size = pair[0]
-            selected_window_size.selected = True
-
-    return gui_elements, selected_window_size
 
 
 """Background functions for character menu screen."""

@@ -116,10 +116,19 @@ class TextField:
 
         return text_image, x, y
 
-    def render_new_text_image(self):
+    def render_new_text_image(self, settings_gui=False):
         """Re-render 'text_image' attribute and get new 'text_rect'. This method is for use after an already created
         instance has its 'text' attribute changed to ensure that further changes to, for example, its position are applied
-        to the modified instance."""
+        to the modified instance.
+        ARGS:
+            settings_gui: argument for use when calling method 'update_text_size()' in class 'SettingsGUI' to ensure
+                          screen elements in the settings screen change their text size if a new window size is selected.
+                          Ignore in all other cases. Default is 'False'.
+        """
+
+        # See docstring for following statement.
+        if settings_gui:
+            self.font = pygame.font.Font(settings.font, self.size)
 
         # Check if element has 'multi_line' attribute set to 'True' and render 'text_image' accordingly, using class method
         # '.render_multiline_image()' if element is multi line normal render method otherwise.

@@ -1,7 +1,6 @@
-import gui.screen_objects as so
 import gui.ui_helpers as ui
 
-"""Screen functions."""
+"""Main GUI functions."""
 
 
 def show_title_screen(screen, gui_elements):
@@ -37,42 +36,6 @@ def show_main_menu(screen, gui_elements, mouse_pos):
     # Draw additional menu buttons on screen.
     for button in menu_buttons:
         button.draw_button(mouse_pos)
-
-
-def show_settings(screen, settings, gui_elements, selected_window_size, mouse_pos):
-    """Display settings screen.
-    ARGS:
-        screen: PyGame window.
-        settings: instance of class 'Settings'.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
-        selected_window_size: instance of 'InteractiveText' class representing chosen window size.
-        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-    RETURNS:
-        Re-initialized dict 'gui_elements'.
-        Instance of newly selected window size to appear as selected on screen.
-    """
-    # Assign gui_elements to variables.
-    title = gui_elements["settings_title"]
-    window_size_field = gui_elements["window_size"]
-    window_size_buttons = gui_elements["window_size_buttons"]
-    back_button = gui_elements["back_button"]
-
-    # Format elements on screen.
-    ui.format_settings_screen_elements(screen, gui_elements)
-
-    # Select window size.
-    gui_elements, selected_window_size = ui.select_window_size(screen, settings, gui_elements, window_size_buttons,
-                                                               selected_window_size, mouse_pos)
-
-    # Draw basic elements on screen.
-    ui.draw_screen_title(screen, title, gui_elements)
-    back_button.draw_button(mouse_pos)
-    # Draw window size selection on screen.
-    window_size_field.draw_text()
-    for button in window_size_buttons:
-        button.draw_interactive_text(mouse_pos)
-
-    return gui_elements, selected_window_size
 
 
 def show_character_menu(screen, gui_elements, mouse_pos):

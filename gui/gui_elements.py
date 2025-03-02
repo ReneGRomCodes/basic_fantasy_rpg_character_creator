@@ -76,24 +76,16 @@ def initialize_screen_elements(screen, settings):
     quit_button = so.Button(screen, "Quit", text_medium)
 
 
-    # Settings.
-    settings_title = so.TextField(screen, "- SETTINGS -", title_size)
-    window_size_field = so.TextField(screen, "Window Size", text_large)
-    window_size_button_small = so.InteractiveText(screen, "1280x720", text_medium, select=True)
-    window_size_button_medium = so.InteractiveText(screen, "1600x900", text_medium, select=True)
-    window_size_button_large = so.InteractiveText(screen, "1920x1080", text_medium, select=True)
-    window_size_button_full = so.InteractiveText(screen, "Full Screen", text_medium, select=True)
-
-
     # Character menu.
     custom = so.Button(screen, "Create Custom Character", text_medium)
     random = so.Button(screen, "Create Random Character", text_medium)
 
 
     # Ability scores screen.
+    # Screen layout is designed to adapt and fit up to 16 abilities.
     ability_scores_screen_title = so.TextField(screen, "- ABILITIES -", text_large)
     reroll_button = so.Button(screen, "Roll Again", text_medium)
-    # Initialize dictionaries from 'descr' package.
+    # Initialize dictionaries from 'descr' package for info panels.
     ability_descr = abilities.get_ability_descr()
     race_descr = races.get_race_descr()
     class_descr = classes.get_class_descr()
@@ -242,11 +234,6 @@ def initialize_screen_elements(screen, settings):
         "start_button": start_button,
         "menu_buttons": (settings_button, credits_button, quit_button),
 
-        # Settings.
-        "settings_title": settings_title,
-        "window_size": window_size_field,
-        "window_size_buttons": (window_size_button_small, window_size_button_medium, window_size_button_large,
-                                window_size_button_full),
         # Character menu.
         "custom": custom,
         "random": random,

@@ -61,7 +61,8 @@ project_root/
 │   ├── gui_elements.py    # Creates GUI elements and returns them as a dictionary
 │   ├── gui.py             # Functions for drawing elements on screen
 │   ├── ui_helpers.py      # Helper functions for positioning elements
-│   └── credits.py         # Credits screen logic
+│   ├── credits.py         # Credits screen logic
+│   └── settings_gui.py     # Settings screen logic
 │
 └── README.md              # You are here
 ```
