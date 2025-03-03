@@ -37,38 +37,38 @@ def get_ability_score():
 
 
 def check_race(character):
-    """Check instance 'character' abilities for possible races to choose and return them in list 'possible_races'."""
-    possible_races = ["Human"]  # Humans have no minimum requirements.
+    """Check instance 'character' abilities for possible races to choose and return them in list 'race_list'."""
+    race_list = ["Human"]  # Humans have no minimum requirements.
 
     if character.abilities["con"][0] >= 9 and character.abilities["cha"][0] <= 17:
-        possible_races.append("Dwarf")
+        race_list.append("Dwarf")
     if character.abilities["int"][0] >= 9 and character.abilities["con"][0] <= 17:
-        possible_races.append("Elf")
+        race_list.append("Elf")
     if character.abilities["dex"][0] >= 9 and character.abilities["str"][0] <= 17:
-        possible_races.append("Halfling")
+        race_list.append("Halfling")
 
-    return possible_races
+    return race_list
 
 
 def check_class(character):
     """Check abilities from instance 'character' for possible classes to choose and return them in list
-    'possible_classes'."""
-    possible_classes = []
+    'class_list'."""
+    class_list = []
 
     if character.abilities["wis"][0] >= 9:
-        possible_classes.append("Cleric")
+        class_list.append("Cleric")
     if character.abilities["str"][0] >= 9:
-        possible_classes.append("Fighter")
+        class_list.append("Fighter")
         if character.abilities["int"][0] >= 9:
-            possible_classes.append("Fighter/Magic-User")
+            class_list.append("Fighter/Magic-User")
     if character.abilities["int"][0] >= 9:
-        possible_classes.append("Magic-User")
+        class_list.append("Magic-User")
         if character.abilities["dex"][0] >= 9:
-            possible_classes.append("Magic-User/Thief")
+            class_list.append("Magic-User/Thief")
     if character.abilities["dex"][0] >= 9:
-        possible_classes.append("Thief")
+        class_list.append("Thief")
 
-    return possible_classes
+    return class_list
 
 
 def get_race_class_lists(character):
