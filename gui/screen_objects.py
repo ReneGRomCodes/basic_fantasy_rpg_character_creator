@@ -193,7 +193,7 @@ class InteractiveText(TextField):
             text: string to be shown for the text field.
             size: font size for text.
             bg_color: background color for rect. Default is 'False' for transparent background.
-            panel: list of instances of 'TextField' class for info panel. Default is 'False'.
+            panel: list or tuple of instances of 'TextField' class for info panel. Default is 'False'.
             select: activate option to toggle between selected/unselected state. Default is 'False'.
         Default position is centered on screen.
         """

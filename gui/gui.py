@@ -102,8 +102,8 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
     screen_title = gui_elements["race_class_title"]
     reset_button = gui_elements["reset_button"]
     back_button = gui_elements["back_button"]
-    possible_races = gui_elements["possible_races"]
-    possible_classes = gui_elements["possible_classes"]
+    active_races = gui_elements["active_races"]
+    active_classes = gui_elements["active_classes"]
     inactive_races = gui_elements["inactive_races"]
     inactive_classes = gui_elements["inactive_classes"]
 
@@ -112,7 +112,7 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
 
     # Get dict of race and class interactive text field instances 'available_choices', which are then ready to be drawn
     # on screen.
-    available_choices = ui.get_available_choices(possible_characters, possible_races, possible_classes, selected_race,
+    available_choices = ui.get_available_choices(possible_characters, active_races, active_classes, selected_race,
                                                 selected_class)
 
     # Position and draw instances from dict 'available_choices' on screen.

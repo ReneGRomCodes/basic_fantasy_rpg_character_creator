@@ -44,6 +44,45 @@ def draw_continue_button_inactive(condition_1, condition_2, gui_elements, mouse_
         inactive_continue_button.draw_button(mouse_pos)
 
 
+def set_elements_pos_y_values(screen, elements):
+    """Dynamically set starting y-position for GUI elements on screen based on number of said elements.
+    Screen layout is designed to adapt and fit up to 16 abilities.
+    ARGS:
+        screen: PyGame window.
+        elements: List/tuple or array to store GUI elements.
+    RETURNS:
+        elements_pos_y: Y-position for first GUI element on screen.
+        pos_y_offset: Offset value to position following elements.
+    """
+    # Set reference variables for positioning.
+    screen_center_y = screen.get_rect().height / 2
+    n_elements = len(elements)
+
+    # Find item in, or after, the middle position in 'elements' as reference object for further positioning.
+    if n_elements % 2 == 0:
+        # Even number of elements in 'elements'.
+        center_object_index = int(n_elements / 2)
+        elements[center_object_index][0].text_rect.top = screen_center_y
+    else:
+        # Odd number of elements in 'elements'.
+        center_object_index = n_elements // 2
+        elements[center_object_index][0].text_rect.centery = screen_center_y
+
+    # Calculate offset multiplier for use in 'pos_y_offset' based on number of abilities in 'elements'.
+    if n_elements <= 8:
+        offset_multiplier = 2
+    elif n_elements <= 11:
+        offset_multiplier = 1.5
+    else:
+        offset_multiplier = 1
+
+    # Set initial position on y-axis for ability score fields and offset value for spacing between each element.
+    pos_y_offset = (elements[0][0] if isinstance(elements[0], (list, tuple)) else elements[0]).text_rect.height * offset_multiplier
+    element_pos_y = elements[center_object_index][0].text_rect.top - (int(n_elements / 2) * pos_y_offset)
+
+    return element_pos_y, pos_y_offset
+
+
 """Background functions for title screen."""
 
 def position_title_screen_elements(screen, gui_elements):
@@ -108,7 +147,6 @@ def position_character_menu_screen_elements(screen, gui_elements):
     random.button_rect.top = screen.get_rect().centery
 
 
-
 """Background functions for ability scores screen."""
 
 def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
@@ -123,7 +161,7 @@ def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
     bonus_penalty_text = so.TextField(screen, "bonus_penalty", field_text_size)
 
     # Get y-position for first ability object and position offset value for further objects.
-    element_pos_y, pos_y_offset = set_ability_pos_y_values(screen, abilities_array)
+    element_pos_y, pos_y_offset = set_elements_pos_y_values(screen, abilities_array)
 
     # Loop through each ability field (as they are grouped in 'abilities_array') and corresponding stats to format,
     # position and display the ability name, score and bonus/penalty as they are grouped in 'abilities_array'.
@@ -170,57 +208,19 @@ def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
         element_pos_y += pos_y_offset
 
 
-def set_ability_pos_y_values(screen, abilities_array):
-    """Dynamically set starting y-position to draw ability elements on ability scores screen.
-    ARGS:
-        screen: PyGame window.
-        abilities_array: Array to store ability objects.
-    RETURNS:
-        elements_pos_y: Y-position for first ability element on screen.
-        pos_y_offset: Offset value to position following elements.
-    """
-    # Set reference variables for positioning.
-    screen_center_y = screen.get_rect().height / 2
-    n_abilities = len(abilities_array)
-
-    # Find item in, or after, the middle position in 'abilities_array' as reference object for further positioning.
-    if n_abilities % 2 == 0:
-        # Even number of elements in 'abilities_array'.
-        center_object_index = int(n_abilities / 2)
-        abilities_array[center_object_index][0].text_rect.top = screen_center_y
-    else:
-        # Odd number of elements in 'abilities_array'.
-        center_object_index = n_abilities // 2
-        abilities_array[center_object_index][0].text_rect.centery = screen_center_y
-
-    # Calculate offset multiplier for use in 'pos_y_offset' based on number of abilities in 'abilities_array'.
-    if n_abilities <= 8:
-        offset_multiplier = 2
-    elif n_abilities <= 11:
-        offset_multiplier = 1.5
-    else:
-        offset_multiplier = 1
-
-    # Set initial position on y-axis for ability score fields and offset value for spacing between elements.
-    pos_y_offset = abilities_array[0][0].text_rect.height * offset_multiplier
-    element_pos_y = abilities_array[center_object_index][0].text_rect.top - (int(n_abilities / 2) * pos_y_offset)
-
-    return element_pos_y, pos_y_offset
-
-
 """Background functions for race/class selection screen."""
 
-def race_class_check(available_choices, possible_races, possible_classes, race_name, class_name):
-    """Check 'possible_races' and 'possible_classes' and populate and return dict 'available_choices' with allowed
+def race_class_check(available_choices, active_races, active_classes, race_name, class_name):
+    """Check 'active_races' and 'active_classes' and populate and return dict 'available_choices' with allowed
     race/class combinations for use in function 'get_available_choices()'."""
     # Check if the race matches.
-    for race in possible_races:
+    for race in active_races:
         if race.text == race_name:
             # Assuring only one instance of each object is added to dict.
             if race not in available_choices["races"]:
                 available_choices["races"].append(race)
     # Check if the class matches.
-    for cls in possible_classes:
+    for cls in active_classes:
         if cls.text == class_name:
             # Assuring only one instance of each object is added to dict.
             if cls not in available_choices["classes"]:
@@ -229,14 +229,14 @@ def race_class_check(available_choices, possible_races, possible_classes, race_n
     return available_choices
 
 
-def get_available_choices(possible_characters, possible_races, possible_classes, selected_race, selected_class):
-    """Create dict and populate it with instances from 'possible_races' and 'possible_classes' using function
+def get_available_choices(possible_characters, active_races, active_classes, selected_race, selected_class):
+    """Create dict and populate it with instances from 'active_races' and 'active_classes' using function
         'race_class_check()' if their 'text' attributes match entries in 'possible_characters' (first word for race,
         second for class) and return it in 'available_choices'.
     ARGS:
         possible_characters: list of possible race-class combinations as strings.
-        possible_races: entry from gui element dict 'gui_elements["possible_races"]'.
-        possible_classes: entry from gui element dict 'gui_elements["possible_classes"]'.
+        active_races: entry from gui element dict 'gui_elements["active_races"]'.
+        active_classes: entry from gui element dict 'gui_elements["active_classes"]'.
         selected_race: instance of 'InteractiveText' class representing chosen race.
         selected_class: instance of 'InteractiveText' class representing chosen class.
     """
@@ -252,30 +252,30 @@ def get_available_choices(possible_characters, possible_races, possible_classes,
 
         # Add all available races and classes to dict if none are selected.
         if not selected_race and not selected_class:
-            available_choices = race_class_check(available_choices, possible_races, possible_classes, race_name, class_name)
+            available_choices = race_class_check(available_choices, active_races, active_classes, race_name, class_name)
 
         # Add only classes that are compatible with selected race to dict.
         elif selected_race and selected_race.text == race_name:
-            available_choices = race_class_check(available_choices, possible_races, possible_classes, race_name, class_name)
+            available_choices = race_class_check(available_choices, active_races, active_classes, race_name, class_name)
 
         # Add only races that are compatible with selected class to dict.
         elif selected_class and selected_class.text == class_name:
-            available_choices = race_class_check(available_choices, possible_races, possible_classes, race_name, class_name)
+            available_choices = race_class_check(available_choices, active_races, active_classes, race_name, class_name)
 
     return available_choices
 
 
-def position_race_class_elements(screen, race_class, inactive_races):
+def position_race_class_elements(screen, race_class, inactive_elements):
     """Get and return x and y values for GUI elements in function 'draw_available_choices()'.
     ARGS:
         screen: pygame window.
         race_class: string variable for race or class check.
-        inactive_races: list of text field instances for non-choose able races. Only used here to calculate value for
-        variable 'text_field_height'.
+        inactive_elements: list of text field instances for non-choose able races/classes. Only used here to calculate
+        value for variable 'text_field_height'.
     """
     # General variables for element positioning.
     screen_center_y = screen.get_rect().centery
-    text_field_height = inactive_races[0].text_rect.height  # Value taken from list item for consistent field height.
+    text_field_height = inactive_elements[0].text_rect.height  # Value taken from list item for consistent field height.
     text_field_y_offset = text_field_height * 2
     race_field_block_height = 4 * text_field_height
     race_field_centerx = int(screen.get_rect().width / 4)
@@ -354,10 +354,10 @@ def draw_available_choices(screen, available_choices, inactive_races, inactive_c
     for cls in inactive_classes:
         if cls.text in check_list:
             for c in available_choices["classes"]:
-                c.interactive_rect.centerx, c.interactive_rect.centery = position_race_class_elements(screen, c, inactive_races)
+                c.interactive_rect.centerx, c.interactive_rect.centery = position_race_class_elements(screen, c, inactive_classes)
                 c.draw_interactive_text(mouse_pos)
         else:
-            cls.text_rect.centerx, cls.text_rect.centery = position_race_class_elements(screen, cls, inactive_races)
+            cls.text_rect.centerx, cls.text_rect.centery = position_race_class_elements(screen, cls, inactive_classes)
             cls.draw_text()
 
 
