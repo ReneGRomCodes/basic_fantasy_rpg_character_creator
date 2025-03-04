@@ -143,16 +143,18 @@ class TextField:
 class Button(TextField):
     """Represent an interactive button."""
 
-    def __init__(self, screen, text, size, bg_color=False):
+    def __init__(self, screen, text, size, bg_color=False, text_color="default"):
         """Initialize an interactive button on screen
         ARGS:
             screen: pygame window.
             text: string to be shown on the button.
             size: font size for text.
             bg_color: background color for rect. Default is 'False' for transparent background.
+            text_color: string for text color presets. "default" for black, "inactive" for greyed-out text.
+                        Use RGB tuple for others.
         Default position is centered on screen.
         """
-        super().__init__(screen, text, size, bg_color)
+        super().__init__(screen, text, size, bg_color, text_color)
         # Set button colors for events.
         self.rect_hover_color = settings.rect_hover_color
         self.rect_clicked_color = settings.rect_clicked_color

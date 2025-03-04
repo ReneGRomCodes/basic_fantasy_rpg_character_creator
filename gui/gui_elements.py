@@ -49,7 +49,7 @@ def initialize_screen_elements(screen, settings):
     continue_button.button_rect.width = button_width
     continue_button.button_rect.bottomright = (screen.get_rect().right - default_edge_spacing,
                                                screen.get_rect().bottom - default_edge_spacing)
-    inactive_continue_button = so.Button(screen, "Continue", text_medium)
+    inactive_continue_button = so.Button(screen, "Continue", text_medium, text_color="inactive")
     inactive_continue_button.button_rect.width = button_width
     inactive_continue_button.button_rect.bottomright = continue_button.button_rect.bottomright
     inactive_continue_button.rect_hover_color = settings.inactive_continue_button_hover_color
