@@ -87,9 +87,8 @@ def custom_character(screen, state, gui_elements, mouse_pos):
     if state == "set_abilities":
         # Generate dictionary for character abilities.
         character.set_ability_dict()
-        # Check if character abilities allow for any valid race-class combinations.
-        race_list, class_list = rls.get_race_class_lists(character)
-        if rls.check_valid_race_class(race_list, class_list):
+        # Check if character abilities allow for any valid race-class combinations and only continue to next state if so.
+        if rls.check_valid_race_class(character):
             state = "show_abilities"
         else:
             state = "set_abilities"
@@ -160,11 +159,10 @@ def random_character(screen, state, gui_elements, mouse_pos):
             character.set_ability_dict()
 
             # Check if character abilities allow for any valid race-class combinations.
-            race_list, class_list = rls.get_race_class_lists(character)
-            if rls.check_valid_race_class(race_list, class_list):
+            if rls.check_valid_race_class(character):
                 # Build list of possible characters, choose an entry at random, assign race/class to character object and
                 # set corresponding attributes for character.
-                possible_characters = rls.build_possible_characters_list(race_list, class_list)
+                possible_characters = rls.build_possible_characters_list(character)
                 selected_race, selected_class = random.choice(possible_characters).split()
                 character.set_race(selected_race)
                 character.set_class(selected_class)

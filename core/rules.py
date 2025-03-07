@@ -3,6 +3,8 @@ import random
 """Helper and check functions to generate and return values in accordance to game rules."""
 
 
+"""General functions."""
+
 def dice_roll(n, m):
     """Roll an n number of m-sided dice and return the result."""
     result = 0
@@ -12,6 +14,8 @@ def dice_roll(n, m):
 
     return result
 
+
+"""Ability scores."""
 
 def get_ability_score():
     """Generate random value for ability score, apply bonus/penalty and return both values in list
@@ -36,7 +40,9 @@ def get_ability_score():
     return ability_score
 
 
-def check_race(character):
+"""Race and class selection."""
+
+def get_race_list(character):
     """Check instance 'character' abilities for possible races to choose and return them in list 'race_list'."""
     race_list = ["Human"]  # Humans have no minimum requirements.
 
@@ -50,7 +56,7 @@ def check_race(character):
     return race_list
 
 
-def check_class(character):
+def get_class_list(character):
     """Check abilities from instance 'character' for possible classes to choose and return them in list
     'class_list'."""
     class_list = []
@@ -71,19 +77,12 @@ def check_class(character):
     return class_list
 
 
-def get_race_class_lists(character):
-    """Generate race and class based on abilities scores for instance 'character' and return lists 'race_list' and
-    'class_list'."""
-    race_list = check_race(character)
-    class_list = check_class(character)
-
-    return race_list, class_list
-
-
-def check_valid_race_class(race_list, class_list):
-    """Check if 'class_list' is empty, return 'False' if so. If not check for valid race-class combinations and remove
-     invalid races from 'race_list'. Return 'False' if 'race_list' is empty, 'True' if items remain in 'race_list'
-     afterward."""
+def check_valid_race_class(character):
+    """Create 'race_list' and 'class_list', check if 'class_list' is empty, return 'False' if so. If not check for valid
+    race-class combinations and remove invalid races from 'race_list'. Return 'False' if 'race_list' is empty, 'True'
+    if items remain in 'race_list' afterward."""
+    # Create race and class lists for checks.
+    race_list, class_list = get_race_list(character), get_class_list(character)
 
     # Check if class list is empty.
     if not class_list:
@@ -99,12 +98,15 @@ def check_valid_race_class(race_list, class_list):
     if not race_list:
         return False
     else:
-        return race_list
+        return True
 
 
-def build_possible_characters_list(race_list, class_list):
-    """Take lists of possible races and classes and return list 'possible_characters' with valid race-class
+def build_possible_characters_list(character):
+    """Create lists of possible races and classes and return list 'possible_characters' with valid race-class
     combinations."""
+    # Create race and class lists for checks.
+    race_list, class_list = get_race_list(character), get_class_list(character)
+    # Empty list to be returned with possible characters.
     possible_characters = []
 
     for char_race in race_list:
