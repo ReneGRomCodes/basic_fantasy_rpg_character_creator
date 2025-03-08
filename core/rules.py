@@ -65,10 +65,12 @@ def get_class_list(character):
         class_list.append("Cleric")
     if character.abilities["str"][0] >= 9:
         class_list.append("Fighter")
+        # Additional check for combination class.
         if character.abilities["int"][0] >= 9:
             class_list.append("Fighter/Magic-User")
     if character.abilities["int"][0] >= 9:
         class_list.append("Magic-User")
+        # Additional check for combination class
         if character.abilities["dex"][0] >= 9:
             class_list.append("Magic-User/Thief")
     if character.abilities["dex"][0] >= 9:

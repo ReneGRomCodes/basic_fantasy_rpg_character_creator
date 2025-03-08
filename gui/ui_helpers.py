@@ -58,6 +58,9 @@ def set_elements_pos_y_values(screen, elements):
     screen_center_y = screen.get_rect().height / 2
     n_elements = len(elements)
 
+    # Check 'elements' for type and assign first element to variable.
+    first_element = elements[0][0] if isinstance(elements[0], (list, tuple)) else elements[0]
+
     # Find item in, or after, the middle position in 'elements' as reference object for further positioning.
     if n_elements % 2 == 0:
         # Even number of elements in 'elements'.
@@ -68,6 +71,9 @@ def set_elements_pos_y_values(screen, elements):
         center_object_index = n_elements // 2
         elements[center_object_index][0].text_rect.centery = screen_center_y
 
+    # Check 'elements' for type and assign center element to variable.
+    center_element = elements[center_object_index][0] if isinstance(elements[0], (list, tuple)) else elements[0]
+
     # Calculate offset multiplier for use in 'pos_y_offset' based on number of abilities in 'elements'.
     if n_elements <= 8:
         offset_multiplier = 2
@@ -77,8 +83,8 @@ def set_elements_pos_y_values(screen, elements):
         offset_multiplier = 1
 
     # Set initial position on y-axis for ability score fields and offset value for spacing between each element.
-    pos_y_offset = (elements[0][0] if isinstance(elements[0], (list, tuple)) else elements[0]).text_rect.height * offset_multiplier
-    element_pos_y = elements[center_object_index][0].text_rect.top - (int(n_elements / 2) * pos_y_offset)
+    pos_y_offset = first_element.text_rect.height * offset_multiplier
+    element_pos_y = center_element.text_rect.top - (int(n_elements / 2) * pos_y_offset)
 
     return element_pos_y, pos_y_offset
 
@@ -278,25 +284,25 @@ def position_race_class_elements(screen, race_class, inactive_elements):
     text_field_height = inactive_elements[0].text_rect.height  # Value taken from list item for consistent field height.
     text_field_y_offset = text_field_height * 2
     race_field_block_height = 4 * text_field_height
-    race_field_centerx = int(screen.get_rect().width / 4)
-    race_field_centery_start = screen_center_y - race_field_block_height
+    race_field_x = int(screen.get_rect().width / 4)
+    race_field_y_start = screen_center_y - race_field_block_height
     class_field_block_height = 6 * text_field_height
-    class_field_centerx = race_field_centerx * 3
-    class_field_centery_start = screen_center_y - class_field_block_height
+    class_field_x = race_field_x * 3
+    class_field_y_start = screen_center_y - class_field_block_height
 
     # Text field positions.
     # Races.
-    human_pos_x, human_pos_y = race_field_centerx, race_field_centery_start
-    elf_pos_x, elf_pos_y = race_field_centerx, human_pos_y + text_field_y_offset
-    dwarf_pos_x, dwarf_pos_y = race_field_centerx, elf_pos_y + text_field_y_offset
-    halfling_pos_x, halfling_pos_y = race_field_centerx, dwarf_pos_y + text_field_y_offset
+    human_pos_x, human_pos_y = race_field_x, race_field_y_start
+    elf_pos_x, elf_pos_y = race_field_x, human_pos_y + text_field_y_offset
+    dwarf_pos_x, dwarf_pos_y = race_field_x, elf_pos_y + text_field_y_offset
+    halfling_pos_x, halfling_pos_y = race_field_x, dwarf_pos_y + text_field_y_offset
     # Classes.
-    fighter_pos_x, fighter_pos_y = class_field_centerx, class_field_centery_start
-    cleric_pos_x, cleric_pos_y = class_field_centerx, fighter_pos_y + text_field_y_offset
-    magic_user_pos_x, magic_user_pos_y = class_field_centerx, cleric_pos_y + text_field_y_offset
-    thief_pos_x, thief_pos_y = class_field_centerx, magic_user_pos_y + text_field_y_offset
-    fighter_magic_user_pos_x, fighter_magic_user_pos_y = class_field_centerx, thief_pos_y + text_field_y_offset
-    magic_user_thief_pos_x, magic_user_thief_pos_y = class_field_centerx, fighter_magic_user_pos_y + text_field_y_offset
+    fighter_pos_x, fighter_pos_y = class_field_x, class_field_y_start
+    cleric_pos_x, cleric_pos_y = class_field_x, fighter_pos_y + text_field_y_offset
+    magic_user_pos_x, magic_user_pos_y = class_field_x, cleric_pos_y + text_field_y_offset
+    thief_pos_x, thief_pos_y = class_field_x, magic_user_pos_y + text_field_y_offset
+    fighter_magic_user_pos_x, fighter_magic_user_pos_y = class_field_x, thief_pos_y + text_field_y_offset
+    magic_user_thief_pos_x, magic_user_thief_pos_y = class_field_x, fighter_magic_user_pos_y + text_field_y_offset
 
     # Check 'race_class' and assign correct x and y value for each specific race/class.
     if race_class.text == "Human":
@@ -342,6 +348,7 @@ def draw_available_choices(screen, available_choices, inactive_races, inactive_c
 
     # Draw race selection.
     for race in inactive_races:
+        # Check if race.text attribute is in 'check_list', proceed with active UI object if so, inactive object otherwise.
         if race.text in check_list:
             for r in available_choices["races"]:
                 r.interactive_rect.centerx, r.interactive_rect.centery = position_race_class_elements(screen, r, inactive_races)
@@ -352,6 +359,7 @@ def draw_available_choices(screen, available_choices, inactive_races, inactive_c
 
     # Draw class selection.
     for cls in inactive_classes:
+        # Check if class.text attribute is in 'check_list', proceed with active UI object if so, inactive object otherwise.
         if cls.text in check_list:
             for c in available_choices["classes"]:
                 c.interactive_rect.centerx, c.interactive_rect.centery = position_race_class_elements(screen, c, inactive_classes)

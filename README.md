@@ -28,7 +28,11 @@ Python 3.12
 
 pip 24.2
 
-### The following Python packages:
+pygame 2.6.0
+
+pygame-textinput 1.0.1
+
+### Installing Python packages:
 
 `pip install pygame pygame-textinput`
 
