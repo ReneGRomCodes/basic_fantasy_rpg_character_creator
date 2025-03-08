@@ -275,10 +275,14 @@ def position_race_class_elements(screen, race_class, inactive_elements):
     """Get and return x and y values for GUI elements in function 'draw_available_choices()'.
     ARGS:
         screen: pygame window.
-        race_class: string variable for race or class check.
+        race_class: GUI element for race or class check.
         inactive_elements: list of text field instances for non-choose able races/classes. Only used here to calculate
         value for variable 'text_field_height'.
     """
+    # Sets to check if object for positioning represents a race or a class.
+    race_check_set = {"Human", "Elf", "Dwarf", "Halfling"}
+    class_check_set = {"Fighter", "Cleric", "Magic-User", "Thief", "Fighter/Magic-User", "Magic-User/Thief"}
+
     # General variables for element positioning.
     screen_center_y = screen.get_rect().centery
     text_field_height = inactive_elements[0].text_rect.height  # Value taken from list item for consistent field height.
@@ -290,41 +294,47 @@ def position_race_class_elements(screen, race_class, inactive_elements):
     class_field_x = race_field_x * 3
     class_field_y_start = screen_center_y - class_field_block_height
 
-    # Text field positions.
+    # Text field y-positions.
     # Races.
-    human_pos_x, human_pos_y = race_field_x, race_field_y_start
-    elf_pos_x, elf_pos_y = race_field_x, human_pos_y + text_field_y_offset
-    dwarf_pos_x, dwarf_pos_y = race_field_x, elf_pos_y + text_field_y_offset
-    halfling_pos_x, halfling_pos_y = race_field_x, dwarf_pos_y + text_field_y_offset
+    human_pos_y = race_field_y_start
+    elf_pos_y = human_pos_y + text_field_y_offset
+    dwarf_pos_y = elf_pos_y + text_field_y_offset
+    halfling_pos_y = dwarf_pos_y + text_field_y_offset
     # Classes.
-    fighter_pos_x, fighter_pos_y = class_field_x, class_field_y_start
-    cleric_pos_x, cleric_pos_y = class_field_x, fighter_pos_y + text_field_y_offset
-    magic_user_pos_x, magic_user_pos_y = class_field_x, cleric_pos_y + text_field_y_offset
-    thief_pos_x, thief_pos_y = class_field_x, magic_user_pos_y + text_field_y_offset
-    fighter_magic_user_pos_x, fighter_magic_user_pos_y = class_field_x, thief_pos_y + text_field_y_offset
-    magic_user_thief_pos_x, magic_user_thief_pos_y = class_field_x, fighter_magic_user_pos_y + text_field_y_offset
+    fighter_pos_y = class_field_y_start
+    cleric_pos_y = fighter_pos_y + text_field_y_offset
+    magic_user_pos_y = cleric_pos_y + text_field_y_offset
+    thief_pos_y = magic_user_pos_y + text_field_y_offset
+    fighter_magic_user_pos_y = thief_pos_y + text_field_y_offset
+    magic_user_thief_pos_y = fighter_magic_user_pos_y + text_field_y_offset
 
     # Check 'race_class' and assign correct x and y value for each specific race/class.
-    if race_class.text == "Human":
-        x, y = human_pos_x, human_pos_y
-    elif race_class.text == "Elf":
-        x, y = elf_pos_x, elf_pos_y
-    elif race_class.text == "Dwarf":
-        x, y = dwarf_pos_x, dwarf_pos_y
-    elif race_class.text == "Halfling":
-        x, y = halfling_pos_x, halfling_pos_y
-    elif race_class.text == "Fighter":
-        x, y = fighter_pos_x, fighter_pos_y
-    elif race_class.text == "Cleric":
-        x, y = cleric_pos_x, cleric_pos_y
-    elif race_class.text == "Magic-User":
-        x, y = magic_user_pos_x, magic_user_pos_y
-    elif race_class.text == "Thief":
-        x, y = thief_pos_x, thief_pos_y
-    elif race_class.text == "Fighter/Magic-User":
-        x, y = fighter_magic_user_pos_x, fighter_magic_user_pos_y
-    elif race_class.text == "Magic-User/Thief":
-        x, y = magic_user_thief_pos_x, magic_user_thief_pos_y
+    # Race checks.
+    if race_class.text in race_check_set:
+        x = race_field_x
+        if race_class.text == "Human":
+            y = human_pos_y
+        elif race_class.text == "Elf":
+            y = elf_pos_y
+        elif race_class.text == "Dwarf":
+            y = dwarf_pos_y
+        elif race_class.text == "Halfling":
+            y = halfling_pos_y
+    # Class checks.
+    if race_class.text in class_check_set:
+        x = class_field_x
+        if race_class.text == "Fighter":
+            y = fighter_pos_y
+        elif race_class.text == "Cleric":
+            y = cleric_pos_y
+        elif race_class.text == "Magic-User":
+            y = magic_user_pos_y
+        elif race_class.text == "Thief":
+            y = thief_pos_y
+        elif race_class.text == "Fighter/Magic-User":
+            y = fighter_magic_user_pos_y
+        elif race_class.text == "Magic-User/Thief":
+            y = magic_user_thief_pos_y
 
     return x, y
 
