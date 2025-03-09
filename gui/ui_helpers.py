@@ -283,15 +283,18 @@ def position_race_class_elements(screen, race_class, inactive_elements):
     race_x_pos = int(screen.get_rect().width / 4)
     class_x_pos = race_x_pos * 3
 
+    # Race positions.
     if race_class.text in {"Human", "Elf", "Dwarf", "Halfling"}:
         x = race_x_pos
 
+        # Get starting y-values and calculate further y-positions.
         race_y_start, race_y_offset = set_elements_pos_y_values(screen, inactive_elements)
         human_pos_y = race_y_start
         elf_pos_y = human_pos_y + race_y_offset
         dwarf_pos_y = elf_pos_y + race_y_offset
         halfling_pos_y = dwarf_pos_y + race_y_offset
 
+        # Check which race is represented by 'race_class' and set corresponding y-value.
         if race_class.text == "Human":
             y = human_pos_y
         elif race_class.text == "Elf":
@@ -301,9 +304,11 @@ def position_race_class_elements(screen, race_class, inactive_elements):
         elif race_class.text == "Halfling":
             y = halfling_pos_y
 
+    # Class positions.
     elif race_class.text in {"Fighter", "Cleric", "Magic-User", "Thief", "Fighter/Magic-User", "Magic-User/Thief"}:
         x = class_x_pos
 
+        # Get starting y-values and calculate further y-positions.
         class_y_start, class_y_offset = set_elements_pos_y_values(screen, inactive_elements)
         fighter_pos_y = class_y_start
         cleric_pos_y = fighter_pos_y + class_y_offset
@@ -312,6 +317,7 @@ def position_race_class_elements(screen, race_class, inactive_elements):
         fighter_magic_user_pos_y = thief_pos_y + class_y_offset
         magic_user_thief_pos_y = fighter_magic_user_pos_y + class_y_offset
 
+        # Check which class is represented by 'race_class' and set corresponding y-value.
         if race_class.text == "Fighter":
             y = fighter_pos_y
         elif race_class.text == "Cleric":
