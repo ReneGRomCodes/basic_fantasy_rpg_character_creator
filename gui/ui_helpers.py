@@ -65,11 +65,11 @@ def set_elements_pos_y_values(screen, elements):
     if n_elements % 2 == 0:
         # Even number of elements in 'elements'.
         center_object_index = int(n_elements / 2)
-        elements[center_object_index][0].text_rect.top = screen_center_y
+        (elements[0][0] if isinstance(elements[0], (list, tuple)) else elements[0]).text_rect.top = screen_center_y
     else:
         # Odd number of elements in 'elements'.
         center_object_index = n_elements // 2
-        elements[center_object_index][0].text_rect.centery = screen_center_y
+        (elements[0][0] if isinstance(elements[0], (list, tuple)) else elements[0]).text_rect.centery = screen_center_y
 
     # Check 'elements' for type and assign center element to variable.
     center_element = elements[center_object_index][0] if isinstance(elements[0], (list, tuple)) else elements[0]
@@ -276,42 +276,22 @@ def position_race_class_elements(screen, race_class, inactive_elements):
     ARGS:
         screen: pygame window.
         race_class: GUI element for race or class check.
-        inactive_elements: list of text field instances for non-choose able races/classes. Only used here to calculate
-        value for variable 'text_field_height'.
+        inactive_elements: list of text field instances for non-choose able races/classes. Only used here to be passed
+        to function 'set_elements_pos_y_values()' for further y-coordinates calculations.
     """
-    # Sets to check if object for positioning represents a race or a class.
-    race_check_set = {"Human", "Elf", "Dwarf", "Halfling"}
-    class_check_set = {"Fighter", "Cleric", "Magic-User", "Thief", "Fighter/Magic-User", "Magic-User/Thief"}
+    # Variables for x-positioning.
+    race_x_pos = int(screen.get_rect().width / 4)
+    class_x_pos = race_x_pos * 3
 
-    # General variables for element positioning.
-    screen_center_y = screen.get_rect().centery
-    text_field_height = inactive_elements[0].text_rect.height  # Value taken from list item for consistent field height.
-    text_field_y_offset = text_field_height * 2
-    race_field_block_height = 4 * text_field_height
-    race_field_x = int(screen.get_rect().width / 4)
-    race_field_y_start = screen_center_y - race_field_block_height
-    class_field_block_height = 6 * text_field_height
-    class_field_x = race_field_x * 3
-    class_field_y_start = screen_center_y - class_field_block_height
+    if race_class.text in {"Human", "Elf", "Dwarf", "Halfling"}:
+        x = race_x_pos
 
-    # Text field y-positions.
-    # Races.
-    human_pos_y = race_field_y_start
-    elf_pos_y = human_pos_y + text_field_y_offset
-    dwarf_pos_y = elf_pos_y + text_field_y_offset
-    halfling_pos_y = dwarf_pos_y + text_field_y_offset
-    # Classes.
-    fighter_pos_y = class_field_y_start
-    cleric_pos_y = fighter_pos_y + text_field_y_offset
-    magic_user_pos_y = cleric_pos_y + text_field_y_offset
-    thief_pos_y = magic_user_pos_y + text_field_y_offset
-    fighter_magic_user_pos_y = thief_pos_y + text_field_y_offset
-    magic_user_thief_pos_y = fighter_magic_user_pos_y + text_field_y_offset
+        race_y_start, race_y_offset = set_elements_pos_y_values(screen, inactive_elements)
+        human_pos_y = race_y_start
+        elf_pos_y = human_pos_y + race_y_offset
+        dwarf_pos_y = elf_pos_y + race_y_offset
+        halfling_pos_y = dwarf_pos_y + race_y_offset
 
-    # Check 'race_class' and assign correct x and y value for each specific race/class.
-    # Race checks.
-    if race_class.text in race_check_set:
-        x = race_field_x
         if race_class.text == "Human":
             y = human_pos_y
         elif race_class.text == "Elf":
@@ -320,9 +300,18 @@ def position_race_class_elements(screen, race_class, inactive_elements):
             y = dwarf_pos_y
         elif race_class.text == "Halfling":
             y = halfling_pos_y
-    # Class checks.
-    if race_class.text in class_check_set:
-        x = class_field_x
+
+    elif race_class.text in {"Fighter", "Cleric", "Magic-User", "Thief", "Fighter/Magic-User", "Magic-User/Thief"}:
+        x = class_x_pos
+
+        class_y_start, class_y_offset = set_elements_pos_y_values(screen, inactive_elements)
+        fighter_pos_y = class_y_start
+        cleric_pos_y = fighter_pos_y + class_y_offset
+        magic_user_pos_y = cleric_pos_y + class_y_offset
+        thief_pos_y = magic_user_pos_y + class_y_offset
+        fighter_magic_user_pos_y = thief_pos_y + class_y_offset
+        magic_user_thief_pos_y = fighter_magic_user_pos_y + class_y_offset
+
         if race_class.text == "Fighter":
             y = fighter_pos_y
         elif race_class.text == "Cleric":
@@ -348,7 +337,6 @@ def draw_available_choices(screen, available_choices, inactive_races, inactive_c
         inactive_classes: list of text field instances for non-choose able classes.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
-
     # Create list to check if inactive or selectable text field should be displayed.
     check_list = []
     for r in available_choices["races"]:
