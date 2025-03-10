@@ -97,6 +97,8 @@ def check_valid_race_class(character):
         race_list.remove("Halfling")
 
     # Check if race list is empty after 'Magic-User' check above and return 'False' or modified 'race_list'.
+    # NOTE: unnecessary with the current rule set as 'race_list' will always contain at least "Humans". If-statement
+    # left in place to ensure that function still works should that change in the future.
     if not race_list:
         return False
     else:

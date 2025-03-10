@@ -227,7 +227,7 @@ class InteractiveText(TextField):
         self.screen.blit(self.text_image, self.text_rect)
 
     def handle_mouse_interaction(self):
-        """Handle interactive functions for the class object like info panel and selectablility."""
+        """Handle interactive functions for the class object like info panel and selectability."""
         # Color change when mouse is pressed (only if 'self.select' is True).
         if self.select and pygame.mouse.get_pressed()[0]:
             pygame.draw.rect(self.screen, self.rect_clicked_color, self.interactive_rect)

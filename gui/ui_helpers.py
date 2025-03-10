@@ -55,24 +55,19 @@ def set_elements_pos_y_values(screen, elements):
         pos_y_offset: Offset value to position following elements.
     """
     # Set reference variables for positioning.
-    screen_center_y = screen.get_rect().height / 2
+    screen_center_y = screen.get_rect().centery
     n_elements = len(elements)
+    # Check 'elements' for type and assign first element to variable as reference object for further positioning.
+    ref_element = elements[0][0] if isinstance(elements[0], (list, tuple)) else elements[0]
 
-    # Check 'elements' for type and assign first element to variable.
-    first_element = elements[0][0] if isinstance(elements[0], (list, tuple)) else elements[0]
-
-    # Find item in, or after, the middle position in 'elements' as reference object for further positioning.
+    # Position 'ref_element' at the y-center axis for final 'element_pos_y' calculation further down. Exact position of
+    # 'ref_element' based on evenness of 'n_elements'.
     if n_elements % 2 == 0:
         # Even number of elements in 'elements'.
-        center_object_index = int(n_elements / 2)
-        (elements[0][0] if isinstance(elements[0], (list, tuple)) else elements[0]).text_rect.top = screen_center_y
+        ref_element.text_rect.top = screen_center_y
     else:
         # Odd number of elements in 'elements'.
-        center_object_index = n_elements // 2
-        (elements[0][0] if isinstance(elements[0], (list, tuple)) else elements[0]).text_rect.centery = screen_center_y
-
-    # Check 'elements' for type and assign center element to variable.
-    center_element = elements[center_object_index][0] if isinstance(elements[0], (list, tuple)) else elements[0]
+        ref_element.text_rect.centery = screen_center_y
 
     # Calculate offset multiplier for use in 'pos_y_offset' based on number of abilities in 'elements'.
     if n_elements <= 8:
@@ -83,8 +78,8 @@ def set_elements_pos_y_values(screen, elements):
         offset_multiplier = 1
 
     # Set initial position on y-axis for ability score fields and offset value for spacing between each element.
-    pos_y_offset = first_element.text_rect.height * offset_multiplier
-    element_pos_y = center_element.text_rect.top - (int(n_elements / 2) * pos_y_offset)
+    pos_y_offset = ref_element.text_rect.height * offset_multiplier
+    element_pos_y = ref_element.text_rect.top - (int(n_elements / 2) * pos_y_offset)
 
     return element_pos_y, pos_y_offset
 
@@ -282,9 +277,12 @@ def position_race_class_elements(screen, race_class, inactive_elements):
     # Variables for x-positioning.
     race_x_pos = int(screen.get_rect().width / 4)
     class_x_pos = race_x_pos * 3
+    # Sets of races and classes for checks.
+    race_set = {"Human", "Elf", "Dwarf", "Halfling"}
+    class_set = {"Fighter", "Cleric", "Magic-User", "Thief", "Fighter/Magic-User", "Magic-User/Thief"}
 
     # Race positions.
-    if race_class.text in {"Human", "Elf", "Dwarf", "Halfling"}:
+    if race_class.text in race_set:
         x = race_x_pos
 
         # Get starting y-values and calculate further y-positions.
@@ -305,7 +303,7 @@ def position_race_class_elements(screen, race_class, inactive_elements):
             y = halfling_pos_y
 
     # Class positions.
-    elif race_class.text in {"Fighter", "Cleric", "Magic-User", "Thief", "Fighter/Magic-User", "Magic-User/Thief"}:
+    elif race_class.text in class_set:
         x = class_x_pos
 
         # Get starting y-values and calculate further y-positions.
