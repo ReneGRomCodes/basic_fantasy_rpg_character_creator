@@ -16,6 +16,8 @@ character = Character()
 credits_screen = None
 # Create 'None' variable for later instance of character sheet screen object.
 cs_sheet = None
+# Initialize dict for use in 'gui/ui_helpers.py' in function 'position_race_class_elements()' to calculate UI positioning.
+rc_dict = {"races": [], "classes": [],}
 # Initialize variables for character creation.
 possible_characters = None
 selected_race = None
@@ -27,21 +29,38 @@ custom_money_flag = False
 
 def main_state_manager(screen, state, gui_elements, mouse_pos):
     """State manager for main states, i.e. 'title_screen', 'main_menu', etc."""
+    # Declare global variable 'rc_dict' to allow modification of its contents within the function.
+    global rc_dict
+
     # Call main event handler and get program state.
     state = eh.main_events(screen, state, gui_elements, mouse_pos)
 
     if state == "title_screen":
         # Display title screen.
         gui.show_title_screen(screen, gui_elements)
+
+    elif state == "init_rc_dict":
+        # Automatically populate dict 'rc_dict' with all races/classes available in the game once at this point for
+        # later use in race/class selection.
+        for race in gui_elements["inactive_races"]:
+            rc_dict["races"].append(race.text)
+        for cls in gui_elements["inactive_classes"]:
+            rc_dict["classes"].append(cls.text)
+
+        state = "main_menu"
+
     elif state == "main_menu":
         # Display main menu screen.
         gui.show_main_menu(screen, gui_elements, mouse_pos)
+
     elif state in {"init_credits", "credits"}:
         # Use of 'secondary' state manager for credits screen.
         state = credits_state_manager(screen, state, gui_elements)
+
     elif state == "character_menu":
         # Display character menu screen
         gui.show_character_menu(screen, gui_elements, mouse_pos)
+
     elif state in {"init_character_sheet", "character_sheet"}:
         # Use of 'secondary' state manager for character sheet screen.
         state = character_sheet_state_manager(screen, state, gui_elements)
@@ -82,7 +101,7 @@ def settings_screen(screen, state, settings, settings_gui, gui_elements, mouse_p
 def custom_character(screen, state, gui_elements, mouse_pos):
     """State manager for custom character creation based on user input."""
     # Declare global variables to allow modification of these values within the function.
-    global possible_characters, selected_race, selected_class, starting_money, random_money_flag, custom_money_flag
+    global possible_characters, rc_dict, selected_race, selected_class, starting_money, random_money_flag, custom_money_flag
 
     if state == "set_abilities":
         # Generate dictionary for character abilities.
@@ -109,8 +128,9 @@ def custom_character(screen, state, gui_elements, mouse_pos):
 
     elif state == "race_class_selection":
         # Display race/class selection screen.
-        selected_race, selected_class = gui.show_race_class_selection_screen(screen, possible_characters, selected_race,
-                                                                            selected_class, gui_elements, mouse_pos)
+        selected_race, selected_class = gui.show_race_class_selection_screen(screen, rc_dict, possible_characters,
+                                                                             selected_race, selected_class, gui_elements,
+                                                                             mouse_pos)
         possible_characters, state = eh.custom_character_events(state, character, gui_elements, mouse_pos, possible_characters,
                                                                 selected_race, selected_class)
 

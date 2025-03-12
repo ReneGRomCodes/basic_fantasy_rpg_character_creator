@@ -82,7 +82,15 @@ def get_class_list(character):
 def check_valid_race_class(character):
     """Create 'race_list' and 'class_list', check if 'class_list' is empty, return 'False' if so. If not check for valid
     race-class combinations and remove invalid races from 'race_list'. Return 'False' if 'race_list' is empty, 'True'
-    if items remain in 'race_list' afterward."""
+    if items remain in 'race_list' afterward.
+
+    If you ever have the same thought a friend of mine had:
+    'I need to see a Halfling Berserk-Assassin in action. Just a tiny, rage-filled murder gremlin trying to stab ankles
+    while everyone else casually holds them back with one hand.
+    And the Gnome Barbarian-Wizard… oh man. Just picture this tiny, bearded rage monster, dual-wielding a great axe and a
+    spellbook, screaming, "I CAST FIST!" right before getting launched across the battlefield like a football.'
+    This the function you want to edit."""
+
     # Create race and class lists for checks.
     race_list, class_list = get_race_list(character), get_class_list(character)
 

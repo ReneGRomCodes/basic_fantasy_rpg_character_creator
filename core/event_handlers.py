@@ -23,7 +23,7 @@ def main_events(screen, state, gui_elements, mouse_pos):
 
         if state == "title_screen":
             if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP and screen.get_rect().collidepoint(mouse_pos):
-                state = "main_menu"
+                state = "init_rc_dict"
 
         elif state == "main_menu":
             if event.type == pygame.MOUSEBUTTONUP:

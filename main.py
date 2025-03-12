@@ -36,8 +36,8 @@ def run_character_creator():
     # Set initial state.
     state = "title_screen"
     # Set of states for character creation.
-    main_states = {"title_screen", "main_menu", "init_credits", "credits", "character_menu", "init_character_sheet",
-                   "character_sheet"}
+    main_states = {"title_screen", "init_rc_dict", "main_menu", "init_credits", "credits", "character_menu",
+                   "init_character_sheet", "character_sheet"}
     custom_character_states = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
                                "set_starting_money", "custom_input_money", "creation_complete"}
     random_character_states = {"random_character", "set_random_money", "name_random_character"}

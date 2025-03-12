@@ -85,10 +85,12 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     continue_button.draw_button(mouse_pos)
 
 
-def show_race_class_selection_screen(screen, possible_characters, selected_race, selected_class, gui_elements, mouse_pos):
+def show_race_class_selection_screen(screen, rc_dict, possible_characters, selected_race, selected_class, gui_elements, mouse_pos):
     """Display race/class selection on screen.
+    Screen layout is designed to adapt and fit up to 16 races/classes.
     ARGS:
         screen: PyGame window.
+        rc_dict: dict containing all available races/classes in the game as lists of strings.
         possible_characters: list of possible race-class combinations as strings.
         selected_race: instance of 'InteractiveText' class representing chosen race.
         selected_class: instance of 'InteractiveText' class representing chosen class.
@@ -116,7 +118,7 @@ def show_race_class_selection_screen(screen, possible_characters, selected_race,
                                                 selected_class)
 
     # Position and draw instances from dict 'available_choices' on screen.
-    ui.draw_available_choices(screen, available_choices, inactive_races, inactive_classes, mouse_pos)
+    ui.draw_available_choices(screen, rc_dict, available_choices, inactive_races, inactive_classes, mouse_pos)
 
     # Select race and class.
     selected_race, selected_class = ui.select_race_class(available_choices, selected_race, selected_class, reset_button, mouse_pos)

@@ -106,6 +106,7 @@ def initialize_screen_elements(screen, settings):
 
 
     # Race/class selection screen.
+    # Screen layout is designed to adapt and fit up to 16 races/classes.
     race_class_selection_screen_title = so.TextField(screen, "- RACE / CLASS SELECTION -", text_large)
     reset_button = so.Button(screen, "RESET", text_medium)
     # Race info Panels.
@@ -150,7 +151,7 @@ def initialize_screen_elements(screen, settings):
                                          image_width=info_panel_width, surface_pos="center")
     magic_user_thief_info_table = so.InfoPanel(screen, class_descr["magic-user_thief"][1], text_small, multi_line=True,
                                                image_width=info_panel_width, surface_pos="topleft")
-    # Active race/class text fields.
+    # Active race/class text fields. Used when a race/class can be chosen in the race/class selection.
     race_human_field = so.InteractiveText(screen, "Human", text_medium, panel=(humans_info, humans_info_table), select=True)
     race_elf_field = so.InteractiveText(screen, "Elf", text_medium, panel=(elves_info, elves_info_table), select=True)
     race_dwarf_field = so.InteractiveText(screen, "Dwarf", text_medium, panel=(dwarves_info, dwarves_info_table), select=True)
@@ -163,7 +164,8 @@ def initialize_screen_elements(screen, settings):
                                                         panel=(fighter_magic_user_info, fighter_magic_user_info_table), select=True)
     class_magic_user_thief_field = so.InteractiveText(screen, "Magic-User/Thief", text_medium,
                                                       panel=(magic_user_thief_info, magic_user_thief_info_table), select=True)
-    # Inactive race/class text fields.
+    # Inactive race/class text fields. Used when a race/class is unavailable in the race/class selection.
+    # NOTE: every instance has to have the same 'text' attribute as their active counterpart.
     inactive_human_field = so.TextField(screen, "Human", text_medium, text_color="inactive")
     inactive_elf_field = so.TextField(screen, "Elf", text_medium, text_color="inactive")
     inactive_dwarf_field = so.TextField(screen, "Dwarf", text_medium, text_color="inactive")
