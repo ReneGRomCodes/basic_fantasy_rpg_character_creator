@@ -17,7 +17,7 @@ credits_screen = None
 # Create 'None' variable for later instance of character sheet screen object.
 cs_sheet = None
 # Initialize dict for use in 'gui/ui_helpers.py' in function 'position_race_class_elements()' to calculate UI positioning.
-rc_dict = {"races": [], "classes": [],}
+rc_dict = {"races": [], "classes": [], }
 # Initialize variables for character creation.
 possible_characters = None
 selected_race = None
@@ -40,11 +40,11 @@ def main_state_manager(screen, state, gui_elements, mouse_pos):
         gui.show_title_screen(screen, gui_elements)
 
     elif state == "init_rc_dict":
-        # Automatically populate dict 'rc_dict' with all races/classes available in the game once at this point for
-        # later use in race/class selection.
-        for race in gui_elements["inactive_races"]:
+        # Automatically populate dict 'rc_dict' once with all races/classes available in the game for later use in
+        # race/class selection.
+        for race in gui_elements["active_races"]:
             rc_dict["races"].append(race.text)
-        for cls in gui_elements["inactive_classes"]:
+        for cls in gui_elements["active_classes"]:
             rc_dict["classes"].append(cls.text)
 
         state = "main_menu"
