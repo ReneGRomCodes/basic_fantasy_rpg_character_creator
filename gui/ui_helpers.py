@@ -266,14 +266,14 @@ def get_available_choices(possible_characters, active_races, active_classes, sel
     return available_choices
 
 
-def get_position_race_class_elements(screen, race_class, inactive_elements, rc_dict):
+def get_position_race_class_element(screen, race_class, inactive_elements, rc_dict):
     """Get and return x and y values for GUI elements in function 'draw_available_choices()'.
     ARGS:
         screen: pygame window.
         rc_dict: dict containing all available races/classes in the game as lists of strings.
         race_class: GUI element to be positioned.
         inactive_elements: list of text field instances for non-choose able races/classes. Used here only to be passed
-            to function 'set_elements_pos_y_values()' for further y-coordinates calculations.
+            to function 'get_race_class_y_position()' for further y-coordinates calculations.
     """
     # Variables for x-positioning.
     race_x_pos = int(screen.get_rect().width / 4)
@@ -282,27 +282,36 @@ def get_position_race_class_elements(screen, race_class, inactive_elements, rc_d
     races_list = rc_dict["races"]
     classes_list = rc_dict["classes"]
 
+    # Check if 'race_class' represents a race or a class and retrieve correct x- and y-positions.
     if race_class.text in races_list:
         x = race_x_pos
-        for index, race in enumerate(races_list):
-            race_y_start, race_y_offset = set_elements_pos_y_values(screen, inactive_elements)
-            if race_class.text == race:
-                if index == 0:
-                    y = race_y_start
-                else:
-                    y = race_y_start + race_y_offset * index
-
+        y = get_race_class_y_position(screen, race_class, races_list, inactive_elements)
     elif race_class.text in classes_list:
         x = class_x_pos
-        for index, cls in enumerate(classes_list):
-            class_y_start, class_y_offset = set_elements_pos_y_values(screen, inactive_elements)
-            if race_class.text == cls:
-                if index == 0:
-                    y = class_y_start
-                else:
-                    y = class_y_start + class_y_offset * index
+        y = get_race_class_y_position(screen, race_class, classes_list, inactive_elements)
 
     return x, y
+
+
+def get_race_class_y_position(screen, race_class, rc_dict_list, inactive_elements):
+    """Helper function to get and return y value for GUI element in function 'get_position_race_class_element()'.
+        ARGS:
+        screen: pygame window.
+        race_class: GUI element to be positioned.
+        rc_dict_list: value of type 'list' from 'rc_dict' as assigned to variable in 'get_position_race_elements'.
+        inactive_elements: list of text field instances for non-choose able races/classes. Used here only to be passed
+            to function 'set_elements_pos_y_values()' for further y-coordinates calculations.
+    """
+
+    for index, item in enumerate(rc_dict_list):
+        pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, inactive_elements)
+        if race_class.text == item:
+            if index == 0:
+                y = pos_y_start
+            else:
+                y = pos_y_start + pos_y_offset * index
+
+    return y
 
 
 def draw_available_choices(screen, rc_dict, available_choices, inactive_races, inactive_classes, mouse_pos):
@@ -327,11 +336,11 @@ def draw_available_choices(screen, rc_dict, available_choices, inactive_races, i
         # Check if race.text attribute is in 'check_list', proceed with active UI object if so, inactive object otherwise.
         if race.text in check_list:
             for r in available_choices["races"]:
-                r.interactive_rect.centerx, r.interactive_rect.centery = get_position_race_class_elements(screen, r,
+                r.interactive_rect.centerx, r.interactive_rect.centery = get_position_race_class_element(screen, r,
                                                                                                       inactive_races, rc_dict)
                 r.draw_interactive_text(mouse_pos)
         else:
-            race.text_rect.centerx, race.text_rect.centery = get_position_race_class_elements(screen, race, inactive_races,
+            race.text_rect.centerx, race.text_rect.centery = get_position_race_class_element(screen, race, inactive_races,
                                                                                           rc_dict)
             race.draw_text()
 
@@ -340,11 +349,11 @@ def draw_available_choices(screen, rc_dict, available_choices, inactive_races, i
         # Check if class.text attribute is in 'check_list', proceed with active UI object if so, inactive object otherwise.
         if cls.text in check_list:
             for c in available_choices["classes"]:
-                c.interactive_rect.centerx, c.interactive_rect.centery = get_position_race_class_elements(screen, c,
+                c.interactive_rect.centerx, c.interactive_rect.centery = get_position_race_class_element(screen, c,
                                                                                                       inactive_classes, rc_dict)
                 c.draw_interactive_text(mouse_pos)
         else:
-            cls.text_rect.centerx, cls.text_rect.centery = get_position_race_class_elements(screen, cls, inactive_classes,
+            cls.text_rect.centerx, cls.text_rect.centery = get_position_race_class_element(screen, cls, inactive_classes,
                                                                                         rc_dict)
             cls.draw_text()
 
