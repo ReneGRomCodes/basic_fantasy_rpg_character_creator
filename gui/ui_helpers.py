@@ -270,12 +270,12 @@ def get_position_race_class_element(screen, race_class, inactive_elements, rc_di
     """Get and return x and y values for GUI elements in function 'draw_available_choices()'.
     ARGS:
         screen: pygame window.
-        rc_dict: dict containing all available races/classes in the game as lists of strings.
         race_class: GUI element to be positioned.
         inactive_elements: list of text field instances for non-choose able races/classes. Used here only to be passed
             to function 'get_race_class_y_position()' for further y-coordinates calculations.
+        rc_dict: dict containing all available races/classes in the game as lists of strings.
     """
-    # Variables for x-positioning.
+    # Race and class specific variables for x-positioning.
     race_x_pos = int(screen.get_rect().width / 4)
     class_x_pos = race_x_pos * 3
     # Lists of races and classes from dict 'rc_dict' for checks and calculation of y-positions.

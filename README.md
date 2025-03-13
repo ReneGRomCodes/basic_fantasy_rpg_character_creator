@@ -5,20 +5,28 @@
 This is a fully functional character creator for the "Basic Fantasy RPG" game system, designed in Python using Pygame. It
 serves as both a standalone application and a portfolio piece, demonstrating dynamic adaptability and modular structure.
 
-The program automatically adjusts GUI elements based on screen size and allows easy expansion by modifying core class
-structures. While the final character sheet is not yet complete, the underlying framework is stable and adaptable.
+While it is not a "character creator creator", it can be easily modified to accommodate other RPG rule systems with some
+coding adjustments.
+
+The program is built with Python and Pygame, featuring a UI that dynamically adjusts itself based on added UI element
+instances. However, modifying the core rule set (races, classes, abilities, etc.) requires manual changes in rules.py and
+character_model.py. If a new system requires additional screens (e.g., spell selection), they need to be implemented
+separately but can reuse existing UI functions for consistency.
 
 ## Features
 
-Dynamic GUI Scaling – Automatically adapts to different screen sizes.
+Easily Modifiable Rule System – Modify rules.py and character_model.py to adapt the character creator for other RPG
+systems.
 
-Modular Design – Clearly separated packages for core logic, descriptions, and GUI elements.
+Adaptive UI – GUI elements reposition and resize automatically based on added UI instances, ensuring a clean layout.
 
-Easily Expandable – Adding new attributes, elements, or features requires minimal changes.
+Modular Design – Clear separation between game logic, descriptions, and UI elements for easier expansion.
 
-Pygame-Based UI – Custom-drawn interface using text fields, buttons, and other components.
+Pygame-Based UI – Fully interactive graphical interface with text fields, buttons, and adaptive layout handling.
 
-State Management System – Keeps track of application flow and interactions.
+Reusable UI Functions – New screens can be built while leveraging existing helper functions for consistency.
+
+State Management System – Tracks application flow and interactions to ensure a smooth experience.
 
 ## Installation
 
@@ -50,30 +58,53 @@ Run:
 ```
 project_root/
 │── main.py                # Main entry point, initializes Pygame and runs the main loop
-│── core/                  # Core game logic (non-GUI modules)
+│── core/                  # Handles game logic (settings, state management, character models, etc.)
 │   ├── settings.py        # Stores configuration values (screen size, etc.)
 │   ├── event_handlers.py  # Handles input events
 │   ├── state_manager.py   # Manages application states
-│   ├── rules.py           # Defines mechanics for character creation based on game rules
-│   └── character_model.py # Player character class for creation process
+│   ├── rules.py           # Defines game mechanics and rules
+│   └── character_model.py # Manages character attributes and interactions
 │
-│── descr/                 # String-based descriptions (races, classes, abilities, etc.)
+│── descr/                 # Stores string-based descriptions (races, classes, etc.)
 │
-│── gui/                   # Graphical user interface components
+│── gui/                   # Manages UI components and rendering.
 │   ├── screen_objects.py  # GUI element classes (buttons, text fields, etc.)
 │   ├── cs_model.py        # Character sheet class and GUI logic
-│   ├── gui_elements.py    # Creates GUI elements and returns them as a dictionary
-│   ├── gui.py             # Functions for drawing elements on screen
+│   ├── gui_elements.py    # Creates and stores references to UI elements for rendering
+│   ├── gui.py             # Handles UI logic and rendering functions
 │   ├── ui_helpers.py      # Helper functions for positioning elements
 │   ├── credits.py         # Credits screen logic
-│   └── settings_gui.py     # Settings screen logic
+│   └── settings_gui.py    # Settings screen logic
 │
 └── README.md              # You are here
 ```
 ## Adding New Features
 
-The program is designed with expandability in mind. Below is an example of how new elements can be added with minimal
-effort:
+The program is designed with expandability in mind, making it easy to introduce new attributes, UI elements, or even
+entirely new mechanics. Below is an example of how to add a new UI element, such as a "Luck" ability score, to the
+character creation process.
+
+Example: Adding a "Luck" Ability Score
+
+    Modify the Character Model
+        Add "luck" as a new attribute in character_model.py, ensuring it follows the same structure as other abilities.
+
+    Update the Rules
+        Modify rules.py to include "Luck" where necessary (e.g., defining how it's rolled, whether it affects class
+        selection, etc.).
+
+    Create the UI Element
+        In screen_objects.py, create a new UI element class (or reuse an existing one) to display the "Luck" score.
+
+    Add It to the GUI System
+        Instantiate the "Luck" UI element in gui_elements.py, and add it to relevant functions in gui.py, ensuring it is
+        included in the relevant screens.
+
+    Adjust UI Layout
+        Since the UI adapts dynamically, the new element will be positioned automatically. However, if needed,
+        tweak ui_helpers.py to fine-tune spacing.
+
+By following this process, new attributes, mechanics, or even entirely new selection screens can be integrated with minimal effort while keeping the UI flexible and consistent.
 
 ### Adding a New GUI Element
 
@@ -90,6 +121,14 @@ The final character sheet display is incomplete.
 The program currently does not return to the main menu after displaying the character sheet.
 
 Some obsolete or work-in-progress files remain in the main directory and will be removed in future updates.
+
+## Future Plans
+
+Finalizing the character sheet screen for complete adaptability.
+
+Implementing an item shop UI based on existing logic.
+
+Refining documentation for easier customization.
 
 ## License
 

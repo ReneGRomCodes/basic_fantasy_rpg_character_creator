@@ -13,5 +13,4 @@ this point it has become mostly a dumping ground for 'todos'."""
 
 # PRIORITIES:
 # TODO finish character sheet screen ffs!!!
-# TODO add similar adaptability from 'ability scores screen' to other screens where it might apply
 # TODO Re-structure 'rules.py' and 'Character' class to get rid of overlap
