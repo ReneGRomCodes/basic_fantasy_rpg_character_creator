@@ -1,7 +1,12 @@
 import pygame
 from core.rules import set_starting_money
 import gui.screen_objects as so
+import time
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
+
+
+# Create int variable 'dice_roll_start_time' to be used as timer for dice roll effect on screen (e.g. starting money screen).
+dice_roll_start_time = 0
 
 
 """General functions."""
@@ -172,7 +177,6 @@ def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
     for ability_name, ability_score in abilities_array:
         # 'Pre-formatting' bonus/penalty to string for easier formatting and better code-readability further down.
         bonus_penalty = f"{ability_score[1]}"
-
         # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
         # string if bonus_penalty is 0.
         if ability_score[1] > 0:
@@ -292,7 +296,7 @@ def get_race_class_y_position(screen, race_class, rc_dict_list, inactive_element
         ARGS:
         screen: pygame window.
         race_class: GUI element to be positioned.
-        rc_dict_list: value of type 'list' from 'rc_dict' as assigned to variable in 'get_position_race_elements'.
+        rc_dict_list: value of type 'list' from 'rc_dict' as assigned to variable in 'get_position_race_class_element()'.
         inactive_elements: list of text field instances for non-choose able races/classes. Used here only to be passed
             to function 'set_elements_pos_y_values()' for further y-coordinates calculations.
     """
@@ -443,27 +447,28 @@ def position_money_screen_elements(screen, gui_elements):
     money_amount_field.input_bg_field.top = screen.get_rect().centery * 1.15
 
 
-def choose_money_option(choices, starting_money, random_money_flag, custom_money_flag, mouse_pos):
+def choose_money_option(choices, random_money_flag, custom_money_flag, mouse_pos):
     """Choose option to either generate random amount of money or let user input a custom amount, return 'starting_money'
     if random amount is chosen, set and return 'random_money_flag'/'custom_money_flag' accordingly.
     ARGS:
         choices: List of instances of 'Button' class from dict 'gui_elements'.
-        starting_money: amount of starting money. Starting value is 'None', changes if 'random_money_flag' is 'True'
         random_money_flag: flag to indicate if randomly generated amount of money is chosen.
         custom_money_flag: flag to indicate if custom amount of money is chosen.
         mouse_pos: position of mouse on screen.
     """
+    # Declare global variable 'dice_roll_start_time' to set timer for dice roll effect on screen.
+    global dice_roll_start_time
 
     if pygame.mouse.get_pressed()[0]:
         # Set flags to appropriate values based chosen option.
         if choices[0].button_rect.collidepoint(mouse_pos):
             random_money_flag, custom_money_flag = True, False
-            # Generate int value for 'starting_money' if random amount is chosen.
-            starting_money = set_starting_money()
+            # Set dice roll timer.
+            dice_roll_start_time = time.time()
         if choices[1].button_rect.collidepoint(mouse_pos):
             random_money_flag, custom_money_flag = False, True
 
-    return starting_money, random_money_flag, custom_money_flag
+    return random_money_flag, custom_money_flag
 
 
 def draw_chosen_money_option(screen, starting_money, random_money_flag, custom_money_flag, gui_elements):
@@ -475,22 +480,57 @@ def draw_chosen_money_option(screen, starting_money, random_money_flag, custom_m
         custom_money_flag: flag to indicate if custom amount of money is chosen.
         gui_elements: dict containing gui element instances.
     """
+    # Declare global variable 'dice_roll_start_time' to set timer for dice roll effect on screen.
+    global dice_roll_start_time
+    # Set duration for dice roll in seconds.
+    dice_roll_duration = 0.75
+
     # Assign font size and text field instances from dict 'gui_elements' to variables.
     text_large = gui_elements["text_large"]
     random_money_field = gui_elements["random_money"]
     money_amount_field, money_input_prompt = gui_elements["money_amount_input"][1], gui_elements["money_amount_input"][2]
 
     if random_money_flag:
-        random_money_field.draw_text()
-        # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
-        starting_money_message = str(starting_money) + " gold pieces"
-        # Create TextField instance 'random_money_result_field', and position and draw it on screen.
-        random_money_result_field = so.TextField(screen, starting_money_message, text_large)
-        random_money_result_field.text_rect.top = random_money_field.text_rect.bottom
-        random_money_result_field.draw_text()
+        # Check timer to allow for dice roll effect.
+        if time.time() - dice_roll_start_time < dice_roll_duration:
+            # Generate random int value for 'starting_money'.
+            starting_money = set_starting_money()
+            starting_money_dice_roll(screen, starting_money, random_money_field, text_large)
+        # Show final value after timer runs out.
+        else:
+            random_money_field.draw_text()
+            starting_money_dice_roll(screen, starting_money, random_money_field, text_large, rolling=False)
+            # Reset global dice roll timer. Not strictly necessary, but better safe than sorry.
+            dice_roll_start_time = 0
     elif custom_money_flag:
         money_input_prompt.draw_text()
         money_amount_field.draw_input_field()
+
+    return starting_money
+
+
+def starting_money_dice_roll(screen, starting_money, random_money_field, text_large, rolling=True):
+    """Display the rolling or final amount of starting money on screen.
+    ARGS:
+        screen: Pygame window.
+        starting_money: amount of starting money to display.
+        random_money_field: reference text field to position the money display correctly.
+        text_large: font size instance for text rendering.
+        rolling: boolean flag to indicate if the dice roll is still ongoing.
+            If 'True', displays a "rolling" message. If 'False', shows the final amount. Default is 'True'.
+    """
+    # Check if "rolling" message or final amount should be displayed.
+    if rolling:
+        # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
+        starting_money_message = "Roll the dice: " + str(starting_money)
+    else:
+        # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
+        starting_money_message = str(starting_money) + " gold pieces"
+
+    # Create TextField instance 'random_money_result_field', and position and draw it on screen.
+    random_money_result_field = so.TextField(screen, starting_money_message, text_large)
+    random_money_result_field.text_rect.top = random_money_field.text_rect.bottom
+    random_money_result_field.draw_text()
 
 
 """Background functions for creation complete screen."""

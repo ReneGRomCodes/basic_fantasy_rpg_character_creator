@@ -184,11 +184,10 @@ def show_starting_money_screen(screen, gui_elements, random_money_flag, custom_m
 
     # Choose option to either generate random amount of money or let user input a custom amount.
     # Set 'random_money_flag' and 'custom_money_flag' accordingly.
-    starting_money, random_money_flag, custom_money_flag = ui.choose_money_option(choices, starting_money, random_money_flag,
-                                                                                  custom_money_flag, mouse_pos)
+    random_money_flag, custom_money_flag = ui.choose_money_option(choices, random_money_flag, custom_money_flag, mouse_pos)
 
-    # Draw message for random amount of starting money or show input field for custom amount based on user choice above.
-    ui.draw_chosen_money_option(screen, starting_money, random_money_flag, custom_money_flag, gui_elements)
+    # Set and draw message for random amount of starting money or show input field for custom amount based on user choice above.
+    starting_money = ui.draw_chosen_money_option(screen, starting_money, random_money_flag, custom_money_flag, gui_elements)
 
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)
