@@ -153,59 +153,53 @@ def position_character_menu_screen_elements(screen, gui_elements):
 def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
     """Position, format and draw objects for ability scores screen. 'abilities_array' stores ability objects in function
     'show_ability_scores_screen()'."""
+    # X-positions for ability, score and bonus/penalty columns.
+    ability_name_x = screen.get_rect().width / 3
+    ability_score_x = screen.get_rect().width / 6 * 3.7
+    bonus_penalty_x = screen.get_rect().width / 6 * 4
+    # Get y-position for first ability object and position offset value for further objects.
+    element_pos_y, pos_y_offset = set_elements_pos_y_values(screen, abilities_array)
 
     # Create instances of class 'TextField' to show ability scores and bonus/penalty on screen. Text string is placeholder
     # and text size is 'field_text_size' as retrieved from first 'gui_elements' entry in 'abilities_array' to ensure
     # correct scaling. Placeholder text is dynamically changed for each ability in for-loop further down.
     field_text_size = abilities_array[0][0].size
-    ability_score_text = so.TextField(screen, "score", field_text_size)
-    bonus_penalty_text = so.TextField(screen, "bonus_penalty", field_text_size)
+    ability_score_field = so.TextField(screen, "score", field_text_size)
+    bonus_penalty_field = so.TextField(screen, "bonus_penalty", field_text_size)
 
-    # Get y-position for first ability object and position offset value for further objects.
-    element_pos_y, pos_y_offset = set_elements_pos_y_values(screen, abilities_array)
-
-    # Loop through each ability field (as they are grouped in 'abilities_array') and corresponding stats to format,
-    # position and display the ability name, score and bonus/penalty as they are grouped in 'abilities_array'.
-    for ability_ui, ability_attribute in abilities_array:
+    # Loop through each ability and corresponding stats to format, position and display the ability name, score and
+    # bonus/penalty as they are grouped in 'abilities_array'.
+    for ability_name, ability_score in abilities_array:
         # 'Pre-formatting' bonus/penalty to string for easier formatting and better code-readability further down.
-        bonus_penalty = f"{ability_attribute[1]}"
+        bonus_penalty = f"{ability_score[1]}"
 
         # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
         # string if bonus_penalty is 0.
-        if ability_attribute[1] > 0:
+        if ability_score[1] > 0:
             bonus_penalty = f"+{bonus_penalty}"
-        elif ability_attribute[1] == 0:
+        elif ability_score[1] == 0:
             bonus_penalty = ""
 
-        # Position and draw copied rect for item from list 'abilities'.
-        ability_rect = ability_ui.interactive_rect.copy()
-        ability_rect.top = element_pos_y
-        ability_rect.width = screen.get_rect().width / 6
-        ability_rect.right = screen.get_rect().centerx
-        # Position ability rect within copied rect for left-alignment.
-        ability_ui.interactive_rect.topleft = ability_rect.topleft
-        ability_ui.draw_interactive_text(mouse_pos)
+        # Position and draw ability name on screen.
+        ability_name.interactive_rect.top = element_pos_y
+        ability_name.interactive_rect.left = ability_name_x
+        ability_name.draw_interactive_text(mouse_pos)
 
-        # Change contents and get rect of 'TextField' instances for each ability score stat.
-        ability_score_text.text = str(ability_attribute[0])
-        ability_score_text.render_new_text_image()
-        bonus_penalty_text.text = bonus_penalty
-        bonus_penalty_text.render_new_text_image()
+        # Change contents and re-render 'TextField' instances for each ability score stat.
+        ability_score_field.text = str(ability_score[0])
+        ability_score_field.render_new_text_image()
+        bonus_penalty_field.text = bonus_penalty
+        bonus_penalty_field.render_new_text_image()
 
-        # Position and draw copied rects for each stat and bonus/penalty field.
-        ability_score_rect = ability_score_text.text_rect.copy()
-        ability_score_rect.width = screen.get_rect().width / 12
-        ability_score_rect.topleft = ability_rect.topright
-        bonus_penalty_rect = bonus_penalty_text.text_rect.copy()
-        bonus_penalty_rect.width = screen.get_rect().width / 12
-        bonus_penalty_rect.topleft = ability_score_rect.topright
-        # Position stat and bonus/penalty rects within copied rects for right-alignment.
-        ability_score_text.text_rect.topright = ability_score_rect.topright
-        bonus_penalty_text.text_rect.topright = bonus_penalty_rect.topright
+        # Position and draw ability score and bonus/penalty on screen.
+        ability_score_field.text_rect.top = ability_name.interactive_rect.top
+        ability_score_field.text_rect.right = ability_score_x
+        bonus_penalty_field.text_rect.top = ability_score_field.text_rect.top
+        bonus_penalty_field.text_rect.right = bonus_penalty_x
+        ability_score_field.draw_text()
+        bonus_penalty_field.draw_text()
 
-        ability_score_text.draw_text()
-        bonus_penalty_text.draw_text()
-
+        # Set new y-position for next element.
         element_pos_y += pos_y_offset
 
 
