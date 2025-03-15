@@ -439,8 +439,9 @@ def position_money_screen_elements(screen, gui_elements):
     custom_money_button.button_rect.top, custom_money_button.button_rect.centerx = money_button_pos_y, screen.get_rect().centerx * 1.5
 
     # Positioning of text input and text field instances.
-    random_money_field = gui_elements["random_money"]
-    random_money_field.text_rect.centery = screen.get_rect().centery * 1.1
+    rolling_dice_money_field,random_money_field = gui_elements["random_money"][0], gui_elements["random_money"][1]
+    rolling_dice_money_field.text_rect.centery, random_money_field.text_rect.centery = (screen.get_rect().centery * 1.1,
+                                                                                        screen.get_rect().centery * 1.1)
     money_input_prompt = gui_elements["money_amount_input"][2]
     money_input_prompt.text_rect.centery = screen.get_rect().centery * 1.1
     money_amount_field = gui_elements["money_amount_input"][1]
@@ -483,16 +484,17 @@ def draw_chosen_money_option(screen, starting_money, random_money_flag, custom_m
     # Declare global variable 'dice_roll_start_time' to set timer for dice roll effect on screen.
     global dice_roll_start_time
     # Set duration for dice roll in seconds.
-    dice_roll_duration = 0.75
+    dice_roll_duration = 1
 
     # Assign font size and text field instances from dict 'gui_elements' to variables.
     text_large = gui_elements["text_large"]
-    random_money_field = gui_elements["random_money"]
+    rolling_dice_money_field, random_money_field = gui_elements["random_money"][0], gui_elements["random_money"][1]
     money_amount_field, money_input_prompt = gui_elements["money_amount_input"][1], gui_elements["money_amount_input"][2]
 
     if random_money_flag:
         # Check timer to allow for dice roll effect.
         if time.time() - dice_roll_start_time < dice_roll_duration:
+            rolling_dice_money_field.draw_text()
             # Generate random int value for 'starting_money'.
             starting_money = set_starting_money()
             starting_money_dice_roll(screen, starting_money, random_money_field, text_large)
@@ -522,7 +524,7 @@ def starting_money_dice_roll(screen, starting_money, random_money_field, text_la
     # Check if "rolling" message or final amount should be displayed.
     if rolling:
         # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
-        starting_money_message = "Roll the dice: " + str(starting_money)
+        starting_money_message = str(starting_money)
     else:
         # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
         starting_money_message = str(starting_money) + " gold pieces"
