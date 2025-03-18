@@ -260,7 +260,13 @@ def custom_starting_money_events(screen, state, character, gui_elements, mouse_p
 
 def check_and_reset_position_flag(screen, event, mouse_pos):
     """Check for events that switch screens and reset position flag in module 'ui_helpers.py' to ensure screen specific
-    elements are positioned only once per screen appearance."""
+    elements are positioned only once per screen appearance. Called in every event handlers 'for event in pygame.event.get()'
+    loop.
+    ARGS:
+        screen: PyGame window.
+        event: PyGame event from for-loop in event handler.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    """
 
     # Check for any 'KEYUP' or 'MOUSEBUTTONUP' event. While this leads to repositioning of UI elements every time an
     # event occurs, it trades this redundancy for overall maintainability.

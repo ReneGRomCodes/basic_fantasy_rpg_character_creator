@@ -5,8 +5,9 @@ import time
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
 
 
-# Flag to ensure screen specific elements are positioned only once per screen appearance. Variable is checked in screen
-# specific positioning functions further down, keeping possible repositioning actions to a minimum.
+# Ensures screen-specific elements are positioned only once per appearance.
+# Used in non-adaptable screens to minimize unnecessary repositioning.
+# Not applied to adaptable screens to keep functions maintainable.
 position_flag = False
 # Create int variable 'dice_roll_start_time' to be used as timer for dice roll effect on screen (e.g. starting money screen).
 dice_roll_start_time = 0
