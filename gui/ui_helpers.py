@@ -438,37 +438,48 @@ def build_and_position_prompt(screen, naming_prompt, character):
         naming_prompt: instance of 'TextField' class prompting the user to input a character name.
         character: instance of 'Character' class.
     """
+    # Declare position flag as global.
+    global position_flag
 
-    # Add naming prompt to 'naming_prompt.text' attribute and render text_rect.
-    naming_prompt.text = f"Name your {character.race_name} {character.class_name}"
-    naming_prompt.text_image = naming_prompt.font.render(naming_prompt.text, True, naming_prompt.text_color)
-    naming_prompt.text_rect = naming_prompt.text_image.get_rect()
+    if not position_flag:
+        # Add naming prompt to 'naming_prompt.text' attribute and render text_rect.
+        naming_prompt.text = f"Name your {character.race_name} {character.class_name}"
+        naming_prompt.text_image = naming_prompt.font.render(naming_prompt.text, True, naming_prompt.text_color)
+        naming_prompt.text_rect = naming_prompt.text_image.get_rect()
 
-    # Position final naming prompt on screen.
-    naming_prompt.text_rect.centerx, naming_prompt.text_rect.centery = screen.get_rect().centerx, screen.get_rect().centery / 1.15
+        # Position final naming prompt on screen.
+        naming_prompt.text_rect.centerx, naming_prompt.text_rect.centery = screen.get_rect().centerx, screen.get_rect().centery / 1.15
+
+        position_flag = True
 
 
 """Background functions for starting money screen."""
 
 def position_money_screen_elements(screen, gui_elements):
     """Position objects from 'gui_elements' for starting money screen."""
-    # Positioning of button instances.
-    money_button_width = screen.get_rect().width / 2.5
-    money_button_pos_y = screen.get_rect().height / 3
-    random_money_button, custom_money_button = gui_elements["starting_money_choices"][0], gui_elements["starting_money_choices"][1]
-    random_money_button.button_rect.width = money_button_width
-    custom_money_button.button_rect.width = money_button_width
-    random_money_button.button_rect.top, random_money_button.button_rect.centerx = money_button_pos_y, screen.get_rect().centerx * 0.5
-    custom_money_button.button_rect.top, custom_money_button.button_rect.centerx = money_button_pos_y, screen.get_rect().centerx * 1.5
+    # Declare position flag as global.
+    global position_flag
 
-    # Positioning of text input and text field instances.
-    rolling_dice_money_field,random_money_field = gui_elements["random_money"][0], gui_elements["random_money"][1]
-    rolling_dice_money_field.text_rect.centery, random_money_field.text_rect.centery = (screen.get_rect().centery * 1.1,
-                                                                                        screen.get_rect().centery * 1.1)
-    money_input_prompt = gui_elements["money_amount_input"][2]
-    money_input_prompt.text_rect.centery = screen.get_rect().centery * 1.1
-    money_amount_field = gui_elements["money_amount_input"][1]
-    money_amount_field.input_bg_field.top = screen.get_rect().centery * 1.15
+    if not position_flag:
+        # Positioning of button instances.
+        money_button_width = screen.get_rect().width / 2.5
+        money_button_pos_y = screen.get_rect().height / 3
+        random_money_button, custom_money_button = gui_elements["starting_money_choices"][0], gui_elements["starting_money_choices"][1]
+        random_money_button.button_rect.width = money_button_width
+        custom_money_button.button_rect.width = money_button_width
+        random_money_button.button_rect.top, random_money_button.button_rect.centerx = money_button_pos_y, screen.get_rect().centerx * 0.5
+        custom_money_button.button_rect.top, custom_money_button.button_rect.centerx = money_button_pos_y, screen.get_rect().centerx * 1.5
+
+        # Positioning of text input and text field instances.
+        rolling_dice_money_field,random_money_field = gui_elements["random_money"][0], gui_elements["random_money"][1]
+        rolling_dice_money_field.text_rect.centery, random_money_field.text_rect.centery = (screen.get_rect().centery * 1.1,
+                                                                                            screen.get_rect().centery * 1.1)
+        money_input_prompt = gui_elements["money_amount_input"][2]
+        money_input_prompt.text_rect.centery = screen.get_rect().centery * 1.1
+        money_amount_field = gui_elements["money_amount_input"][1]
+        money_amount_field.input_bg_field.top = screen.get_rect().centery * 1.15
+
+        position_flag = True
 
 
 def choose_money_option(choices, random_money_flag, custom_money_flag, mouse_pos):
@@ -568,10 +579,15 @@ def position_completion_screen_elements(screen, completion_message, show_charact
         show_character_sheet: instance of class 'Button' to proceed to character sheet.
         gui_elements: dict containing gui element instances.
     """
+    # Declare position flag as global.
+    global position_flag
     # Assign spacing value from 'gui_elements' to variables.
     spacing = gui_elements["title_screen_spacing"]
 
-    # Position screen elements.
-    completion_message.text_rect.bottom = screen.get_rect().centery - spacing
-    show_character_sheet.button_rect.top = screen.get_rect().centery + spacing
-    show_character_sheet.button_rect.centerx = screen.get_rect().centerx
+    if not position_flag:
+        # Position screen elements.
+        completion_message.text_rect.bottom = screen.get_rect().centery - spacing
+        show_character_sheet.button_rect.top = screen.get_rect().centery + spacing
+        show_character_sheet.button_rect.centerx = screen.get_rect().centerx
+
+        position_flag = True
