@@ -5,16 +5,31 @@ import time
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
 
 
+# Flag to ensure elements are positioned only once per screen appearance. Variable is checked in positioning functions
+# further down, keeping possible repositioning actions to a minimum.
+position_flag = False
 # Create int variable 'dice_roll_start_time' to be used as timer for dice roll effect on screen (e.g. starting money screen).
 dice_roll_start_time = 0
 
 
 """General functions."""
 
+def reset_position_flag():
+    """Reset position flag to 'False'. Used in event handler."""
+    global position_flag
+    position_flag = False
+
+
 def draw_screen_title(screen, screen_title, gui_elements):
     """Draw 'screen_title' object on screen at default position."""
-    screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
-    screen_title.text_rect.centerx = screen.get_rect().centerx
+    # Declare position flag as global.
+    global position_flag
+
+    if not position_flag:
+        screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
+        screen_title.text_rect.centerx = screen.get_rect().centerx
+        position_flag = True
+
     screen_title.draw_text()
 
 
@@ -93,19 +108,23 @@ def set_elements_pos_y_values(screen, elements):
 
 def position_title_screen_elements(screen, gui_elements):
     """Position objects from 'gui_elements' for title screen."""
+    # Declare position flag as global.
+    global position_flag
     # Assign gui_elements to variables.
     spacing = gui_elements["title_screen_spacing"]
     title = gui_elements["title"]
     subtitle = gui_elements["subtitle"]
     copyright_notice = gui_elements["copyright_notice"]
 
-    # Position title, subtitle and copyright notice.
-    title.text_rect.centerx = screen.get_rect().centerx
-    title.text_rect.bottom = screen.get_rect().centery - spacing
-    subtitle.text_rect.centerx = screen.get_rect().centerx
-    subtitle.text_rect.top = screen.get_rect().centery + spacing
-    copyright_notice.text_rect.centerx = screen.get_rect().centerx
-    copyright_notice.text_rect.bottom = screen.get_rect().bottom - spacing
+    if not position_flag:
+        # Position title, subtitle and copyright notice.
+        title.text_rect.centerx = screen.get_rect().centerx
+        title.text_rect.bottom = screen.get_rect().centery - spacing
+        subtitle.text_rect.centerx = screen.get_rect().centerx
+        subtitle.text_rect.top = screen.get_rect().centery + spacing
+        copyright_notice.text_rect.centerx = screen.get_rect().centerx
+        copyright_notice.text_rect.bottom = screen.get_rect().bottom - spacing
+        position_flag = True
 
 
 """Background functions for main menu screen."""

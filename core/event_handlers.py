@@ -2,6 +2,7 @@ import pygame
 import sys
 import core.rules as rls
 from character_creation_functions import build_character_sheet
+from gui.ui_helpers import reset_position_flag
 """Contains event handler functions."""
 
 
@@ -21,8 +22,12 @@ def main_events(screen, state, gui_elements, mouse_pos):
             pygame.quit()
             sys.exit()
 
+        # Ensures UI elements are positioned only once per screen appearance.
+        check_and_reset_position_flag(screen, event, mouse_pos)
+
         if state == "title_screen":
             if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP and screen.get_rect().collidepoint(mouse_pos):
+                reset_position_flag()
                 state = "init_rc_dict"
 
         elif state == "main_menu":
@@ -65,10 +70,11 @@ def main_events(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def custom_character_events(state, character, gui_elements, mouse_pos, possible_characters=None, context1=None,
+def custom_character_events(screen, state, character, gui_elements, mouse_pos, possible_characters=None, context1=None,
                             context2=None, context3=None):
     """Check and handle events in function 'custom_character()' in 'state_manager.py' and return 'state'.
     ARGS:
+        screen: PyGame window.
         state: program state.
         character: instance of class 'Character'.
         gui_elements: dict of GUI elements.
@@ -88,6 +94,9 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+        # Ensures UI elements are positioned only once per screen appearance.
+        check_and_reset_position_flag(screen, event, mouse_pos)
 
         if state == "show_abilities":
             if event.type == pygame.MOUSEBUTTONUP:
@@ -143,10 +152,11 @@ def custom_character_events(state, character, gui_elements, mouse_pos, possible_
 """Event handlers for screens where pygame_textinput library is used so 'pygame.event.get()' can be split between pygame
 events and pygame_textinput events."""
 
-def naming_character_events(state, character, gui_elements, mouse_pos):
+def naming_character_events(screen, state, character, gui_elements, mouse_pos):
     """Check and handle text input field events in functions 'custom_character()' and 'random_character' for each naming
     character state.
     ARGS:
+        screen: PyGame window.
         state: program state. Entry and exit state differs based on custom or random character creation.
         character: instance of class 'Character'.
         gui_elements: dict of GUI elements.
@@ -166,6 +176,9 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+        # Ensures UI elements are positioned only once per screen appearance.
+        check_and_reset_position_flag(screen, event, mouse_pos)
 
         if event.type == pygame.MOUSEBUTTONUP:
             if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
@@ -192,10 +205,11 @@ def naming_character_events(state, character, gui_elements, mouse_pos):
     return state
 
 
-def custom_starting_money_events(state, character, gui_elements, mouse_pos):
+def custom_starting_money_events(screen, state, character, gui_elements, mouse_pos):
     """Check and handle text input field events in function 'custom_character()' for state 'custom_input_money' in
     'state_manager.py'.
-        ARGS:
+    ARGS:
+        screen: PyGame window.
         state: program state. Entry and exit state differs based on custom or random character creation.
         character: instance of class 'Character'.
         gui_elements: dict of GUI elements.
@@ -219,6 +233,9 @@ def custom_starting_money_events(state, character, gui_elements, mouse_pos):
             pygame.quit()
             sys.exit()
 
+        # Ensures UI elements are positioned only once per screen appearance.
+        check_and_reset_position_flag(screen, event, mouse_pos)
+
         # Allow only text input with numeric keys and populate 'filtered_key' with valid inputs.
         if event.type == pygame.KEYDOWN and event.key in valid_keys:
             filtered_keys.append(event)
@@ -239,3 +256,13 @@ def custom_starting_money_events(state, character, gui_elements, mouse_pos):
     starting_money_input.update(filtered_keys)
 
     return state
+
+
+def check_and_reset_position_flag(screen, event, mouse_pos):
+    """Check for events that switch screens and reset position flag in module 'ui_helpers.py' to ensure elements are
+    positioned only once per screen appearance."""
+
+    # Check for any 'KEYUP' or 'MOUSEBUTTONUP' event. While this leads to repositioning of UI elements every time an
+    # event occurs, it trades this redundancy for overall maintainability.
+    if (event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP) and screen.get_rect().collidepoint(mouse_pos):
+        reset_position_flag()
