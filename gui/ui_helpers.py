@@ -5,8 +5,8 @@ import time
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
 
 
-# Flag to ensure elements are positioned only once per screen appearance. Variable is checked in positioning functions
-# further down, keeping possible repositioning actions to a minimum.
+# Flag to ensure screen specific elements are positioned only once per screen appearance. Variable is checked in screen
+# specific positioning functions further down, keeping possible repositioning actions to a minimum.
 position_flag = False
 # Create int variable 'dice_roll_start_time' to be used as timer for dice roll effect on screen (e.g. starting money screen).
 dice_roll_start_time = 0
@@ -22,14 +22,8 @@ def reset_position_flag():
 
 def draw_screen_title(screen, screen_title, gui_elements):
     """Draw 'screen_title' object on screen at default position."""
-    # Declare position flag as global.
-    global position_flag
-
-    if not position_flag:
-        screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
-        screen_title.text_rect.centerx = screen.get_rect().centerx
-        position_flag = True
-
+    screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
+    screen_title.text_rect.centerx = screen.get_rect().centerx
     screen_title.draw_text()
 
 
@@ -131,45 +125,55 @@ def position_title_screen_elements(screen, gui_elements):
 
 def position_main_menu_screen_elements(screen, gui_elements):
     """Format and position objects from 'gui_elements' for main menu screen."""
+    # Declare position flag as global.
+    global position_flag
     # Assign gui_elements to variables.
     spacing = gui_elements["title_screen_spacing"]
     title = gui_elements["main_menu_title"]
     start = gui_elements["start_button"]
     menu_buttons = gui_elements["menu_buttons"]
 
-    # Format/position title text field and start button.
-    title.text_rect.centery = screen.get_rect().height / 4
-    title.text_rect.centerx = screen.get_rect().centerx
-    start.button_rect.width = screen.get_rect().width / 4
-    start.button_rect.centerx = screen.get_rect().centerx
-    start.button_rect.bottom = screen.get_rect().centery - spacing
+    if not position_flag:
+        # Format/position title text field and start button.
+        title.text_rect.centery = screen.get_rect().height / 4
+        title.text_rect.centerx = screen.get_rect().centerx
+        start.button_rect.width = screen.get_rect().width / 4
+        start.button_rect.centerx = screen.get_rect().centerx
+        start.button_rect.bottom = screen.get_rect().centery - spacing
 
-    # Format, position and draw additional menu buttons.
-    for index, button in enumerate(menu_buttons):
-        button.button_rect.width = screen.get_rect().width / 6
-        button.button_rect.centerx = screen.get_rect().centerx
+        # Format, position and draw additional menu buttons.
+        for index, button in enumerate(menu_buttons):
+            button.button_rect.width = screen.get_rect().width / 6
+            button.button_rect.centerx = screen.get_rect().centerx
 
-        if index == 0:
-            button.button_rect.top = screen.get_rect().centery + spacing * 2
-        else:
-            button.button_rect.top = menu_buttons[index - 1].button_rect.bottom
+            if index == 0:
+                button.button_rect.top = screen.get_rect().centery + spacing * 2
+            else:
+                button.button_rect.top = menu_buttons[index - 1].button_rect.bottom
+
+        position_flag = True
 
 
 """Background functions for character menu screen."""
 
 def position_character_menu_screen_elements(screen, gui_elements):
     """Position objects from 'gui_elements' for character menu screen."""
+    # Declare position flag as global.
+    global position_flag
     # Assign gui_elements to variables.
     custom = gui_elements["custom"]
     random = gui_elements["random"]
 
+    if not position_flag:
     # Position buttons.
-    custom.button_rect.width = screen.get_rect().width / 3
-    custom.button_rect.centerx = screen.get_rect().centerx
-    custom.button_rect.bottom = screen.get_rect().centery
-    random.button_rect.width = screen.get_rect().width / 3
-    random.button_rect.centerx = screen.get_rect().centerx
-    random.button_rect.top = screen.get_rect().centery
+        custom.button_rect.width = screen.get_rect().width / 3
+        custom.button_rect.centerx = screen.get_rect().centerx
+        custom.button_rect.bottom = screen.get_rect().centery
+        random.button_rect.width = screen.get_rect().width / 3
+        random.button_rect.centerx = screen.get_rect().centerx
+        random.button_rect.top = screen.get_rect().centery
+
+        position_flag = True
 
 
 """Background functions for ability scores screen."""

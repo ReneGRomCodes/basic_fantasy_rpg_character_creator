@@ -22,7 +22,7 @@ def main_events(screen, state, gui_elements, mouse_pos):
             pygame.quit()
             sys.exit()
 
-        # Ensures UI elements are positioned only once per screen appearance.
+        # Ensures screen specific UI elements are positioned only once per screen appearance.
         check_and_reset_position_flag(screen, event, mouse_pos)
 
         if state == "title_screen":
@@ -95,7 +95,7 @@ def custom_character_events(screen, state, character, gui_elements, mouse_pos, p
             pygame.quit()
             sys.exit()
 
-        # Ensures UI elements are positioned only once per screen appearance.
+        # Ensures screen specific UI elements are positioned only once per screen appearance.
         check_and_reset_position_flag(screen, event, mouse_pos)
 
         if state == "show_abilities":
@@ -177,7 +177,7 @@ def naming_character_events(screen, state, character, gui_elements, mouse_pos):
             pygame.quit()
             sys.exit()
 
-        # Ensures UI elements are positioned only once per screen appearance.
+        # Ensures screen specific UI elements are positioned only once per screen appearance.
         check_and_reset_position_flag(screen, event, mouse_pos)
 
         if event.type == pygame.MOUSEBUTTONUP:
@@ -233,7 +233,7 @@ def custom_starting_money_events(screen, state, character, gui_elements, mouse_p
             pygame.quit()
             sys.exit()
 
-        # Ensures UI elements are positioned only once per screen appearance.
+        # Ensures screen specific UI elements are positioned only once per screen appearance.
         check_and_reset_position_flag(screen, event, mouse_pos)
 
         # Allow only text input with numeric keys and populate 'filtered_key' with valid inputs.
@@ -259,8 +259,8 @@ def custom_starting_money_events(screen, state, character, gui_elements, mouse_p
 
 
 def check_and_reset_position_flag(screen, event, mouse_pos):
-    """Check for events that switch screens and reset position flag in module 'ui_helpers.py' to ensure elements are
-    positioned only once per screen appearance."""
+    """Check for events that switch screens and reset position flag in module 'ui_helpers.py' to ensure screen specific
+    elements are positioned only once per screen appearance."""
 
     # Check for any 'KEYUP' or 'MOUSEBUTTONUP' event. While this leads to repositioning of UI elements every time an
     # event occurs, it trades this redundancy for overall maintainability.
