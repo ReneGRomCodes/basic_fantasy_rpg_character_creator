@@ -113,19 +113,19 @@ def initialize_screen_elements(screen, settings):
     humans_info = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True, image_width=info_panel_width,
                                surface_pos="center")
     humans_info_table = so.InfoPanel(screen, race_descr["humans"][1], text_small, multi_line=True, image_width=info_panel_width,
-                                     surface_pos="topleft")
+                                     surface_pos="topright")
     elves_info = so.InfoPanel(screen, race_descr["elves"][0], text_small, multi_line=True, image_width=info_panel_width,
                                surface_pos="center")
     elves_info_table = so.InfoPanel(screen, race_descr["elves"][1], text_small, multi_line=True, image_width=info_panel_width,
-                                    surface_pos="topleft")
+                                    surface_pos="topright")
     dwarves_info = so.InfoPanel(screen, race_descr["dwarves"][0], text_small, multi_line=True, image_width=info_panel_width,
                                surface_pos="center")
     dwarves_info_table = so.InfoPanel(screen, race_descr["dwarves"][1], text_small, multi_line=True, image_width=info_panel_width,
-                                      surface_pos="topleft")
+                                      surface_pos="topright")
     halflings_info= so.InfoPanel(screen, race_descr["halflings"][0], text_small, multi_line=True, image_width=info_panel_width,
                                surface_pos="center")
     halflings_info_table = so.InfoPanel(screen, race_descr["halflings"][1], text_small, multi_line=True, image_width=info_panel_width,
-                                        surface_pos="topleft")
+                                        surface_pos="topright")
     # Class info panels.
     fighter_info = so.InfoPanel(screen, class_descr["fighter"][0], text_small, multi_line=True, image_width=info_panel_width,
                                surface_pos="center")

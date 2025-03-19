@@ -8,7 +8,8 @@ def get_ability_descr():
     strength = ("Measures the character's raw physical power. Strength is the prime requisite for FIGHTERS.\n"
                 "\nBonuses:\n"
                 " - Adds to attack roll when using melee weapons.\n"
-                " - Adds to the damage roll for melee weapons or thrown weapons.")
+                " - Adds to the damage roll for melee weapons\n"
+                "    or thrown weapons.")
     dexterity = ("Measures the character's quickness and balance as well as aptitude with tools. Dexterity is the prime "
                  "requisite for THIEVES.\n"
                  "\nBonuses:\n"
