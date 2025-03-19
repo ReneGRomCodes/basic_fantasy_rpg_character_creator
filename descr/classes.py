@@ -180,8 +180,7 @@ def get_class_descr():
                    "Open Locks (25%), Climb Walls (80%), Remove Traps (20%), Hide* (10%), Pick Pockets (30%), Listen "
                    "(30%), Move Silently (25%)\n"
                    "\n"
-                   "*Halflings should use the special Halfling ability to hide instead, which gives them only a 10% chance "
-                   "of being detected in forested terrain and 30% anywhere else.")
+                   "*Halflings should use the special Halfling ability to hide instead.")
 
     fighter_magic_user_descr = ("The Fighter/Magic-User is a rare blend of martial prowess and arcane mastery, combining "
                                 "the battlefield prowess of a Fighter with the spellcasting abilities of a Magic-User. "
@@ -266,8 +265,9 @@ def get_class_descr():
                               "1 first-level spell (see below)                                             "
                               "--------------------------------------------------------------------------\n"
                               "Special:\n"
-                              "- Sneak attack (see below)\n"
-                              "- See the 'Thief Abilities' below                                           "
+                              "- Sneak attack (see description of 'Thief' class\n"
+                              "   for details)\n"
+                              "- See the 'Thief Abilities' in description of 'Thief' class                 "
                               "--------------------------------------------------------------------------\n"
                               "Saving Throws at 1st Level:\n"
                               "- Death Ray or Poison: 13\n"
@@ -288,18 +288,7 @@ def get_class_descr():
                               "- Read Languages\n"
                               "- Shield\n"
                               "- Sleep\n"
-                              "- Ventriloquism\n"
-                              "\n"
-                              "Thief Abilities at First Level:\n"
-                              "Open Locks (25%), Climb Walls (80%), Remove Traps (20%), Hide* (10%), Pick Pockets (30%), Listen "
-                              "(30%), Move Silently (25%)\n"
-                              "\n"
-                              "Sneak Attack:\n"
-                              "- +4 attack bonus and does double damage if it is successful. The attack must be from "
-                              "behind (may require a Move Silently and/or Hide roll).\n"
-                              "- Can't be performed on the same opponent more than once in any given combat.\n"
-                              "- Can also be performed bare-handed and with the 'flat of the blade' (+0 attack bonus and "
-                              "does normal damage). In both cases subduing damage is done.")
+                              "- Ventriloquism")
 
 
     class_descr = {
