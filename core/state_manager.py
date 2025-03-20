@@ -6,31 +6,31 @@ import core.rules as rls
 import shop_functions as sf
 import core.event_handlers as eh
 from gui.cs_model import CharacterSheet
+from gui.screen_objects import InteractiveText
 import random
 """Main functions/state managers used in 'main.py'."""
 
 
-# Create instance of class 'Character'.
-character = Character()
+# Create 'None' variable for later instance of character object.
+character = None
 # Create 'None' variable for later instance of credits screen object.
 credits_screen = None
 # Create 'None' variable for later instance of character sheet screen object.
 cs_sheet = None
-# Initialize dict for use in 'gui/ui_helpers.py' in function 'position_race_class_elements()' to calculate UI positioning.
-rc_dict = {"races": [], "classes": [], }
-# Initialize variables for character creation.
-possible_characters = None
-selected_race = None
-selected_class = None
-starting_money = None
-random_money_flag = False
-custom_money_flag = False
+# Initialize further variables for character creation.
+rc_dict = None  # Holds a dict with all available races/classes in the game.
+possible_characters = None  # Holds a list of possible race-class combinations.
+selected_race = None  # Screen object representing selected race in custom creation, string value in random creation.
+selected_class = None  # Screen object representing selected class in custom creation, string value in random creation.
+starting_money = None  # Holds INT value for characters starting money.
+random_money_flag = False  # Flag to check money selection.
+custom_money_flag = False  # Flag to check money selection.
 
 
 def main_state_manager(screen, state, gui_elements, mouse_pos):
     """State manager for main states, i.e. 'title_screen', 'main_menu', etc."""
     # Declare global variable 'rc_dict' to allow modification of its contents within the function.
-    global rc_dict
+    global character
 
     # Call main event handler and get program state.
     state = eh.main_events(screen, state, gui_elements, mouse_pos)
@@ -39,13 +39,11 @@ def main_state_manager(screen, state, gui_elements, mouse_pos):
         # Display title screen.
         gui.show_title_screen(screen, gui_elements)
 
-    elif state == "init_rc_dict":
-        # Automatically populate dict 'rc_dict' once with all races/classes available in the game for later use in
-        # race/class selection.
-        for race in gui_elements["active_races"]:
-            rc_dict["races"].append(race.text)
-        for cls in gui_elements["active_classes"]:
-            rc_dict["classes"].append(cls.text)
+    elif state == "pre_main_menu":
+        # Create/re-initialize instance of class 'Character' and reset globals to start with a clean sheet when accessing
+        # main menu or returning to it from a different screen.
+        character = Character()
+        globals_janitor(gui_elements)
 
         state = "main_menu"
 
@@ -113,18 +111,11 @@ def custom_character(screen, state, gui_elements, mouse_pos):
             state = "set_abilities"
 
     elif state == "show_abilities":
+        # Reset any globals in case user returns to ability score screen from race/class selection screen.
+        globals_janitor(gui_elements)
         # Display ability score screen.
         gui.show_ability_scores_screen(screen, character, gui_elements, mouse_pos)
         possible_characters, state = eh.custom_character_events(screen, state, character, gui_elements, mouse_pos)
-
-        # Unselect race and class selection, set variables to 'None' if user returns to ability score screen from
-        # race/class selection screen.
-        if selected_race:
-            selected_race.selected = False
-            selected_race = None
-        if selected_class:
-            selected_class.selected = False
-            selected_class = None
 
     elif state == "race_class_selection":
         # Display race/class selection screen.
@@ -263,13 +254,35 @@ def show_main_shop():
 
 """
 Following function is imported into and called in event handler 'naming_character_events()' when returning to character
-menu from 'name_random_character' state. This resolves an issue that caused the program to freeze when returning from
-naming screen to character menu.
+menu from 'name_random_character' state, in addition to it's function call in state 'pre_main_menu'. This resolves
+multiple issue that caused the program to freeze when switching between different screens or when creating a new character
+after one has already been created.
 """
 
-def fix_my_messy_globals():
-    """Reset variables with default values."""
-    global possible_characters, selected_race, selected_class
+def globals_janitor(gui_elements):
+    """Reset global variables that are not automatically overwritten elsewhere with default values in case of a switch
+    to a previous screen or the main menu."""
+    global rc_dict, possible_characters, selected_race, selected_class
+
+    # Unselect race and class selection if user visited race/class selection screen previously. 'isinstance' check is
+    # necessary as variables can hold either a screen object or a string during custom and random character creation
+    # respectively.
+    if isinstance(selected_race, InteractiveText):
+        selected_race.selected = False
+    if isinstance(selected_class, InteractiveText):
+        selected_class.selected = False
+
+    # Reset globals to 'None'.
     possible_characters = None
     selected_race = None
     selected_class = None
+
+    # Initialize/reset dict for use in 'gui/ui_helpers.py' in function 'position_race_class_elements()' to calculate UI
+    # positioning.
+    rc_dict = {"races": [], "classes": [], }
+    # Automatically populate dict 'rc_dict' once with all races/classes available in the game for later use in
+    # race/class selection.
+    for race in gui_elements["active_races"]:
+        rc_dict["races"].append(race.text)
+    for cls in gui_elements["active_classes"]:
+        rc_dict["classes"].append(cls.text)

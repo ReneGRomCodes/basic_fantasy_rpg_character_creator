@@ -132,7 +132,7 @@ class CharacterSheet:
         self.class_special_pos_y_list = []
         # TODO ignore me... I am just a marker so the idiot coding this knows where he is at right now.
         self.TEMP_RETURN_TO_MAIN_MESSAGE = so.TextField(screen, "WORK IN PROGRESS - Press any key to return to main menu.",
-                                                        self.text_large)
+                                                        self.text_large, bg_color="red")
         # TODO ignore me... I am just a marker so the idiot coding this knows where he is at right now.
         # Inventory elements.
         self.money = so.TextField(screen, "Money:", self.text_standard)
@@ -151,9 +151,7 @@ class CharacterSheet:
 
     def show_character_sheet_screen(self):
         """Draw character sheet elements on screen."""
-        # TODO Position and draw temporary 'return to main' message.
-        self.TEMP_RETURN_TO_MAIN_MESSAGE.text_rect.centerx, self.TEMP_RETURN_TO_MAIN_MESSAGE.text_rect.bottom = (
-            self.screen_rect.centerx, self.screen_rect.bottom)
+        # TODO Draw temporary 'return to main' message.
         self.TEMP_RETURN_TO_MAIN_MESSAGE.draw_text()
 
         # Draw screen title.

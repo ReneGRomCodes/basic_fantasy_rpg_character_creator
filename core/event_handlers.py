@@ -28,7 +28,7 @@ def main_events(screen, state, gui_elements, mouse_pos):
         if state == "title_screen":
             if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP and screen.get_rect().collidepoint(mouse_pos):
                 reset_position_flag()
-                state = "init_rc_dict"
+                state = "pre_main_menu"
 
         elif state == "main_menu":
             if event.type == pygame.MOUSEBUTTONUP:
@@ -69,7 +69,7 @@ def main_events(screen, state, gui_elements, mouse_pos):
 
         elif state == "character_sheet":
             if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP and screen.get_rect().collidepoint(mouse_pos):
-                state = "main_menu"
+                state = "pre_main_menu"
 
     return state
 
@@ -191,11 +191,10 @@ def naming_character_events(screen, state, character, gui_elements, mouse_pos):
                 if state == "name_character":
                     state = "race_class_selection"
                 elif state == "name_random_character":
-                    # Import and call function to reset "messy globals" in 'state_manager.py' before returning to main
-                    # menu. Not a pretty solution, but it resolves the freezing issue when coming back from the naming
-                    # screen.
-                    from core.state_manager import fix_my_messy_globals
-                    fix_my_messy_globals()
+                    # Import and call function to reset globals in 'state_manager.py' before returning to previous menu.
+                    # Not a pretty solution, but it resolves the freezing issue when coming back from the naming screen.
+                    from core.state_manager import globals_janitor
+                    globals_janitor(gui_elements)
                     state = "character_menu"
 
             if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
