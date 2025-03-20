@@ -271,6 +271,10 @@ class InfoPanel(TextField):
             image_width: set width for attribute 'text_image'. Default is '0'.
             text_pos: set starting point for text in 'text_image'. Default is '(0,0)'.
         surface_pos: set position for info panel on screen using a string keyword. Possible keywords:
+            "top",
+            "bottom",
+            "left",
+            "right",
             "topleft",
             "topright",
             "bottomleft",
@@ -279,7 +283,16 @@ class InfoPanel(TextField):
             Default position is 'topright'.
         """
         super().__init__(screen, text, size, bg_color, text_color, multi_line, image_width, text_pos)
-        if surface_pos == "topleft":
+        if surface_pos == "top":
+            self.background_rect.top, self.background_rect.centerx = screen.get_rect().top, screen.get_rect().centerx
+        elif surface_pos == "bottom":
+            self.background_rect.bottom, self.background_rect.centerx = screen.get_rect().bottom, screen.get_rect().centerx
+        elif surface_pos == "left":
+            self.background_rect.left, self.background_rect.centery = screen.get_rect().left, screen.get_rect().centery
+        elif surface_pos == "right":
+            self.background_rect.right, self.background_rect.centery = screen.get_rect().right, screen.get_rect().centery
+
+        elif surface_pos == "topleft":
             self.background_rect.topleft = screen.get_rect().topleft
         elif surface_pos == "topright":
             self.background_rect.topright = screen.get_rect().topright
