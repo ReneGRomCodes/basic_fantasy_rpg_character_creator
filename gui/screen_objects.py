@@ -16,7 +16,7 @@ class TextField:
             text: string to be shown in text field.
             size: font size for text.
             bg_color: background color for rect. Default is 'False' for transparent background.
-            text_color: string for text color presets. "default" for black, "inactive" for greyed-out text.
+            text_color: string for text color presets. "default" for RGB(55, 40, 25), "inactive" for greyed-out text.
                         Use RGB tuple for others.
             multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
         ARGS for use when 'multi_line=True':
@@ -150,7 +150,7 @@ class Button(TextField):
             text: string to be shown on the button.
             size: font size for text.
             bg_color: background color for rect. Default is 'False' for transparent background.
-            text_color: string for text color presets. "default" for black, "inactive" for greyed-out text.
+            text_color: string for text color presets. "default" for RGB(55, 40, 25), "inactive" for greyed-out text.
                         Use RGB tuple for others.
         Default position is centered on screen.
         """
@@ -193,7 +193,7 @@ class InteractiveText(TextField):
             text: string to be shown for the text field.
             size: font size for text.
             bg_color: background color for rect. Default is 'False' for transparent background.
-            panel: list or tuple of instances of 'TextField' class for info panel. Default is 'False'.
+            panel: list or tuple of instances of 'InfoPanel' class for info panel. Default is 'False'.
             select: activate option to toggle between selected/unselected state. Default is 'False'.
         Default position is centered on screen.
         """
@@ -218,7 +218,7 @@ class InteractiveText(TextField):
         elif self.bg_color:
             pygame.draw.rect(self.screen, self.bg_color, self.interactive_rect)
 
-        # Change field color based on mouse hover.
+        # Change field color based on mouse hover and draw info panels if applicable.
         if self.interactive_rect.collidepoint(mouse_pos):
             self.handle_mouse_interaction()
 
@@ -254,7 +254,8 @@ class InteractiveText(TextField):
 
 
 class InfoPanel(TextField):
-    """Represent an info panel for use in conjunction with an instance of class 'InteractiveText()'."""
+    """Expanded child class of 'TextField' to represent an info panel for use in conjunction with an instance of class
+    'InteractiveText()' which allows for easier positioning."""
 
     def __init__(self, screen, text, size, bg_color=settings.info_panel_bg_color, text_color="default",
                  multi_line=False, image_width=0, text_pos=(0,0), surface_pos="topright"):
@@ -263,8 +264,8 @@ class InfoPanel(TextField):
             screen: pygame window.
             text: string to be shown in text field.
             size: font size for text.
-            bg_color: background color for rect. Default is 'white'.
-            text_color: string for text color presets. "default" for black, "inactive" for greyed-out text.
+            bg_color: background color for rect. Default is RGB(210, 180, 130).
+            text_color: string for text color presets. "default" for RGB(55, 40, 25), "inactive" for greyed-out text.
                         Use RGB tuple for others.
             multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
         ARGS for use when 'multi_line=True':

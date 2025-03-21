@@ -254,9 +254,9 @@ def show_main_shop():
 
 """
 Following function is imported into and called in event handler 'naming_character_events()' when returning to character
-menu from 'name_random_character' state, in addition to it's function call in state 'pre_main_menu'. This resolves
-multiple issue that caused the program to freeze when switching between different screens or when creating a new character
-after one has already been created.
+menu from 'name_random_character' state, in addition to it's function calls in states 'pre_main_menu' and 'show_abilities'.
+This resolves multiple issue that caused the program to freeze when switching between different screens or when creating
+a new character after one has already been created.
 """
 
 def globals_janitor(gui_elements):
