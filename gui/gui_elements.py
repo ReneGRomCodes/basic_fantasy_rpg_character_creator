@@ -242,12 +242,8 @@ def initialize_screen_elements(screen, settings):
         "random": random,
         # Ability scores screen.
         "abilities_title": ability_scores_screen_title,
-        "strength": strength_field,
-        "dexterity": dexterity_field,
-        "constitution": constitution_field,
-        "intelligence": intelligence_field,
-        "wisdom": wisdom_field,
-        "charisma": charisma_field,
+        "ability_fields": (strength_field, dexterity_field, constitution_field, intelligence_field, wisdom_field,
+                           charisma_field),
         "reroll_button": reroll_button,
         # Race/class selection screen.
         "race_class_title": race_class_selection_screen_title,

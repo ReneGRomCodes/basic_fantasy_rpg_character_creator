@@ -62,17 +62,18 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     reroll_button = gui_elements["reroll_button"]
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
+    ability_fields = gui_elements["ability_fields"]
 
     # Array of ability fields. Each item is a tuple with the GUI element at index 0 and the corresponding attribute from
     # character object at index 1. 'character.abilities[]' stores values in a dict as lists with base score at index 0
     # and bonus/penalty at index 1.
     abilities_array = (
-        (gui_elements["strength"], character.abilities["str"]),
-        (gui_elements["dexterity"], character.abilities["dex"]),
-        (gui_elements["constitution"], character.abilities["con"]),
-        (gui_elements["intelligence"], character.abilities["int"]),
-        (gui_elements["wisdom"], character.abilities["wis"]),
-        (gui_elements["charisma"], character.abilities["cha"]),
+        (ability_fields[0], character.abilities["str"]),
+        (ability_fields[1], character.abilities["dex"]),
+        (ability_fields[2], character.abilities["con"]),
+        (ability_fields[3], character.abilities["int"]),
+        (ability_fields[4], character.abilities["wis"]),
+        (ability_fields[5], character.abilities["cha"]),
     )
 
     # Position and draw each ability pair from 'abilities_array' on screen.
