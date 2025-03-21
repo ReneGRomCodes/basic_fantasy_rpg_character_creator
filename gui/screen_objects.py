@@ -194,6 +194,9 @@ class InteractiveText(TextField):
             size: font size for text.
             bg_color: background color for rect. Default is 'False' for transparent background.
             panel: list or tuple of instances of 'InfoPanel' class for info panel. Default is 'False'.
+                NOTE: if info panel/s is/are given, the relevant screen function has to call function 'show_info_panels()'
+                from 'gui/ui_helpers.py' at the bottom to ensure that the info panel is always drawn on top of every
+                other screen object.
             select: activate option to toggle between selected/unselected state. Default is 'False'.
         Default position is centered on screen.
         """
@@ -218,7 +221,7 @@ class InteractiveText(TextField):
         elif self.bg_color:
             pygame.draw.rect(self.screen, self.bg_color, self.interactive_rect)
 
-        # Change field color based on mouse hover and draw info panels if applicable.
+        # Change field color based on mouse hover.
         if self.interactive_rect.collidepoint(mouse_pos):
             self.handle_mouse_interaction()
 
@@ -227,18 +230,14 @@ class InteractiveText(TextField):
         self.screen.blit(self.text_image, self.text_rect)
 
     def handle_mouse_interaction(self):
-        """Handle interactive functions for the class object like info panel and selectability."""
+        """Handle interactive functions for the class object.
+        NOTE: info panel interactions are handled via method 'handle_mouse_interaction_info_panel()' further down."""
         # Color change when mouse is pressed (only if 'self.select' is True).
         if self.select and pygame.mouse.get_pressed()[0]:
             pygame.draw.rect(self.screen, self.rect_clicked_color, self.interactive_rect)
         # Normal hover color when mouse is hovering but not pressed.
         else:
             pygame.draw.rect(self.screen, self.rect_hover_color, self.interactive_rect)
-
-        # Check for and draw info panel.
-        if self.panel:
-            for i in self.panel:
-                i.draw_info_panel()
 
         # Change selected state of field by mouse click if 'select' is True.
         if self.select:
@@ -252,10 +251,21 @@ class InteractiveText(TextField):
             # Reset 'was_pressed' if mouse is not over the button to avoid accidental toggles.
             self.was_pressed = False
 
+    def handle_mouse_interaction_info_panels(self, mouse_pos):
+        """Handle mouse interactions and draw info panels when panels are assigned to the class instance.
+        This method is called from the helper function 'show_info_panels()' in 'gui/ui_helpers.py' to ensure info panels
+        are always drawn on top of every other object on screen."""
+        if self.interactive_rect.collidepoint(mouse_pos):
+            if self.panel:
+                for i in self.panel:
+                    i.draw_info_panel()
+
 
 class InfoPanel(TextField):
     """Expanded child class of 'TextField' to represent an info panel for use in conjunction with an instance of class
-    'InteractiveText()' which allows for easier positioning."""
+    'InteractiveText' which allows for easier positioning.
+    NOTE: see docstring section for 'panel' in class definition 'InteractiveText' for more details on how to properly
+    implement info panels."""
 
     def __init__(self, screen, text, size, bg_color=settings.info_panel_bg_color, text_color="default",
                  multi_line=False, image_width=0, text_pos=(0,0), surface_pos="topright"):

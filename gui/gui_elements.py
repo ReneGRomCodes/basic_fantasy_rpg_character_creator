@@ -25,6 +25,7 @@ def initialize_screen_elements(screen, settings):
     InfoPanel(screen, text, size, bg_color=settings.info_panel_bg_color, text_color="default", multi_line=False, image_width=0,
         text_pos=(0,0), surface_pos="topright"):
         Info panel for use in conjunction with an instance of class 'InteractiveText()'.
+        NOTE: SEE CLASS DEFINITION IN 'gui/screen_objects.py' ON HOW TO IMPLEMENT INFO PANELS.
 
     TextInputField(screen, input_field_instance, field_width):
         Text input field for use with 'pygame_textinput' library.

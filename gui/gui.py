@@ -68,12 +68,12 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     # character object at index 1. 'character.abilities[]' stores values in a dict as lists with base score at index 0
     # and bonus/penalty at index 1.
     abilities_array = (
-        (ability_fields[0], character.abilities["str"]),
-        (ability_fields[1], character.abilities["dex"]),
-        (ability_fields[2], character.abilities["con"]),
-        (ability_fields[3], character.abilities["int"]),
-        (ability_fields[4], character.abilities["wis"]),
-        (ability_fields[5], character.abilities["cha"]),
+        (ability_fields[0], character.abilities["str"]),  # Strength
+        (ability_fields[1], character.abilities["dex"]),  # Dexterity
+        (ability_fields[2], character.abilities["con"]),  # Constitution
+        (ability_fields[3], character.abilities["int"]),  # Intelligence
+        (ability_fields[4], character.abilities["wis"]),  # Wisdom
+        (ability_fields[5], character.abilities["cha"]),  # Charisma
     )
 
     # Position and draw each ability pair from 'abilities_array' on screen.
@@ -84,6 +84,9 @@ def show_ability_scores_screen(screen, character, gui_elements, mouse_pos):
     ui.draw_special_button(screen, reroll_button, gui_elements, mouse_pos)
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
+
+    # Call helper function to properly handle info panels (see function and class docstrings for details).
+    ui.show_info_panels(ability_fields, mouse_pos)
 
 
 def show_race_class_selection_screen(screen, rc_dict, possible_characters, selected_race, selected_class, gui_elements, mouse_pos):
@@ -129,6 +132,10 @@ def show_race_class_selection_screen(screen, rc_dict, possible_characters, selec
     back_button.draw_button(mouse_pos)
     # Show continue button only if race AND class have been selected otherwise show inactive continue button.
     ui.draw_continue_button_inactive(selected_race, selected_class, gui_elements, mouse_pos, check_mode="all")
+
+    # Call helper function to properly handle info panels (see function and class docstrings for details).
+    ui.show_info_panels(active_races, mouse_pos)
+    ui.show_info_panels(active_classes, mouse_pos)
 
     return selected_race, selected_class
 

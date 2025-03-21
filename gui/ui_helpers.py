@@ -2,6 +2,9 @@ import pygame
 from core.rules import set_starting_money
 import gui.screen_objects as so
 import time
+
+from gui.screen_objects import InteractiveText
+
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
 
 
@@ -97,6 +100,28 @@ def set_elements_pos_y_values(screen, elements):
     element_pos_y = ref_element.text_rect.top - (int(n_elements / 2) * pos_y_offset)
 
     return element_pos_y, pos_y_offset
+
+
+def show_info_panels(elements, mouse_pos):
+    """Iterate over a collection of GUI elements and call their method to handle mouse interactions regarding info panels
+    and display panels if applicable.
+    See class definition for 'InteractiveText' and 'InfoPanel' for details.
+    ARGS:
+        elements: List/tuple or single instance of GUI elements.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    NOTE: This function must be called at the end of relevant screen functions to ensure info panels are drawn on top of
+    other screen elements."""
+
+    # Check if 'elements' is list/tuple or single instance and ensure that mouse interaction is only handled if element
+    # is an instance of class 'InteractiveText'. Prevents errors in cases where 'elements' might contain instances of
+    # other classes.
+    if isinstance(elements, (list, tuple)):
+        for element in elements:
+            if isinstance(element, InteractiveText):
+                element.handle_mouse_interaction_info_panels(mouse_pos)
+    else:
+        if isinstance(elements, InteractiveText):
+            elements.handle_mouse_interaction_info_panels(mouse_pos)
 
 
 """Background functions for title screen."""
