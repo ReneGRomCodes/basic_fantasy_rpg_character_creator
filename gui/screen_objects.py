@@ -31,6 +31,11 @@ class TextField:
         self.bg_color = bg_color
         self.multi_line = multi_line
 
+        # Default alpha transparency value. Not used by default, but can be changed and then applied using
+        # '.set_alpha(self.alpha)' elsewhere to be changed to, for example, create a fade-in/fade-out effect.
+        # See class methods in 'gui/credits.py' as an example.
+        self.alpha = 255
+
         # Set font, text color and get rect for text field.
         if text_color == "default":
             self.text_color = settings.text_color

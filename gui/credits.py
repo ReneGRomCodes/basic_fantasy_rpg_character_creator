@@ -15,7 +15,6 @@ class Credits:
                                                               gui_elements["text_medium"])
         # Positioning variables.
         self.credits_pos_y_start = screen.get_rect().bottom + 5
-        #self.credits_pos_y_start = screen.get_rect().height / 3
         self.title_pos_x = screen.get_rect().centerx + screen.get_rect().width / 12
         self.name_pos_x = screen.get_rect().centerx
         self.category_spacing = screen.get_rect().height / 10
@@ -39,7 +38,7 @@ class Credits:
                                  (self.font_creator_title, self.font_creator_name))
 
     def show_credits(self, screen, gui_elements):
-        """Position and draw credits on screen"""
+        """Position and draw credits on screen."""
 
         draw_screen_title(screen, self.credits_title, gui_elements)
 
@@ -58,6 +57,16 @@ class Credits:
                 else:
                     item.text_rect.top, item.text_rect.left = self.dynamic_pos_y, self.name_pos_x
                     self.dynamic_pos_y += item.text_rect.height
+
+                # Set item transparency based on position on screen for fade-out effect.
+                if item.text_rect.top <= screen.get_rect().height / 4 and not item.text_rect.bottom <= screen.get_rect().top:
+                    item.text_image.set_alpha(item.alpha)
+                    item.alpha -= 7
+                # Reset transparency when the item has fully left the top of the screen, ensuring it is opaque when it
+                # reappears at the bottom.
+                elif item.alpha != 255:
+                    item.alpha = 255
+                    item.text_image.set_alpha(item.alpha)
 
                 item.draw_text()
 
