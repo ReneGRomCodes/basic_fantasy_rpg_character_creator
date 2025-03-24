@@ -60,13 +60,13 @@ class Credits:
 
                 # Set item transparency based on position on screen for fade-out effect.
                 if item.text_rect.top <= screen.get_rect().height / 4 and not item.text_rect.bottom <= screen.get_rect().top:
-                    item.text_image.set_alpha(item.alpha)
+                    item.text_surface.set_alpha(item.alpha)
                     item.alpha -= 7
                 # Reset transparency when the item has fully left the top of the screen, ensuring it is opaque when it
                 # reappears at the bottom.
                 elif item.alpha != 255:
                     item.alpha = 255
-                    item.text_image.set_alpha(item.alpha)
+                    item.text_surface.set_alpha(item.alpha)
 
                 item.draw_text()
 

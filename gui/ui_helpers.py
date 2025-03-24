@@ -240,9 +240,9 @@ def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
 
         # Change contents and re-render 'TextField' instances for each ability score stat.
         ability_score_field.text = str(ability_score[0])
-        ability_score_field.render_new_text_image()
+        ability_score_field.render_new_text_surface()
         bonus_penalty_field.text = bonus_penalty
-        bonus_penalty_field.render_new_text_image()
+        bonus_penalty_field.render_new_text_surface()
 
         # Position and draw ability score and bonus/penalty on screen.
         ability_score_field.text_rect.top = ability_name.interactive_rect.top
@@ -470,8 +470,8 @@ def build_and_position_prompt(screen, naming_prompt, character):
     if not position_flag:
         # Add naming prompt to 'naming_prompt.text' attribute and render text_rect.
         naming_prompt.text = f"Name your {character.race_name} {character.class_name}"
-        naming_prompt.text_image = naming_prompt.font.render(naming_prompt.text, True, naming_prompt.text_color)
-        naming_prompt.text_rect = naming_prompt.text_image.get_rect()
+        naming_prompt.text_surface = naming_prompt.font.render(naming_prompt.text, True, naming_prompt.text_color)
+        naming_prompt.text_rect = naming_prompt.text_surface.get_rect()
 
         # Position final naming prompt on screen.
         naming_prompt.text_rect.centerx, naming_prompt.text_rect.centery = screen.get_rect().centerx, screen.get_rect().centery / 1.15

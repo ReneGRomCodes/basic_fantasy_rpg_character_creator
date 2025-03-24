@@ -12,7 +12,7 @@ def initialize_screen_elements(screen, settings):
 
 
     Class overview (imported as 'so'):
-    TextField(screen, text, size, bg_color=False, text_color="default", multi_line=False, image_width=0, text_pos=(0,0):
+    TextField(screen, text, size, bg_color=False, text_color="default", multi_line=False, surface_width=0, text_pos=(0,0):
         Basic text field.
 
     Button(screen, text, size, bg_color=False):
@@ -22,7 +22,7 @@ def initialize_screen_elements(screen, settings):
         Interactive text field for info panel and/or option to toggle between selected/unselected states based on user
         input like mouse collision or mouse button event.
 
-    InfoPanel(screen, text, size, bg_color=settings.info_panel_bg_color, text_color="default", multi_line=False, image_width=0,
+    InfoPanel(screen, text, size, bg_color=settings.info_panel_bg_color, text_color="default", multi_line=False, surface_width=0,
         text_pos=(0,0), surface_pos="topright"):
         Info panel for use in conjunction with an instance of class 'InteractiveText()'.
         NOTE: SEE CLASS DEFINITION IN 'gui/screen_objects.py' ON HOW TO IMPLEMENT INFO PANELS.
@@ -91,12 +91,12 @@ def initialize_screen_elements(screen, settings):
     race_descr = races.get_race_descr()
     class_descr = classes.get_class_descr()
     # Info panels.
-    strength_info = so.InfoPanel(screen, ability_descr["str_descr"], text_small, multi_line=True, image_width=info_panel_width)
-    dexterity_info = so.InfoPanel(screen, ability_descr["dex_descr"], text_small, multi_line=True, image_width=info_panel_width)
-    constitution_info = so.InfoPanel(screen, ability_descr["con_descr"], text_small, multi_line=True, image_width=info_panel_width)
-    intelligence_info = so.InfoPanel(screen, ability_descr["int_descr"], text_small, multi_line=True, image_width=info_panel_width)
-    wisdom_info = so.InfoPanel(screen, ability_descr["wis_descr"], text_small, multi_line=True, image_width=info_panel_width)
-    charisma_info = so.InfoPanel(screen, ability_descr["cha_descr"], text_small, multi_line=True, image_width=info_panel_width)
+    strength_info = so.InfoPanel(screen, ability_descr["str_descr"], text_small, multi_line=True, surface_width=info_panel_width)
+    dexterity_info = so.InfoPanel(screen, ability_descr["dex_descr"], text_small, multi_line=True, surface_width=info_panel_width)
+    constitution_info = so.InfoPanel(screen, ability_descr["con_descr"], text_small, multi_line=True, surface_width=info_panel_width)
+    intelligence_info = so.InfoPanel(screen, ability_descr["int_descr"], text_small, multi_line=True, surface_width=info_panel_width)
+    wisdom_info = so.InfoPanel(screen, ability_descr["wis_descr"], text_small, multi_line=True, surface_width=info_panel_width)
+    charisma_info = so.InfoPanel(screen, ability_descr["cha_descr"], text_small, multi_line=True, surface_width=info_panel_width)
     # Ability text fields.
     strength_field = so.InteractiveText(screen, "Strength", text_medium, panel=(strength_info, ))
     dexterity_field = so.InteractiveText(screen, "Dexterity", text_medium, panel=(dexterity_info, ))
@@ -111,47 +111,47 @@ def initialize_screen_elements(screen, settings):
     race_class_selection_screen_title = so.TextField(screen, "- RACE / CLASS SELECTION -", text_large)
     reset_button = so.Button(screen, "RESET", text_medium)
     # Race info Panels.
-    humans_info = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True, image_width=info_panel_width,
+    humans_info = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True, surface_width=info_panel_width,
                                surface_pos="center")
-    humans_info_table = so.InfoPanel(screen, race_descr["humans"][1], text_small, multi_line=True, image_width=info_panel_width,
+    humans_info_table = so.InfoPanel(screen, race_descr["humans"][1], text_small, multi_line=True, surface_width=info_panel_width,
                                      surface_pos="right")
-    elves_info = so.InfoPanel(screen, race_descr["elves"][0], text_small, multi_line=True, image_width=info_panel_width,
+    elves_info = so.InfoPanel(screen, race_descr["elves"][0], text_small, multi_line=True, surface_width=info_panel_width,
                                surface_pos="center")
-    elves_info_table = so.InfoPanel(screen, race_descr["elves"][1], text_small, multi_line=True, image_width=info_panel_width,
+    elves_info_table = so.InfoPanel(screen, race_descr["elves"][1], text_small, multi_line=True, surface_width=info_panel_width,
                                     surface_pos="right")
-    dwarves_info = so.InfoPanel(screen, race_descr["dwarves"][0], text_small, multi_line=True, image_width=info_panel_width,
+    dwarves_info = so.InfoPanel(screen, race_descr["dwarves"][0], text_small, multi_line=True, surface_width=info_panel_width,
                                surface_pos="center")
-    dwarves_info_table = so.InfoPanel(screen, race_descr["dwarves"][1], text_small, multi_line=True, image_width=info_panel_width,
+    dwarves_info_table = so.InfoPanel(screen, race_descr["dwarves"][1], text_small, multi_line=True, surface_width=info_panel_width,
                                       surface_pos="right")
-    halflings_info= so.InfoPanel(screen, race_descr["halflings"][0], text_small, multi_line=True, image_width=info_panel_width,
+    halflings_info= so.InfoPanel(screen, race_descr["halflings"][0], text_small, multi_line=True, surface_width=info_panel_width,
                                surface_pos="center")
-    halflings_info_table = so.InfoPanel(screen, race_descr["halflings"][1], text_small, multi_line=True, image_width=info_panel_width,
+    halflings_info_table = so.InfoPanel(screen, race_descr["halflings"][1], text_small, multi_line=True, surface_width=info_panel_width,
                                         surface_pos="right")
     # Class info panels.
-    fighter_info = so.InfoPanel(screen, class_descr["fighter"][0], text_small, multi_line=True, image_width=info_panel_width,
+    fighter_info = so.InfoPanel(screen, class_descr["fighter"][0], text_small, multi_line=True, surface_width=info_panel_width,
                                surface_pos="center")
-    fighter_info_table = so.InfoPanel(screen, class_descr["fighter"][1], text_small, multi_line=True, image_width=info_panel_width,
+    fighter_info_table = so.InfoPanel(screen, class_descr["fighter"][1], text_small, multi_line=True, surface_width=info_panel_width,
                                       surface_pos="left")
-    cleric_info = so.InfoPanel(screen, class_descr["cleric"][0], text_small, multi_line=True, image_width=info_panel_width,
+    cleric_info = so.InfoPanel(screen, class_descr["cleric"][0], text_small, multi_line=True, surface_width=info_panel_width,
                                surface_pos="center")
-    cleric_info_table = so.InfoPanel(screen, class_descr["cleric"][1], text_small, multi_line=True, image_width=info_panel_width,
+    cleric_info_table = so.InfoPanel(screen, class_descr["cleric"][1], text_small, multi_line=True, surface_width=info_panel_width,
                                      surface_pos="left")
-    magic_user_info = so.InfoPanel(screen, class_descr["magic-user"][0], text_small, multi_line=True, image_width=info_panel_width,
+    magic_user_info = so.InfoPanel(screen, class_descr["magic-user"][0], text_small, multi_line=True, surface_width=info_panel_width,
                                surface_pos="center")
-    magic_user_info_table = so.InfoPanel(screen, class_descr["magic-user"][1], text_small, multi_line=True, image_width=info_panel_width,
+    magic_user_info_table = so.InfoPanel(screen, class_descr["magic-user"][1], text_small, multi_line=True, surface_width=info_panel_width,
                                          surface_pos="left")
-    thief_info = so.InfoPanel(screen, class_descr["thief"][0], text_small, multi_line=True, image_width=info_panel_width,
+    thief_info = so.InfoPanel(screen, class_descr["thief"][0], text_small, multi_line=True, surface_width=info_panel_width,
                                surface_pos="center")
-    thief_info_table = so.InfoPanel(screen, class_descr["thief"][1], text_small, multi_line=True, image_width=info_panel_width,
+    thief_info_table = so.InfoPanel(screen, class_descr["thief"][1], text_small, multi_line=True, surface_width=info_panel_width,
                                     surface_pos="left")
     fighter_magic_user_info = so.InfoPanel(screen, class_descr["fighter_magic-user"][0], text_small, multi_line=True,
-                                           image_width=info_panel_width, surface_pos="center")
+                                           surface_width=info_panel_width, surface_pos="center")
     fighter_magic_user_info_table = so.InfoPanel(screen, class_descr["fighter_magic-user"][1], text_small, multi_line=True,
-                                                 image_width=info_panel_width, surface_pos="left")
+                                                 surface_width=info_panel_width, surface_pos="left")
     magic_user_thief_info = so.InfoPanel(screen, class_descr["magic-user_thief"][0], text_small, multi_line=True,
-                                         image_width=info_panel_width, surface_pos="center")
+                                         surface_width=info_panel_width, surface_pos="center")
     magic_user_thief_info_table = so.InfoPanel(screen, class_descr["magic-user_thief"][1], text_small, multi_line=True,
-                                               image_width=info_panel_width, surface_pos="left")
+                                               surface_width=info_panel_width, surface_pos="left")
     # Active race/class text fields. Used when a race/class can be chosen in the race/class selection.
     race_human_field = so.InteractiveText(screen, "Human", text_medium, panel=(humans_info, humans_info_table), select=True)
     race_elf_field = so.InteractiveText(screen, "Elf", text_medium, panel=(elves_info, elves_info_table), select=True)

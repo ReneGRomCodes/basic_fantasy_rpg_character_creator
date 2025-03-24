@@ -27,7 +27,7 @@ class SettingsGUI:
         # Tuple of window size option buttons.
         self.window_size_buttons = (self.window_size_button_small, self.window_size_button_medium,
                                     self.window_size_button_large, self.window_size_button_full)
-        # Initialize attribute for selected window size with 'None' value. Value will is assigned when first executing
+        # Initialize attribute for selected window size with 'None' value. Value is assigned when first executing
         # method 'select_window_size()'.
         self.selected_window_size = None
 
@@ -186,4 +186,4 @@ class SettingsGUI:
                 item.size = self.text_medium
 
             # Re-render element to show new text size on screen.
-            item.render_new_text_image(settings_gui=True)
+            item.render_new_text_surface(settings_gui=True)

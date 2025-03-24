@@ -112,7 +112,7 @@ class CharacterSheet:
         # 'special_ability' object has its text dynamically modified in method 'draw_format_dynamic_field()' to account
         # for the fact that number of abilities in 'character.specials' is unpredictable at the start of the character
         # creation. 'draw_format_dynamic_field()' is called from 'show_character_sheet_screen()'.
-        self.special_ability = so.TextField(screen, "", self.text_standard, multi_line=True, image_width=self.screen_width / 3)
+        self.special_ability = so.TextField(screen, "", self.text_standard, multi_line=True, surface_width=self.screen_width / 3)
         # List to store y-position values for each state of 'self.special_ability' as created in function
         # 'initialize_character_sheet()' in 'state_manager.py'.
         self.specials_pos_y_list = []
@@ -327,9 +327,9 @@ class CharacterSheet:
         pos_y_list = []
 
         for index, char_attr_item in enumerate(char_attr_list):
-            # Assign text to and expand 'field_object.text', update 'field_object.text_image' and get new rect.
+            # Assign text to and expand 'field_object.text', update 'field_object.text_surface' and get new rect.
             field_object.text = text_prefix + char_attr_item
-            field_object.render_new_text_image()
+            field_object.render_new_text_surface()
 
             # Append default position for first 'field_object' to list.
             if index == 0:
@@ -346,7 +346,7 @@ class CharacterSheet:
             # Create object with default values to 'hard reset' 'field_object'. Quick and dirty fix for 'field_object'
             # refusing to be reset any other way if 'multi_line' is 'True'.
             if field_object.multi_line:
-                default_object = so.TextField(self.screen, "", self.text_standard, multi_line=True, image_width=self.screen_width / 3)
+                default_object = so.TextField(self.screen, "", self.text_standard, multi_line=True, surface_width=self.screen_width / 3)
                 field_object = default_object
 
         return pos_y_list
@@ -363,16 +363,16 @@ class CharacterSheet:
             elif int(group[2].text) > 0:
                 group[2].text = "+" + group[2].text
 
-            # Update 'group[2].text_image' and get new rect.
-            group[2].render_new_text_image()
+            # Update 'group[2].text_surface' and get new rect.
+            group[2].render_new_text_surface()
 
     def format_saving_throw_scores(self):
         """Format output for saving throws by adding a '+' to the score."""
         for group in self.saving_throw_groups:
             group[1].text = "+" + group[1].text
 
-            # Update 'group[1].text_image' and get new rect.
-            group[1].render_new_text_image()
+            # Update 'group[1].text_surface' and get new rect.
+            group[1].render_new_text_surface()
 
     def draw_format_dynamic_field(self, field_object, char_attr_list, anchor, pos_y_list, text_prefix=""):
         """
@@ -388,9 +388,9 @@ class CharacterSheet:
                          Default is "".
         """
         for index, char_attr_item in enumerate(char_attr_list):
-            # Assign text to and expand 'field_object.text', update 'field_object.text_image' and get new rect.
+            # Assign text to and expand 'field_object.text', update 'field_object.text_surface' and get new rect.
             field_object.text = text_prefix + char_attr_item
-            field_object.render_new_text_image()
+            field_object.render_new_text_surface()
 
             # Position and draw 'field_object'.
             field_object.text_rect.top, field_object.text_rect.left = pos_y_list[index], anchor.text_rect.left

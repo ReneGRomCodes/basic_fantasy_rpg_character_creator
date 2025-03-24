@@ -9,7 +9,7 @@ settings = Settings()
 class TextField:
     """Represent field of text."""
 
-    def __init__(self, screen, text, size, bg_color=False, text_color="default", multi_line=False, image_width=0, text_pos=(0,0)):
+    def __init__(self, screen, text, size, bg_color=False, text_color="default", multi_line=False, surface_width=0, text_pos=(0,0)):
         """Initialize a text field on screen
         ARGS:
             screen: pygame window.
@@ -20,8 +20,8 @@ class TextField:
                         Use RGB tuple for others.
             multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
         ARGS for use when 'multi_line=True':
-            image_width: set width for attribute 'text_image'. Default is '0'.
-            text_pos: set starting point for text in 'text_image'. Default is '(0,0)'.
+            surface_width: set width for attribute 'text_surface'. Default is '0'.
+            text_pos: set starting point for text in 'text_surface'. Default is '(0,0)'.
         Default position is centered on screen.
         """
         self.screen = screen
@@ -49,23 +49,23 @@ class TextField:
         # Set padding for text fields with background color.
         self.padding = int(self.screen_rect.width / 40)
 
-        # Get image for mult-line text field.
+        # Get surface for mult-line text field.
         if multi_line:
-            self.image_width = image_width
-            self.image_height = self.font.get_height()  # Starting value for use in 'render_multiline_image()'
+            self.surface_width = surface_width
+            self.surface_height = self.font.get_height()  # Starting value for use in 'render_multiline_surface()'
             self.text_pos = text_pos
-            self.text_image = self.render_multiline_image()
-        # Get image for standard, one-line text field.
+            self.text_surface = self.render_multiline_surface()
+        # Get surface for standard, one-line text field.
         else:
-            self.text_image = self.font.render(self.text, True, self.text_color)
+            self.text_surface = self.font.render(self.text, True, self.text_color)
 
         # Get text_rect and set default center position. Get background_rect and center text_rect on it if 'bg_color'
         # is specified.
         if self.bg_color:
-            self.background_rect = self.text_image.get_rect().inflate(self.padding, self.padding)
+            self.background_rect = self.text_surface.get_rect().inflate(self.padding, self.padding)
             self.background_rect.center = self.screen_rect.center
 
-        self.text_rect = self.text_image.get_rect()
+        self.text_rect = self.text_surface.get_rect()
         self.text_rect.center = self.screen_rect.center
 
     def draw_text(self):
@@ -76,12 +76,12 @@ class TextField:
             pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
 
         # Draw the text on top of the rect.
-        self.screen.blit(self.text_image, self.text_rect)
+        self.screen.blit(self.text_surface, self.text_rect)
 
-    def render_multiline_image(self):
-        """Render and return multi line text image."""
+    def render_multiline_surface(self):
+        """Render and return multi line text surface."""
         # Create empty surface.
-        text_image = pygame.Surface((self.image_width, self.image_height), pygame.SRCALPHA)
+        text_surface = pygame.Surface((self.surface_width, self.surface_height), pygame.SRCALPHA)
         # Positioning and spacing variables.
         x, y = self.text_pos
         space = self.font.size(" ")[0]
@@ -90,41 +90,41 @@ class TextField:
 
         for line_index, line in enumerate(words, start=1):
             for word in line:
-                word_image = self.font.render(word, True, self.text_color)
-                word_width = word_image.get_width()
+                word_surface = self.font.render(word, True, self.text_color)
+                word_width = word_surface.get_width()
 
-                if x + word_width >= text_image.get_width():
-                    text_image, x, y = self.expand_multiline_image(text_image, y)
+                if x + word_width >= text_surface.get_width():
+                    text_surface, x, y = self.expand_multiline_surface(text_surface, y)
 
-                text_image.blit(word_image, (x, y))
+                text_surface.blit(word_surface, (x, y))
                 x += word_width + space
 
             # Check if we are at the last line to avoid addition of empty line at the end.
             if line_index < len(words):
-                text_image, x, y = self.expand_multiline_image(text_image, y)
+                text_surface, x, y = self.expand_multiline_surface(text_surface, y)
 
-        return text_image
+        return text_surface
 
-    def expand_multiline_image(self, text_image, y):
-        """Helper function for use in 'render_multiline_image()' to expand 'text_image' for accommodation of new lines
+    def expand_multiline_surface(self, text_surface, y):
+        """Helper function for use in 'render_multiline_surface()' to expand 'text_surface' for accommodation of new lines
         of text automatically through use of a temporary surface."""
         x = self.text_pos[0]  # Reset 'x' for next line.
         y += self.font.get_height()  # Set 'y' for next line.
 
         # Create a temporary surface to accommodate the new line of text.
-        # The new height is calculated by adding the current image height to the font height.
-        # Blit the existing text image onto the temporary surface, then update text_image to reference the
+        # The new height is calculated by adding the current surface height to the font height.
+        # Blit the existing text surface onto the temporary surface, then update text_surface to reference the
         # expanded surface.
-        new_height = self.image_height + self.font.get_height()
-        temporary_surface = pygame.Surface((self.image_width, new_height), pygame.SRCALPHA)
-        temporary_surface.blit(text_image, (0,0))
-        text_image = temporary_surface
-        self.image_height = new_height  # Update image height
+        new_height = self.surface_height + self.font.get_height()
+        temporary_surface = pygame.Surface((self.surface_width, new_height), pygame.SRCALPHA)
+        temporary_surface.blit(text_surface, (0,0))
+        text_surface = temporary_surface
+        self.surface_height = new_height  # Update surface height
 
-        return text_image, x, y
+        return text_surface, x, y
 
-    def render_new_text_image(self, settings_gui=False):
-        """Re-render 'text_image' attribute and get new 'text_rect'. This method is for use after an already created
+    def render_new_text_surface(self, settings_gui=False):
+        """Re-render 'text_surface' attribute and get new 'text_rect'. This method is for use after an already created
         instance has its 'text' attribute changed to ensure that further changes to, for example, its position are applied
         to the modified instance.
         ARGS:
@@ -137,14 +137,14 @@ class TextField:
         if settings_gui:
             self.font = pygame.font.Font(settings.font, self.size)
 
-        # Check if element has 'multi_line' attribute set to 'True' and render 'text_image' accordingly, using class method
-        # '.render_multiline_image()' if element is multi line normal render method otherwise.
+        # Check if element has 'multi_line' attribute set to 'True' and render 'text_surface' accordingly, using class method
+        # '.render_multiline_surface()' if element is multi line normal render method otherwise.
         if self.multi_line:
-            self.text_image = self.render_multiline_image()
+            self.text_surface = self.render_multiline_surface()
         else:
-            self.text_image = self.font.render(self.text, True, self.text_color)
+            self.text_surface = self.font.render(self.text, True, self.text_color)
 
-        self.text_rect = self.text_image.get_rect()
+        self.text_rect = self.text_surface.get_rect()
 
 
 class Button(TextField):
@@ -166,38 +166,37 @@ class Button(TextField):
         self.rect_hover_color = settings.rect_hover_color
         self.rect_clicked_color = settings.rect_clicked_color
         # Set rect and size for button.
-        self.button_rect = self.text_image.get_rect()
+        self.button_rect = self.text_surface.get_rect()
         self.button_rect.height, self.button_rect.width = self.button_rect.height + size, self.button_rect.width + size
         # 'None' attribute to store the button surface, created in 'draw_button()', to represent the button background.
         # This ensures it is only initialized when drawn, and after any changes to 'button_rect' are made in other functions.
-        self.button_image = None
+        self.button_surface = None
 
     def draw_button(self, mouse_pos):
         """Draw the button on the screen, changing color based on hover or click using 'mouse_pos' as initialized in
         main loop in 'main.py'."""
-        # Create 'button_image' surface.
-        if not self.button_image:
-            self.button_image = pygame.Surface((self.button_rect.width, self.button_rect.height), pygame.SRCALPHA)
+        if not self.button_surface:
+            self.button_surface = pygame.Surface((self.button_rect.width, self.button_rect.height), pygame.SRCALPHA)
 
         # Draw background surface if 'bg_color' is specified.
         if self.bg_color:
-            self.blit_button_image(self.bg_color)
+            self.blit_button_surface(self.bg_color)
 
         # Determine button color based on mouse hover or click.
         if self.button_rect.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0]:
-                self.blit_button_image(self.rect_clicked_color)
+                self.blit_button_surface(self.rect_clicked_color)
             else:
-                self.blit_button_image(self.rect_hover_color)
+                self.blit_button_surface(self.rect_hover_color)
 
         # Draw the text on top of the button.
         self.text_rect.center = self.button_rect.center
-        self.screen.blit(self.text_image, self.text_rect)
+        self.screen.blit(self.text_surface, self.text_rect)
 
-    def blit_button_image(self, color):
-        """Fill 'self.button_image' with 'color' attribute and blit it onto the screen at 'self.button_rect'."""
-        self.button_image.fill(color)
-        self.screen.blit(self.button_image, self.button_rect)
+    def blit_button_surface(self, color):
+        """Fill 'self.button_surface' with 'color' attribute and blit it onto the screen at 'self.button_rect'."""
+        self.button_surface.fill(color)
+        self.screen.blit(self.button_surface, self.button_rect)
 
 
 class InteractiveText(TextField):
@@ -229,23 +228,23 @@ class InteractiveText(TextField):
         self.rect_clicked_color = settings.rect_clicked_color
         self.rect_selected_color = settings.rect_selected_color
         # Create rect for field to allow for easier positioning of the 'text_rect' if field size is changed later.
-        self.interactive_rect = self.text_image.get_rect()
+        self.interactive_rect = self.text_surface.get_rect()
         # 'None' attribute to store the interactive text surface, created in 'draw_interactive_text()', to represent the
         # field background. This ensures it is only initialized when drawn, and after any changes to 'interactive_rect'
         # are made in other functions.
-        self.interactive_text_image = None
+        self.interactive_text_surface = None
 
     def draw_interactive_text(self, mouse_pos):
         """Draw interactive text field on the screen."""
-        # Create 'button_image' surface.
-        if not self.interactive_text_image:
-            self.interactive_text_image = pygame.Surface((self.interactive_rect.width, self.interactive_rect.height), pygame.SRCALPHA)
+        # Create 'button_surface' surface.
+        if not self.interactive_text_surface:
+            self.interactive_text_surface = pygame.Surface((self.interactive_rect.width, self.interactive_rect.height), pygame.SRCALPHA)
 
         # Draw background surface if 'bg_color' is specified or use 'rect_selected_color' if 'selected' is True.
         if self.selected:
-            self.blit_interactive_text_image(self.rect_selected_color)
+            self.blit_interactive_text_surface(self.rect_selected_color)
         elif self.bg_color:
-            self.blit_interactive_text_image(self.bg_color)
+            self.blit_interactive_text_surface(self.bg_color)
 
         # Change field color based on mouse hover.
         if self.interactive_rect.collidepoint(mouse_pos):
@@ -253,17 +252,17 @@ class InteractiveText(TextField):
 
         # Draw the text on top of the interactive text field.
         self.text_rect.center = self.interactive_rect.center
-        self.screen.blit(self.text_image, self.text_rect)
+        self.screen.blit(self.text_surface, self.text_rect)
 
     def handle_mouse_interaction(self):
         """Handle interactive functions for the class object.
         NOTE: info panel interactions are handled via method 'handle_mouse_interaction_info_panel()' further down."""
         # Color change when mouse is pressed (only if 'self.select' is True).
         if self.select and pygame.mouse.get_pressed()[0]:
-            self.blit_interactive_text_image(self.rect_clicked_color)
+            self.blit_interactive_text_surface(self.rect_clicked_color)
         # Normal hover color when mouse is hovering but not pressed.
         else:
-            self.blit_interactive_text_image(self.rect_hover_color)
+            self.blit_interactive_text_surface(self.rect_hover_color)
 
         # Change selected state of field by mouse click if 'select' is True.
         if self.select:
@@ -277,11 +276,11 @@ class InteractiveText(TextField):
             # Reset 'was_pressed' if mouse is not over the button to avoid accidental toggles.
             self.was_pressed = False
 
-    def blit_interactive_text_image(self, color):
-        """Fill 'self.interactive_text_image' with 'color' attribute and blit it onto the screen at
-        'self.interactive_text_image'."""
-        self.interactive_text_image.fill(color)
-        self.screen.blit(self.interactive_text_image, self.interactive_rect)
+    def blit_interactive_text_surface(self, color):
+        """Fill 'self.interactive_text_surface' with 'color' attribute and blit it onto the screen at
+        'self.interactive_text_surface'."""
+        self.interactive_text_surface.fill(color)
+        self.screen.blit(self.interactive_text_surface, self.interactive_rect)
 
     def handle_mouse_interaction_info_panels(self, mouse_pos):
         """Handle mouse interactions and draw info panels when panels are assigned to the class instance.
@@ -300,7 +299,7 @@ class InfoPanel(TextField):
     implement info panels."""
 
     def __init__(self, screen, text, size, bg_color=settings.info_panel_bg_color, text_color="default",
-                 multi_line=False, image_width=0, text_pos=(0,0), surface_pos="topright"):
+                 multi_line=False, surface_width=0, text_pos=(0,0), surface_pos="topright"):
         """Initialize an info panel.
         ARGS:
             screen: pygame window.
@@ -311,8 +310,8 @@ class InfoPanel(TextField):
                         Use RGB tuple for others.
             multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
         ARGS for use when 'multi_line=True':
-            image_width: set width for attribute 'text_image'. Default is '0'.
-            text_pos: set starting point for text in 'text_image'. Default is '(0,0)'.
+            surface_width: set width for attribute 'text_surface'. Default is '0'.
+            text_pos: set starting point for text in 'text_surface'. Default is '(0,0)'.
         surface_pos: set position for info panel on screen using a string keyword. Possible keywords:
             "top",
             "bottom",
@@ -325,7 +324,7 @@ class InfoPanel(TextField):
             "center".
             Default position is 'topright'.
         """
-        super().__init__(screen, text, size, bg_color, text_color, multi_line, image_width, text_pos)
+        super().__init__(screen, text, size, bg_color, text_color, multi_line, surface_width, text_pos)
         if surface_pos == "top":
             self.background_rect.top, self.background_rect.centerx = screen.get_rect().top, screen.get_rect().centerx
         elif surface_pos == "bottom":
@@ -351,7 +350,7 @@ class InfoPanel(TextField):
         """Draw info panel on screen."""
         self.text_rect.center = self.background_rect.center
         pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
-        self.screen.blit(self.text_image, self.text_rect)
+        self.screen.blit(self.text_surface, self.text_rect)
 
 
 class TextInputField:
