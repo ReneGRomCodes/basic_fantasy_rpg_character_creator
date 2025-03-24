@@ -34,6 +34,8 @@ class TextField:
         # Default alpha transparency value. Not used by default, but can be changed and then applied using
         # '.set_alpha(self.alpha)' elsewhere to be changed to, for example, create a fade-in/fade-out effect.
         # See class methods in 'gui/credits.py' as an example.
+        # NOTE: check if surface supports alpha channel (use 'pygame.SRCALPHA' argument when creating a new surface if
+        # not)!
         self.alpha = 255
 
         # Set font, text color and get rect for text field.
@@ -163,28 +165,39 @@ class Button(TextField):
         # Set button colors for events.
         self.rect_hover_color = settings.rect_hover_color
         self.rect_clicked_color = settings.rect_clicked_color
-
         # Set rect and size for button.
         self.button_rect = self.text_image.get_rect()
         self.button_rect.height, self.button_rect.width = self.button_rect.height + size, self.button_rect.width + size
+        # 'None' attribute to store the button surface, created in 'draw_button()', to represent the button background.
+        # This ensures it is only initialized when drawn, and after any changes to 'button_rect' are made in other functions.
+        self.button_image = None
 
     def draw_button(self, mouse_pos):
         """Draw the button on the screen, changing color based on hover or click using 'mouse_pos' as initialized in
         main loop in 'main.py'."""
-        # Draw background rect if 'bg_color' is specified.
+        # Create 'button_image' surface.
+        if not self.button_image:
+            self.button_image = pygame.Surface((self.button_rect.width, self.button_rect.height), pygame.SRCALPHA)
+
+        # Draw background surface if 'bg_color' is specified.
         if self.bg_color:
-            pygame.draw.rect(self.screen, self.bg_color, self.button_rect)
+            self.blit_button_image(self.bg_color)
 
         # Determine button color based on mouse hover or click.
         if self.button_rect.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0]:
-                pygame.draw.rect(self.screen, self.rect_clicked_color, self.button_rect)
+                self.blit_button_image(self.rect_clicked_color)
             else:
-                pygame.draw.rect(self.screen, self.rect_hover_color, self.button_rect)
+                self.blit_button_image(self.rect_hover_color)
 
         # Draw the text on top of the button.
         self.text_rect.center = self.button_rect.center
         self.screen.blit(self.text_image, self.text_rect)
+
+    def blit_button_image(self, color):
+        """Fill 'self.button_image' with 'color' attribute and blit it onto the screen at 'self.button_rect'."""
+        self.button_image.fill(color)
+        self.screen.blit(self.button_image, self.button_rect)
 
 
 class InteractiveText(TextField):
@@ -217,14 +230,24 @@ class InteractiveText(TextField):
         self.rect_selected_color = settings.rect_selected_color
         # Create rect for field to allow for easier positioning of the 'text_rect' if field size is changed later.
         self.interactive_rect = self.text_image.get_rect()
+        # 'None' attribute to store the interactive text surface, created in 'draw_interactive_text()', to represent the
+        # field background. This ensures it is only initialized when drawn, and after any changes to 'interactive_rect'
+        # are made in other functions.
+        self.interactive_text_image = None
 
     def draw_interactive_text(self, mouse_pos):
         """Draw interactive text field on the screen."""
+        # Create 'button_image' surface.
+        if not self.interactive_text_image:
+            self.interactive_text_image = pygame.Surface((self.interactive_rect.width, self.interactive_rect.height), pygame.SRCALPHA)
+
         # Draw background rect if 'bg_color' is specified or use 'rect_selected_color' if 'selected' is True.
         if self.selected:
-            pygame.draw.rect(self.screen, self.rect_selected_color, self.interactive_rect)
+            self.interactive_text_image.fill(self.rect_selected_color)
+            self.screen.blit(self.interactive_text_image, self.interactive_rect)
         elif self.bg_color:
-            pygame.draw.rect(self.screen, self.bg_color, self.interactive_rect)
+            self.interactive_text_image.fill(self.bg_color)
+            self.screen.blit(self.interactive_text_image, self.interactive_rect)
 
         # Change field color based on mouse hover.
         if self.interactive_rect.collidepoint(mouse_pos):
@@ -239,10 +262,10 @@ class InteractiveText(TextField):
         NOTE: info panel interactions are handled via method 'handle_mouse_interaction_info_panel()' further down."""
         # Color change when mouse is pressed (only if 'self.select' is True).
         if self.select and pygame.mouse.get_pressed()[0]:
-            pygame.draw.rect(self.screen, self.rect_clicked_color, self.interactive_rect)
+            self.blit_interactive_text_image(self.rect_clicked_color)
         # Normal hover color when mouse is hovering but not pressed.
         else:
-            pygame.draw.rect(self.screen, self.rect_hover_color, self.interactive_rect)
+            self.blit_interactive_text_image(self.rect_hover_color)
 
         # Change selected state of field by mouse click if 'select' is True.
         if self.select:
@@ -255,6 +278,12 @@ class InteractiveText(TextField):
         else:
             # Reset 'was_pressed' if mouse is not over the button to avoid accidental toggles.
             self.was_pressed = False
+
+    def blit_interactive_text_image(self, color):
+        """Fill 'self.interactive_text_image' with 'color' attribute and blit it onto the screen at
+        'self.interactive_text_image'."""
+        self.interactive_text_image.fill(color)
+        self.screen.blit(self.interactive_text_image, self.interactive_rect)
 
     def handle_mouse_interaction_info_panels(self, mouse_pos):
         """Handle mouse interactions and draw info panels when panels are assigned to the class instance.

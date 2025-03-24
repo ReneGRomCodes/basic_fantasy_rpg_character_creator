@@ -118,8 +118,6 @@ Implement the new element in the relevant modules (e.g., gui.py).
 
 The final character sheet display is incomplete.
 
-The program currently does not return to the main menu after displaying the character sheet.
-
 Some obsolete or work-in-progress files remain in the main directory and will be removed in future updates.
 
 ## Future Plans
