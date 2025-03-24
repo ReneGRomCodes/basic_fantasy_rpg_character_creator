@@ -241,13 +241,11 @@ class InteractiveText(TextField):
         if not self.interactive_text_image:
             self.interactive_text_image = pygame.Surface((self.interactive_rect.width, self.interactive_rect.height), pygame.SRCALPHA)
 
-        # Draw background rect if 'bg_color' is specified or use 'rect_selected_color' if 'selected' is True.
+        # Draw background surface if 'bg_color' is specified or use 'rect_selected_color' if 'selected' is True.
         if self.selected:
-            self.interactive_text_image.fill(self.rect_selected_color)
-            self.screen.blit(self.interactive_text_image, self.interactive_rect)
+            self.blit_interactive_text_image(self.rect_selected_color)
         elif self.bg_color:
-            self.interactive_text_image.fill(self.bg_color)
-            self.screen.blit(self.interactive_text_image, self.interactive_rect)
+            self.blit_interactive_text_image(self.bg_color)
 
         # Change field color based on mouse hover.
         if self.interactive_rect.collidepoint(mouse_pos):
