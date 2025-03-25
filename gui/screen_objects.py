@@ -175,9 +175,8 @@ class Button(TextField):
         # for opaque background.
         self.fade_alpha = 0
         self.background_alpha = self.alpha
-        # Calculate fading speeds. Represent intervals for alpha value changes per frame.
-        self.fade_in_speed = int(25 * (30 / settings.frame_rate))
-        self.fade_out_speed = int(12 * (30 / settings.frame_rate))  # NOT USED YET.
+        # Calculate fading speed based on frame rate. Represent intervals for alpha value changes per frame.
+        self.fade_speed = int(25 * (30 / settings.frame_rate))
 
     def draw_button(self, mouse_pos):
         """Draw the button on the screen, changing color based on hover or click using 'mouse_pos' as initialized in
@@ -187,9 +186,10 @@ class Button(TextField):
 
         # Determine button color based on mouse hover or click and apply alpha transparency for fade-in effect.
         if self.button_rect.collidepoint(mouse_pos):
-            # Check and set alpha transparency, and limit 'self.alpha' value to max of 255.
+            # Check and set alpha transparency and limit 'self.fade_alpha' value to max of 255. Then apply to surface for
+            # fade-in effect.
             if self.fade_alpha < 255:
-                self.fade_alpha += self.fade_in_speed
+                self.fade_alpha += self.fade_speed
                 self.button_surface.set_alpha(self.fade_alpha)
             elif self.fade_alpha != 255:
                 self.fade_alpha = 255
@@ -199,15 +199,20 @@ class Button(TextField):
                 self.blit_button_surface(self.rect_clicked_color)
             else:
                 self.blit_button_surface(self.rect_hover_color)
-        # Draw opaque background surface if 'bg_color' is specified.
-        elif self.bg_color:
+        # Draw opaque background surface if 'bg_color' is specified and no fade-out effect is in progress.
+        elif self.bg_color and self.fade_alpha == 0:
             self.button_surface.set_alpha(self.background_alpha)
             self.blit_button_surface(self.bg_color)
 
-        # Reset alpha transparency attribute to 0 if button is not hovered over or clicked.
-        if not self.button_rect.collidepoint(mouse_pos) and self.alpha != 0:
-            self.fade_alpha = 0
-            self.button_surface.set_alpha(self.fade_alpha)
+        # Decrease/reset alpha transparency attribute to 0 if button is not hovered over or clicked (anymore).
+        if not self.button_rect.collidepoint(mouse_pos) and self.fade_alpha != 0:
+            if self.fade_alpha >= 0:
+                self.fade_alpha -= self.fade_speed
+                self.button_surface.set_alpha(self.fade_alpha)
+                self.blit_button_surface(self.rect_hover_color)
+            else:
+                self.fade_alpha = 0
+                self.button_surface.set_alpha(self.fade_alpha)
 
         # Draw the text on top of the button.
         self.text_rect.center = self.button_rect.center
@@ -257,9 +262,8 @@ class InteractiveText(TextField):
         # for opaque background.
         self.fade_alpha = 0
         self.background_alpha = self.alpha
-        # Calculate fading speeds. Represent intervals for alpha value changes per frame.
-        self.fade_in_speed = int(25 * (30 / settings.frame_rate))
-        self.fade_out_speed = int(12 * (30 / settings.frame_rate))  # NOT USED YET.
+        # Calculate fading speed based on frame rate. Represent intervals for alpha value changes per frame.
+        self.fade_speed = int(25 * (30 / settings.frame_rate))
 
     def draw_interactive_text(self, mouse_pos):
         """Draw interactive text field on the screen."""
@@ -291,10 +295,10 @@ class InteractiveText(TextField):
     def handle_mouse_interaction(self):
         """Handle interactive functions for the class object.
         NOTE: info panel interactions are handled via method 'handle_mouse_interaction_info_panel()' further down."""
-        # Check and set alpha transparency, and limit 'self.alpha' value to max of 255. Then apply to surface for fade-in
-        # effect.
+        # Check and set alpha transparency and limit 'self.fade_alpha' value to max of 255. Then apply to surface for
+        # fade-in effect.
         if self.fade_alpha < 255:
-            self.fade_alpha += self.fade_in_speed
+            self.fade_alpha += self.fade_speed
             self.interactive_text_surface.set_alpha(self.fade_alpha)
         elif self.fade_alpha != 255:
             self.fade_alpha = 255
