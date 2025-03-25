@@ -33,7 +33,7 @@ class TextField:
 
         # Default alpha transparency value. Not used by default, but can be changed and then applied using
         # '.set_alpha(self.alpha)' elsewhere to be changed to, for example, create a fade-in/fade-out effect.
-        # See class methods in 'gui/credits.py' as an example.
+        # See 'Button' class or methods in 'gui/credits.py' as examples.
         # NOTE: check if surface supports alpha channel (use 'pygame.SRCALPHA' argument when creating a new surface if
         # not)!
         self.alpha = 255
@@ -171,6 +171,10 @@ class Button(TextField):
         # 'None' attribute to store the button surface, created in 'draw_button()', to represent the button background.
         # This ensures it is only initialized when drawn, and after any changes to 'button_rect' are made in other functions.
         self.button_surface = None
+        # Set attributes for alpha values to 0 to allow for fading effects, and to 255 (self.alpha from parent class)
+        # for opaque background.
+        self.fade_alpha = 0
+        self.background_alpha = self.alpha
 
     def draw_button(self, mouse_pos):
         """Draw the button on the screen, changing color based on hover or click using 'mouse_pos' as initialized in
@@ -178,16 +182,23 @@ class Button(TextField):
         if not self.button_surface:
             self.button_surface = pygame.Surface((self.button_rect.width, self.button_rect.height), pygame.SRCALPHA)
 
-        # Draw background surface if 'bg_color' is specified.
-        if self.bg_color:
-            self.blit_button_surface(self.bg_color)
-
-        # Determine button color based on mouse hover or click.
+        # Determine button color based on mouse hover or click and apply alpha transparency for fade-in effect.
         if self.button_rect.collidepoint(mouse_pos):
+            self.fade_alpha += 25
+            self.button_surface.set_alpha(self.fade_alpha)
             if pygame.mouse.get_pressed()[0]:
                 self.blit_button_surface(self.rect_clicked_color)
             else:
                 self.blit_button_surface(self.rect_hover_color)
+        # Draw opaque background surface if 'bg_color' is specified.
+        elif self.bg_color:
+            self.button_surface.set_alpha(self.background_alpha)
+            self.blit_button_surface(self.bg_color)
+
+        # Reset alpha transparency attribute to 0 if button is not hovered over or clicked.
+        if not self.button_rect.collidepoint(mouse_pos) and self.alpha != 0:
+            self.fade_alpha = 0
+            self.button_surface.set_alpha(self.fade_alpha)
 
         # Draw the text on top of the button.
         self.text_rect.center = self.button_rect.center
@@ -240,10 +251,16 @@ class InteractiveText(TextField):
         if not self.interactive_text_surface:
             self.interactive_text_surface = pygame.Surface((self.interactive_rect.width, self.interactive_rect.height), pygame.SRCALPHA)
 
-        # Draw background surface if 'bg_color' is specified or use 'rect_selected_color' if 'selected' is True.
+        # Draw opaque background surface if 'bg_color' is specified or use 'rect_selected_color' if 'selected' is True.
         if self.selected:
+            if self.alpha != 255:
+                self.alpha = 255
+                self.interactive_text_surface.set_alpha(self.alpha)
             self.blit_interactive_text_surface(self.rect_selected_color)
         elif self.bg_color:
+            if self.alpha != 255:
+                self.alpha = 255
+                self.interactive_text_surface.set_alpha(self.alpha)
             self.blit_interactive_text_surface(self.bg_color)
 
         # Change field color based on mouse hover.

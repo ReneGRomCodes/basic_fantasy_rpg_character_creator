@@ -12,6 +12,8 @@ class Settings:
         self.small_screen = (1280,720)
         self.medium_screen = (1600,900)
         self.large_screen = (1920,1080)
+        # Frame rate.
+        self.frame_rate = 30
         # Default font.
         self.font = "gui/font/EagleLake-Regular.ttf"
         # Background color for screen.

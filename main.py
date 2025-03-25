@@ -63,7 +63,7 @@ def run_character_creator():
             state = sm.random_character(screen, state, gui_elements, mouse_pos)
 
         pygame.display.flip()
-        clock.tick(30)
+        clock.tick(settings.frame_rate)
 
 
 run_character_creator()
