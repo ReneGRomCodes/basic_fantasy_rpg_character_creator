@@ -187,8 +187,14 @@ class Button(TextField):
 
         # Determine button color based on mouse hover or click and apply alpha transparency for fade-in effect.
         if self.button_rect.collidepoint(mouse_pos):
-            self.fade_alpha += self.fade_in_speed
-            self.button_surface.set_alpha(self.fade_alpha)
+            # Check and set alpha transparency, and limit 'self.alpha' value to max of 255.
+            if self.fade_alpha < 255:
+                self.fade_alpha += self.fade_in_speed
+                self.button_surface.set_alpha(self.fade_alpha)
+            elif self.fade_alpha != 255:
+                self.fade_alpha = 255
+                self.button_surface.set_alpha(self.fade_alpha)
+            # Check for mouse press and draw button surface with correct color.
             if pygame.mouse.get_pressed()[0]:
                 self.blit_button_surface(self.rect_clicked_color)
             else:
@@ -276,6 +282,7 @@ class InteractiveText(TextField):
         # Reset alpha transparency attribute to 0 if button is not hovered over or clicked.
         if not self.interactive_rect.collidepoint(mouse_pos) and self.fade_alpha != 0:
             self.fade_alpha = 0
+            self.interactive_text_surface.set_alpha(self.fade_alpha)
 
         # Draw the text on top of the interactive text field.
         self.text_rect.center = self.interactive_rect.center
@@ -284,6 +291,15 @@ class InteractiveText(TextField):
     def handle_mouse_interaction(self):
         """Handle interactive functions for the class object.
         NOTE: info panel interactions are handled via method 'handle_mouse_interaction_info_panel()' further down."""
+        # Check and set alpha transparency, and limit 'self.alpha' value to max of 255. Then apply to surface for fade-in
+        # effect.
+        if self.fade_alpha < 255:
+            self.fade_alpha += self.fade_in_speed
+            self.interactive_text_surface.set_alpha(self.fade_alpha)
+        elif self.fade_alpha != 255:
+            self.fade_alpha = 255
+            self.interactive_text_surface.set_alpha(self.fade_alpha)
+
         # Color change when mouse is pressed (only if 'self.select' is True).
         if self.select and pygame.mouse.get_pressed()[0]:
             self.blit_interactive_text_surface(self.rect_clicked_color)
