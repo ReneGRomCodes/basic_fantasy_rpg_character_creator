@@ -1,8 +1,12 @@
 import gui.screen_objects as so
 from gui.ui_helpers import draw_screen_title
+from core.settings import Settings
 """
 Class for credits screen.
 """
+
+# Instance of 'Settings' class.
+settings = Settings()
 
 
 class Credits:
@@ -37,6 +41,10 @@ class Credits:
                                  (self.concept_creator_title, self.concept_creator_name),
                                  (self.font_creator_title, self.font_creator_name))
 
+        # Calculate fade-out speed. Represent intervals for alpha value changes per frame when credits fade out at the
+        # top of the screen.
+        self.fading_speed = int(7 * (30 / settings.frame_rate))
+
     def show_credits(self, screen, gui_elements):
         """Position and draw credits on screen."""
 
@@ -61,7 +69,7 @@ class Credits:
                 # Set item transparency based on position on screen for fade-out effect.
                 if item.text_rect.top <= screen.get_rect().height / 4 and not item.text_rect.bottom <= screen.get_rect().top:
                     item.text_surface.set_alpha(item.alpha)
-                    item.alpha -= 7
+                    item.alpha -= self.fading_speed
                 # Reset transparency when the item has fully left the top of the screen, ensuring it is opaque when it
                 # reappears at the bottom.
                 elif item.alpha != 255:

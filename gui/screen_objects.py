@@ -175,6 +175,9 @@ class Button(TextField):
         # for opaque background.
         self.fade_alpha = 0
         self.background_alpha = self.alpha
+        # Calculate fading speeds. Represent intervals for alpha value changes per frame.
+        self.fade_in_speed = int(25 * (30 / settings.frame_rate))
+        self.fade_out_speed = int(12 * (30 / settings.frame_rate))  # NOT USED YET.
 
     def draw_button(self, mouse_pos):
         """Draw the button on the screen, changing color based on hover or click using 'mouse_pos' as initialized in
@@ -184,7 +187,7 @@ class Button(TextField):
 
         # Determine button color based on mouse hover or click and apply alpha transparency for fade-in effect.
         if self.button_rect.collidepoint(mouse_pos):
-            self.fade_alpha += 25
+            self.fade_alpha += self.fade_in_speed
             self.button_surface.set_alpha(self.fade_alpha)
             if pygame.mouse.get_pressed()[0]:
                 self.blit_button_surface(self.rect_clicked_color)
@@ -244,6 +247,13 @@ class InteractiveText(TextField):
         # field background. This ensures it is only initialized when drawn, and after any changes to 'interactive_rect'
         # are made in other functions.
         self.interactive_text_surface = None
+        # Set attributes for alpha values to 0 to allow for fading effects, and to 255 (self.alpha from parent class)
+        # for opaque background.
+        self.fade_alpha = 0
+        self.background_alpha = self.alpha
+        # Calculate fading speeds. Represent intervals for alpha value changes per frame.
+        self.fade_in_speed = int(25 * (30 / settings.frame_rate))
+        self.fade_out_speed = int(12 * (30 / settings.frame_rate))  # NOT USED YET.
 
     def draw_interactive_text(self, mouse_pos):
         """Draw interactive text field on the screen."""
@@ -251,21 +261,21 @@ class InteractiveText(TextField):
         if not self.interactive_text_surface:
             self.interactive_text_surface = pygame.Surface((self.interactive_rect.width, self.interactive_rect.height), pygame.SRCALPHA)
 
-        # Draw opaque background surface if 'bg_color' is specified or use 'rect_selected_color' if 'selected' is True.
-        if self.selected:
-            if self.alpha != 255:
-                self.alpha = 255
-                self.interactive_text_surface.set_alpha(self.alpha)
-            self.blit_interactive_text_surface(self.rect_selected_color)
-        elif self.bg_color:
-            if self.alpha != 255:
-                self.alpha = 255
-                self.interactive_text_surface.set_alpha(self.alpha)
-            self.blit_interactive_text_surface(self.bg_color)
+        # Draw opaque background surface if 'selected' is True or 'bg_color' is specified.
+        if self.selected or self.bg_color:
+            self.interactive_text_surface.set_alpha(self.background_alpha)
+            if self.selected:
+                self.blit_interactive_text_surface(self.rect_selected_color)
+            elif self.bg_color:
+                self.blit_interactive_text_surface(self.bg_color)
 
         # Change field color based on mouse hover.
         if self.interactive_rect.collidepoint(mouse_pos):
             self.handle_mouse_interaction()
+
+        # Reset alpha transparency attribute to 0 if button is not hovered over or clicked.
+        if not self.interactive_rect.collidepoint(mouse_pos) and self.fade_alpha != 0:
+            self.fade_alpha = 0
 
         # Draw the text on top of the interactive text field.
         self.text_rect.center = self.interactive_rect.center
