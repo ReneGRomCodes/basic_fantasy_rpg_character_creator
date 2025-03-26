@@ -65,7 +65,8 @@ class TextField:
         # Default alpha transparency values. Not used by 'TextField' class, but can be changed and then applied using
         # '.set_alpha(self.alpha)' elsewhere to be changed to, for example, create a fade-in/fade-out effect.
         # See 'Button' and 'InteractiveText' class or methods in 'gui/credits.py' as examples.
-        # NOTE: check if surface supports alpha channel (use 'pygame.SRCALPHA' argument when creating a new surface if
+        # NOTE 1: fade-in/out effects can be achieved by using XXXXXXXXX.
+        # NOTE 2: check if surface supports alpha channel (use 'pygame.SRCALPHA' argument when creating a new surface if
         # not)!
         self.fade_alpha = 0
         self.background_alpha = 255
@@ -150,6 +151,40 @@ class TextField:
 
         self.text_rect = self.text_surface.get_rect()
 
+    def blit_surface(self, surface, rect, color):
+        """Fill 'surface' with 'color' attribute and blit it onto the screen at 'rect'."""
+        surface.fill(color)
+        self.screen.blit(surface, rect)
+
+    """Following methods allow for fade-in/out effects for background surfaces on mouse collision in conjunction with
+    alpha transparency attribute 'self.fade_alpha'.
+    See application in 'Button' and 'InteractiveText' class methods as examples."""
+
+    def alpha_fade_in(self, surface):
+        """Check and set alpha transparency for 'surface', and limit 'self.fade_alpha' value to max of 255. Then apply to
+        'surface' for fade-in effect.
+        For use as effect on mouse hover, method should be called from within an 'if self.button_rect.collidepoint(mouse_pos)'
+        statement."""
+        # Check and set alpha transparency and limit 'self.fade_alpha' value to max of 255.
+        if self.fade_alpha < 255:
+            self.fade_alpha += self.fade_speed
+            surface.set_alpha(self.fade_alpha)
+        elif self.fade_alpha != 255:
+            self.fade_alpha = 255
+            surface.set_alpha(self.fade_alpha)
+
+    def alpha_fade_out(self, surface, rect, color, mouse_pos):
+        """Check and set alpha transparency for 'surface', and limit 'self.fade_alpha' value to min of 0. Then apply to
+        'surface' for fade-out effect."""
+        if not rect.collidepoint(mouse_pos) and self.fade_alpha != 0:
+            if self.fade_alpha >= 0:
+                self.fade_alpha -= self.fade_speed
+                surface.set_alpha(self.fade_alpha)
+                self.blit_surface(surface, rect, color)
+            elif self.fade_alpha != 0:
+                self.fade_alpha = 0
+                surface.set_alpha(self.fade_alpha)
+
 
 class Button(TextField):
     """Represent an interactive button."""
@@ -184,42 +219,24 @@ class Button(TextField):
 
         # Determine button color based on mouse hover or click and apply alpha transparency for fade-in effect.
         if self.button_rect.collidepoint(mouse_pos):
-            # Check and set alpha transparency and limit 'self.fade_alpha' value to max of 255. Then apply to surface for
-            # fade-in effect.
-            if self.fade_alpha < 255:
-                self.fade_alpha += self.fade_speed
-                self.button_surface.set_alpha(self.fade_alpha)
-            elif self.fade_alpha != 255:
-                self.fade_alpha = 255
-                self.button_surface.set_alpha(self.fade_alpha)
-            # Check for mouse press and draw button surface with correct color.
+            # Start surface color fade-in effect.
+            self.alpha_fade_in(self.button_surface)
             if pygame.mouse.get_pressed()[0]:
-                self.blit_button_surface(self.rect_clicked_color)
+                self.blit_surface(self.button_surface, self.button_rect, self.rect_clicked_color)
             else:
-                self.blit_button_surface(self.rect_hover_color)
+                self.blit_surface(self.button_surface, self.button_rect, self.rect_hover_color)
         # Draw opaque background surface if 'bg_color' is specified and no fade-out effect is in progress.
         elif self.bg_color and self.fade_alpha == 0:
             self.button_surface.set_alpha(self.background_alpha)
-            self.blit_button_surface(self.bg_color)
+            self.blit_surface(self.button_surface, self.button_rect, self.bg_color)
 
-        # Decrease/reset alpha transparency attribute to 0 if button is not hovered over or clicked (anymore).
-        if not self.button_rect.collidepoint(mouse_pos) and self.fade_alpha != 0:
-            if self.fade_alpha >= 0:
-                self.fade_alpha -= self.fade_speed
-                self.button_surface.set_alpha(self.fade_alpha)
-                self.blit_button_surface(self.rect_hover_color)
-            elif self.fade_alpha != 0:
-                self.fade_alpha = 0
-                self.button_surface.set_alpha(self.fade_alpha)
+        # Start fade-out effect (if mouse is not hovering over button anymore and 'self.alpha_fade_in()' has been
+        # triggered previously).
+        self.alpha_fade_out(self.button_surface, self.button_rect, self.rect_hover_color, mouse_pos)
 
         # Draw the text on top of the button.
         self.text_rect.center = self.button_rect.center
         self.screen.blit(self.text_surface, self.text_rect)
-
-    def blit_button_surface(self, color):
-        """Fill 'self.button_surface' with 'color' attribute and blit it onto the screen at 'self.button_rect'."""
-        self.button_surface.fill(color)
-        self.screen.blit(self.button_surface, self.button_rect)
 
 
 class InteractiveText(TextField):
@@ -267,23 +284,17 @@ class InteractiveText(TextField):
         if self.selected or self.bg_color:
             self.interactive_text_surface.set_alpha(self.background_alpha)
             if self.selected:
-                self.blit_interactive_text_surface(self.rect_selected_color)
+                self.blit_surface(self.interactive_text_surface, self.interactive_rect, self.rect_selected_color)
             elif self.bg_color:
-                self.blit_interactive_text_surface(self.bg_color)
+                self.blit_surface(self.interactive_text_surface, self.interactive_rect, self.bg_color)
 
         # Change field color based on mouse hover.
         if self.interactive_rect.collidepoint(mouse_pos):
             self.handle_mouse_interaction()
 
-        # Decrease/reset alpha transparency attribute to 0 if button is not hovered over or clicked (anymore).
-        if not self.interactive_rect.collidepoint(mouse_pos) and self.fade_alpha != 0:
-            if self.fade_alpha >= 0:
-                self.fade_alpha -= self.fade_speed
-                self.interactive_text_surface.set_alpha(self.fade_alpha)
-                self.blit_interactive_text_surface(self.rect_hover_color)
-            elif self.fade_alpha != 0:
-                self.fade_alpha = 0
-                self.interactive_text_surface.set_alpha(self.fade_alpha)
+        # Start fade-out effect (if mouse is not hovering over button anymore and 'self.alpha_fade_in()' has been
+        # triggered previously from within 'self.handle_mouse_interaction').
+        self.alpha_fade_out(self.interactive_text_surface, self.interactive_rect, self.rect_hover_color, mouse_pos)
 
         # Draw the text on top of the interactive text field.
         self.text_rect.center = self.interactive_rect.center
@@ -292,21 +303,15 @@ class InteractiveText(TextField):
     def handle_mouse_interaction(self):
         """Handle interactive functions for the class object.
         NOTE: info panel interactions are handled via method 'handle_mouse_interaction_info_panel()' further down."""
-        # Check and set alpha transparency and limit 'self.fade_alpha' value to max of 255. Then apply to surface for
-        # fade-in effect.
-        if self.fade_alpha < 255:
-            self.fade_alpha += self.fade_speed
-            self.interactive_text_surface.set_alpha(self.fade_alpha)
-        elif self.fade_alpha != 255:
-            self.fade_alpha = 255
-            self.interactive_text_surface.set_alpha(self.fade_alpha)
+        # Start surface color fade-in effect.
+        self.alpha_fade_in(self.interactive_text_surface)
 
         # Color change when mouse is pressed (only if 'self.select' is True).
         if self.select and pygame.mouse.get_pressed()[0]:
-            self.blit_interactive_text_surface(self.rect_clicked_color)
+            self.blit_surface(self.interactive_text_surface, self.interactive_rect, self.rect_clicked_color)
         # Normal hover color when mouse is hovering but not pressed.
         else:
-            self.blit_interactive_text_surface(self.rect_hover_color)
+            self.blit_surface(self.interactive_text_surface, self.interactive_rect, self.rect_hover_color)
 
         # Change selected state of field by mouse click if 'select' is True.
         if self.select:
@@ -319,12 +324,6 @@ class InteractiveText(TextField):
         else:
             # Reset 'was_pressed' if mouse is not over the button to avoid accidental toggles.
             self.was_pressed = False
-
-    def blit_interactive_text_surface(self, color):
-        """Fill 'self.interactive_text_surface' with 'color' attribute and blit it onto the screen at
-        'self.interactive_text_surface'."""
-        self.interactive_text_surface.fill(color)
-        self.screen.blit(self.interactive_text_surface, self.interactive_rect)
 
     def handle_mouse_interaction_info_panels(self, mouse_pos):
         """Handle mouse interactions and draw info panels when panels are assigned to the class instance.
