@@ -31,13 +31,6 @@ class TextField:
         self.bg_color = bg_color
         self.multi_line = multi_line
 
-        # Default alpha transparency value. Not used by default, but can be changed and then applied using
-        # '.set_alpha(self.alpha)' elsewhere to be changed to, for example, create a fade-in/fade-out effect.
-        # See 'Button' class or methods in 'gui/credits.py' as examples.
-        # NOTE: check if surface supports alpha channel (use 'pygame.SRCALPHA' argument when creating a new surface if
-        # not)!
-        self.alpha = 255
-
         # Set font, text color and get rect for text field.
         if text_color == "default":
             self.text_color = settings.text_color
@@ -67,6 +60,17 @@ class TextField:
 
         self.text_rect = self.text_surface.get_rect()
         self.text_rect.center = self.screen_rect.center
+
+        """Attributes specific for use of alpha transparency."""
+        # Default alpha transparency values. Not used by 'TextField' class, but can be changed and then applied using
+        # '.set_alpha(self.alpha)' elsewhere to be changed to, for example, create a fade-in/fade-out effect.
+        # See 'Button' and 'InteractiveText' class or methods in 'gui/credits.py' as examples.
+        # NOTE: check if surface supports alpha channel (use 'pygame.SRCALPHA' argument when creating a new surface if
+        # not)!
+        self.fade_alpha = 0
+        self.background_alpha = 255
+        # Calculate fading speed based on frame rate. Represent intervals for alpha value changes per frame.
+        self.fade_speed = int(25 * (30 / settings.frame_rate))
 
     def draw_text(self):
         """Draw the text field on the screen."""
@@ -171,12 +175,6 @@ class Button(TextField):
         # 'None' attribute to store the button surface, created in 'draw_button()', to represent the button background.
         # This ensures it is only initialized when drawn, and after any changes to 'button_rect' are made in other functions.
         self.button_surface = None
-        # Set attributes for alpha values to 0 to allow for fading effects, and to 255 (self.alpha from parent class)
-        # for opaque background.
-        self.fade_alpha = 0
-        self.background_alpha = self.alpha
-        # Calculate fading speed based on frame rate. Represent intervals for alpha value changes per frame.
-        self.fade_speed = int(25 * (30 / settings.frame_rate))
 
     def draw_button(self, mouse_pos):
         """Draw the button on the screen, changing color based on hover or click using 'mouse_pos' as initialized in
@@ -210,7 +208,7 @@ class Button(TextField):
                 self.fade_alpha -= self.fade_speed
                 self.button_surface.set_alpha(self.fade_alpha)
                 self.blit_button_surface(self.rect_hover_color)
-            else:
+            elif self.fade_alpha != 0:
                 self.fade_alpha = 0
                 self.button_surface.set_alpha(self.fade_alpha)
 
@@ -258,12 +256,6 @@ class InteractiveText(TextField):
         # field background. This ensures it is only initialized when drawn, and after any changes to 'interactive_rect'
         # are made in other functions.
         self.interactive_text_surface = None
-        # Set attributes for alpha values to 0 to allow for fading effects, and to 255 (self.alpha from parent class)
-        # for opaque background.
-        self.fade_alpha = 0
-        self.background_alpha = self.alpha
-        # Calculate fading speed based on frame rate. Represent intervals for alpha value changes per frame.
-        self.fade_speed = int(25 * (30 / settings.frame_rate))
 
     def draw_interactive_text(self, mouse_pos):
         """Draw interactive text field on the screen."""
@@ -283,10 +275,15 @@ class InteractiveText(TextField):
         if self.interactive_rect.collidepoint(mouse_pos):
             self.handle_mouse_interaction()
 
-        # Reset alpha transparency attribute to 0 if button is not hovered over or clicked.
+        # Decrease/reset alpha transparency attribute to 0 if button is not hovered over or clicked (anymore).
         if not self.interactive_rect.collidepoint(mouse_pos) and self.fade_alpha != 0:
-            self.fade_alpha = 0
-            self.interactive_text_surface.set_alpha(self.fade_alpha)
+            if self.fade_alpha >= 0:
+                self.fade_alpha -= self.fade_speed
+                self.interactive_text_surface.set_alpha(self.fade_alpha)
+                self.blit_interactive_text_surface(self.rect_hover_color)
+            elif self.fade_alpha != 0:
+                self.fade_alpha = 0
+                self.interactive_text_surface.set_alpha(self.fade_alpha)
 
         # Draw the text on top of the interactive text field.
         self.text_rect.center = self.interactive_rect.center

@@ -66,15 +66,8 @@ class Credits:
                     item.text_rect.top, item.text_rect.left = self.dynamic_pos_y, self.name_pos_x
                     self.dynamic_pos_y += item.text_rect.height
 
-                # Set item transparency based on position on screen for fade-out effect.
-                if item.text_rect.top <= screen.get_rect().height / 4 and not item.text_rect.bottom <= screen.get_rect().top:
-                    item.text_surface.set_alpha(item.alpha)
-                    item.alpha -= self.fading_speed
-                # Reset transparency when the item has fully left the top of the screen, ensuring it is opaque when it
-                # reappears at the bottom.
-                elif item.alpha != 255:
-                    item.alpha = 255
-                    item.text_surface.set_alpha(item.alpha)
+                # Call class method for fade-out effect when credits reach top of the screen.
+                self.fade_out_credits(screen, item)
 
                 item.draw_text()
 
@@ -92,3 +85,16 @@ class Credits:
         if self.credits_elements[-1][-1].text_rect.bottom <= screen.get_rect().top:
             self.credits_pos_y_start = screen.get_rect().bottom + 5
             self.dynamic_pos_y = self.credits_pos_y_start
+
+    def fade_out_credits(self, screen, item):
+        """Fade out credits item when it reaches top of the screen, then reset alpha transparency to opaque when it has
+        fully left the screen."""
+        # Set item transparency based on position on screen for fade-out effect.
+        if item.text_rect.top <= screen.get_rect().height / 4 and not item.text_rect.bottom <= screen.get_rect().top:
+            item.text_surface.set_alpha(item.background_alpha)
+            item.background_alpha -= self.fading_speed
+        # Reset transparency when the item has fully left the top of the screen, ensuring it is opaque when it
+        # reappears at the bottom.
+        elif item.background_alpha != 255:
+            item.background_alpha = 255
+            item.text_surface.set_alpha(item.background_alpha)
