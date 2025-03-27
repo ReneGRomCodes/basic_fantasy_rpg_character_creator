@@ -22,8 +22,9 @@ def main_events(screen, state, gui_elements, mouse_pos):
             pygame.quit()
             sys.exit()
 
-        # Ensures screen specific UI elements are positioned only once per screen appearance.
-        check_and_reset_position_flag(screen, event, mouse_pos)
+        # Ensures screen specific UI elements are positioned only once per screen appearance and reset alpha transparency
+        # for 'continue' and 'back' buttons.
+        handle_screen_switch_reset(screen, event, gui_elements, mouse_pos)
 
         if state == "title_screen":
             if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP and screen.get_rect().collidepoint(mouse_pos):
@@ -99,8 +100,9 @@ def custom_character_events(screen, state, character, gui_elements, mouse_pos, p
             pygame.quit()
             sys.exit()
 
-        # Ensures screen specific UI elements are positioned only once per screen appearance.
-        check_and_reset_position_flag(screen, event, mouse_pos)
+        # Ensures screen specific UI elements are positioned only once per screen appearance and reset alpha transparency
+        # for 'continue' and 'back' buttons.
+        handle_screen_switch_reset(screen, event, gui_elements, mouse_pos)
 
         if state == "show_abilities":
             if event.type == pygame.MOUSEBUTTONUP:
@@ -181,8 +183,9 @@ def naming_character_events(screen, state, character, gui_elements, mouse_pos):
             pygame.quit()
             sys.exit()
 
-        # Ensures screen specific UI elements are positioned only once per screen appearance.
-        check_and_reset_position_flag(screen, event, mouse_pos)
+        # Ensures screen specific UI elements are positioned only once per screen appearance and reset alpha transparency
+        # for 'continue' and 'back' buttons.
+        handle_screen_switch_reset(screen, event, gui_elements, mouse_pos)
 
         if event.type == pygame.MOUSEBUTTONUP:
             if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
@@ -236,8 +239,9 @@ def custom_starting_money_events(screen, state, character, gui_elements, mouse_p
             pygame.quit()
             sys.exit()
 
-        # Ensures screen specific UI elements are positioned only once per screen appearance.
-        check_and_reset_position_flag(screen, event, mouse_pos)
+        # Ensures screen specific UI elements are positioned only once per screen appearance and reset alpha transparency
+        # for 'continue' and 'back' buttons.
+        handle_screen_switch_reset(screen, event, gui_elements, mouse_pos)
 
         # Allow only text input with numeric keys and populate 'filtered_key' with valid inputs.
         if event.type == pygame.KEYDOWN and event.key in valid_keys:
@@ -261,17 +265,19 @@ def custom_starting_money_events(screen, state, character, gui_elements, mouse_p
     return state
 
 
-def check_and_reset_position_flag(screen, event, mouse_pos):
-    """Check for events that switch screens and reset position flag in module 'ui_helpers.py' to ensure screen specific
-    elements are positioned only once per screen appearance. Called in every event handlers 'for event in pygame.event.get()'
-    loop.
+def handle_screen_switch_reset(screen, event, gui_elements, mouse_pos):
+    """Check for input events that switch screens, reset position flag for screen-specific UI placement, and reset alpha
+    values of certain UI elements. Called in every event handlers 'for event in pygame.event.get()' loop.
     ARGS:
         screen: PyGame window.
         event: PyGame event from for-loop in event handler.
+        gui_elements: dict of GUI elements.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
 
-    # Check for any 'KEYUP' or 'MOUSEBUTTONUP' event. While this leads to repositioning of UI elements every time an
-    # event occurs, it trades this redundancy for overall maintainability.
+    # Check for any 'KEYUP' or 'MOUSEBUTTONUP' event. While this leads to the block being executed every time an event
+    # occurs, it trades this redundancy for overall maintainability.
     if (event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP) and screen.get_rect().collidepoint(mouse_pos):
         reset_position_flag()
+        gui_elements["continue_button"].fade_alpha = 0
+        gui_elements["back_button"].fade_alpha = 0
