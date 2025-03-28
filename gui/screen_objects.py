@@ -425,3 +425,28 @@ class TextInputField:
         self.screen.blit(self.input_field_instance.surface,
                     (self.input_bg_field.centerx - self.input_field_instance.surface.get_width() / 2,
                      self.input_bg_field.centery - self.input_field_instance.surface.get_height() / 2))
+
+
+class ProgressBar:
+
+    def __init__(self, screen, height, bar_start, bar_end):
+        self.screen = screen
+        self.height = self.screen.get_rect().height / height  # use 'height' argument as fraction of screen height.
+        self.bar_start = bar_start  # coordinate tuple
+        self.bar_end = bar_end  # x-position
+
+        self.width = 1
+
+        self.progress_bar_rect = pygame.Rect(self.bar_start, (0, 0))
+        self.progress_bar_surface = pygame.Surface((self.width, self.height))
+
+        self.loading = True
+
+    def draw_progress_bar(self):
+        if self.width <= (self.bar_end - self.bar_start[0]) and self.loading == True:
+            self.screen.blit(self.progress_bar_surface, self.progress_bar_rect)
+            self.width += 1
+            self.progress_bar_surface = pygame.Surface((self.width, self.height))
+        else:
+            self.loading = False
+            self.width = 1
