@@ -14,8 +14,7 @@ def show_title_screen(screen, gui_elements):
     # Position title, subtitle and copyright notice.
     ui.position_title_screen_elements(screen, gui_elements)
 
-    if progress_bar.loading:
-        progress_bar.draw_progress_bar()
+    progress_bar.draw_progress_bar()
 
     # Draw elements on screen.
     title.draw_text()

@@ -445,8 +445,11 @@ class ProgressBar:
     def draw_progress_bar(self):
         if self.width <= (self.bar_end - self.bar_start[0]) and self.loading == True:
             self.screen.blit(self.progress_bar_surface, self.progress_bar_rect)
-            self.width += 1
+            self.width += 4
             self.progress_bar_surface = pygame.Surface((self.width, self.height))
         else:
             self.loading = False
-            self.width = 1
+
+    def reset_progress_bar(self):
+        self.width = 1
+        self.loading = True

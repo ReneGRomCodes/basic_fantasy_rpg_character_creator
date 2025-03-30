@@ -13,3 +13,4 @@ this point it has become mostly a dumping ground for 'todos'."""
 # PRIORITIES:
 # TODO finish character sheet screen ffs!!!
 # TODO Re-structure 'rules.py' and 'Character' class to get rid of overlap
+# TODO fix settings screen. Screen size selection elements don't scale with new screen sizes
