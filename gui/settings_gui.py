@@ -61,6 +61,11 @@ class SettingsGUI:
         # Draw window size selection on screen.
         self.window_size_field.draw_text()
         for button in self.window_size_buttons:
+            # Reset the surface if it exists and its size doesn't match the rect. Prevents unnecessary reassignments
+            # while ensuring it updates when window size is changed.
+            if button.interactive_text_surface and (button.interactive_text_surface.get_size() != button.interactive_rect.size):
+                button.interactive_text_surface = None
+
             button.draw_interactive_text(mouse_pos)
 
         return gui_elements

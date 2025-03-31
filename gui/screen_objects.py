@@ -65,8 +65,7 @@ class TextField:
         # Default alpha transparency values. Not used by 'TextField' class, but can be changed and then applied using
         # '.set_alpha(self.alpha)' elsewhere to be changed to, for example, create a fade-in/fade-out effect.
         # See 'Button' and 'InteractiveText' class or methods in 'gui/credits.py' as examples.
-        # NOTE 1: fade-in/out effects can be achieved by using XXXXXXXXX.
-        # NOTE 2: check if surface supports alpha channel (use 'pygame.SRCALPHA' argument when creating a new surface if
+        # NOTE: check if surface supports alpha channel (use 'pygame.SRCALPHA' argument when creating a new surface if
         # not)!
         self.fade_alpha = 0
         self.background_alpha = 255
