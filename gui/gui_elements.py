@@ -67,7 +67,7 @@ def initialize_screen_elements(screen, settings):
     copyright_notice = so.TextField(screen, "Basic Fantasy Role-Playing Game, Copyright 2006-2025 Chris Gonnerman. All"
                                             " Rights reserved. Distributed under CC BY-SA license. www.basicfantasy.com",
                                     text_small)
-    title_progress_bar = so.ProgressBar(screen, 30, (0,0), 500)
+    title_progress_bar = so.ProgressBar(screen, 30, 3)
 
 
     # Main Menu.

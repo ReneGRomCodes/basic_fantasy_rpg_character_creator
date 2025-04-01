@@ -427,28 +427,32 @@ class TextInputField:
 
 
 class ProgressBar:
+    """Represent a visual-only loading progress bar.
+    NOTE: This class creates a progress bar that 'simulates' loading without reflecting actual data processing or task
+    completion. It is purely for visual effect to enhance the user experience."""
 
-    def __init__(self, screen, height, bar_start, bar_end):
+    def __init__(self, screen, height, length):
+        """Initialize loading progress bar.
+        ARGS:
+            screen: pygame window.
+            height: height of the progress bar as a fraction of screen height.
+            length: length of the progress bar as a fraction of screen height.
+        """
         self.screen = screen
-        self.height = self.screen.get_rect().height / height  # use 'height' argument as fraction of screen height.
-        self.bar_start = bar_start  # coordinate tuple
-        self.bar_end = bar_end  # x-position
+        self.height = self.screen.get_rect().height / height
+        self.length = self.screen.get_rect().width / length
+        # Position progress bar at screen center.
+        self.bar_center_screen_pos = self.screen.get_rect().centerx - self.length / 2, self.screen.get_rect().centery
+        # Set starting value for loading 'progress' to 1.
+        self.progress = 1
 
-        self.width = 1
-
-        self.progress_bar_rect = pygame.Rect(self.bar_start, (0, 0))
-        self.progress_bar_surface = pygame.Surface((self.width, self.height))
-
-        self.loading = True
+        # Create rect and surface for progress bar.
+        self.progress_bar_rect = pygame.Rect(self.bar_center_screen_pos, (0, 0))
+        self.progress_bar_surface = pygame.Surface((self.length, self.height))
 
     def draw_progress_bar(self):
-        if self.width <= (self.bar_end - self.bar_start[0]) and self.loading == True:
+        """Draw progress bar on screen until 'self.progress' value equals the specific value for 'self.length'."""
+        if self.progress <= self.length:
             self.screen.blit(self.progress_bar_surface, self.progress_bar_rect)
-            self.width += 4
-            self.progress_bar_surface = pygame.Surface((self.width, self.height))
-        else:
-            self.loading = False
-
-    def reset_progress_bar(self):
-        self.width = 1
-        self.loading = True
+            self.progress += 4
+            self.progress_bar_surface = pygame.Surface((self.progress, self.height))
