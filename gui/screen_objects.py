@@ -431,17 +431,20 @@ class ProgressBar:
     NOTE: This class creates a progress bar that 'simulates' loading without reflecting actual data processing or task
     completion. It is purely for visual effect to enhance the user experience."""
 
-    def __init__(self, screen, height, length):
+    def __init__(self, screen, height, length, speed=6):
         """Initialize loading progress bar.
         ARGS:
             screen: pygame window.
             height: height of the progress bar as a fraction of screen height.
             length: length of the progress bar as a fraction of screen height.
+            speed: speed variable for the progress bar to fill. Default is '6'
         """
         self.screen = screen
         self.height = self.screen.get_rect().height / height
         self.length = self.screen.get_rect().width / length
-        # Position progress bar at screen center.
+        # Adjust speed attribute to be consistent across different frame rates.
+        self.speed = int(speed * (30 / settings.frame_rate))
+        # Position for progress bar at screen center.
         self.bar_center_screen_pos = self.screen.get_rect().centerx - self.length / 2, self.screen.get_rect().centery
         # Set starting value for loading 'progress' to 1.
         self.progress = 1
@@ -453,6 +456,7 @@ class ProgressBar:
     def draw_progress_bar(self):
         """Draw progress bar on screen until 'self.progress' value equals the specific value for 'self.length'."""
         if self.progress <= self.length:
+            self.progress_bar_surface.fill(settings.progress_bar_color)
             self.screen.blit(self.progress_bar_surface, self.progress_bar_rect)
-            self.progress += 4
+            self.progress += self.speed
             self.progress_bar_surface = pygame.Surface((self.progress, self.height))

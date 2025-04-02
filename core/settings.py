@@ -17,17 +17,20 @@ class Settings:
         # Default font.
         self.font = "gui/font/EagleLake-Regular.ttf"
         # Background color for screen.
-        self.bg_color = (240, 220, 170)
+        self.bg_color = (235, 210, 160)
         # Color settings for screen objects.
-        self.text_color = (55, 40, 25)
-        self.greyed_out_text_color = (140, 120, 100)
-        self.info_panel_bg_color = (210, 180, 130)
-        self.rect_hover_color = (180, 140, 80)
-        self.rect_clicked_color = (255, 220, 140)
-        self.rect_selected_color = (160, 90, 40)
+        self.text_color = (50, 35, 25)
+        self.greyed_out_text_color = (130, 110, 90)
+        self.info_panel_bg_color = (205, 175, 115)
+        self.rect_hover_color = (185, 145, 85)
+        self.rect_clicked_color = (255, 215, 105)
+        self.rect_selected_color = (135, 90, 35)
         self.text_input_field_color = (245, 230, 190)
-        self.inactive_continue_button_hover_color = (220, 150, 150)
-        self.inactive_continue_button_click_color = (200, 50, 50)
+        self.inactive_continue_button_hover_color = (215, 140, 130)
+        self.inactive_continue_button_click_color = (190, 65, 50)
+        # New progress bar and accents:
+        self.progress_bar_color = (120, 180, 70)
+        self.accent_color = (220, 130, 75)
 
         # Value collection for use in settings screen when resetting to default.
         self.default_settings = (self.small_screen, )
