@@ -28,9 +28,9 @@ class Settings:
         self.text_input_field_color = (245, 230, 190)
         self.inactive_continue_button_hover_color = (215, 140, 130)
         self.inactive_continue_button_click_color = (190, 65, 50)
-        # New progress bar and accents:
+        # Progress bar:
         self.progress_bar_color = (120, 180, 70)
-        self.accent_color = (220, 130, 75)
+        self.bar_border_color = (220, 130, 75)
 
         # Value collection for use in settings screen when resetting to default.
         self.default_settings = (self.small_screen, )

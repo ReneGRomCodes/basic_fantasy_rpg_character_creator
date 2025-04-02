@@ -9,7 +9,7 @@ def show_title_screen(screen, gui_elements):
     title = gui_elements["title"]
     subtitle = gui_elements["subtitle"]
     copyright_notice = gui_elements["copyright_notice"]
-    progress_bar = gui_elements["title_progress_bar"]
+    progress_bar = gui_elements["loading_progress_bar"]
 
     # Position title, subtitle and copyright notice.
     ui.position_title_screen_elements(screen, gui_elements)

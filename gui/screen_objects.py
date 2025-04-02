@@ -431,32 +431,50 @@ class ProgressBar:
     NOTE: This class creates a progress bar that 'simulates' loading without reflecting actual data processing or task
     completion. It is purely for visual effect to enhance the user experience."""
 
-    def __init__(self, screen, height, length, speed=6):
+    def __init__(self, screen, height, length, speed=5):
         """Initialize loading progress bar.
         ARGS:
             screen: pygame window.
             height: height of the progress bar as a fraction of screen height.
             length: length of the progress bar as a fraction of screen height.
-            speed: speed variable for the progress bar to fill. Default is '6'
+            speed: speed variable for the progress bar to fill. Default is '5'
         """
         self.screen = screen
+        # Assign height/length attributes based on screen size and passed arguments.
         self.height = self.screen.get_rect().height / height
         self.length = self.screen.get_rect().width / length
-        # Adjust speed attribute to be consistent across different frame rates.
-        self.speed = int(speed * (30 / settings.frame_rate))
-        # Position for progress bar at screen center.
-        self.bar_center_screen_pos = self.screen.get_rect().centerx - self.length / 2, self.screen.get_rect().centery
+        # Calculate x and y position for rect to appear at the screen center.
+        self.center_screen_pos = self.screen.get_rect().centerx - self.length / 2, self.screen.get_rect().centery
+
         # Set starting value for loading 'progress' to 1.
         self.progress = 1
+        # Adjust speed attribute to be consistent across different frame rates.
+        self.speed = int(speed * (30 / settings.frame_rate))
 
-        # Create rect and surface for progress bar.
-        self.progress_bar_rect = pygame.Rect(self.bar_center_screen_pos, (0, 0))
-        self.progress_bar_surface = pygame.Surface((self.length, self.height))
+        # Border attributes.
+        self.border_radius = int(self.screen.get_rect().height / 72)
+        self.border_width = int(self.border_radius / 3)
+        self.inner_border_radius = max(0, self.border_radius - self.border_width)
+        self.border_color = settings.bar_border_color  # Retrieved from 'Settings' class instance.
+        # Progress bar attributes.
+        self.progress_bar_height = self.height - (2 * self.border_width)
+        self.progress_bar_length = self.length - (2 * self.border_width)
+        self.bar_color = settings.progress_bar_color  # Retrieved from 'Settings' class instance.
+
+        # Container rect.
+        """NOTE: Change 'centerx' and 'centery' values for this rect to position the progress bar as a whole!!!"""
+        self.container_rect = pygame.Rect(self.center_screen_pos, (self.length, self.height))
+
+        # Progress bar rect (animated progress bar only).
+        self.progress_bar_rect = pygame.Rect(self.center_screen_pos, (self.progress, self.progress_bar_height))
+        self.progress_bar_rect.left, self.progress_bar_rect.centery = (self.container_rect.left + self.border_width,
+                                                                       self.container_rect.centery)
 
     def draw_progress_bar(self):
         """Draw progress bar on screen until 'self.progress' value equals the specific value for 'self.length'."""
-        if self.progress <= self.length:
-            self.progress_bar_surface.fill(settings.progress_bar_color)
-            self.screen.blit(self.progress_bar_surface, self.progress_bar_rect)
+        if self.progress <= self.progress_bar_length:
+            pygame.draw.rect(self.screen, self.border_color, self.container_rect,
+                             border_radius=self.border_radius, width=self.border_width)
+            pygame.draw.rect(self.screen, self.bar_color, self.progress_bar_rect, border_radius=self.inner_border_radius)
             self.progress += self.speed
-            self.progress_bar_surface = pygame.Surface((self.progress, self.height))
+            self.progress_bar_rect.width = self.progress

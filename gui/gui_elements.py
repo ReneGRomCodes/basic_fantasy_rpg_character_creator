@@ -31,6 +31,11 @@ def initialize_screen_elements(screen, settings):
         Text input field for use with 'pygame_textinput' library.
         NOTE: this class does not create the actual instance for a 'pygame_textinput' object, but instead streamlines the
         process of drawing it on screen with a white background field and having the input centered in said field.
+
+    ProgressBar(screen, height, length, speed=6)
+        Visual-only loading progress bar.
+        NOTE: This class creates a progress bar that 'simulates' loading without reflecting actual data processing or task
+        completion. It is purely for visual effect to enhance the user experience.
     """
 
     # Size and spacing variables that are calculated based on screen size for scalability.
@@ -59,6 +64,8 @@ def initialize_screen_elements(screen, settings):
     back_button.button_rect.width = button_width
     back_button.button_rect.bottomleft = (screen.get_rect().left + default_edge_spacing,
                                           screen.get_rect().bottom - default_edge_spacing)
+    # Loading progress bar.
+    loading_progress_bar = so.ProgressBar(screen, 30, 3)
 
 
     # Title screen.
@@ -229,12 +236,13 @@ def initialize_screen_elements(screen, settings):
         "continue_button": continue_button,
         "inactive_continue_button": inactive_continue_button,
         "back_button": back_button,
+        # Loading progress bar.
+        "loading_progress_bar": loading_progress_bar,
 
         # Title screen.
         "title": title,
         "subtitle": subtitle,
         "copyright_notice": copyright_notice,
-        "title_progress_bar": title_progress_bar,
         # Main menu.
         "main_menu_title": main_menu_screen_title,
         "start_button": start_button,
