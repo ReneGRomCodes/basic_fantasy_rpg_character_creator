@@ -16,7 +16,7 @@ def initialize_character_creator():
     settings.set_default()
     # Create Clock object and pygame window.
     clock = pygame.time.Clock()
-    screen = pygame.display.set_mode(settings.screen_size)
+    screen = pygame.display.set_mode(settings.screen_size, pygame.DOUBLEBUF | pygame.HWSURFACE)
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
 
     # Initialize dict with GUI elements. See package 'gui' for details.

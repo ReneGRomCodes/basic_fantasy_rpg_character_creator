@@ -431,13 +431,13 @@ class ProgressBar:
     NOTE: This class creates a progress bar that 'simulates' loading without reflecting actual data processing or task
     completion. It is purely for visual effect to enhance the user experience."""
 
-    def __init__(self, screen, height, length, speed=5):
+    def __init__(self, screen, height=30, length=3, time=5):
         """Initialize loading progress bar.
         ARGS:
             screen: pygame window.
-            height: height of the progress bar as a fraction of screen height.
-            length: length of the progress bar as a fraction of screen height.
-            speed: speed variable for the progress bar to fill. Default is '5'
+            height: height of the progress bar as a fraction of screen height. Default is '30'
+            length: length of the progress bar as a fraction of screen width. Default is '3'
+            time: approximate time in seconds for the progress bar to fill. Default is '5'
         """
         self.screen = screen
         # Assign height/length attributes based on screen size and passed arguments.
@@ -448,8 +448,6 @@ class ProgressBar:
 
         # Set starting value for loading 'progress' to 1.
         self.progress = 1
-        # Adjust speed attribute to be consistent across different frame rates.
-        self.speed = int(speed * (30 / settings.frame_rate))  # TODO Test speed variations on different screen sizes.
 
         # Border attributes.
         self.border_radius = int(self.screen.get_rect().height / 72)
@@ -460,6 +458,10 @@ class ProgressBar:
         self.progress_bar_height = self.height - (2 * self.border_width)
         self.progress_bar_length = self.length - (2 * self.border_width)
         self.bar_color = settings.progress_bar_color  # Retrieved from 'Settings' class instance.
+        # Set starting value for loading 'progress' to 1.
+        self.progress = 1
+        # Set speed attribute to be consistent across different frame rates.
+        self.speed = int(self.progress_bar_length / (time * settings.frame_rate))
 
         # Container rect.
         """NOTE: Change coordinates for this rect to position the progress bar as a whole!"""
@@ -478,7 +480,7 @@ class ProgressBar:
         progress_centery = self.progress_bar_rect.centery
 
         # Check if container rect and progress bar rect positions align and correct positioning if necessary.
-        if container_left != progress_left or container_centery != progress_centery:
+        if (container_left != progress_left) or (container_centery != progress_centery):
             self.build_progress_bar()
 
         # Check/adjust length of progress bar and draw it on screen until maximum length 'progress_bar_length' is reached.
