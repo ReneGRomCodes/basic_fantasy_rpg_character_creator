@@ -32,7 +32,7 @@ def initialize_screen_elements(screen, settings):
         NOTE: this class does not create the actual instance for a 'pygame_textinput' object, but instead streamlines the
         process of drawing it on screen with a white background field and having the input centered in said field.
 
-    ProgressBar(screen, height, length, speed=6)
+    ProgressBar(screen, height, length, speed=5)
         Visual-only loading progress bar.
         NOTE: This class creates a progress bar that 'simulates' loading without reflecting actual data processing or task
         completion. It is purely for visual effect to enhance the user experience.

@@ -449,7 +449,7 @@ class ProgressBar:
         # Set starting value for loading 'progress' to 1.
         self.progress = 1
         # Adjust speed attribute to be consistent across different frame rates.
-        self.speed = int(speed * (30 / settings.frame_rate))
+        self.speed = int(speed * (30 / settings.frame_rate))  # TODO Test speed variations on different screen sizes.
 
         # Border attributes.
         self.border_radius = int(self.screen.get_rect().height / 72)
@@ -462,19 +462,35 @@ class ProgressBar:
         self.bar_color = settings.progress_bar_color  # Retrieved from 'Settings' class instance.
 
         # Container rect.
-        """NOTE: Change 'centerx' and 'centery' values for this rect to position the progress bar as a whole!!!"""
+        """NOTE: Change coordinates for this rect to position the progress bar as a whole!"""
         self.container_rect = pygame.Rect(self.center_screen_pos, (self.length, self.height))
 
-        # Progress bar rect (animated progress bar only).
-        self.progress_bar_rect = pygame.Rect(self.center_screen_pos, (self.progress, self.progress_bar_height))
-        self.progress_bar_rect.left, self.progress_bar_rect.centery = (self.container_rect.left + self.border_width,
-                                                                       self.container_rect.centery)
+        # 'None' attribute and method call to create rect for animated progress bar.
+        self.progress_bar_rect = None
+        self.build_progress_bar()
 
     def draw_progress_bar(self):
         """Draw progress bar on screen until 'self.progress' value equals the specific value for 'self.length'."""
+        # Assign rect x and y attributes to variables for better code readability.
+        container_left = self.container_rect.left
+        container_centery = self.container_rect.centery
+        progress_left = self.progress_bar_rect.left
+        progress_centery = self.progress_bar_rect.centery
+
+        # Check if container rect and progress bar rect positions align and correct positioning if necessary.
+        if container_left != progress_left or container_centery != progress_centery:
+            self.build_progress_bar()
+
+        # Check/adjust length of progress bar and draw it on screen until maximum length 'progress_bar_length' is reached.
         if self.progress <= self.progress_bar_length:
             pygame.draw.rect(self.screen, self.border_color, self.container_rect,
                              border_radius=self.border_radius, width=self.border_width)
             pygame.draw.rect(self.screen, self.bar_color, self.progress_bar_rect, border_radius=self.inner_border_radius)
             self.progress += self.speed
             self.progress_bar_rect.width = self.progress
+
+    def build_progress_bar(self):
+        """Create progress bar rect and position it at the center of the container rect."""
+        self.progress_bar_rect = pygame.Rect(self.center_screen_pos, (self.progress, self.progress_bar_height))
+        self.progress_bar_rect.left, self.progress_bar_rect.centery = (self.container_rect.left + self.border_width,
+                                                                           self.container_rect.centery)
