@@ -132,9 +132,11 @@ def position_title_screen_elements(screen, gui_elements):
     global position_flag
     # Assign gui_elements to variables.
     spacing = gui_elements["title_screen_spacing"]
-    title = gui_elements["title"]
-    subtitle = gui_elements["subtitle"]
-    copyright_notice = gui_elements["copyright_notice"]
+    title = gui_elements["title_screen_fields"][0]
+    subtitle = gui_elements["title_screen_fields"][1]
+    copyright_notice = gui_elements["title_screen_fields"][2]
+    progress_bar = gui_elements["title_screen_fields"][3]
+    continue_to_main = gui_elements["title_screen_fields"][4]
 
     if not position_flag:
         # Position title, subtitle and copyright notice.
@@ -144,6 +146,8 @@ def position_title_screen_elements(screen, gui_elements):
         subtitle.text_rect.top = screen.get_rect().centery + spacing
         copyright_notice.text_rect.centerx = screen.get_rect().centerx
         copyright_notice.text_rect.bottom = screen.get_rect().bottom - spacing
+        progress_bar.container_rect.centery = screen.get_rect().height * 0.7
+        continue_to_main.text_rect.centery = progress_bar.container_rect.centery
         position_flag = True
 
 

@@ -73,6 +73,7 @@ def initialize_screen_elements(screen, settings):
                                             " Rights reserved. Distributed under CC BY-SA license. www.basicfantasy.com",
                                     text_small)
     title_progress_bar = so.ProgressBar(screen)
+    continue_to_main_menu = so.TextField(screen, "Press any key to continue", text_medium)
 
 
     # Main Menu.
@@ -236,10 +237,8 @@ def initialize_screen_elements(screen, settings):
         "back_button": back_button,
 
         # Title screen.
-        "title": title,
-        "subtitle": subtitle,
-        "copyright_notice": copyright_notice,
-        "title_progress_bar": title_progress_bar,
+        "title_screen_fields": (title, subtitle, copyright_notice, title_progress_bar, continue_to_main_menu),
+
         # Main menu.
         "main_menu_title": main_menu_screen_title,
         "start_button": start_button,

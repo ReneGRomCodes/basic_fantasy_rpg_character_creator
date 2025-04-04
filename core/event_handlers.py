@@ -27,7 +27,8 @@ def main_events(screen, state, gui_elements, mouse_pos):
         handle_screen_switch_reset(screen, event, gui_elements, mouse_pos)
 
         if state == "title_screen":
-            if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP and screen.get_rect().collidepoint(mouse_pos):
+            if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP and screen.get_rect().collidepoint(mouse_pos)\
+                    and gui_elements["title_screen_fields"][3].finished:
                 state = "pre_main_menu"
 
         elif state == "main_menu":

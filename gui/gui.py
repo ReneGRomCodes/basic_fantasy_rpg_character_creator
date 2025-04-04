@@ -6,10 +6,11 @@ import gui.ui_helpers as ui
 def show_title_screen(screen, gui_elements):
     """Show title screen."""
     # Assign gui_elements to variables.
-    title = gui_elements["title"]
-    subtitle = gui_elements["subtitle"]
-    copyright_notice = gui_elements["copyright_notice"]
-    progress_bar = gui_elements["title_progress_bar"]
+    title = gui_elements["title_screen_fields"][0]
+    subtitle = gui_elements["title_screen_fields"][1]
+    copyright_notice = gui_elements["title_screen_fields"][2]
+    progress_bar = gui_elements["title_screen_fields"][3]
+    continue_to_main = gui_elements["title_screen_fields"][4]
 
     # Position title, subtitle and copyright notice.
     ui.position_title_screen_elements(screen, gui_elements)
@@ -19,6 +20,9 @@ def show_title_screen(screen, gui_elements):
     subtitle.draw_text()
     copyright_notice.draw_text()
     progress_bar.draw_progress_bar()
+    # Draw continue message once loading progress bar is finished.
+    if progress_bar.finished:
+        continue_to_main.draw_text()
 
 
 def show_main_menu(screen, gui_elements, mouse_pos):

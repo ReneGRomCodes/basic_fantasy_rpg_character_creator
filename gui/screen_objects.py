@@ -446,9 +446,6 @@ class ProgressBar:
         # Calculate x and y position for rect to appear at the screen center.
         self.center_screen_pos = self.screen.get_rect().centerx - self.length / 2, self.screen.get_rect().centery
 
-        # Set starting value for loading 'progress' to 1.
-        self.progress = 1
-
         # Border attributes.
         self.border_radius = int(self.screen.get_rect().height / 72)
         self.border_width = int(self.border_radius / 3)
@@ -471,6 +468,11 @@ class ProgressBar:
         self.progress_bar_rect = None
         self.build_progress_bar()
 
+        # Flag attribute which is set to 'True' when progress bar is filled. Not used within the class itself, but can be
+        # used to, for example, trigger a 'continue' message after progress bar is finished. See 'show_title_screen()' in
+        # 'gui/gui.py' and corresponding event handler for possible applications.
+        self.finished = False
+
     def draw_progress_bar(self):
         """Draw progress bar on screen until 'self.progress' value equals the specific value for 'self.length'."""
         # Assign rect x and y attributes to variables for better code readability.
@@ -490,6 +492,8 @@ class ProgressBar:
             pygame.draw.rect(self.screen, self.bar_color, self.progress_bar_rect, border_radius=self.inner_border_radius)
             self.progress += self.speed
             self.progress_bar_rect.width = self.progress
+        else:
+            self.finished = True
 
     def build_progress_bar(self):
         """Create progress bar rect and position it at the center of the container rect."""
