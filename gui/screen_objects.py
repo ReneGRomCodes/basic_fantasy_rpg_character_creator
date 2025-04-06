@@ -1,5 +1,6 @@
 import pygame
 from core.settings import Settings
+import random
 """Classes for screen objects (buttons, text, etc.)."""
 
 # Instance of 'Settings' class.
@@ -455,10 +456,24 @@ class ProgressBar:
         self.progress_bar_height = self.height - (2 * self.border_width)
         self.progress_bar_length = self.length - (2 * self.border_width)
         self.bar_color = settings.progress_bar_color  # Retrieved from 'Settings' class instance.
+
         # Set starting value for loading 'progress' to 1.
         self.progress = 1
         # Set speed attribute to be consistent across different frame rates.
         self.speed = int(self.progress_bar_length / (time * settings.frame_rate))
+
+        # Values to calculate random speed-up/slow-down events.
+        stop_duration_min_max = random.uniform(0.5, 2)  # seconds
+        jump_value_min_max = random.uniform(5, 15)  # percent
+        slow_value = 0.5  # multiplier
+        slow_duration_min_max = random.uniform(1, 3)  # seconds
+        speed_up_value_min_max = random.uniform(2, 3)  # multiplier
+        speed_up_duration_min_max = random.uniform(1, 2)  # seconds
+        #
+        self.stop_duration = settings.frame_rate * slow_duration_min_max
+        self.jump = int(self.progress_bar_length / (100 * jump_value_min_max))
+        self.slow = int(self.speed * slow_value)
+        self.speed_up = int(self.speed * speed_up_value_min_max)
 
         # Container rect.
         """NOTE: Change coordinates for this rect to position the progress bar as a whole!"""
@@ -468,9 +483,9 @@ class ProgressBar:
         self.progress_bar_rect = None
         self.build_progress_bar()
 
-        # Flag attribute which is set to 'True' when progress bar is filled. Not used within the class itself, but can be
-        # used to, for example, trigger a 'continue' message after progress bar is finished. See 'show_title_screen()' in
-        # 'gui/gui.py' and corresponding event handler for possible applications.
+        # Flag attribute which is set to 'True' when progress bar is full. Not used within the class itself, but can be
+        # used to, for example, trigger a 'continue' message after progress bar is finished. See 'show_title_screen()'
+        # in 'gui/gui.py' and corresponding event handler for possible applications.
         self.finished = False
 
     def draw_progress_bar(self):
