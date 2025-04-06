@@ -20,21 +20,20 @@ class SettingsGUI:
         self.title = so.TextField(screen, "- SETTINGS -", self.title_size)
         # Window size settings elements.
         self.window_size_field = so.TextField(screen, "Window Size", self.text_large)
-        self.window_size_button_small = so.InteractiveText(screen, "1280x720", self.text_medium, select=True)
-        self.window_size_button_medium = so.InteractiveText(screen, "1600x900", self.text_medium, select=True)
-        self.window_size_button_large = so.InteractiveText(screen, "1920x1080", self.text_medium, select=True)
-        self.window_size_button_full = so.InteractiveText(screen, "Full Screen", self.text_medium, select=True)
+        window_size_button_small = so.InteractiveText(screen, "1280x720", self.text_medium, select=True)
+        window_size_button_medium = so.InteractiveText(screen, "1600x900", self.text_medium, select=True)
+        window_size_button_large = so.InteractiveText(screen, "1920x1080", self.text_medium, select=True)
+        window_size_button_full = so.InteractiveText(screen, "Full Screen", self.text_medium, select=True)
         # Tuple of window size option buttons.
-        self.window_size_buttons = (self.window_size_button_small, self.window_size_button_medium,
-                                    self.window_size_button_large, self.window_size_button_full)
+        self.window_size_buttons = (window_size_button_small, window_size_button_medium,
+                                    window_size_button_large, window_size_button_full)
         # Initialize attribute for selected window size with 'None' value. Value is assigned when first executing
         # method 'select_window_size()'.
         self.selected_window_size = None
 
-        # Collection of all instances from module 'gui.screen_objects' used in settings screen and created above.
-        self.settings_gui_objects = (self.title, self.window_size_field, self.window_size_button_small,
-                                     self.window_size_button_medium, self.window_size_button_large,
-                                     self.window_size_button_full)
+        # Collection of ALL instances from module 'gui.screen_objects' used in settings screen and created above.
+        self.settings_gui_objects = (self.title, self.window_size_field, window_size_button_small, window_size_button_medium,
+                                     window_size_button_large, window_size_button_full)
 
     def show_settings(self, screen, settings, gui_elements, mouse_pos):
         """Display settings screen.

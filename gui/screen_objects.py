@@ -470,10 +470,10 @@ class ProgressBar:
         speed_up_value_min_max = random.uniform(2, 3)  # multiplier
         speed_up_duration_min_max = random.uniform(1, 2)  # seconds
         #
-        self.stop_duration = settings.frame_rate * slow_duration_min_max
-        self.jump = int(self.progress_bar_length / (100 * jump_value_min_max))
-        self.slow = int(self.speed * slow_value)
-        self.speed_up = int(self.speed * speed_up_value_min_max)
+        self.stop_duration = settings.frame_rate * slow_duration_min_max  # frames
+        self.jump = int(self.progress_bar_length / (100 * jump_value_min_max))  # pixels
+        self.slow = int(self.speed * slow_value)  # pixels
+        self.speed_up = int(self.speed * speed_up_value_min_max)  # pixels
 
         # Container rect.
         """NOTE: Change coordinates for this rect to position the progress bar as a whole!"""

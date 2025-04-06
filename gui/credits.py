@@ -15,8 +15,7 @@ class Credits:
     def __init__(self, screen, gui_elements):
         """Initialize credits screen elements."""
         # Assign text sizes from 'gui_elements' to attributes.
-        self.title_size, self.text_large, self.text_medium = (gui_elements["title_size"], gui_elements["text_large"],
-                                                              gui_elements["text_medium"])
+        title_size, text_large, text_medium = gui_elements["title_size"], gui_elements["text_large"], gui_elements["text_medium"]
         # Positioning variables.
         self.credits_pos_y_start = screen.get_rect().bottom + 5
         self.title_pos_x = screen.get_rect().centerx + screen.get_rect().width / 12
@@ -26,20 +25,20 @@ class Credits:
         self.dynamic_pos_y = self.credits_pos_y_start
 
         # Credits screen title.
-        self.credits_title = so.TextField(screen, "- CREDITS -", self.title_size)
+        self.credits_title = so.TextField(screen, "- CREDITS -", title_size)
         # Credits.
-        self.programmer_title = so.TextField(screen, "Programming & UI Design", self.text_large)
-        self.programmer_name = so.TextField(screen, "René Grewe Romero", self.text_medium)
-        self.concept_creator_title = so.TextField(screen, "Based on 'Basic Tabletop RPG'", self.text_large)
-        self.concept_creator_name = so.TextField(screen, "by Chris Gonnerman", self.text_medium)
-        self.font_creator_title = so.TextField(screen, "Font 'Eagle Lake'", self.text_large)
-        self.font_creator_name = so.TextField(screen, "by Brian J. Bonislawsky", self.text_medium)
+        programmer_title = so.TextField(screen, "Programming & UI Design", text_large)
+        programmer_name = so.TextField(screen, "René Grewe Romero", text_medium)
+        concept_creator_title = so.TextField(screen, "Based on 'Basic Tabletop RPG'", text_large)
+        concept_creator_name = so.TextField(screen, "by Chris Gonnerman", text_medium)
+        font_creator_title = so.TextField(screen, "Font 'Eagle Lake'", text_large)
+        font_creator_name = so.TextField(screen, "by Brian J. Bonislawsky", text_medium)
 
         # Array of objects to be shown on screen as instantiated above. Each inner tuple representing a credit category,
         # with the element at index [0] being the category title and the following elements being the credited names.
-        self.credits_elements = ((self.programmer_title, self.programmer_name),
-                                 (self.concept_creator_title, self.concept_creator_name),
-                                 (self.font_creator_title, self.font_creator_name))
+        self.credits_elements = ((programmer_title, programmer_name),
+                                 (concept_creator_title, concept_creator_name),
+                                 (font_creator_title, font_creator_name))
 
         # Calculate fade-out speed. Represent intervals for alpha value changes per frame when credits fade out at the
         # top of the screen.
