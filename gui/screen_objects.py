@@ -475,10 +475,11 @@ class ProgressBar:
         # in 'gui/gui.py' and corresponding event handler for possible applications.
         self.finished = False
 
-        # Attributes ror random speed-up/slow-down events.
+        # Attributes ror random speed-up/slow-down events. Used in 'progress_manager()' and 'set_random_progress()'
+        # methods further down.
         self.chance_per_second = 0.2  # 0.2% chance of event per frame.
         self.cooldown = False
-        self.cooldown_seconds = 2  # 2 seconds cooldown for random event.
+        self.cooldown_seconds = int(time / 2)
         self.cooldown_timer = 0
         self.duration_timer = 0  # Timer for duration of event.
         # Create 'backup' of set speed to be used for resetting of 'self.speed' if a random speed-up/slow-down event
@@ -499,7 +500,7 @@ class ProgressBar:
 
         # Check/adjust length of progress bar and draw it on screen until maximum length 'progress_bar_length' is reached.
         if self.progress <= self.progress_bar_length:
-            self.random_progress_handler(mode="1")  # Trigger and handle random speed-up/slow-down events for the progress bar.
+            self.progress_manager(mode="trigger")  # Trigger and handle random speed-up/slow-down events for the progress bar.
             pygame.draw.rect(self.screen, self.border_color, self.container_rect,
                              border_radius=self.border_radius, width=self.border_width)
             pygame.draw.rect(self.screen, self.bar_color, self.progress_bar_rect, border_radius=self.inner_border_radius)
@@ -509,7 +510,7 @@ class ProgressBar:
             self.finished = True
 
         # Reset cooldown for random speed-up/slow-down events.
-        self.random_progress_handler(mode="2")
+        self.progress_manager(mode="reset")
 
     def build_progress_bar(self):
         """Create progress bar rect and position it at the center of the container rect."""
@@ -517,12 +518,17 @@ class ProgressBar:
         self.progress_bar_rect.left, self.progress_bar_rect.centery = (self.container_rect.left + self.border_width,
                                                                            self.container_rect.centery)
 
-    def random_progress_handler(self, mode):
-        if mode == "1":
+    def progress_manager(self, mode):
+        """Trigger random loading bar progress event or reset event cooldown based on passed argument 'mode'.
+        ARGS:
+            mode: switches functionality between triggering a random event and reset cooldown for events.
+                keywords: "trigger" for trigger, "reset" for reset functionality... what a shocker!
+        """
+        if mode == "trigger":
             # Only trigger random event if there's no cooldown, event count < 2, and event duration timer is done.
             if not self.cooldown and self.duration_timer <= 0:
                 if random.random() < self.chance_per_second:
-                    self.random_progress_event()  # Trigger random event.
+                    self.set_random_progress()  # Trigger random event.
                     self.cooldown = True  # Start cooldown.
                     self.cooldown_timer = settings.frame_rate * self.cooldown_seconds  # Set cooldown timer.
 
@@ -534,30 +540,35 @@ class ProgressBar:
             if self.duration_timer <= 0:
                 self.speed = self.speed_backup  # Restore the original speed.
 
-        elif mode == "2":
+        elif mode == "reset":
             # Handle cooldown timer.
             if self.cooldown:
                 self.cooldown_timer -= 1
                 if self.cooldown_timer <= 0:
                     self.cooldown = False  # Reset cooldown state when the timer ends.
 
-    def random_progress_event(self):
+    def set_random_progress(self):
+        """Calculate and set random values for possible progress event types, then randomly choose an event to be
+        triggered."""
+        # Set lower and upper limits for, and get random multiplier values.
         stop_duration_min_max = random.uniform(0.5, 2)  # seconds
         jump_value_min_max = random.uniform(15, 30)  # percent
         slow_value = 0.5  # multiplier
         slow_duration_min_max = random.uniform(1, 3)  # seconds
         speed_up_value_min_max = random.uniform(2, 3)  # multiplier
         speed_up_duration_min_max = random.uniform(1, 2)  # seconds
-
+        # Calculate event values based on multiplier values above.
         stop_duration = int(settings.frame_rate * stop_duration_min_max)  # frames
         jump = int(self.progress_bar_length / (100 * jump_value_min_max))  # pixels
         slow = int(self.speed * slow_value)  # pixels
         speed_up = int(self.speed * speed_up_value_min_max)  # pixels
 
+        # Array of possible event types and values.
         events = (("stop", stop_duration),
                   ("jump", jump),
                   ("slow", slow),
                   ("speed_up", speed_up))
+        # Choose random event.
         event_type, value = random.choice(events)
 
         if event_type == "stop":
