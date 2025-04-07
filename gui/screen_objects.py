@@ -451,29 +451,16 @@ class ProgressBar:
         self.border_radius = int(self.screen.get_rect().height / 72)
         self.border_width = int(self.border_radius / 3)
         self.inner_border_radius = max(0, self.border_radius - self.border_width)
-        self.border_color = settings.bar_border_color  # Retrieved from 'Settings' class instance.
+        self.border_color = settings.bar_border_color
         # Progress bar attributes.
         self.progress_bar_height = self.height - (2 * self.border_width)
         self.progress_bar_length = self.length - (2 * self.border_width)
-        self.bar_color = settings.progress_bar_color  # Retrieved from 'Settings' class instance.
+        self.bar_color = settings.progress_bar_color
 
         # Set starting value for loading 'progress' to 1.
         self.progress = 1
         # Set speed attribute to be consistent across different frame rates.
         self.speed = int(self.progress_bar_length / (time * settings.frame_rate))
-
-        # Values to calculate random speed-up/slow-down events.
-        stop_duration_min_max = random.uniform(0.5, 2)  # seconds
-        jump_value_min_max = random.uniform(5, 15)  # percent
-        slow_value = 0.5  # multiplier
-        slow_duration_min_max = random.uniform(1, 3)  # seconds
-        speed_up_value_min_max = random.uniform(2, 3)  # multiplier
-        speed_up_duration_min_max = random.uniform(1, 2)  # seconds
-        #
-        self.stop_duration = settings.frame_rate * slow_duration_min_max  # frames
-        self.jump = int(self.progress_bar_length / (100 * jump_value_min_max))  # pixels
-        self.slow = int(self.speed * slow_value)  # pixels
-        self.speed_up = int(self.speed * speed_up_value_min_max)  # pixels
 
         # Container rect.
         """NOTE: Change coordinates for this rect to position the progress bar as a whole!"""
@@ -487,6 +474,16 @@ class ProgressBar:
         # used to, for example, trigger a 'continue' message after progress bar is finished. See 'show_title_screen()'
         # in 'gui/gui.py' and corresponding event handler for possible applications.
         self.finished = False
+
+        # Attributes ror random speed-up/slow-down events.
+        self.chance_per_second = 0.2  # 0.2% chance of event per frame.
+        self.cooldown = False
+        self.cooldown_seconds = 2  # 2 seconds cooldown for random event.
+        self.cooldown_timer = 0
+        self.duration_timer = 0  # Timer for duration of event.
+        # Create 'backup' of set speed to be used for resetting of 'self.speed' if a random speed-up/slow-down event
+        # modifies it.
+        self.speed_backup = self.speed
 
     def draw_progress_bar(self):
         """Draw progress bar on screen until 'self.progress' value equals the specific value for 'self.length'."""
@@ -502,6 +499,7 @@ class ProgressBar:
 
         # Check/adjust length of progress bar and draw it on screen until maximum length 'progress_bar_length' is reached.
         if self.progress <= self.progress_bar_length:
+            self.random_progress_handler(mode="1")  # Trigger and handle random speed-up/slow-down events for the progress bar.
             pygame.draw.rect(self.screen, self.border_color, self.container_rect,
                              border_radius=self.border_radius, width=self.border_width)
             pygame.draw.rect(self.screen, self.bar_color, self.progress_bar_rect, border_radius=self.inner_border_radius)
@@ -510,8 +508,68 @@ class ProgressBar:
         else:
             self.finished = True
 
+        # Reset cooldown for random speed-up/slow-down events.
+        self.random_progress_handler(mode="2")
+
     def build_progress_bar(self):
         """Create progress bar rect and position it at the center of the container rect."""
         self.progress_bar_rect = pygame.Rect(self.center_screen_pos, (self.progress, self.progress_bar_height))
         self.progress_bar_rect.left, self.progress_bar_rect.centery = (self.container_rect.left + self.border_width,
                                                                            self.container_rect.centery)
+
+    def random_progress_handler(self, mode):
+        if mode == "1":
+            # Only trigger random event if there's no cooldown, event count < 2, and event duration timer is done.
+            if not self.cooldown and self.duration_timer <= 0:
+                if random.random() < self.chance_per_second:
+                    self.random_progress_event()  # Trigger random event.
+                    self.cooldown = True  # Start cooldown.
+                    self.cooldown_timer = settings.frame_rate * self.cooldown_seconds  # Set cooldown timer.
+
+            # Decrease the duration timer.
+            if self.duration_timer > 0:
+                self.duration_timer -= 1
+
+            # Reset speed after the event duration ends, based on event type.
+            if self.duration_timer <= 0:
+                self.speed = self.speed_backup  # Restore the original speed.
+
+        elif mode == "2":
+            # Handle cooldown timer.
+            if self.cooldown:
+                self.cooldown_timer -= 1
+                if self.cooldown_timer <= 0:
+                    self.cooldown = False  # Reset cooldown state when the timer ends.
+
+    def random_progress_event(self):
+        stop_duration_min_max = random.uniform(0.5, 2)  # seconds
+        jump_value_min_max = random.uniform(15, 30)  # percent
+        slow_value = 0.5  # multiplier
+        slow_duration_min_max = random.uniform(1, 3)  # seconds
+        speed_up_value_min_max = random.uniform(2, 3)  # multiplier
+        speed_up_duration_min_max = random.uniform(1, 2)  # seconds
+
+        stop_duration = int(settings.frame_rate * stop_duration_min_max)  # frames
+        jump = int(self.progress_bar_length / (100 * jump_value_min_max))  # pixels
+        slow = int(self.speed * slow_value)  # pixels
+        speed_up = int(self.speed * speed_up_value_min_max)  # pixels
+
+        events = (("stop", stop_duration),
+                  ("jump", jump),
+                  ("slow", slow),
+                  ("speed_up", speed_up))
+        event_type, value = random.choice(events)
+
+        if event_type == "stop":
+            self.duration_timer = stop_duration
+            self.speed = 0
+        elif event_type == "jump":
+            self.progress += jump
+        elif event_type == "slow":
+            self.speed = slow
+            # Convert duration from seconds to frames and set timer.
+            self.duration_timer = int(settings.frame_rate * slow_duration_min_max)
+        elif event_type == "speed_up":
+            self.speed = speed_up
+            # Convert duration from seconds to frames and set timer.
+            self.duration_timer = int(settings.frame_rate * speed_up_duration_min_max)
