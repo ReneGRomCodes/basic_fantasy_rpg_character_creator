@@ -342,7 +342,7 @@ class InfoPanel(TextField):
     implement info panels."""
 
     def __init__(self, screen, text, size, bg_color=settings.info_panel_bg_color, text_color="default",
-                 multi_line=False, surface_width=0, text_pos=(0,0), surface_pos="topright"):
+                 multi_line=False, surface_width=0, text_pos=(0,0), pos=None):
         """Initialize an info panel.
         ARGS:
             screen: pygame window.
@@ -355,7 +355,7 @@ class InfoPanel(TextField):
         ARGS for use when 'multi_line=True':
             surface_width: set width for attribute 'text_surface'. Default is '0'.
             text_pos: set starting point for text in 'text_surface'. Default is '(0,0)'.
-        surface_pos: set position for info panel on screen using a string keyword. Possible keywords:
+        pos: set position for info panel on screen using a string keyword. Possible keywords:
             "top",
             "bottom",
             "left",
@@ -363,37 +363,47 @@ class InfoPanel(TextField):
             "topleft",
             "topright",
             "bottomleft",
-            "bottomright",
-            "center".
-            Default position is 'topright'.
+            "bottomright".
+            Default position is 'None', centering the field on the screen.
         """
         super().__init__(screen, text, size, bg_color, text_color, multi_line, surface_width, text_pos)
-        if surface_pos == "top":
-            self.background_rect.top, self.background_rect.centerx = screen.get_rect().top, screen.get_rect().centerx
-        elif surface_pos == "bottom":
-            self.background_rect.bottom, self.background_rect.centerx = screen.get_rect().bottom, screen.get_rect().centerx
-        elif surface_pos == "left":
-            self.background_rect.left, self.background_rect.centery = screen.get_rect().left, screen.get_rect().centery
-        elif surface_pos == "right":
-            self.background_rect.right, self.background_rect.centery = screen.get_rect().right, screen.get_rect().centery
 
-        elif surface_pos == "topleft":
-            self.background_rect.topleft = screen.get_rect().topleft
-        elif surface_pos == "topright":
-            self.background_rect.topright = screen.get_rect().topright
-        elif surface_pos == "bottomleft":
-            self.background_rect.bottomleft = screen.get_rect().bottomleft
-        elif surface_pos == "bottomright":
-            self.background_rect.bottomright = screen.get_rect().bottomright
+        self.screen_anchors = {
+            "top": (screen.get_rect().top, screen.get_rect().centerx),
+            "bottom": (screen.get_rect().bottom, screen.get_rect().centerx),
+            "left": (screen.get_rect().centery, screen.get_rect().left),
+            "right": (screen.get_rect().centery, screen.get_rect().right),
+            "topleft": (screen.get_rect().top, screen.get_rect().left),
+            "topright": (screen.get_rect().top, screen.get_rect().right),
+            "bottomleft": (screen.get_rect().bottom, screen.get_rect().left),
+            "bottomright": (screen.get_rect().bottom, screen.get_rect().right),
+        }
 
-        elif surface_pos == "center":
-            self.background_rect.center = screen.get_rect().center
+        if pos == "top":
+            self.background_rect.top, self.background_rect.centerx = self.screen_anchors[pos]
+        elif pos == "bottom":
+            self.background_rect.bottom, self.background_rect.centerx = self.screen_anchors[pos]
+        elif pos == "left":
+            self.background_rect.centery, self.background_rect.left = self.screen_anchors[pos]
+        elif pos == "right":
+            self.background_rect.centery, self.background_rect.right = self.screen_anchors[pos]
+        elif pos == "topleft":
+            self.background_rect.top, self.background_rect.left = self.screen_anchors[pos]
+        elif pos == "topright":
+            self.background_rect.top, self.background_rect.right = self.screen_anchors[pos]
+        elif pos == "bottomleft":
+            self.background_rect.bottom, self.background_rect.left = self.screen_anchors[pos]
+        elif pos == "bottomright":
+            self.background_rect.bottom, self.background_rect.right = self.screen_anchors[pos]
 
     def draw_info_panel(self):
         """Draw info panel on screen."""
         self.text_rect.center = self.background_rect.center
         pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
         self.screen.blit(self.text_surface, self.text_rect)
+
+    def slide_panel(self):
+        pass
 
 
 class TextInputField:
