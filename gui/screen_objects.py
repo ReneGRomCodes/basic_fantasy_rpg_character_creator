@@ -342,7 +342,7 @@ class InfoPanel(TextField):
     implement info panels."""
 
     def __init__(self, screen, text, size, bg_color=settings.info_panel_bg_color, text_color="default",
-                 multi_line=False, surface_width=0, text_pos=(0,0), pos=None):
+                 multi_line=False, surface_width=0, text_pos=(0,0), pos=None, slide=True):
         """Initialize an info panel.
         ARGS:
             screen: pygame window.
@@ -355,56 +355,110 @@ class InfoPanel(TextField):
         ARGS for use when 'multi_line=True':
             surface_width: set width for attribute 'text_surface'. Default is '0'.
             text_pos: set starting point for text in 'text_surface'. Default is '(0,0)'.
-        pos: set position for info panel on screen using a string keyword. Possible keywords:
-            "top",
-            "bottom",
-            "left",
-            "right",
-            "topleft",
-            "topright",
-            "bottomleft",
-            "bottomright".
-            Default position is 'None', centering the field on the screen.
+            pos: set position for info panel on screen using a string keyword. Possible keywords:
+                "top",
+                "bottom",
+                "left",
+                "right",
+                "topleft",
+                "topright",
+                "bottomleft",
+                "bottomright".
+                Default position is 'None', centering the field on the screen.
+            slide: add function for info panel to 'slide-in/off' the screen. Default is 'True'
         """
         super().__init__(screen, text, size, bg_color, text_color, multi_line, surface_width, text_pos)
+        self.pos = pos
+        self.slide = slide
+        # Assign background rect attribute to 'self.bg_rect' from parent class for more concise use here.
+        self.bg_rect = self.background_rect
 
+        # Dict with screen related reference coordinates (anchors) for info panel positions.
         self.screen_anchors = {
-            "top": (screen.get_rect().top, screen.get_rect().centerx),
-            "bottom": (screen.get_rect().bottom, screen.get_rect().centerx),
-            "left": (screen.get_rect().centery, screen.get_rect().left),
-            "right": (screen.get_rect().centery, screen.get_rect().right),
-            "topleft": (screen.get_rect().top, screen.get_rect().left),
-            "topright": (screen.get_rect().top, screen.get_rect().right),
-            "bottomleft": (screen.get_rect().bottom, screen.get_rect().left),
-            "bottomright": (screen.get_rect().bottom, screen.get_rect().right),
+            "top":          (self.screen_rect.top, self.screen_rect.centerx),
+            "bottom":       (self.screen_rect.bottom, self.screen_rect.centerx),
+            "left":         (self.screen_rect.centery, self.screen_rect.left),
+            "right":        (self.screen_rect.centery, self.screen_rect.right),
+            "topleft":      (self.screen_rect.top, self.screen_rect.left),
+            "topright":     (self.screen_rect.top, self.screen_rect.right),
+            "bottomleft":   (self.screen_rect.bottom, self.screen_rect.left),
+            "bottomright":  (self.screen_rect.bottom, self.screen_rect.right),
         }
 
-        if pos == "top":
-            self.background_rect.top, self.background_rect.centerx = self.screen_anchors[pos]
-        elif pos == "bottom":
-            self.background_rect.bottom, self.background_rect.centerx = self.screen_anchors[pos]
-        elif pos == "left":
-            self.background_rect.centery, self.background_rect.left = self.screen_anchors[pos]
-        elif pos == "right":
-            self.background_rect.centery, self.background_rect.right = self.screen_anchors[pos]
-        elif pos == "topleft":
-            self.background_rect.top, self.background_rect.left = self.screen_anchors[pos]
-        elif pos == "topright":
-            self.background_rect.top, self.background_rect.right = self.screen_anchors[pos]
-        elif pos == "bottomleft":
-            self.background_rect.bottom, self.background_rect.left = self.screen_anchors[pos]
-        elif pos == "bottomright":
-            self.background_rect.bottom, self.background_rect.right = self.screen_anchors[pos]
+        # Assign info panel positions based on passed 'pos' and 'slide' argument.
+        if not slide:
+            # Static position for info panels on screen if 'slide' is 'False'.
+            if pos == "top":
+                self.bg_rect.top, self.bg_rect.centerx = self.screen_anchors[pos]
+            elif pos == "bottom":
+                self.bg_rect.bottom, self.bg_rect.centerx = self.screen_anchors[pos]
+            elif pos == "left":
+                self.bg_rect.centery, self.bg_rect.left = self.screen_anchors[pos]
+            elif pos == "right":
+                self.bg_rect.centery, self.bg_rect.right = self.screen_anchors[pos]
+            elif pos == "topleft":
+                self.bg_rect.top, self.bg_rect.left = self.screen_anchors[pos]
+            elif pos == "topright":
+                self.bg_rect.top, self.bg_rect.right = self.screen_anchors[pos]
+            elif pos == "bottomleft":
+                self.bg_rect.bottom, self.bg_rect.left = self.screen_anchors[pos]
+            elif pos == "bottomright":
+                self.bg_rect.bottom, self.bg_rect.right = self.screen_anchors[pos]
+        else:
+            # Starting position for info panel outside the screen.
+            if pos == "top":
+                self.bg_rect.bottom, self.bg_rect.centerx = self.screen_anchors[pos]
+            elif pos == "bottom":
+                self.bg_rect.top, self.bg_rect.centerx = self.screen_anchors[pos]
+            elif pos == "left":
+                self.bg_rect.centery, self.bg_rect.right = self.screen_anchors[pos]
+            elif pos == "right":
+                self.bg_rect.centery, self.bg_rect.left = self.screen_anchors[pos]
+            elif pos == "topleft":
+                self.bg_rect.bottom, self.bg_rect.left = self.screen_anchors[pos]
+            elif pos == "topright":
+                self.bg_rect.bottom, self.bg_rect.right = self.screen_anchors[pos]
+            elif pos == "bottomleft":
+                self.bg_rect.top, self.bg_rect.left = self.screen_anchors[pos]
+            elif pos == "bottomright":
+                self.bg_rect.top, self.bg_rect.right = self.screen_anchors[pos]
 
     def draw_info_panel(self):
         """Draw info panel on screen."""
         self.text_rect.center = self.background_rect.center
+        # Trigger slide-in/out animation.
+        if self.slide:
+            self.slide_panel()
         pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
         self.screen.blit(self.text_surface, self.text_rect)
 
     def slide_panel(self):
-        pass
+        """Animate the info panel sliding onto the screen from its starting edge or corner. The method adjusts the
+        panel's position incrementally based on its 'pos' attribute until it reaches the final anchored screen position.
+        Once the panel reaches its final position, it is snapped into place to prevent 'overshooting'."""
+        if self.pos in {"topleft", "topright", "bottomleft", "bottomright"}:
+            self.slide_diagonal()
+        elif self.pos == "top" and self.bg_rect.bottom >= self.screen_rect.top > self.bg_rect.top:
+            self.bg_rect.top += 15
+            self.bg_rect.top = min(self.bg_rect.top, self.screen_rect.top)
+        elif self.pos == "bottom" and self.bg_rect.top <= self.screen_rect.bottom < self.bg_rect.bottom:
+            self.bg_rect.bottom -= 15
+            self.bg_rect.bottom = max(self.bg_rect.bottom, self.screen_rect.bottom)
+        elif self.pos == "left" and self.bg_rect.right >= self.screen_rect.left > self.bg_rect.left:
+            self.bg_rect.left += 15
+            self.bg_rect.left = min(self.bg_rect.left, self.screen_rect.left)
+        elif self.pos == "right" and self.bg_rect.left <= self.screen_rect.right < self.bg_rect.right:
+            self.bg_rect.right -= 15
+            self.bg_rect.right = max(self.bg_rect.right, self.screen_rect.right)
 
+    def slide_diagonal(self):
+        """Handle diagonal slide animation for method 'self.slide_panel()'."""
+        if self.pos in {"topleft", "topright"} and self.bg_rect.bottom >= self.screen_rect.top > self.bg_rect.top:
+            self.bg_rect.top += 15
+            self.bg_rect.top = min(self.bg_rect.top, self.screen_rect.top)
+        elif self.pos in {"bottomleft", "bottomright"} and self.bg_rect.top <= self.screen_rect.bottom < self.bg_rect.bottom:
+            self.bg_rect.bottom -= 15
+            self.bg_rect.bottom = max(self.bg_rect.bottom, self.screen_rect.bottom)
 
 class TextInputField:
     """Represent a text input field.
@@ -420,6 +474,7 @@ class TextInputField:
             field_width: width of background field.
         """
         self.screen = screen
+        self.screen_rect = screen.get_rect()
         self.input_field_instance = input_field_instance
         self.field_width = field_width
 
@@ -427,7 +482,7 @@ class TextInputField:
         self.field_height = input_field_instance.surface.get_height() * 2
         self.input_bg_field = pygame.Rect((0,0), (field_width, self.field_height))
         self.bg_rect_color = settings.text_input_field_color
-        self.input_bg_field.centerx, self.input_bg_field.centery = screen.get_rect().centerx, screen.get_rect().centery
+        self.input_bg_field.centerx, self.input_bg_field.centery = self.screen_rect.centerx, self.screen_rect.centery
 
     def draw_input_field(self):
         """Draw text input field with background on screen."""
@@ -451,14 +506,15 @@ class ProgressBar:
             time: approximate time in seconds for the progress bar to fill. Default is '5'
         """
         self.screen = screen
+        self.screen_rect = screen.get_rect()
         # Assign height/length attributes based on screen size and passed arguments.
-        self.height = self.screen.get_rect().height / height
-        self.length = self.screen.get_rect().width / length
+        self.height = self.screen_rect.height / height
+        self.length = self.screen_rect.width / length
         # Calculate x and y position for rect to appear at the screen center.
-        self.center_screen_pos = self.screen.get_rect().centerx - self.length / 2, self.screen.get_rect().centery
+        self.center_screen_pos = self.screen_rect.centerx - self.length / 2, self.screen_rect.centery
 
         # Border attributes.
-        self.border_radius = int(self.screen.get_rect().height / 72)
+        self.border_radius = int(self.screen_rect.height / 72)
         self.border_width = int(self.border_radius / 3)
         self.inner_border_radius = max(0, self.border_radius - self.border_width)
         self.border_color = settings.bar_border_color
