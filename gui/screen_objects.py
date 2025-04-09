@@ -370,6 +370,8 @@ class InfoPanel(TextField):
         super().__init__(screen, text, size, bg_color, text_color, multi_line, surface_width, text_pos)
         self.pos = pos
         self.slide = slide
+        self.slide_horizontal_speed = self.background_rect.width / 10
+        self.slide_vertical_speed = self.background_rect.height / 10
         # Assign background rect attribute to 'self.bg_rect' from parent class for more concise use here.
         self.bg_rect = self.background_rect
 
@@ -405,7 +407,7 @@ class InfoPanel(TextField):
             elif pos == "bottomright":
                 self.bg_rect.bottom, self.bg_rect.right = self.screen_anchors[pos]
         else:
-            # Starting position for info panel outside the screen.
+            # Starting position for info panel outside the screen if 'slide' is 'True'.
             if pos == "top":
                 self.bg_rect.bottom, self.bg_rect.centerx = self.screen_anchors[pos]
             elif pos == "bottom":
@@ -415,19 +417,19 @@ class InfoPanel(TextField):
             elif pos == "right":
                 self.bg_rect.centery, self.bg_rect.left = self.screen_anchors[pos]
             elif pos == "topleft":
-                self.bg_rect.bottom, self.bg_rect.left = self.screen_anchors[pos]
-            elif pos == "topright":
                 self.bg_rect.bottom, self.bg_rect.right = self.screen_anchors[pos]
+            elif pos == "topright":
+                self.bg_rect.bottom, self.bg_rect.left = self.screen_anchors[pos]
             elif pos == "bottomleft":
-                self.bg_rect.top, self.bg_rect.left = self.screen_anchors[pos]
-            elif pos == "bottomright":
                 self.bg_rect.top, self.bg_rect.right = self.screen_anchors[pos]
+            elif pos == "bottomright":
+                self.bg_rect.top, self.bg_rect.left = self.screen_anchors[pos]
 
     def draw_info_panel(self):
         """Draw info panel on screen."""
         self.text_rect.center = self.background_rect.center
         # Trigger slide-in/out animation.
-        if self.slide:
+        if self.slide and self.pos:
             self.slide_panel()
         pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
         self.screen.blit(self.text_surface, self.text_rect)
@@ -436,29 +438,20 @@ class InfoPanel(TextField):
         """Animate the info panel sliding onto the screen from its starting edge or corner. The method adjusts the
         panel's position incrementally based on its 'pos' attribute until it reaches the final anchored screen position.
         Once the panel reaches its final position, it is snapped into place to prevent 'overshooting'."""
-        if self.pos in {"topleft", "topright", "bottomleft", "bottomright"}:
-            self.slide_diagonal()
-        elif self.pos == "top" and self.bg_rect.bottom >= self.screen_rect.top > self.bg_rect.top:
-            self.bg_rect.top += 15
+        if "top" in self.pos and self.bg_rect.bottom >= self.screen_rect.top > self.bg_rect.top:
+            self.bg_rect.top += self.slide_vertical_speed
             self.bg_rect.top = min(self.bg_rect.top, self.screen_rect.top)
-        elif self.pos == "bottom" and self.bg_rect.top <= self.screen_rect.bottom < self.bg_rect.bottom:
-            self.bg_rect.bottom -= 15
+        elif "bottom" in self.pos and self.bg_rect.top <= self.screen_rect.bottom < self.bg_rect.bottom:
+            self.bg_rect.bottom -= self.slide_vertical_speed
             self.bg_rect.bottom = max(self.bg_rect.bottom, self.screen_rect.bottom)
-        elif self.pos == "left" and self.bg_rect.right >= self.screen_rect.left > self.bg_rect.left:
-            self.bg_rect.left += 15
+
+        if "left" in self.pos and self.bg_rect.right >= self.screen_rect.left > self.bg_rect.left:
+            self.bg_rect.left += self.slide_horizontal_speed
             self.bg_rect.left = min(self.bg_rect.left, self.screen_rect.left)
-        elif self.pos == "right" and self.bg_rect.left <= self.screen_rect.right < self.bg_rect.right:
-            self.bg_rect.right -= 15
+        elif "right" in self.pos and self.bg_rect.left <= self.screen_rect.right < self.bg_rect.right:
+            self.bg_rect.right -= self.slide_horizontal_speed
             self.bg_rect.right = max(self.bg_rect.right, self.screen_rect.right)
 
-    def slide_diagonal(self):
-        """Handle diagonal slide animation for method 'self.slide_panel()'."""
-        if self.pos in {"topleft", "topright"} and self.bg_rect.bottom >= self.screen_rect.top > self.bg_rect.top:
-            self.bg_rect.top += 15
-            self.bg_rect.top = min(self.bg_rect.top, self.screen_rect.top)
-        elif self.pos in {"bottomleft", "bottomright"} and self.bg_rect.top <= self.screen_rect.bottom < self.bg_rect.bottom:
-            self.bg_rect.bottom -= 15
-            self.bg_rect.bottom = max(self.bg_rect.bottom, self.screen_rect.bottom)
 
 class TextInputField:
     """Represent a text input field.
