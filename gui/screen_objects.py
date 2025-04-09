@@ -352,9 +352,11 @@ class InfoPanel(TextField):
             text_color: string for text color presets. "default" for RGB(55, 40, 25), "inactive" for greyed-out text.
                         Use RGB tuple for others.
             multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
-        ARGS for use when 'multi_line=True':
-            surface_width: set width for attribute 'text_surface'. Default is '0'.
-            text_pos: set starting point for text in 'text_surface'. Default is '(0,0)'.
+
+            ARGS for use when 'multi_line=True':
+                surface_width: set width for attribute 'text_surface'. Default is '0'.
+                text_pos: set starting point for text in 'text_surface'. Default is '(0,0)'.
+
             pos: set position for info panel on screen using a string keyword. Possible keywords:
                 "top",
                 "bottom",
@@ -376,6 +378,7 @@ class InfoPanel(TextField):
         self.bg_rect = self.background_rect
 
         # Dict with screen related reference coordinates (anchors) for info panel positions.
+        # ["key"][0] = y-positions, ["key"][1] = x-positions
         self.screen_anchors = {
             "top":          (self.screen_rect.top, self.screen_rect.centerx),
             "bottom":       (self.screen_rect.bottom, self.screen_rect.centerx),
@@ -387,43 +390,10 @@ class InfoPanel(TextField):
             "bottomright":  (self.screen_rect.bottom, self.screen_rect.right),
         }
 
-        # Assign info panel positions based on passed 'pos' and 'slide' argument.
-        if not slide:
-            # Static position for info panels on screen if 'slide' is 'False'.
-            if pos == "top":
-                self.bg_rect.top, self.bg_rect.centerx = self.screen_anchors[pos]
-            elif pos == "bottom":
-                self.bg_rect.bottom, self.bg_rect.centerx = self.screen_anchors[pos]
-            elif pos == "left":
-                self.bg_rect.centery, self.bg_rect.left = self.screen_anchors[pos]
-            elif pos == "right":
-                self.bg_rect.centery, self.bg_rect.right = self.screen_anchors[pos]
-            elif pos == "topleft":
-                self.bg_rect.top, self.bg_rect.left = self.screen_anchors[pos]
-            elif pos == "topright":
-                self.bg_rect.top, self.bg_rect.right = self.screen_anchors[pos]
-            elif pos == "bottomleft":
-                self.bg_rect.bottom, self.bg_rect.left = self.screen_anchors[pos]
-            elif pos == "bottomright":
-                self.bg_rect.bottom, self.bg_rect.right = self.screen_anchors[pos]
-        else:
-            # Starting position for info panel outside the screen if 'slide' is 'True'.
-            if pos == "top":
-                self.bg_rect.bottom, self.bg_rect.centerx = self.screen_anchors[pos]
-            elif pos == "bottom":
-                self.bg_rect.top, self.bg_rect.centerx = self.screen_anchors[pos]
-            elif pos == "left":
-                self.bg_rect.centery, self.bg_rect.right = self.screen_anchors[pos]
-            elif pos == "right":
-                self.bg_rect.centery, self.bg_rect.left = self.screen_anchors[pos]
-            elif pos == "topleft":
-                self.bg_rect.bottom, self.bg_rect.right = self.screen_anchors[pos]
-            elif pos == "topright":
-                self.bg_rect.bottom, self.bg_rect.left = self.screen_anchors[pos]
-            elif pos == "bottomleft":
-                self.bg_rect.top, self.bg_rect.right = self.screen_anchors[pos]
-            elif pos == "bottomright":
-                self.bg_rect.top, self.bg_rect.left = self.screen_anchors[pos]
+        # Assign info panel positions based on passed 'pos' and 'slide' argument. If no 'pos' argument is passed, panel
+        # defaults to center position.
+        if self.pos:
+            self.set_bg_rect_position()
 
     def draw_info_panel(self):
         """Draw info panel on screen."""
@@ -451,6 +421,62 @@ class InfoPanel(TextField):
         elif "right" in self.pos and self.bg_rect.left <= self.screen_rect.right < self.bg_rect.right:
             self.bg_rect.right -= self.slide_horizontal_speed
             self.bg_rect.right = max(self.bg_rect.right, self.screen_rect.right)
+
+    def set_bg_rect_position(self):
+        """Set info panel positions based on 'pos' and 'slide' argument."""
+        # Assign instance attributes to variables for cleaner code within the if-block.
+        pos = self.pos
+        slide = self.slide
+        bg_rect = self.bg_rect
+        anchor_pos_y = self.screen_anchors[pos][0]
+        anchor_pos_x = self.screen_anchors[pos][1]
+
+        # Basic top, bottom, left and right positions
+        if pos == "top":
+            bg_rect.centerx = anchor_pos_x
+            if slide:
+                bg_rect.bottom = anchor_pos_y
+            else:
+                bg_rect.top = anchor_pos_y
+        elif pos == "bottom":
+            bg_rect.centerx = anchor_pos_x
+            if slide:
+                bg_rect.top = anchor_pos_y
+            else:
+                bg_rect.bottom = anchor_pos_y
+        elif pos == "left":
+            bg_rect.centery = anchor_pos_y
+            if slide:
+                bg_rect.right = anchor_pos_x
+            else:
+                bg_rect.left = anchor_pos_x
+        elif pos == "right":
+            bg_rect.centery = anchor_pos_y
+            if slide:
+                bg_rect.left = anchor_pos_x
+            else:
+                bg_rect.right = anchor_pos_x
+        # Corner positions.
+        elif pos == "topleft":
+            if slide:
+                bg_rect.bottom, bg_rect.right = anchor_pos_y, anchor_pos_x
+            else:
+                bg_rect.top, bg_rect.left = anchor_pos_y, anchor_pos_x
+        elif pos == "topright":
+            if slide:
+                bg_rect.bottom, bg_rect.left = anchor_pos_y, anchor_pos_x
+            else:
+                bg_rect.top, bg_rect.right = anchor_pos_y, anchor_pos_x
+        elif pos == "bottomleft":
+            if slide:
+                bg_rect.top, bg_rect.right = anchor_pos_y, anchor_pos_x
+            else:
+                bg_rect.bottom, bg_rect.left = anchor_pos_y, anchor_pos_x
+        elif pos == "bottomright":
+            if slide:
+                bg_rect.top, bg_rect.left = anchor_pos_y, anchor_pos_x
+            else:
+                bg_rect.bottom, bg_rect.right = anchor_pos_y, anchor_pos_x
 
 
 class TextInputField:

@@ -150,11 +150,11 @@ def initialize_screen_elements(screen, settings):
     thief_info_table = so.InfoPanel(screen, class_descr["thief"][1], text_small, multi_line=True, surface_width=info_panel_width,
                                     pos="left")
     fighter_magic_user_info = so.InfoPanel(screen, class_descr["fighter_magic-user"][0], text_small, multi_line=True,
-                                           surface_width=info_panel_width, pos="center")
+                                           surface_width=info_panel_width)
     fighter_magic_user_info_table = so.InfoPanel(screen, class_descr["fighter_magic-user"][1], text_small, multi_line=True,
                                                  surface_width=info_panel_width, pos="left")
     magic_user_thief_info = so.InfoPanel(screen, class_descr["magic-user_thief"][0], text_small, multi_line=True,
-                                         surface_width=info_panel_width, pos="center")
+                                         surface_width=info_panel_width)
     magic_user_thief_info_table = so.InfoPanel(screen, class_descr["magic-user_thief"][1], text_small, multi_line=True,
                                                surface_width=info_panel_width, pos="left")
     # Active race/class text fields. Used when a race/class can be chosen in the race/class selection.
