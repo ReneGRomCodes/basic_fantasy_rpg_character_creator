@@ -396,11 +396,11 @@ class InfoPanel(TextField):
         # Set slide speeds for info panels if 'slide' is 'True'.
         if self.slide:
             # Standard slide speed for info panel
-            self.horizontal_speed = self.background_rect.width / 10
-            self.vertical_speed = self.background_rect.height / 10
+            self.horizontal_speed = int(self.background_rect.width / 10)
+            self.vertical_speed = int(self.background_rect.height / 10)
             # Modified speed for info panel to slow down shortly before reaching target position. Just a neat effect.
-            self.horizontal_speed_slow = self.horizontal_speed / 2
-            self.vertical_speed_slow = self.vertical_speed / 2
+            self.horizontal_speed_slow = int(self.horizontal_speed / 10)
+            self.vertical_speed_slow = int(self.vertical_speed / 10)
 
     def draw_info_panel(self):
         """Draw info panel on screen."""
@@ -415,29 +415,39 @@ class InfoPanel(TextField):
         """Animate the info panel sliding onto the screen from its starting edge or corner. The method adjusts the
         panel's position incrementally based on its 'pos' attribute until it reaches the final anchored screen position.
         Once the panel reaches its final position, it is snapped into place to prevent 'overshooting'."""
+        # Percentage of panel height/width on screen before slower speed is triggerd.
+        height_percentage_speed = int(self.bg_rect.height * 0.7)  # 70%
+        width_percentage_speed = int(self.bg_rect.width * 0.7)  # 70%
+
         if "top" in self.pos and self.bg_rect.bottom >= self.screen_rect.top > self.bg_rect.top:
-            if (self.screen_rect.top + self.bg_rect.bottom) < self.bg_rect.height * 0.5:
+            if (self.screen_rect.top + self.bg_rect.bottom) < height_percentage_speed:
                 self.bg_rect.top += self.vertical_speed
             else:
                 self.bg_rect.top += self.vertical_speed_slow
             self.bg_rect.top = min(self.bg_rect.top, self.screen_rect.top)
         elif "bottom" in self.pos and self.bg_rect.top <= self.screen_rect.bottom < self.bg_rect.bottom:
-            self.bg_rect.bottom -= self.vertical_speed
+            if (self.screen_rect.height - height_percentage_speed) < self.bg_rect.top:
+                self.bg_rect.bottom -= self.vertical_speed
+            else:
+                self.bg_rect.bottom -= self.vertical_speed_slow
             self.bg_rect.bottom = max(self.bg_rect.bottom, self.screen_rect.bottom)
 
         if "left" in self.pos and self.bg_rect.right >= self.screen_rect.left > self.bg_rect.left:
-            if (self.screen_rect.left + self.bg_rect.right) < self.bg_rect.width * 0.5:
+            if (self.screen_rect.left + self.bg_rect.right) < width_percentage_speed:
                 self.bg_rect.left += self.horizontal_speed
             else:
                 self.bg_rect.left += self.horizontal_speed_slow
             self.bg_rect.left = min(self.bg_rect.left, self.screen_rect.left)
         elif "right" in self.pos and self.bg_rect.left <= self.screen_rect.right < self.bg_rect.right:
-            self.bg_rect.right -= self.horizontal_speed
+            if (self.screen_rect.width - width_percentage_speed) < self.bg_rect.left:
+                self.bg_rect.right -= self.horizontal_speed
+            else:
+                self.bg_rect.right -= self.horizontal_speed_slow
             self.bg_rect.right = max(self.bg_rect.right, self.screen_rect.right)
 
     def set_bg_rect_position(self):
         """Set info panel positions based on 'pos' and 'slide' argument."""
-        # Assign instance attributes to variables for shorter and cleaner code within the if-block.
+        # Assign x- and y-anchor attributes to variables for shorter and cleaner code within the if-block.
         anchor_y = self.screen_anchors[self.pos][0]
         anchor_x = self.screen_anchors[self.pos][1]
 
