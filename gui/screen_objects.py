@@ -329,10 +329,9 @@ class InteractiveText(TextField):
         """Handle mouse interactions and draw info panels when panels are assigned to the class instance.
         This method is called from the helper function 'show_info_panels()' in 'gui/ui_helpers.py' to ensure info panels
         are always drawn on top of every other object on screen."""
-        if self.interactive_rect.collidepoint(mouse_pos):
-            if self.panel:
-                for i in self.panel:
-                    i.draw_info_panel()
+        if self.panel and self.interactive_rect.collidepoint(mouse_pos):
+            for i in self.panel:
+                i.draw_info_panel()
 
 
 class InfoPanel(TextField):
@@ -372,18 +371,18 @@ class InfoPanel(TextField):
         super().__init__(screen, text, size, bg_color, text_color, multi_line, surface_width, text_pos)
         self.pos = pos
         self.slide = slide
-        self.slide_horizontal_speed = self.background_rect.width / 10
-        self.slide_vertical_speed = self.background_rect.height / 10
         # Assign background rect attribute to 'self.bg_rect' from parent class for more concise use here.
         self.bg_rect = self.background_rect
 
         # Dict with screen related reference coordinates (anchors) for info panel positions.
-        # ["key"][0] = y-positions, ["key"][1] = x-positions
+        # ["key"][0] = y-positions, ["key"][1] = x-positions.
+        # Values that are given as 'None' are unused as they represent centerx and centery which are the default positions
+        # for the class as handed down by the parent class 'TextField' and don't need to be re-assigned here.
         self.screen_anchors = {
-            "top":          (self.screen_rect.top, self.screen_rect.centerx),
-            "bottom":       (self.screen_rect.bottom, self.screen_rect.centerx),
-            "left":         (self.screen_rect.centery, self.screen_rect.left),
-            "right":        (self.screen_rect.centery, self.screen_rect.right),
+            "top":          (self.screen_rect.top, None),
+            "bottom":       (self.screen_rect.bottom, None),
+            "left":         (None, self.screen_rect.left),
+            "right":        (None, self.screen_rect.right),
             "topleft":      (self.screen_rect.top, self.screen_rect.left),
             "topright":     (self.screen_rect.top, self.screen_rect.right),
             "bottomleft":   (self.screen_rect.bottom, self.screen_rect.left),
@@ -394,6 +393,14 @@ class InfoPanel(TextField):
         # defaults to center position.
         if self.pos:
             self.set_bg_rect_position()
+        # Set slide speeds for info panels if 'slide' is 'True'.
+        if self.slide:
+            # Standard slide speed for info panel
+            self.horizontal_speed = self.background_rect.width / 10
+            self.vertical_speed = self.background_rect.height / 10
+            # Modified speed for info panel to slow down shortly before reaching target position. Just a neat effect.
+            self.horizontal_speed_slow = self.horizontal_speed / 2
+            self.vertical_speed_slow = self.vertical_speed / 2
 
     def draw_info_panel(self):
         """Draw info panel on screen."""
@@ -409,74 +416,62 @@ class InfoPanel(TextField):
         panel's position incrementally based on its 'pos' attribute until it reaches the final anchored screen position.
         Once the panel reaches its final position, it is snapped into place to prevent 'overshooting'."""
         if "top" in self.pos and self.bg_rect.bottom >= self.screen_rect.top > self.bg_rect.top:
-            self.bg_rect.top += self.slide_vertical_speed
+            if (self.screen_rect.top + self.bg_rect.bottom) < self.bg_rect.height * 0.5:
+                self.bg_rect.top += self.vertical_speed
+            else:
+                self.bg_rect.top += self.vertical_speed_slow
             self.bg_rect.top = min(self.bg_rect.top, self.screen_rect.top)
         elif "bottom" in self.pos and self.bg_rect.top <= self.screen_rect.bottom < self.bg_rect.bottom:
-            self.bg_rect.bottom -= self.slide_vertical_speed
+            self.bg_rect.bottom -= self.vertical_speed
             self.bg_rect.bottom = max(self.bg_rect.bottom, self.screen_rect.bottom)
 
         if "left" in self.pos and self.bg_rect.right >= self.screen_rect.left > self.bg_rect.left:
-            self.bg_rect.left += self.slide_horizontal_speed
+            if (self.screen_rect.left + self.bg_rect.right) < self.bg_rect.width * 0.5:
+                self.bg_rect.left += self.horizontal_speed
+            else:
+                self.bg_rect.left += self.horizontal_speed_slow
             self.bg_rect.left = min(self.bg_rect.left, self.screen_rect.left)
         elif "right" in self.pos and self.bg_rect.left <= self.screen_rect.right < self.bg_rect.right:
-            self.bg_rect.right -= self.slide_horizontal_speed
+            self.bg_rect.right -= self.horizontal_speed
             self.bg_rect.right = max(self.bg_rect.right, self.screen_rect.right)
 
     def set_bg_rect_position(self):
         """Set info panel positions based on 'pos' and 'slide' argument."""
-        # Assign instance attributes to variables for cleaner code within the if-block.
-        pos = self.pos
-        slide = self.slide
-        bg_rect = self.bg_rect
-        anchor_pos_y = self.screen_anchors[pos][0]
-        anchor_pos_x = self.screen_anchors[pos][1]
+        # Assign instance attributes to variables for shorter and cleaner code within the if-block.
+        anchor_y = self.screen_anchors[self.pos][0]
+        anchor_x = self.screen_anchors[self.pos][1]
 
-        # Basic top, bottom, left and right positions
-        if pos == "top":
-            bg_rect.centerx = anchor_pos_x
-            if slide:
-                bg_rect.bottom = anchor_pos_y
+        # Set positions for 'top', 'topleft' and 'topright'.
+        if "top" in self.pos:
+            if self.slide:
+                self.bg_rect.bottom = anchor_y
             else:
-                bg_rect.top = anchor_pos_y
-        elif pos == "bottom":
-            bg_rect.centerx = anchor_pos_x
-            if slide:
-                bg_rect.top = anchor_pos_y
+                self.bg_rect.top = anchor_y
+            self.set_left_right_pos(anchor_x)
+        # Set positions for 'bottom', 'bottomleft' and 'bottomright'.
+        elif "bottom" in self.pos:
+            if self.slide:
+                self.bg_rect.top = anchor_y
             else:
-                bg_rect.bottom = anchor_pos_y
-        elif pos == "left":
-            bg_rect.centery = anchor_pos_y
-            if slide:
-                bg_rect.right = anchor_pos_x
+                self.bg_rect.bottom = anchor_y
+            self.set_left_right_pos(anchor_x)
+        # Set position for 'left' and 'right'
+        elif self.pos in {"left", "right"}:
+            self.set_left_right_pos(anchor_x)
+
+    def set_left_right_pos(self, anchor_x):
+        """Set left/right positions for all panels with occurrences of "left" or "right" in 'self.pos'. Used in method
+        'set_bg_rect_positions()' above."""
+        if "left" in self.pos:
+            if self.slide:
+                self.bg_rect.right = anchor_x
             else:
-                bg_rect.left = anchor_pos_x
-        elif pos == "right":
-            bg_rect.centery = anchor_pos_y
-            if slide:
-                bg_rect.left = anchor_pos_x
+                self.bg_rect.left = anchor_x
+        elif "right" in self.pos:
+            if self.slide:
+                self.bg_rect.left = anchor_x
             else:
-                bg_rect.right = anchor_pos_x
-        # Corner positions.
-        elif pos == "topleft":
-            if slide:
-                bg_rect.bottom, bg_rect.right = anchor_pos_y, anchor_pos_x
-            else:
-                bg_rect.top, bg_rect.left = anchor_pos_y, anchor_pos_x
-        elif pos == "topright":
-            if slide:
-                bg_rect.bottom, bg_rect.left = anchor_pos_y, anchor_pos_x
-            else:
-                bg_rect.top, bg_rect.right = anchor_pos_y, anchor_pos_x
-        elif pos == "bottomleft":
-            if slide:
-                bg_rect.top, bg_rect.right = anchor_pos_y, anchor_pos_x
-            else:
-                bg_rect.bottom, bg_rect.left = anchor_pos_y, anchor_pos_x
-        elif pos == "bottomright":
-            if slide:
-                bg_rect.top, bg_rect.left = anchor_pos_y, anchor_pos_x
-            else:
-                bg_rect.bottom, bg_rect.right = anchor_pos_y, anchor_pos_x
+                self.bg_rect.right = anchor_x
 
 
 class TextInputField:
