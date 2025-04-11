@@ -326,12 +326,25 @@ class InteractiveText(TextField):
             self.was_pressed = False
 
     def handle_mouse_interaction_info_panels(self, mouse_pos):
-        """Handle mouse interactions and draw info panels when panels are assigned to the class instance.
+        """Handle mouse interactions and draw info panels when 'InfoPanel' instances are passed as 'panel' argument to
+        the 'InteractiveText' instance.
+        If info panel instance has 'slide' attribute set to 'True', reset panels back to starting position when no mouse
+        collision event with 'InteractiveText' rect is detected.
+        See class 'InfoPanel' for details on sliding functionality.
+
         This method is called from the helper function 'show_info_panels()' in 'gui/ui_helpers.py' to ensure info panels
         are always drawn on top of every other object on screen."""
-        if self.panel and self.interactive_rect.collidepoint(mouse_pos):
-            for i in self.panel:
-                i.draw_info_panel()
+
+        if self.panel:
+            # Draw panel if mouse hovers over interactive text field.
+            if self.interactive_rect.collidepoint(mouse_pos):
+                for i in self.panel:
+                    i.draw_info_panel()
+            else:
+                # Reset 'sliding' panel coordinates back to starting position outside the screen.
+                for i in self.panel:
+                    if i.slide:
+                        i.get_bg_rect_position()
 
 
 class InfoPanel(TextField):
