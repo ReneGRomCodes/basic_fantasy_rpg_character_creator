@@ -365,11 +365,17 @@ class InfoPanel(TextField):
                 "topright",
                 "bottomleft",
                 "bottomright".
-                Default position is 'None', centering the field on the screen.
-            slide: add function for info panel to 'slide-in/off' the screen. Default is 'True'
+                Default position is 'None', centering the field on the screen. NOTE: 'pos=None' will set 'slide=False'
+                as centered info panels have no sliding animation implemented.
+            slide: add function for info panel to 'slide-in/off' the screen. Default is 'True'.
         """
         super().__init__(screen, text, size, bg_color, text_color, multi_line, surface_width, text_pos)
         self.pos = pos
+        # Set 'slide' attribute to 'False' if 'pos=None' argument is passed, equalling a centered info panels which has
+        # no sliding animation implemented.
+        if not pos:
+            slide = False
+
         self.slide = slide
         # Assign background rect attribute to 'self.bg_rect' from parent class for more concise use here.
         self.bg_rect = self.background_rect
@@ -407,46 +413,47 @@ class InfoPanel(TextField):
         self.text_rect.center = self.background_rect.center
         # Trigger slide-in/out animation.
         if self.slide and self.pos:
-            self.slide_panel()
+            self.slide_panel_in()
+
         pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
         self.screen.blit(self.text_surface, self.text_rect)
 
-    def slide_panel(self):
+    def slide_panel_in(self):
         """Animate the info panel sliding onto the screen from its starting edge or corner. The method adjusts the
         panel's position incrementally based on its 'pos' attribute until it reaches the final anchored screen position.
         Once the panel reaches its final position, it is snapped into place to prevent 'overshooting'."""
         # Percentage of panel height/width on screen before slower speed is triggerd.
-        height_percentage_speed = int(self.bg_rect.height * 0.7)  # 70%
-        width_percentage_speed = int(self.bg_rect.width * 0.7)  # 70%
+        height_speed_trigger = int(self.bg_rect.height * 0.7)  # 70%
+        width_speed_trigger = int(self.bg_rect.width * 0.7)  # 70%
 
         if "top" in self.pos and self.bg_rect.bottom >= self.screen_rect.top > self.bg_rect.top:
-            if (self.screen_rect.top + self.bg_rect.bottom) < height_percentage_speed:
+            if (self.screen_rect.top + self.bg_rect.bottom) < height_speed_trigger:
                 self.bg_rect.top += self.vertical_speed
             else:
                 self.bg_rect.top += self.vertical_speed_slow
             self.bg_rect.top = min(self.bg_rect.top, self.screen_rect.top)
         elif "bottom" in self.pos and self.bg_rect.top <= self.screen_rect.bottom < self.bg_rect.bottom:
-            if (self.screen_rect.height - height_percentage_speed) < self.bg_rect.top:
+            if (self.screen_rect.height - height_speed_trigger) < self.bg_rect.top:
                 self.bg_rect.bottom -= self.vertical_speed
             else:
                 self.bg_rect.bottom -= self.vertical_speed_slow
             self.bg_rect.bottom = max(self.bg_rect.bottom, self.screen_rect.bottom)
 
         if "left" in self.pos and self.bg_rect.right >= self.screen_rect.left > self.bg_rect.left:
-            if (self.screen_rect.left + self.bg_rect.right) < width_percentage_speed:
+            if (self.screen_rect.left + self.bg_rect.right) < width_speed_trigger:
                 self.bg_rect.left += self.horizontal_speed
             else:
                 self.bg_rect.left += self.horizontal_speed_slow
             self.bg_rect.left = min(self.bg_rect.left, self.screen_rect.left)
         elif "right" in self.pos and self.bg_rect.left <= self.screen_rect.right < self.bg_rect.right:
-            if (self.screen_rect.width - width_percentage_speed) < self.bg_rect.left:
+            if (self.screen_rect.width - width_speed_trigger) < self.bg_rect.left:
                 self.bg_rect.right -= self.horizontal_speed
             else:
                 self.bg_rect.right -= self.horizontal_speed_slow
             self.bg_rect.right = max(self.bg_rect.right, self.screen_rect.right)
 
     def get_bg_rect_position(self):
-        """Set info panel positions based on 'pos' and 'slide' argument."""
+        """Set starting info panel positions based on 'self.pos' argument."""
         # Assign x- and y-anchor attributes to variables for shorter arguments in method calls.
         anchor_y = self.screen_anchors[self.pos][0]
         anchor_x = self.screen_anchors[self.pos][1]
@@ -459,7 +466,8 @@ class InfoPanel(TextField):
             self.set_x_pos(anchor_x)
 
     def set_y_pos(self, anchor_y):
-        """Set y-positions for all panels with occurrences of "top" or "bottom" in 'self.pos'.
+        """Set starting y-positions for all panels with occurrences of "top" or "bottom" in 'self.pos' based on
+        'self.slide' attribute.
         Used in method 'get_bg_rect_positions()'."""
         if "top" in self.pos:
             if self.slide:
@@ -473,7 +481,8 @@ class InfoPanel(TextField):
                 self.bg_rect.bottom = anchor_y
 
     def set_x_pos(self, anchor_x):
-        """Set x-positions for all panels with occurrences of "left" or "right" in 'self.pos'.
+        """Set starting x-positions for all panels with occurrences of "left" or "right" in 'self.pos' based on
+        'self.slide' attribute.
         Used in method 'get_bg_rect_positions()'."""
         if "left" in self.pos:
             if self.slide:
