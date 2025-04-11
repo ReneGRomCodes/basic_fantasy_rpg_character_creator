@@ -392,7 +392,7 @@ class InfoPanel(TextField):
         # Assign info panel positions based on passed 'pos' and 'slide' argument. If no 'pos' argument is passed, panel
         # defaults to center position.
         if self.pos:
-            self.set_bg_rect_position()
+            self.get_bg_rect_position()
         # Set slide speeds for info panels if 'slide' is 'True'.
         if self.slide:
             # Standard slide speed for info panel
@@ -445,33 +445,36 @@ class InfoPanel(TextField):
                 self.bg_rect.right -= self.horizontal_speed_slow
             self.bg_rect.right = max(self.bg_rect.right, self.screen_rect.right)
 
-    def set_bg_rect_position(self):
+    def get_bg_rect_position(self):
         """Set info panel positions based on 'pos' and 'slide' argument."""
-        # Assign x- and y-anchor attributes to variables for shorter and cleaner code within the if-block.
+        # Assign x- and y-anchor attributes to variables for shorter arguments in method calls.
         anchor_y = self.screen_anchors[self.pos][0]
         anchor_x = self.screen_anchors[self.pos][1]
 
-        # Set positions for 'top', 'topleft' and 'topright'.
+        # Set positions for 'top' and 'bottom'.
+        if "top" in self.pos or "bottom" in self.pos:
+            self.set_y_pos(anchor_y)
+        # Set position for 'left' and 'right'
+        if "left" in self.pos or "right" in self.pos:
+            self.set_x_pos(anchor_x)
+
+    def set_y_pos(self, anchor_y):
+        """Set y-positions for all panels with occurrences of "top" or "bottom" in 'self.pos'.
+        Used in method 'get_bg_rect_positions()'."""
         if "top" in self.pos:
             if self.slide:
                 self.bg_rect.bottom = anchor_y
             else:
                 self.bg_rect.top = anchor_y
-            self.set_left_right_pos(anchor_x)
-        # Set positions for 'bottom', 'bottomleft' and 'bottomright'.
         elif "bottom" in self.pos:
             if self.slide:
                 self.bg_rect.top = anchor_y
             else:
                 self.bg_rect.bottom = anchor_y
-            self.set_left_right_pos(anchor_x)
-        # Set position for 'left' and 'right'
-        elif self.pos in {"left", "right"}:
-            self.set_left_right_pos(anchor_x)
 
-    def set_left_right_pos(self, anchor_x):
-        """Set left/right positions for all panels with occurrences of "left" or "right" in 'self.pos'. Used in method
-        'set_bg_rect_positions()' above."""
+    def set_x_pos(self, anchor_x):
+        """Set x-positions for all panels with occurrences of "left" or "right" in 'self.pos'.
+        Used in method 'get_bg_rect_positions()'."""
         if "left" in self.pos:
             if self.slide:
                 self.bg_rect.right = anchor_x
