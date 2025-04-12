@@ -410,14 +410,18 @@ class InfoPanel(TextField):
         # defaults to center position.
         if self.pos:
             self.get_bg_rect_position()
-        # Set slide speeds for info panels if 'slide' is 'True'.
+
+        # Dicts with slide speeds for info panels if 'slide=True'.
         if self.slide:
-            # Standard slide speed for info panel
-            self.horizontal_speed = int(self.background_rect.width / 10)
-            self.vertical_speed = int(self.background_rect.height / 10)
-            # Modified speed for info panel to slow down shortly before reaching target position. Just a neat effect.
-            self.horizontal_speed_slow = int(self.horizontal_speed / 10)
-            self.vertical_speed_slow = int(self.vertical_speed / 10)
+            self.initial_speed = {"horizontal": int(self.background_rect.width / 10),
+                                  "vertical": int(self.background_rect.height / 10),}
+            self.medium_speed = {"horizontal": int(self.background_rect.width / 50),
+                                 "vertical": int(self.background_rect.height / 50),}
+            self.slow_speed = {"horizontal": int(self.background_rect.width / 100),
+                               "vertical": int(self.background_rect.height / 100),}
+            # Slide-out speeds.
+            self.exit_speed = {"horizontal": int(self.background_rect.width / 10),
+                               "vertical": int(self.background_rect.height / 10),}
 
     def draw_info_panel(self, show_panel):
         """Draw info panel on screen.
@@ -445,37 +449,53 @@ class InfoPanel(TextField):
                 self.screen.blit(self.text_surface, self.text_rect)
 
     def slide_panel_in(self):
-        """Animate the info panel sliding onto the screen from its starting edge or corner. The method adjusts the
-        panel's position incrementally based on its 'pos' attribute until it reaches the final anchored screen position.
-        Once the panel reaches its final position, it is snapped into place to prevent 'overshooting'."""
-        # Percentage of panel height/width on screen before slower speed is triggerd.
-        height_speed_trigger = int(self.bg_rect.height * 0.7)  # 70%
-        width_speed_trigger = int(self.bg_rect.width * 0.7)  # 70%
+        """Animates the info panel sliding onto the screen from its starting edge or corner. The panel moves incrementally
+        based on its 'pos' attribute and dynamically adjusts its speed depending on how far it is from its target. Once
+        the final screen position is reached, it snaps into place to prevent 'overshooting'."""
+        # Dicts with panel height/width percentages on screen at which speed changes are triggerd.
+        initial_speed_range = {"horizontal": int(self.bg_rect.width * 0.5),
+                               "vertical": int(self.bg_rect.height * 0.5),}  # 50%
+        medium_speed_range = {"horizontal": int(self.bg_rect.width * 0.75),
+                               "vertical": int(self.bg_rect.height * 0.75),}  # 75%
+
+        # Assign area of info panels that is visible on screen to variables.
+        visible_area_top = self.screen_rect.top + self.bg_rect.bottom
+        visible_area_bottom = self.screen_rect.height - initial_speed_range["vertical"]
+        visible_area_left = self.screen_rect.left + self.bg_rect.right
+        visible_area_right = self.screen_rect.width - initial_speed_range["horizontal"]
 
         if "top" in self.pos and self.bg_rect.bottom >= self.screen_rect.top > self.bg_rect.top:
-            if (self.screen_rect.top + self.bg_rect.bottom) < height_speed_trigger:
-                self.bg_rect.top += self.vertical_speed
-            else:
-                self.bg_rect.top += self.vertical_speed_slow
+            if visible_area_top > medium_speed_range["vertical"]:
+                self.bg_rect.top += self.slow_speed["vertical"]
+            if medium_speed_range["vertical"] >= visible_area_top > initial_speed_range["vertical"]:
+                self.bg_rect.top += self.medium_speed["vertical"]
+            if visible_area_top <= initial_speed_range["vertical"]:
+                self.bg_rect.top += self.initial_speed["vertical"]
+
             self.bg_rect.top = min(self.bg_rect.top, self.screen_rect.top)
+
         elif "bottom" in self.pos and self.bg_rect.top <= self.screen_rect.bottom < self.bg_rect.bottom:
-            if (self.screen_rect.height - height_speed_trigger) < self.bg_rect.top:
-                self.bg_rect.bottom -= self.vertical_speed
+            if visible_area_bottom < self.bg_rect.top:
+                self.bg_rect.bottom -= self.initial_speed["vertical"]
             else:
-                self.bg_rect.bottom -= self.vertical_speed_slow
+                self.bg_rect.bottom -= self.slow_speed["vertical"]
             self.bg_rect.bottom = max(self.bg_rect.bottom, self.screen_rect.bottom)
 
         if "left" in self.pos and self.bg_rect.right >= self.screen_rect.left > self.bg_rect.left:
-            if (self.screen_rect.left + self.bg_rect.right) < width_speed_trigger:
-                self.bg_rect.left += self.horizontal_speed
-            else:
-                self.bg_rect.left += self.horizontal_speed_slow
+            if visible_area_left > medium_speed_range["horizontal"]:
+                self.bg_rect.left += self.slow_speed["horizontal"]
+            if medium_speed_range["horizontal"] >= visible_area_left > initial_speed_range["horizontal"]:
+                self.bg_rect.left += self.medium_speed["horizontal"]
+            if visible_area_left <= initial_speed_range["horizontal"]:
+                self.bg_rect.left += self.initial_speed["horizontal"]
+
             self.bg_rect.left = min(self.bg_rect.left, self.screen_rect.left)
+
         elif "right" in self.pos and self.bg_rect.left <= self.screen_rect.right < self.bg_rect.right:
-            if (self.screen_rect.width - width_speed_trigger) < self.bg_rect.left:
-                self.bg_rect.right -= self.horizontal_speed
+            if visible_area_right < self.bg_rect.left:
+                self.bg_rect.right -= self.initial_speed["horizontal"]
             else:
-                self.bg_rect.right -= self.horizontal_speed_slow
+                self.bg_rect.right -= self.slow_speed["horizontal"]
             self.bg_rect.right = max(self.bg_rect.right, self.screen_rect.right)
 
     def slide_panel_out(self):
@@ -483,17 +503,17 @@ class InfoPanel(TextField):
         incrementally based on its 'pos' attribute until it reaches it's original off-screen position.
         Once the panel reaches its final position, it is snapped into place to prevent 'overshooting'."""
         if "top" in self.pos and self.bg_rect.bottom > self.screen_rect.top:
-            self.bg_rect.bottom -= self.vertical_speed
+            self.bg_rect.bottom -= self.exit_speed["vertical"]
             self.bg_rect.bottom = max(self.bg_rect.bottom, self.screen_rect.top)
         elif "bottom" in self.pos and self.bg_rect.top < self.screen_rect.bottom:
-            self.bg_rect.top += self.vertical_speed
+            self.bg_rect.top += self.exit_speed["vertical"]
             self.bg_rect.top = min(self.bg_rect.top, self.screen_rect.bottom)
 
         if "left" in self.pos and self.bg_rect.right > self.screen_rect.left:
-            self.bg_rect.right -= self.horizontal_speed
+            self.bg_rect.right -= self.exit_speed["horizontal"]
             self.bg_rect.right = max(self.bg_rect.right, self.screen_rect.left)
         elif "right" in self.pos and self.bg_rect.left < self.screen_rect.right:
-            self.bg_rect.left += self.horizontal_speed
+            self.bg_rect.left += self.exit_speed["horizontal"]
             self.bg_rect.left = min(self.bg_rect.left, self.screen_rect.right)
 
     def get_bg_rect_position(self):
