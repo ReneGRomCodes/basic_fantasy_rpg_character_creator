@@ -334,17 +334,14 @@ class InteractiveText(TextField):
 
         This method is called from the helper function 'show_info_panels()' in 'gui/ui_helpers.py' to ensure info panels
         are always drawn on top of every other object on screen."""
-
         if self.panel:
             # Draw panel if mouse hovers over interactive text field.
             if self.interactive_rect.collidepoint(mouse_pos):
                 for i in self.panel:
-                    i.draw_info_panel()
+                    i.draw_info_panel(show_panel=True)
             else:
-                # Reset 'sliding' panel coordinates back to starting position outside the screen.
                 for i in self.panel:
-                    if i.slide:
-                        i.get_bg_rect_position()
+                    i.draw_info_panel(show_panel=False)
 
 
 class InfoPanel(TextField):
@@ -384,8 +381,9 @@ class InfoPanel(TextField):
         """
         super().__init__(screen, text, size, bg_color, text_color, multi_line, surface_width, text_pos)
         self.pos = pos
-        # Set 'slide' attribute to 'False' if 'pos=None' argument is passed, equalling a centered info panels which has
-        # no sliding animation implemented.
+        # Set 'slide' attribute from default 'True' to 'False' if 'pos=None' argument is passed, equalling a centered
+        # info panels which has no sliding animation implemented. Avoids having to pass 'slide=False' manually when
+        # creating a centered info panel instance (little quality of life improvement).
         if not pos:
             slide = False
 
@@ -421,15 +419,30 @@ class InfoPanel(TextField):
             self.horizontal_speed_slow = int(self.horizontal_speed / 10)
             self.vertical_speed_slow = int(self.vertical_speed / 10)
 
-    def draw_info_panel(self):
-        """Draw info panel on screen."""
-        self.text_rect.center = self.background_rect.center
-        # Trigger slide-in/out animation.
-        if self.slide and self.pos:
-            self.slide_panel_in()
+    def draw_info_panel(self, show_panel):
+        """Draw info panel on screen.
+        ARGS:
+            show_panel: Bool to trigger if object is to be drawn on or moved onto screen, or removed from it.
+        """
+        # Draw/move info panel on screen.
+        if show_panel:
+            # Progressively move 'sliding' panels into final position.
+            if self.slide and self.pos:
+                self.slide_panel_in()
 
-        pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
-        self.screen.blit(self.text_surface, self.text_rect)
+            # Draw all panels (sliding and static) on screen.
+            self.text_rect.center = self.background_rect.center
+            pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
+            self.screen.blit(self.text_surface, self.text_rect)
+
+        # Remove panels from screen. If 'self.slide=False', then panel is just removed from screen without animation.
+        else:
+            # Progressively move 'sliding' panels off screen.
+            if self.slide and self.pos:
+                self.slide_panel_out()
+                self.text_rect.center = self.background_rect.center
+                pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
+                self.screen.blit(self.text_surface, self.text_rect)
 
     def slide_panel_in(self):
         """Animate the info panel sliding onto the screen from its starting edge or corner. The method adjusts the
@@ -464,6 +477,24 @@ class InfoPanel(TextField):
             else:
                 self.bg_rect.right -= self.horizontal_speed_slow
             self.bg_rect.right = max(self.bg_rect.right, self.screen_rect.right)
+
+    def slide_panel_out(self):
+        """Animate the info panel sliding off-screen from its on-screen position. The method adjusts the panel's position
+        incrementally based on its 'pos' attribute until it reaches it's original off-screen position.
+        Once the panel reaches its final position, it is snapped into place to prevent 'overshooting'."""
+        if "top" in self.pos and self.bg_rect.bottom > self.screen_rect.top:
+            self.bg_rect.bottom -= self.vertical_speed
+            self.bg_rect.bottom = max(self.bg_rect.bottom, self.screen_rect.top)
+        elif "bottom" in self.pos and self.bg_rect.top < self.screen_rect.bottom:
+            self.bg_rect.top += self.vertical_speed
+            self.bg_rect.top = min(self.bg_rect.top, self.screen_rect.bottom)
+
+        if "left" in self.pos and self.bg_rect.right > self.screen_rect.left:
+            self.bg_rect.right -= self.horizontal_speed
+            self.bg_rect.right = max(self.bg_rect.right, self.screen_rect.left)
+        elif "right" in self.pos and self.bg_rect.left < self.screen_rect.right:
+            self.bg_rect.left += self.horizontal_speed
+            self.bg_rect.left = min(self.bg_rect.left, self.screen_rect.right)
 
     def get_bg_rect_position(self):
         """Set starting info panel positions based on 'self.pos' argument."""
