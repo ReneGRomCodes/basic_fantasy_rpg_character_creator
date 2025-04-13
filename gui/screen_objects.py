@@ -415,13 +415,13 @@ class InfoPanel(TextField):
         if self.slide:
             self.initial_speed = {"horizontal": int(self.background_rect.width / 10),
                                   "vertical": int(self.background_rect.height / 10),}
-            self.medium_speed = {"horizontal": int(self.background_rect.width / 50),
-                                 "vertical": int(self.background_rect.height / 50),}
-            self.slow_speed = {"horizontal": int(self.background_rect.width / 100),
-                               "vertical": int(self.background_rect.height / 100),}
+            self.medium_speed = {"horizontal": int(self.background_rect.width / 25),
+                                 "vertical": int(self.background_rect.height / 25),}
+            self.slow_speed = {"horizontal": int(self.background_rect.width / 50),
+                               "vertical": int(self.background_rect.height / 50),}
             # Slide-out speeds.
-            self.exit_speed = {"horizontal": int(self.background_rect.width / 10),
-                               "vertical": int(self.background_rect.height / 10),}
+            self.exit_speed = {"horizontal": int(self.background_rect.width / 7),
+                               "vertical": int(self.background_rect.height / 7),}
 
     def draw_info_panel(self, show_panel):
         """Draw info panel on screen.
@@ -464,6 +464,7 @@ class InfoPanel(TextField):
         visible_area_left = self.screen_rect.left + self.bg_rect.right
         visible_area_right = self.screen_rect.right - self.bg_rect.left
 
+        # Conditionals to apply correct speed based on visible area of info panel on screen.
         if "top" in self.pos and self.bg_rect.bottom >= self.screen_rect.top > self.bg_rect.top:
             if visible_area_top > medium_speed_range["vertical"]:
                 self.bg_rect.top += self.slow_speed["vertical"]
