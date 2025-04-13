@@ -413,15 +413,16 @@ class InfoPanel(TextField):
 
         # Dicts with slide speeds for info panels if 'slide=True'.
         if self.slide:
-            self.initial_speed = {"horizontal": int(self.background_rect.width / 10),
-                                  "vertical": int(self.background_rect.height / 10),}
-            self.medium_speed = {"horizontal": int(self.background_rect.width / 25),
-                                 "vertical": int(self.background_rect.height / 25),}
-            self.slow_speed = {"horizontal": int(self.background_rect.width / 50),
-                               "vertical": int(self.background_rect.height / 50),}
+            self.initial_speed = {"horizontal": self.bg_rect.width / 10,
+                                  "vertical": self.bg_rect.height / 10,}
+            self.medium_speed = {"horizontal": self.bg_rect.width / 25,
+                                 "vertical": self.bg_rect.height / 25,}
+            self.slow_speed = {"horizontal": self.bg_rect.width / 50,
+                               "vertical": self.bg_rect.height / 50,}
+            self.test_speed = {"horizontal": self.bg_rect.width / 100,}
             # Slide-out speeds.
-            self.exit_speed = {"horizontal": int(self.background_rect.width / 7),
-                               "vertical": int(self.background_rect.height / 7),}
+            self.exit_speed = {"horizontal": self.bg_rect.width / 7,
+                               "vertical": self.bg_rect.height / 7,}
 
     def draw_info_panel(self, show_panel):
         """Draw info panel on screen.
@@ -435,8 +436,8 @@ class InfoPanel(TextField):
                 self.slide_panel_in()
 
             # Draw all panels (sliding and static) on screen.
-            self.text_rect.center = self.background_rect.center
-            pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
+            self.text_rect.center = self.bg_rect.center
+            pygame.draw.rect(self.screen, self.bg_color, self.bg_rect)
             self.screen.blit(self.text_surface, self.text_rect)
 
         # Remove panels from screen. If 'self.slide=False', then panel is just removed from screen without animation.
@@ -444,8 +445,8 @@ class InfoPanel(TextField):
             # Progressively move 'sliding' panels off screen.
             if self.slide and self.pos:
                 self.slide_panel_out()
-                self.text_rect.center = self.background_rect.center
-                pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
+                self.text_rect.center = self.bg_rect.center
+                pygame.draw.rect(self.screen, self.bg_color, self.bg_rect)
                 self.screen.blit(self.text_surface, self.text_rect)
 
     def slide_panel_in(self):
@@ -453,10 +454,10 @@ class InfoPanel(TextField):
         based on its 'pos' attribute and dynamically adjusts its speed depending on how far it is from its target. Once
         the final screen position is reached, it snaps into place to prevent 'overshooting'."""
         # Dicts with panel height/width percentages on screen at which speed changes are triggerd.
-        initial_speed_range = {"horizontal": int(self.bg_rect.width * 0.5),
-                               "vertical": int(self.bg_rect.height * 0.5),}  # 50%
-        medium_speed_range = {"horizontal": int(self.bg_rect.width * 0.75),
-                               "vertical": int(self.bg_rect.height * 0.75),}  # 75%
+        initial_speed_range = {"horizontal": self.bg_rect.width * 0.5,
+                               "vertical": self.bg_rect.height * 0.5,}  # 50%
+        medium_speed_range = {"horizontal": self.bg_rect.width * 0.75,
+                               "vertical": self.bg_rect.height * 0.75,}  # 75%
 
         # Assign area of info panels that is visible on screen to variables.
         visible_area_top = self.screen_rect.top + self.bg_rect.bottom
