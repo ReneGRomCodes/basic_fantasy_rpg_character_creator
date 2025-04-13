@@ -20,6 +20,7 @@ class Settings:
         self.bg_color = (235, 210, 160)
         # Color settings for screen objects.
         self.text_color = (50, 35, 25)
+        self.button_border_color = (150, 110, 80)
         self.greyed_out_text_color = (130, 110, 90)
         self.info_panel_bg_color = (205, 175, 115)
         self.rect_hover_color = (185, 145, 85)

@@ -205,8 +205,15 @@ class Button(TextField):
         self.rect_hover_color = settings.rect_hover_color
         self.rect_clicked_color = settings.rect_clicked_color
         # Set rect and size for button.
-        self.button_rect = self.text_surface.get_rect()
-        self.button_rect.height, self.button_rect.width = self.button_rect.height + size, self.button_rect.width + size
+        self.button_rect_height, self.button_rect_width = (self.text_surface.get_rect().height + size,
+                                                           self.text_surface.get_rect().width + size)
+        self.button_rect = pygame.Rect((self.screen_rect.centerx, self.screen_rect.centery),
+                                       (self.button_rect_width,self.button_rect_height))
+        # Button border/frame attributes.
+        self.border_radius = int(self.screen_rect.height / 50)
+        self.border_width = int(self.border_radius / 5)
+        self.border_color = settings.button_border_color
+
         # 'None' attribute to store the button surface, created in 'draw_button()', to represent the button background.
         # This ensures it is only initialized when drawn, and after any changes to 'button_rect' are made in other functions.
         self.button_surface = None
@@ -214,6 +221,9 @@ class Button(TextField):
     def draw_button(self, mouse_pos):
         """Draw the button on the screen, changing color based on hover or click using 'mouse_pos' as initialized in
         main loop in 'main.py'."""
+        pygame.draw.rect(self.screen, self.border_color, self.button_rect,
+                         border_radius=self.border_radius, width=self.border_width)
+
         if not self.button_surface:
             self.button_surface = pygame.Surface((self.button_rect.width, self.button_rect.height), pygame.SRCALPHA)
 
@@ -419,8 +429,7 @@ class InfoPanel(TextField):
                                  "vertical": self.bg_rect.height / 25,}
             self.slow_speed = {"horizontal": self.bg_rect.width / 50,
                                "vertical": self.bg_rect.height / 50,}
-            self.test_speed = {"horizontal": self.bg_rect.width / 100,}
-            # Slide-out speeds.
+            # Slide-out speed.
             self.exit_speed = {"horizontal": self.bg_rect.width / 7,
                                "vertical": self.bg_rect.height / 7,}
 
