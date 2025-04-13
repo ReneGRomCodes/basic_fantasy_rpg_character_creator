@@ -460,9 +460,9 @@ class InfoPanel(TextField):
 
         # Assign area of info panels that is visible on screen to variables.
         visible_area_top = self.screen_rect.top + self.bg_rect.bottom
-        visible_area_bottom = self.screen_rect.height - initial_speed_range["vertical"]
+        visible_area_bottom = self.screen_rect.bottom - self.bg_rect.top
         visible_area_left = self.screen_rect.left + self.bg_rect.right
-        visible_area_right = self.screen_rect.width - initial_speed_range["horizontal"]
+        visible_area_right = self.screen_rect.right - self.bg_rect.left
 
         if "top" in self.pos and self.bg_rect.bottom >= self.screen_rect.top > self.bg_rect.top:
             if visible_area_top > medium_speed_range["vertical"]:
@@ -475,10 +475,13 @@ class InfoPanel(TextField):
             self.bg_rect.top = min(self.bg_rect.top, self.screen_rect.top)
 
         elif "bottom" in self.pos and self.bg_rect.top <= self.screen_rect.bottom < self.bg_rect.bottom:
-            if visible_area_bottom < self.bg_rect.top:
-                self.bg_rect.bottom -= self.initial_speed["vertical"]
-            else:
+            if visible_area_bottom > medium_speed_range["vertical"]:
                 self.bg_rect.bottom -= self.slow_speed["vertical"]
+            if medium_speed_range["vertical"] >= visible_area_bottom > initial_speed_range["vertical"]:
+                self.bg_rect.bottom -= self.medium_speed["vertical"]
+            if visible_area_bottom <= initial_speed_range["vertical"]:
+                self.bg_rect.bottom -= self.initial_speed["vertical"]
+
             self.bg_rect.bottom = max(self.bg_rect.bottom, self.screen_rect.bottom)
 
         if "left" in self.pos and self.bg_rect.right >= self.screen_rect.left > self.bg_rect.left:
@@ -492,10 +495,13 @@ class InfoPanel(TextField):
             self.bg_rect.left = min(self.bg_rect.left, self.screen_rect.left)
 
         elif "right" in self.pos and self.bg_rect.left <= self.screen_rect.right < self.bg_rect.right:
-            if visible_area_right < self.bg_rect.left:
-                self.bg_rect.right -= self.initial_speed["horizontal"]
-            else:
+            if visible_area_right > medium_speed_range["horizontal"]:
                 self.bg_rect.right -= self.slow_speed["horizontal"]
+            if medium_speed_range["horizontal"] >= visible_area_right > initial_speed_range["horizontal"]:
+                self.bg_rect.right -= self.medium_speed["horizontal"]
+            if visible_area_right <= initial_speed_range["horizontal"]:
+                self.bg_rect.right -= self.initial_speed["horizontal"]
+
             self.bg_rect.right = max(self.bg_rect.right, self.screen_rect.right)
 
     def slide_panel_out(self):
