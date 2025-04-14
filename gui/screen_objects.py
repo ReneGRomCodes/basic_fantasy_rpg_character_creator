@@ -1,5 +1,3 @@
-import copy
-
 import pygame
 from core.settings import Settings
 import random
@@ -582,7 +580,7 @@ class InfoPanel(TextField):
 class TextInputField:
     """Represent a text input field.
     NOTE: this class does not create the actual instance for a 'pygame_textinput' object, but instead streamlines the
-    process of drawing it on screen with a colored background field (color is set in 'Settings' class as attribute
+    process of drawing it on screen with a colored background (color is set in 'Settings' class as attribute
     'self.text_input_field_color') and having the input centered in said field."""
 
     def __init__(self, screen, input_field_instance, field_width):

@@ -29,8 +29,10 @@ def initialize_screen_elements(screen, settings):
 
     TextInputField(screen, input_field_instance, field_width):
         Text input field for use with 'pygame_textinput' library.
-        NOTE: this class does not create the actual instance for a 'pygame_textinput' object, but instead streamlines the
-        process of drawing it on screen with a white background field and having the input centered in said field.
+        NOTE 1: this class does not create the actual instance for a 'pygame_textinput' object, but instead streamlines the
+        process of drawing a 'pygame_textinput' instance on screen with a colored background and having the input centered
+        in said field. Further modifications (size, position, etc.) can then be handled via this class.
+        NOTE 2: For details on the required 'pygame_textinput' instance creation see its documentation.
 
     ProgressBar(screen, height, length, time=5)
         Visual-only loading progress bar.
