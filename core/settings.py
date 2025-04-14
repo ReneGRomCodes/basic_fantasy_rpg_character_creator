@@ -27,6 +27,7 @@ class Settings:
         self.rect_clicked_color = (255, 215, 105)
         self.rect_selected_color = (135, 90, 35)
         self.text_input_field_color = (245, 230, 190)
+        self.text_input_border_color = (150, 110, 80)
         self.inactive_continue_button_hover_color = (215, 140, 130)
         self.inactive_continue_button_click_color = (190, 65, 50)
         # Progress bar:

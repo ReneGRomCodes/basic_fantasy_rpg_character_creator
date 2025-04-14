@@ -159,6 +159,7 @@ def position_main_menu_screen_elements(screen, gui_elements):
     global position_flag
     # Assign gui_elements to variables.
     spacing = gui_elements["title_screen_spacing"]
+    button_spacing = gui_elements["button_spacing"]
     title = gui_elements["main_menu_title"]
     start = gui_elements["start_button"]
     menu_buttons = gui_elements["menu_buttons"]
@@ -179,7 +180,7 @@ def position_main_menu_screen_elements(screen, gui_elements):
             if index == 0:
                 button.button_rect.top = screen.get_rect().centery + spacing * 2
             else:
-                button.button_rect.top = menu_buttons[index - 1].button_rect.bottom
+                button.button_rect.top = menu_buttons[index - 1].button_rect.bottom + button_spacing
 
         position_flag = True
 
@@ -193,15 +194,16 @@ def position_character_menu_screen_elements(screen, gui_elements):
     # Assign gui_elements to variables.
     custom = gui_elements["custom"]
     random = gui_elements["random"]
+    button_spacing = gui_elements["button_spacing"]
 
     if not position_flag:
     # Position buttons.
         custom.button_rect.width = screen.get_rect().width / 3
         custom.button_rect.centerx = screen.get_rect().centerx
-        custom.button_rect.bottom = screen.get_rect().centery
+        custom.button_rect.bottom = screen.get_rect().centery - (button_spacing / 2)
         random.button_rect.width = screen.get_rect().width / 3
         random.button_rect.centerx = screen.get_rect().centerx
-        random.button_rect.top = screen.get_rect().centery
+        random.button_rect.top = screen.get_rect().centery + (button_spacing / 2)
 
         position_flag = True
 
@@ -478,7 +480,7 @@ def build_and_position_prompt(screen, naming_prompt, character):
         naming_prompt.text_rect = naming_prompt.text_surface.get_rect()
 
         # Position final naming prompt on screen.
-        naming_prompt.text_rect.centerx, naming_prompt.text_rect.centery = screen.get_rect().centerx, screen.get_rect().centery / 1.15
+        naming_prompt.text_rect.centerx, naming_prompt.text_rect.centery = screen.get_rect().centerx, screen.get_rect().centery / 1.3
 
         position_flag = True
 
@@ -505,7 +507,7 @@ def position_money_screen_elements(screen, gui_elements):
         rolling_dice_money_field.text_rect.centery, random_money_field.text_rect.centery = (screen.get_rect().centery * 1.1,
                                                                                             screen.get_rect().centery * 1.1)
         money_input_prompt = gui_elements["money_amount_input"][2]
-        money_input_prompt.text_rect.centery = screen.get_rect().centery * 1.1
+        money_input_prompt.text_rect.centery = screen.get_rect().centery * 1.05
         money_amount_field = gui_elements["money_amount_input"][1]
         money_amount_field.input_bg_field.top = screen.get_rect().centery * 1.15
 

@@ -1,3 +1,5 @@
+import copy
+
 import pygame
 from core.settings import Settings
 import random
@@ -210,8 +212,8 @@ class Button(TextField):
         self.button_rect = pygame.Rect((self.screen_rect.centerx, self.screen_rect.centery),
                                        (self.button_rect_width,self.button_rect_height))
         # Button border/frame attributes.
-        self.border_radius = int(self.screen_rect.height / 50)
-        self.border_width = int(self.border_radius / 5)
+        self.border_radius = int(self.screen_rect.height / 100)
+        self.border_width = int(self.border_radius / 3)
         self.border_color = settings.button_border_color
 
         # 'None' attribute to store the button surface, created in 'draw_button()', to represent the button background.
@@ -597,16 +599,36 @@ class TextInputField:
 
         # Create background field for text input 'input_bg_field' and set it to default position at screen center.
         self.field_height = input_field_instance.surface.get_height() * 2
-        self.input_bg_field = pygame.Rect((0,0), (field_width, self.field_height))
+        self.input_bg_field = pygame.Rect((0,0), (self.field_width, self.field_height))
         self.bg_rect_color = settings.text_input_field_color
         self.input_bg_field.centerx, self.input_bg_field.centery = self.screen_rect.centerx, self.screen_rect.centery
+        # Create border around input field.
+        self.border_radius = int(self.screen_rect.height / 100)
+        self.border_thickness = self.border_radius * 1.5
+        self.input_field_border = pygame.Rect((0,0), (int(self.input_bg_field.width + self.border_thickness),
+                                                      int(self.input_bg_field.height + self.border_thickness)))
 
     def draw_input_field(self):
         """Draw text input field with background on screen."""
+        # Ensure that input field and input field border align.
+        self.position_input_field_border()
+
+        pygame.draw.rect(self.screen, settings.text_input_border_color, self.input_field_border, border_radius=self.border_radius)
         pygame.draw.rect(self.screen, self.bg_rect_color, self.input_bg_field)
         self.screen.blit(self.input_field_instance.surface,
                     (self.input_bg_field.centerx - self.input_field_instance.surface.get_width() / 2,
                      self.input_bg_field.centery - self.input_field_instance.surface.get_height() / 2))
+
+    def position_input_field_border(self):
+        """Check if input field attributes divert from 'input_field_border' attributes (for example in cases where the
+        input field size or position has been changed after initial creation) to ensure that size and position of both
+        objects align."""
+        if self.input_field_border.center != self.input_bg_field:
+            self.input_field_border.center = self.input_bg_field.center
+        if self.input_field_border.width != int(self.input_bg_field.width + self.border_thickness):
+            self.input_field_border.width = int(self.input_bg_field.width + self.border_thickness)
+        if self.input_field_border.height != int(self.input_bg_field.height + self.border_thickness):
+            self.input_field_border.height = int(self.input_bg_field.height + self.border_thickness)
 
 
 class ProgressBar:

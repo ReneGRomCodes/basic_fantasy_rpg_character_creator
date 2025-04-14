@@ -49,6 +49,7 @@ def initialize_screen_elements(screen, settings):
     title_screen_spacing = int(screen_height / 60)  # Spacing between main title and subtitle on title screen.
     menu_title_spacing = int(screen_height / 45)  # Default spacing between menu title and GUI objects.
     default_edge_spacing = screen_width / 37  # Default value for distance to between most GUI objects edges.
+    button_spacing = screen_height / 200  # Default spacing between buttons. Works best for 'grouped' buttons.
     # Standard buttons, size.
     button_width = screen_width / 6
     continue_button = so.Button(screen, "Continue", text_medium)
@@ -189,7 +190,7 @@ def initialize_screen_elements(screen, settings):
     # 'ui_helpers.py/build_and_position_prompt()' for the naming screen to include character race/class. This allows the
     # function to reset the prompt and prevents it from retaining previous race/class selections if user goes back and
     # forth between selection and naming screen. Shit gets out of hand otherwise.
-    character_naming_prompt = so.TextField(screen, "", text_medium)
+    character_naming_prompt = so.TextField(screen, "", text_large)
     # 'pygame_textinput' and 'TextInputField' instances.
     character_input_font = pygame.font.Font(settings.font, text_medium)
     character_name_input = pygame_textinput.TextInputVisualizer(font_object=character_input_font)
@@ -205,7 +206,7 @@ def initialize_screen_elements(screen, settings):
     rolling_dice_money_field = so.TextField(screen, "Rolling the dice!", text_large)
     random_money_field = so.TextField(screen, "You receive", text_medium)
     # 'pygame_textinput' and 'TextInputField' instances.
-    money_input_prompt = so.TextField(screen, "Enter amount of gold for your character", text_standard)
+    money_input_prompt = so.TextField(screen, "Enter amount of gold for your character", text_medium)
     money_input_font = pygame.font.Font(settings.font, text_medium)
     money_amount_input = pygame_textinput.TextInputVisualizer(font_object=money_input_font)
     money_amount_field = so.TextInputField(screen, money_amount_input, screen_width / 4)
@@ -229,6 +230,7 @@ def initialize_screen_elements(screen, settings):
         "menu_title_spacing": menu_title_spacing,
         "default_button_width": button_width,
         "default_edge_spacing": default_edge_spacing,
+        "button_spacing": button_spacing,
         # Standard buttons.
         "continue_button": continue_button,
         "inactive_continue_button": inactive_continue_button,
