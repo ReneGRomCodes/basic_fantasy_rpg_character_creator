@@ -163,7 +163,7 @@ class TextField:
     def alpha_fade_in(self, surface):
         """Check and set alpha transparency for 'surface', and limit 'self.fade_alpha' value to max of 255. Then apply to
         'surface' for fade-in effect.
-        For use as effect on mouse hover, method should be called from within an 'if self.button_rect.collidepoint(mouse_pos)'
+        For use as effect on mouse hover, method should be called from within an 'if self.rect.collidepoint(mouse_pos)'
         statement."""
         # Check and set alpha transparency and limit 'self.fade_alpha' value to max of 255.
         if self.fade_alpha < 255:
@@ -173,14 +173,29 @@ class TextField:
             self.fade_alpha = 255
             surface.set_alpha(self.fade_alpha)
 
-    def alpha_fade_out(self, surface, rect, color, mouse_pos):
+    def alpha_fade_out(self, surface, rect, color, mouse_pos, button=False):
         """Check and set alpha transparency for 'surface', and limit 'self.fade_alpha' value to min of 0. Then apply to
-        'surface' for fade-out effect."""
+        'surface' for fade-out effect.
+        ARGS:
+            surface: pygame surface for color fade-out effect to be applied to.
+            rect: rect to hold surface position to be blit onto.
+            color: color for surface for fade-out effect to be applied to.
+            mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+            button: argument to ensure that the correct class method for blit is called when fade-out is applied from
+                    'Button' class method 'draw_button()', as 'Button' class instances have to handle borders and rounded
+                    corners. Set to 'True' if 'Button' instance is used, default is 'False' for all other classes.
+        """
         if not rect.collidepoint(mouse_pos) and self.fade_alpha != 0:
             if self.fade_alpha >= 0:
                 self.fade_alpha -= self.fade_speed
                 surface.set_alpha(self.fade_alpha)
-                self.blit_surface(surface, rect, color)
+                # Check if fade-out effect is used for instance of 'Button' class (button=True).
+                if button:
+                    # Ignore 'Unresolved attribute reference' warning. It's just the IDE pissing its pants over a method
+                    # call from 'Button' class. See docstring 'ARGS: button' for details.
+                    self.blit_button_surface(surface, rect, color)
+                else:
+                    self.blit_surface(surface, rect, color)
             elif self.fade_alpha != 0:
                 self.fade_alpha = 0
                 surface.set_alpha(self.fade_alpha)
@@ -215,38 +230,50 @@ class Button(TextField):
         self.border_color = settings.button_border_color
 
         # 'None' attribute to store the button surface, created in 'draw_button()', to represent the button background.
-        # This ensures it is only initialized when drawn, and after any changes to 'button_rect' are made in other functions.
+        # This ensures it is only created once when drawn, and after any changes to 'button_rect' size are made in other
+        # functions when 'Button' instance is used.
         self.button_surface = None
 
     def draw_button(self, mouse_pos):
         """Draw the button on the screen, changing color based on hover or click using 'mouse_pos' as initialized in
         main loop in 'main.py'."""
-        pygame.draw.rect(self.screen, self.border_color, self.button_rect,
-                         border_radius=self.border_radius, width=self.border_width)
-
         if not self.button_surface:
-            self.button_surface = pygame.Surface((self.button_rect.width, self.button_rect.height), pygame.SRCALPHA)
+            self.button_surface = pygame.Surface((self.button_rect.width - self.border_width,
+                                                  self.button_rect.height - self.border_width), pygame.SRCALPHA)
 
         # Determine button color based on mouse hover or click and apply alpha transparency for fade-in effect.
         if self.button_rect.collidepoint(mouse_pos):
             # Start surface color fade-in effect.
             self.alpha_fade_in(self.button_surface)
             if pygame.mouse.get_pressed()[0]:
-                self.blit_surface(self.button_surface, self.button_rect, self.rect_clicked_color)
+                self.blit_button_surface(self.button_surface, self.button_rect, self.rect_clicked_color)
             else:
-                self.blit_surface(self.button_surface, self.button_rect, self.rect_hover_color)
+                self.blit_button_surface(self.button_surface, self.button_rect, self.rect_hover_color)
         # Draw opaque background surface if 'bg_color' is specified and no fade-out effect is in progress.
         elif self.bg_color and self.fade_alpha == 0:
             self.button_surface.set_alpha(self.background_alpha)
-            self.blit_surface(self.button_surface, self.button_rect, self.bg_color)
+            self.blit_button_surface(self.button_surface, self.button_rect, self.bg_color)
 
         # Start fade-out effect (if mouse is not hovering over button anymore and 'self.alpha_fade_in()' has been
         # triggered previously).
-        self.alpha_fade_out(self.button_surface, self.button_rect, self.rect_hover_color, mouse_pos)
+        self.alpha_fade_out(self.button_surface, self.button_rect, self.rect_hover_color, mouse_pos, button=True)
 
         # Draw the text on top of the button.
         self.text_rect.center = self.button_rect.center
         self.screen.blit(self.text_surface, self.text_rect)
+
+        pygame.draw.rect(self.screen, self.border_color, self.button_rect,
+                         border_radius=self.border_radius, width=self.border_width)
+
+    def blit_button_surface(self, surface, rect, color):
+        """Fill 'surface' with 'color' and blit it onto the screen at 'rect', ensuring the button's background fits
+        inside the buttons borders with rounded corners."""
+        # Clear the surface to ensure the button background and border render without unwanted artifacts.
+        surface.fill((0, 0, 0, 0))
+
+        pygame.draw.rect(surface, color, surface.get_rect(), border_radius=self.border_radius)
+        surface_pos = (rect.left + self.border_width / 2, rect.top + self.border_width / 2)
+        self.screen.blit(surface, surface_pos)
 
 
 class InteractiveText(TextField):
