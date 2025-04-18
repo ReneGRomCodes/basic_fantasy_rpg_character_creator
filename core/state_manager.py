@@ -11,20 +11,20 @@ import random
 """Main functions/state managers used in 'main.py'."""
 
 
-# Create 'None' variable for later instance of character object.
-character = None
-# Create 'None' variable for later instance of credits screen object.
-credits_screen = None
-# Create 'None' variable for later instance of character sheet screen object.
-cs_sheet = None
-# Initialize further variables for character creation.
-rc_dict = None  # Holds a dict with all available races/classes in the game.
-possible_characters = None  # Holds a list of possible race-class combinations.
-selected_race = None  # Screen object representing selected race in custom creation, string value in random creation.
-selected_class = None  # Screen object representing selected class in custom creation, string value in random creation.
-starting_money = None  # Holds INT value for characters starting money.
-random_money_flag = False  # Flag to check money selection.
-custom_money_flag = False  # Flag to check money selection.
+# Variable for later instance of character object.
+character: Character
+# Variable for later instance of credits screen object.
+credits_screen: Credits
+# Variable for later instance of character sheet screen object.
+cs_sheet: CharacterSheet
+# Further variables for character creation.
+rc_dict: dict[str, str]  # Dict with all available races/classes in the game.
+possible_characters: list[str]  # List of possible race-class combinations.
+selected_race: object | str = None # 'TextField' instance representing selected race in custom creation, string in random creation.
+selected_class: object | str = None  # 'TextField' instance representing selected class in custom creation, string in random creation.
+starting_money: int  # Characters starting money.
+random_money_flag: bool = False  # Flag to check money selection.
+custom_money_flag: bool = False  # Flag to check money selection.
 
 
 def main_state_manager(screen, state, gui_elements, mouse_pos):

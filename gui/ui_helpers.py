@@ -2,7 +2,6 @@ import pygame
 from core.rules import set_starting_money
 import gui.screen_objects as so
 import time
-
 from gui.screen_objects import InteractiveText
 
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""

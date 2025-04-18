@@ -7,7 +7,7 @@ from gui.gui_elements import initialize_screen_elements
 It initializes the program and starts the main functionality."""
 
 
-def initialize_character_creator():
+def initialize_character_creator() -> tuple[Settings, pygame.Surface, pygame.time.Clock, dict, SettingsGUI]:
     """Initialize Pygame, settings, screen, and GUI elements."""
     # Initialize pygame.
     pygame.init()
@@ -20,27 +20,27 @@ def initialize_character_creator():
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
 
     # Initialize dict with GUI elements. See package 'gui' for details.
-    gui_elements = initialize_screen_elements(screen, settings)
+    gui_elements: dict = initialize_screen_elements(screen, settings)
     # Create instance for settings screen.
     settings_gui = SettingsGUI(screen, gui_elements)
 
     return settings, screen, clock, gui_elements, settings_gui
 
 
-def run_character_creator():
+def run_character_creator() -> None:
     """Start the character creator."""
 
     # Initialize Pygame, settings, screen, and GUI elements.
     settings, screen, clock, gui_elements, settings_gui = initialize_character_creator()
 
     # Set initial state.
-    state = "title_screen"
+    state: str = "title_screen"
     # Set of states for character creation.
-    main_states = {"title_screen", "pre_main_menu", "main_menu", "init_credits", "credits", "character_menu",
+    main_states: set[str] = {"title_screen", "pre_main_menu", "main_menu", "init_credits", "credits", "character_menu",
                    "init_character_sheet", "character_sheet"}
-    custom_character_states = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
+    custom_character_states: set[str] = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
                                "set_starting_money", "custom_input_money", "creation_complete"}
-    random_character_states = {"random_character", "set_random_money", "name_random_character"}
+    random_character_states: set[str] = {"random_character", "set_random_money", "name_random_character"}
 
     # Start main loop.
     while True:
@@ -66,4 +66,5 @@ def run_character_creator():
         clock.tick(settings.frame_rate)
 
 
-run_character_creator()
+if __name__ == "__main__":
+    run_character_creator()
