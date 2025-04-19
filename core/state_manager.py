@@ -27,8 +27,14 @@ random_money_flag: bool = False  # Flag to check money selection.
 custom_money_flag: bool = False  # Flag to check money selection.
 
 
-def main_state_manager(screen, state, gui_elements, mouse_pos):
-    """State manager for main states, i.e. 'title_screen', 'main_menu', etc."""
+def main_state_manager(screen, state: str, gui_elements: dict, mouse_pos) -> str:
+    """State manager for main states, i.e. 'title_screen', 'main_menu', etc.
+    ARGS:
+        screen: PyGame window.
+        state: program state.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    """
     # Declare global variable 'rc_dict' to allow modification of its contents within the function.
     global character
 
@@ -66,8 +72,13 @@ def main_state_manager(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def credits_state_manager(screen, state, gui_elements):
-    """'Secondary' state manager for use in 'main_state_manager' to handle credits screen object."""
+def credits_state_manager(screen, state: str, gui_elements: dict) -> str:
+    """'Secondary' state manager for use in 'main_state_manager' to handle credits screen object.
+    ARGS:
+        screen: PyGame window.
+        state: program state.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+    """
     # Declare global variable to assign instance of class 'Credits' and allow for easier resetting of instance when
     # appropriate.
     global credits_screen
@@ -84,8 +95,16 @@ def credits_state_manager(screen, state, gui_elements):
     return state
 
 
-def settings_screen(screen, state, settings, settings_gui, gui_elements, mouse_pos):
-    """State manager for settings screen state 'settings_screen'."""
+def settings_screen(screen, state: str, settings, settings_gui, gui_elements: dict, mouse_pos) -> tuple[dict, str]:
+    """State manager for settings screen state 'settings_screen'.
+    ARGS:
+        screen: PyGame window.
+        state: program state.
+        settings: instance of class 'Settings()'.
+        settings_gui: instance of class 'SettingsGUI()'.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    """
 
     # Call event handler and get program state.
     state = eh.main_events(screen, state, gui_elements, mouse_pos)
@@ -96,8 +115,14 @@ def settings_screen(screen, state, settings, settings_gui, gui_elements, mouse_p
     return gui_elements, state
 
 
-def custom_character(screen, state, gui_elements, mouse_pos):
-    """State manager for custom character creation based on user input."""
+def custom_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
+    """State manager for custom character creation based on user input.
+    ARGS:
+        screen: PyGame window.
+        state: program state.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    """
     # Declare global variables to allow modification of these values within the function.
     global possible_characters, rc_dict, selected_race, selected_class, starting_money, random_money_flag, custom_money_flag
 
@@ -158,8 +183,14 @@ def custom_character(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def random_character(screen, state, gui_elements, mouse_pos):
-    """State manager for random character creation."""
+def random_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
+    """State manager for random character creation.
+    ARGS:
+        screen: PyGame window.
+        state: program state.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    """
     # Declare global variables to allow modification of these values within the function.
     global possible_characters, selected_race, selected_class
 
@@ -198,12 +229,17 @@ def random_character(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def character_sheet_state_manager(screen, state, gui_elements):
+def character_sheet_state_manager(screen, state: str, gui_elements: dict) -> str:
     """'Secondary' state manager for use in 'main_state_manager' to create and return instance of class 'CharacterSheet'
     with screen elements for the character sheet, call position methods and set the state to 'character_sheet'.
     This function ensures that 'cs_sheet' is always created before the character sheet screen is displayed, reinitializing
     it each time the screen is accessed. This prevents issues such as uninitialized values or incorrect text scaling after
-    a window size change."""
+    a window size change.
+    ARGS:
+        screen: PyGame window.
+        state: program state.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+    """
     # Declare global variable to assign instance of class 'CharacterSheet'.
     global cs_sheet
 
@@ -259,9 +295,12 @@ This resolves multiple issue that caused the program to freeze when switching be
 a new character after one has already been created.
 """
 
-def globals_janitor(gui_elements):
+def globals_janitor(gui_elements: dict) -> None:
     """Reset global variables that are not automatically overwritten elsewhere with default values in case of a switch
-    to a previous screen or the main menu."""
+    to a previous screen or the main menu.
+    ARGS:
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+    """
     global rc_dict, possible_characters, selected_race, selected_class
 
     # Unselect race and class selection if user visited race/class selection screen previously. 'isinstance' check is
@@ -278,11 +317,9 @@ def globals_janitor(gui_elements):
     selected_class = None
 
     # Initialize/reset dict for use in 'gui/ui_helpers.py' in function 'position_race_class_elements()' to calculate UI
-    # positioning.
-    rc_dict = {"races": [], "classes": [], }
-    # Automatically populate dict 'rc_dict' once with all races/classes available in the game for later use in
-    # race/class selection.
-    for race in gui_elements["active_races"]:
-        rc_dict["races"].append(race.text)
-    for cls in gui_elements["active_classes"]:
-        rc_dict["classes"].append(cls.text)
+    # positioning, and automatically populate dict 'rc_dict' once with all races/classes available in the game for later
+    # use in race/class selection.
+    rc_dict = {
+        "races": [race.text for race in gui_elements["active_races"]],
+        "classes": [cls.text for cls in gui_elements["active_classes"]],
+    }
