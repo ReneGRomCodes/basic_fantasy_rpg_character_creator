@@ -22,7 +22,7 @@ rc_dict: dict[str, str]  # Dict with all available races/classes in the game.
 possible_characters: list[str]  # List of possible race-class combinations.
 selected_race: object | str = None # 'TextField' instance representing selected race in custom creation, string in random creation.
 selected_class: object | str = None  # 'TextField' instance representing selected class in custom creation, string in random creation.
-starting_money: int  # Characters starting money.
+starting_money: int = 0  # Characters starting money.
 random_money_flag: bool = False  # Flag to check money selection.
 custom_money_flag: bool = False  # Flag to check money selection.
 
@@ -34,6 +34,8 @@ def main_state_manager(screen, state: str, gui_elements: dict, mouse_pos) -> str
         state: program state.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        state
     """
     # Declare global variable 'rc_dict' to allow modification of its contents within the function.
     global character
@@ -78,13 +80,15 @@ def credits_state_manager(screen, state: str, gui_elements: dict) -> str:
         screen: PyGame window.
         state: program state.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+    RETURNS:
+        state
     """
     # Declare global variable to assign instance of class 'Credits' and allow for easier resetting of instance when
     # appropriate.
     global credits_screen
 
     if state == "init_credits":
-        # Initialize Credits object every time before credits screen is displayed to reset starting positions of text
+        # Initialize 'Credits()' object every time before credits screen is displayed to reset starting positions of text
         # elements and to account for changes to 'gui_elements' if window size has been changed in settings screen.
         credits_screen = Credits(screen, gui_elements)
         state = "credits"
@@ -104,6 +108,8 @@ def settings_screen(screen, state: str, settings, settings_gui, gui_elements: di
         settings_gui: instance of class 'SettingsGUI()'.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        gui_elements, state
     """
 
     # Call event handler and get program state.
@@ -122,6 +128,8 @@ def custom_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
         state: program state.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        state
     """
     # Declare global variables to allow modification of these values within the function.
     global possible_characters, rc_dict, selected_race, selected_class, starting_money, random_money_flag, custom_money_flag
@@ -179,7 +187,6 @@ def custom_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
         gui.show_character_complete_screen(screen, gui_elements, mouse_pos)
         possible_characters, state = eh.custom_character_events(screen, state, character, gui_elements, mouse_pos, possible_characters)
 
-
     return state
 
 
@@ -190,6 +197,8 @@ def random_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
         state: program state.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        state
     """
     # Declare global variables to allow modification of these values within the function.
     global possible_characters, selected_race, selected_class
@@ -225,7 +234,6 @@ def random_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
         gui.show_naming_screen(screen, character, gui_elements, mouse_pos)
         state = eh.naming_character_events(screen, state, character, gui_elements, mouse_pos)
 
-
     return state
 
 
@@ -239,6 +247,8 @@ def character_sheet_state_manager(screen, state: str, gui_elements: dict) -> str
         screen: PyGame window.
         state: program state.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+    RETURNS:
+        state
     """
     # Declare global variable to assign instance of class 'CharacterSheet'.
     global cs_sheet

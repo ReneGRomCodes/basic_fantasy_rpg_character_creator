@@ -6,7 +6,7 @@ from gui.ui_helpers import reset_position_flag
 """Contains event handler functions."""
 
 
-def main_events(screen, state, gui_elements, mouse_pos):
+def main_events(screen, state: str, gui_elements: dict, mouse_pos) -> str:
     """Check and handle main pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'.
     ARGS:
         screen: PyGame window.
@@ -14,7 +14,7 @@ def main_events(screen, state, gui_elements, mouse_pos):
         gui_elements: dict of GUI elements.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
-        state: program state.
+        state
     """
 
     for event in pygame.event.get():
@@ -40,7 +40,7 @@ def main_events(screen, state, gui_elements, mouse_pos):
                     state = "settings_screen"
 
                 if gui_elements["menu_buttons"][1].button_rect.collidepoint(mouse_pos):
-                    # Event switches to state 'init_credits' which creates 'Credits' object before proceeding to final
+                    # Event switches to state 'init_credits', which creates 'Credits' object before proceeding to final
                     # 'credits' state from within main state manager.
                     state = "init_credits"
 
@@ -75,8 +75,8 @@ def main_events(screen, state, gui_elements, mouse_pos):
     return state
 
 
-def custom_character_events(screen, state, character, gui_elements, mouse_pos, possible_characters=None, context1=None,
-                            context2=None, context3=None):
+def custom_character_events(screen, state: str, character, gui_elements: dict, mouse_pos, possible_characters: list[str]=None,
+                            context1: any=None, context2: any=None, context3: any=None) -> tuple[list, str]:
     """Check and handle events in function 'custom_character()' in 'state_manager.py' and return 'state'.
     ARGS:
         screen: PyGame window.
@@ -91,8 +91,7 @@ def custom_character_events(screen, state, character, gui_elements, mouse_pos, p
         context2: context specific argument whose role depends on current state.
         context3: context specific argument whose role depends on current state.
     RETURNS:
-        possible_characters: see arg above.
-        state: program state.
+        possible_characters, state
     """
 
     for event in pygame.event.get():
@@ -100,7 +99,7 @@ def custom_character_events(screen, state, character, gui_elements, mouse_pos, p
             pygame.quit()
             sys.exit()
 
-        # Ensures screen specific UI elements are positioned only once per screen appearance and reset alpha transparency
+        # Ensures screen-specific UI elements are positioned only once per screen appearance and reset alpha transparency
         # for 'continue' and 'back' buttons.
         handle_screen_switch_reset(screen, event, gui_elements, mouse_pos)
 
@@ -158,17 +157,17 @@ def custom_character_events(screen, state, character, gui_elements, mouse_pos, p
 """Event handlers for screens where pygame_textinput library is used so 'pygame.event.get()' can be split between pygame
 events and pygame_textinput events."""
 
-def naming_character_events(screen, state, character, gui_elements, mouse_pos):
+def naming_character_events(screen, state: str, character, gui_elements: dict, mouse_pos) -> str:
     """Check and handle text input field events in functions 'custom_character()' and 'random_character' for each naming
     character state.
     ARGS:
         screen: PyGame window.
-        state: program state. Entry and exit state differs based on custom or random character creation.
+        state: program state. Entry and exit state differ based on custom or random character creation.
         character: instance of class 'Character'.
         gui_elements: dict of GUI elements.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
-        state: program state
+        state
     """
     # Assign 'pygame_textinput' instance stored in dict 'gui_elements' to variable.
     character_name_input = gui_elements["character_name_input"][0]
@@ -183,7 +182,7 @@ def naming_character_events(screen, state, character, gui_elements, mouse_pos):
             pygame.quit()
             sys.exit()
 
-        # Ensures screen specific UI elements are positioned only once per screen appearance and reset alpha transparency
+        # Ensures screen-specific UI elements are positioned only once per screen appearance and reset alpha transparency
         # for 'continue' and 'back' buttons.
         handle_screen_switch_reset(screen, event, gui_elements, mouse_pos)
 
@@ -211,35 +210,36 @@ def naming_character_events(screen, state, character, gui_elements, mouse_pos):
     return state
 
 
-def custom_starting_money_events(screen, state, character, gui_elements, mouse_pos):
+def custom_starting_money_events(screen, state: str, character, gui_elements: dict, mouse_pos) -> str:
     """Check and handle text input field events in function 'custom_character()' for state 'custom_input_money' in
     'state_manager.py'.
     ARGS:
         screen: PyGame window.
-        state: program state. Entry and exit state differs based on custom or random character creation.
+        state: program state. Entry and exit state differ based on custom or random character creation.
         character: instance of class 'Character'.
         gui_elements: dict of GUI elements.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
-        state: program state
+        state
     """
     # Assign 'pygame_textinput' instance stored in dict 'gui_elements' to variable.
     starting_money_input = gui_elements["money_amount_input"][0]
 
-    # Set of valid keys for numeric only input and list for filtered events to be passed to the input field.
-    valid_keys = {pygame.K_0, pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4,
-                  pygame.K_5, pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9,
-                  pygame.K_KP0, pygame.K_KP1, pygame.K_KP2, pygame.K_KP3, pygame.K_KP4,
-                  pygame.K_KP5, pygame.K_KP6, pygame.K_KP7, pygame.K_KP8, pygame.K_KP9,
-                  pygame.K_DELETE, pygame.K_BACKSPACE, pygame.K_LEFT, pygame.K_RIGHT}
-    filtered_keys = []
+    # Set of valid keys for numeric-only input.
+    valid_keys: set = {pygame.K_0, pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4,
+                       pygame.K_5, pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9,
+                       pygame.K_KP0, pygame.K_KP1, pygame.K_KP2, pygame.K_KP3, pygame.K_KP4,
+                       pygame.K_KP5, pygame.K_KP6, pygame.K_KP7, pygame.K_KP8, pygame.K_KP9,
+                       pygame.K_DELETE, pygame.K_BACKSPACE, pygame.K_LEFT, pygame.K_RIGHT}
+    # List for filtered events to be passed to the input field.
+    filtered_keys: list = []
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-        # Ensures screen specific UI elements are positioned only once per screen appearance and reset alpha transparency
+        # Ensures screen-specific UI elements are positioned only once per screen appearance and reset alpha transparency
         # for 'continue' and 'back' buttons.
         handle_screen_switch_reset(screen, event, gui_elements, mouse_pos)
 
@@ -265,9 +265,9 @@ def custom_starting_money_events(screen, state, character, gui_elements, mouse_p
     return state
 
 
-def handle_screen_switch_reset(screen, event, gui_elements, mouse_pos):
+def handle_screen_switch_reset(screen, event, gui_elements: dict, mouse_pos) -> None:
     """Check for input events that switch screens, reset position flag for screen-specific UI placement, and reset alpha
-    values of certain UI elements. Called in every event handlers 'for event in pygame.event.get()' loop.
+    values of certain UI elements. Called in every event handler 'for event in pygame.event.get()' loop.
     ARGS:
         screen: PyGame window.
         event: PyGame event from for-loop in event handler.
