@@ -2,7 +2,7 @@ import pygame
 from core.rules import set_starting_money
 import gui.screen_objects as so
 import time
-from gui.screen_objects import InteractiveText
+from gui.screen_objects import TextField, Button, InteractiveText
 
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
 
@@ -10,43 +10,55 @@ from gui.screen_objects import InteractiveText
 # Ensures screen-specific elements are positioned only once per appearance.
 # Used in non-adaptable screens to minimize unnecessary repositioning.
 # Not applied to adaptable screens to keep functions maintainable.
-position_flag = False
+position_flag: bool = False
 # Create int variable 'dice_roll_start_time' to be used as timer for dice roll effect on screen (e.g. starting money screen).
-dice_roll_start_time = 0
+dice_roll_start_time: int = 0
 
 
 """General functions."""
 
-def reset_position_flag():
+def reset_position_flag() -> None:
     """Reset position flag to 'False'. Used in event handler."""
     global position_flag
     position_flag = False
 
 
-def draw_screen_title(screen, screen_title, gui_elements):
-    """Draw 'screen_title' object on screen at default position."""
+def draw_screen_title(screen, screen_title: TextField, gui_elements: dict) -> None:
+    """Draw 'screen_title' object on screen at default position.
+    ARGS:
+        screen: PyGame window.
+        screen_title: instance of class 'TextField()' representing the screen title.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+    """
     screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
     screen_title.text_rect.centerx = screen.get_rect().centerx
     screen_title.draw_text()
 
 
-def draw_special_button(screen, button, gui_elements, mouse_pos):
-    """Draw special button (i.e. 'Roll Again' or 'Reset') at the bottom center of the screen."""
+def draw_special_button(screen, button: Button, gui_elements: dict, mouse_pos) -> None:
+    """Draw special use button (i.e. 'Roll Again' or 'Reset') at the bottom center of the screen.
+    ARGS:
+        screen: PyGame window.
+        button: instance of class 'Button()' representing the special use button.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        mouse_pos: position of mouse on screen.
+    """
     button.button_rect.width = gui_elements["default_button_width"]
     button.button_rect.centerx = screen.get_rect().centerx
     button.button_rect.bottom = screen.get_rect().bottom - gui_elements["default_edge_spacing"]
     button.draw_button(mouse_pos)
 
 
-def draw_continue_button_inactive(condition_1, condition_2, gui_elements, mouse_pos, check_mode="any"):
+def draw_continue_button_inactive(condition_1: object | bool, condition_2: object | bool, gui_elements: dict, mouse_pos,
+                                  check_mode: str = "any") -> None:
     """Draw either active or inactive instance of continue button from module 'gui_elements'.
     ARGS:
         condition_1: first condition to be checked.
         condition_2: second condition to be checked.
         gui_elements: dict containing gui element instances.
         mouse_pos: mouse position on screen.
-        check_mode: Determines whether one or both conditions must be met. Use 'any' to require at least one condition,
-                    or 'all' to require both. Default is 'any'.
+        check_mode: String to determine whether one or both conditions must be met. Use "any" to require at least one condition,
+                    or "all" to require both. Default is "any".
     """
     # Assign buttons from dict 'gui_elements' to variables.
     continue_button, inactive_continue_button = gui_elements["continue_button"], gui_elements["inactive_continue_button"]
