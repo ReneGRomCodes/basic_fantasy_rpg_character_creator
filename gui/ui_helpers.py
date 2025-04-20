@@ -140,7 +140,7 @@ def position_title_screen_elements(screen, gui_elements: dict) -> None:
     """Position objects from 'gui_elements' for title screen.
     ARGS:
         screen: PyGame window.
-        gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Declare position flag as global.
     global position_flag
@@ -171,7 +171,7 @@ def position_main_menu_screen_elements(screen, gui_elements: dict) -> None:
     """Format and position objects from 'gui_elements' for main menu screen.
     ARGS:
         screen: PyGame window.
-        gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Declare position flag as global.
     global position_flag
@@ -209,7 +209,7 @@ def position_character_menu_screen_elements(screen, gui_elements: dict) -> None:
     """Position objects from 'gui_elements' for character menu screen.
     ARGS:
         screen: PyGame window.
-        gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Declare position flag as global.
     global position_flag
@@ -365,7 +365,7 @@ def get_position_race_class_element(screen, race_class: InteractiveText | TextFi
                                     rc_dict: dict[str, list[str]]) -> tuple[int, int]:
     """Get and return x and y values for GUI elements in function 'draw_available_choices()'.
     ARGS:
-        screen: pygame window.
+        screen: PyGame window.
         race_class: GUI element to be positioned.
         inactive_elements: list of text field instances for non-choose able races/classes. Used here only to be passed
             to function 'get_race_class_y_position()' for further y-coordinates calculations.
@@ -516,7 +516,7 @@ def build_and_position_prompt(screen, naming_prompt: TextField, character: objec
     """Create text for 'TextField' instance 'naming_prompt' to include characters race and class, and position it on
     screen.
     ARGS:
-        screen: pygame window.
+        screen: PyGame window.
         naming_prompt: instance of 'TextField' class prompting the user to input a character name.
         character: instance of 'Character' class.
     """
@@ -540,8 +540,8 @@ def build_and_position_prompt(screen, naming_prompt: TextField, character: objec
 def position_money_screen_elements(screen, gui_elements: dict) -> None:
     """Position objects from 'gui_elements' for starting money screen.
     ARGS:
-        screen:
-        gui_elements:
+        screen: PyGame window.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Declare position flag as global.
     global position_flag
@@ -596,11 +596,11 @@ def draw_chosen_money_option(screen, starting_money: int, random_money_flag: boo
                              gui_elements: dict) -> int:
     """Draw message for random amount of starting money or show input field for custom amount on screen.
     ARGS:
-        screen: Pygame window.
+        screen: PyGame window.
         starting_money: amount of starting money. Default value is '0'.
         random_money_flag: flag to indicate if randomly generated amount of money is chosen.
         custom_money_flag: flag to indicate if custom amount of money is chosen.
-        gui_elements: dict containing gui element instances.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Declare global variable 'dice_roll_start_time' to set timer for dice roll effect on screen.
     global dice_roll_start_time
@@ -639,7 +639,7 @@ def starting_money_dice_roll(screen, starting_money: int, random_money_field: Te
                              rolling: bool = True) -> None:
     """Display the rolling or final amount of starting money on screen.
     ARGS:
-        screen: Pygame window.
+        screen: PyGame window.
         starting_money: amount of starting money to display.
         random_money_field: reference text field to position the money display correctly.
         text_large: font size instance for text rendering. Usually 'gui_elements["text_large"]' is used, but any 'int'
@@ -667,10 +667,10 @@ def position_completion_screen_elements(screen, completion_message: TextField, s
                                         gui_elements: dict) -> None:
     """Position screen elements for 'character complete' screen.
     ARGS:
-        screen: pygame window.
+        screen: PyGame window.
         completion_message: instance of class 'TextField' showing completion message.
         show_character_sheet: instance of class 'Button' to proceed to character sheet.
-        gui_elements: dict containing gui element instances.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Declare position flag as global.
     global position_flag
