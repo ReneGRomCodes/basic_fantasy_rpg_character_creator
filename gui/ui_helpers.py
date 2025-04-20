@@ -43,7 +43,6 @@ def draw_special_button(screen, button: Button, gui_elements: dict, mouse_pos) -
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen.
     """
-    button.button_rect.width = gui_elements["default_button_width"]
     button.button_rect.centerx = screen.get_rect().centerx
     button.button_rect.bottom = screen.get_rect().bottom - gui_elements["default_edge_spacing"]
     button.draw_button(mouse_pos)
@@ -73,7 +72,7 @@ def draw_continue_button_inactive(condition_1: object | bool, condition_2: objec
         inactive_continue_button.draw_button(mouse_pos)
 
 
-def set_elements_pos_y_values(screen, elements):
+def set_elements_pos_y_values(screen, elements: list | tuple) -> tuple[int, int]:
     """Dynamically set starting y-position for GUI elements on screen based on number of said elements.
     Screen layout is designed to adapt and fit up to 16 elements.
     ARGS:
@@ -85,7 +84,7 @@ def set_elements_pos_y_values(screen, elements):
     """
     # Set reference variables for positioning.
     screen_center_y = screen.get_rect().centery
-    n_elements = len(elements)
+    n_elements: int = len(elements)
     # Check 'elements' for type and assign first element to variable as reference object for further positioning.
     ref_element = elements[0][0] if isinstance(elements[0], (list, tuple)) else elements[0]
 
@@ -100,11 +99,11 @@ def set_elements_pos_y_values(screen, elements):
 
     # Calculate offset multiplier for use in 'pos_y_offset' based on number of abilities in 'elements'.
     if n_elements <= 8:
-        offset_multiplier = 2
+        offset_multiplier: int | float = 2
     elif n_elements <= 11:
-        offset_multiplier = 1.5
+        offset_multiplier: int | float = 1.5
     else:
-        offset_multiplier = 1
+        offset_multiplier: int | float = 1
 
     # Set initial position on y-axis for ability score fields and offset value for spacing between each element.
     pos_y_offset = ref_element.text_rect.height * offset_multiplier
@@ -113,7 +112,7 @@ def set_elements_pos_y_values(screen, elements):
     return element_pos_y, pos_y_offset
 
 
-def show_info_panels(elements, mouse_pos):
+def show_info_panels(elements: list | tuple, mouse_pos) -> None:
     """Iterate over a collection of GUI elements and call their method to handle mouse interactions regarding info panels
     and display panels if applicable.
     See class definition for 'InteractiveText' and 'InfoPanel' for details.
@@ -137,8 +136,12 @@ def show_info_panels(elements, mouse_pos):
 
 """Background functions for title screen."""
 
-def position_title_screen_elements(screen, gui_elements):
-    """Position objects from 'gui_elements' for title screen."""
+def position_title_screen_elements(screen, gui_elements: dict) -> None:
+    """Position objects from 'gui_elements' for title screen.
+    ARGS:
+        screen: PyGame window.
+        gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+    """
     # Declare position flag as global.
     global position_flag
     # Assign gui_elements to variables.
@@ -164,8 +167,12 @@ def position_title_screen_elements(screen, gui_elements):
 
 """Background functions for main menu screen."""
 
-def position_main_menu_screen_elements(screen, gui_elements):
-    """Format and position objects from 'gui_elements' for main menu screen."""
+def position_main_menu_screen_elements(screen, gui_elements: dict) -> None:
+    """Format and position objects from 'gui_elements' for main menu screen.
+    ARGS:
+        screen: PyGame window.
+        gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+    """
     # Declare position flag as global.
     global position_flag
     # Assign gui_elements to variables.
@@ -198,8 +205,12 @@ def position_main_menu_screen_elements(screen, gui_elements):
 
 """Background functions for character menu screen."""
 
-def position_character_menu_screen_elements(screen, gui_elements):
-    """Position objects from 'gui_elements' for character menu screen."""
+def position_character_menu_screen_elements(screen, gui_elements: dict) -> None:
+    """Position objects from 'gui_elements' for character menu screen.
+    ARGS:
+        screen: PyGame window.
+        gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+    """
     # Declare position flag as global.
     global position_flag
     # Assign gui_elements to variables.
@@ -209,10 +220,8 @@ def position_character_menu_screen_elements(screen, gui_elements):
 
     if not position_flag:
     # Position buttons.
-        custom.button_rect.width = screen.get_rect().width / 3
         custom.button_rect.centerx = screen.get_rect().centerx
         custom.button_rect.bottom = screen.get_rect().centery - (button_spacing / 2)
-        random.button_rect.width = screen.get_rect().width / 3
         random.button_rect.centerx = screen.get_rect().centerx
         random.button_rect.top = screen.get_rect().centery + (button_spacing / 2)
 
@@ -221,20 +230,28 @@ def position_character_menu_screen_elements(screen, gui_elements):
 
 """Background functions for ability scores screen."""
 
-def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
+def position_ability_scores_screen_elements(screen, abilities_array: tuple[tuple[object, list[int]], ...],
+                                            mouse_pos) -> None:
     """Position, format and draw objects for ability scores screen. 'abilities_array' stores ability objects in function
-    'show_ability_scores_screen()'."""
+    'show_ability_scores_screen()'.
+    ARGS:
+        screen: PyGame window.
+        abilities_array: Array of screen objects representing abilities and ability scores.
+            See function 'show_ability_scores_screen()' in 'gui/gui.py' for detailed description of its structure and
+            purpose.
+        mouse_pos: position of mouse on screen.
+    """
     # X-positions for ability, score and bonus/penalty columns.
-    ability_name_x = screen.get_rect().width / 3
-    ability_score_x = screen.get_rect().width / 6 * 3.7
-    bonus_penalty_x = screen.get_rect().width / 6 * 4
+    ability_name_x: int = screen.get_rect().width / 3
+    ability_score_x: int = screen.get_rect().width / 6 * 3.7
+    bonus_penalty_x: int = screen.get_rect().width / 6 * 4
     # Get y-position for first ability object and position offset value for further objects.
     element_pos_y, pos_y_offset = set_elements_pos_y_values(screen, abilities_array)
 
     # Create instances of class 'TextField' to show ability scores and bonus/penalty on screen. Text string is placeholder
     # and text size is 'field_text_size' as retrieved from first 'gui_elements' entry in 'abilities_array' to ensure
     # correct scaling. Placeholder text is dynamically changed for each ability in for-loop further down.
-    field_text_size = abilities_array[0][0].size
+    field_text_size: int = abilities_array[0][0].size
     ability_score_field = so.TextField(screen, "score", field_text_size)
     bonus_penalty_field = so.TextField(screen, "bonus_penalty", field_text_size)
 
@@ -242,13 +259,13 @@ def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
     # bonus/penalty as they are grouped in 'abilities_array'.
     for ability_name, ability_score in abilities_array:
         # 'Pre-formatting' bonus/penalty to string for easier formatting and better code-readability further down.
-        bonus_penalty = f"{ability_score[1]}"
+        bonus_penalty: str = f"{ability_score[1]}"
         # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
         # string if bonus_penalty is 0.
         if ability_score[1] > 0:
-            bonus_penalty = f"+{bonus_penalty}"
+            bonus_penalty: str = f"+{bonus_penalty}"
         elif ability_score[1] == 0:
-            bonus_penalty = ""
+            bonus_penalty: str = ""
 
         # Position and draw ability name on screen.
         ability_name.interactive_rect.top = element_pos_y
@@ -275,9 +292,19 @@ def position_ability_scores_screen_elements(screen, abilities_array, mouse_pos):
 
 """Background functions for race/class selection screen."""
 
-def race_class_check(available_choices, active_races, active_classes, race_name, class_name):
-    """Check 'active_races' and 'active_classes' and populate and return dict 'available_choices' with allowed
-    race/class combinations for use in function 'get_available_choices()'."""
+def race_class_check(available_choices: dict[str, list[InteractiveText]], active_races: tuple[InteractiveText],
+                     active_classes: tuple[InteractiveText], race_name: str, class_name: str) -> dict[str, list[InteractiveText]]:
+    """Check 'active_races' and 'active_classes' and populate/return dict 'available_choices' with allowed race/class
+    combinations for use in function 'get_available_choices()'.
+    ARGS:
+        available_choices: dict for instances of 'InteractiveText' for allowed race/class combinations.
+        active_races: tuple containing 'InteractiveText' instances for all available races in game.
+        active_classes: tuple containing 'InteractiveText' instances for all available classes in game.
+        race_name: name of allowed race as string for check.
+        class_name: name of allowed class as string for check.
+    RETURNS:
+        available_choices
+    """
     # Check if the race matches.
     for race in active_races:
         if race.text == race_name:
@@ -294,7 +321,9 @@ def race_class_check(available_choices, active_races, active_classes, race_name,
     return available_choices
 
 
-def get_available_choices(possible_characters, active_races, active_classes, selected_race, selected_class):
+def get_available_choices(possible_characters: list[str], active_races: tuple[InteractiveText],
+                          active_classes: tuple[InteractiveText], selected_race: InteractiveText | None,
+                          selected_class: InteractiveText | None) -> dict[str, list[InteractiveText]]:
     """Create dict and populate it with instances from 'active_races' and 'active_classes' using function
         'race_class_check()' if their 'text' attributes match entries in 'possible_characters' (first word for race,
         second for class) and return it in 'available_choices'.
@@ -302,11 +331,13 @@ def get_available_choices(possible_characters, active_races, active_classes, sel
         possible_characters: list of possible race-class combinations as strings.
         active_races: entry from gui element dict 'gui_elements["active_races"]'.
         active_classes: entry from gui element dict 'gui_elements["active_classes"]'.
-        selected_race: instance of 'InteractiveText' class representing chosen race.
-        selected_class: instance of 'InteractiveText' class representing chosen class.
+        selected_race: instance of 'InteractiveText' class representing chosen race. 'None' if no race is selected.
+        selected_class: instance of 'InteractiveText' class representing chosen class. 'None' if no class is selected.
+    RETURNS:
+        available_choices: dict for instances of 'InteractiveText' for allowed race/class combinations.
     """
     # Dictionary for available race and class choices to be returned.
-    available_choices = {
+    available_choices: dict[str, list] = {
         "races": [],
         "classes": [],
     }
@@ -330,7 +361,8 @@ def get_available_choices(possible_characters, active_races, active_classes, sel
     return available_choices
 
 
-def get_position_race_class_element(screen, race_class, inactive_elements, rc_dict):
+def get_position_race_class_element(screen, race_class: InteractiveText | TextField, inactive_elements: list[TextField],
+                                    rc_dict: dict[str, list[str]]) -> tuple[int, int]:
     """Get and return x and y values for GUI elements in function 'draw_available_choices()'.
     ARGS:
         screen: pygame window.
@@ -338,13 +370,15 @@ def get_position_race_class_element(screen, race_class, inactive_elements, rc_di
         inactive_elements: list of text field instances for non-choose able races/classes. Used here only to be passed
             to function 'get_race_class_y_position()' for further y-coordinates calculations.
         rc_dict: dict containing all available races/classes in the game as lists of strings.
+    RETURNS:
+        x, y: x and y position on screen for 'race_class' object.
     """
     # Race and class specific variables for x-positioning.
-    race_x_pos = int(screen.get_rect().width / 4)
-    class_x_pos = race_x_pos * 3
+    race_x_pos: int = int(screen.get_rect().width / 4)
+    class_x_pos: int = race_x_pos * 3
     # Lists of races and classes from dict 'rc_dict' for checks and calculation of y-positions.
-    races_list = rc_dict["races"]
-    classes_list = rc_dict["classes"]
+    races_list: list[str] = rc_dict["races"]
+    classes_list: list[str] = rc_dict["classes"]
 
     # Check if 'race_class' represents a race or a class and retrieve correct x- and y-positions.
     if race_class.text in races_list:
@@ -357,14 +391,17 @@ def get_position_race_class_element(screen, race_class, inactive_elements, rc_di
     return x, y
 
 
-def get_race_class_y_position(screen, race_class, rc_dict_list, inactive_elements):
+def get_race_class_y_position(screen, race_class: InteractiveText | TextField, rc_dict_list: list[str],
+                              inactive_elements: list[TextField]) -> int:
     """Helper function to get and return y value for GUI element in function 'get_position_race_class_element()'.
-        ARGS:
+    ARGS:
         screen: pygame window.
         race_class: GUI element to be positioned.
         rc_dict_list: value of type 'list' from 'rc_dict' as assigned to variable in 'get_position_race_class_element()'.
         inactive_elements: list of text field instances for non-choose able races/classes. Used here only to be passed
             to function 'set_elements_pos_y_values()' for further y-coordinates calculations.
+    RETURNS:
+        y: y position on screen for 'race_class' object.
     """
 
     for index, item in enumerate(rc_dict_list):
@@ -378,7 +415,8 @@ def get_race_class_y_position(screen, race_class, rc_dict_list, inactive_element
     return y
 
 
-def draw_available_choices(screen, rc_dict, available_choices, inactive_races, inactive_classes, mouse_pos):
+def draw_available_choices(screen, rc_dict: dict[str, list[str]], available_choices: dict[str, list[InteractiveText]],
+                           inactive_races: list[TextField], inactive_classes: list[TextField], mouse_pos) -> None:
     """Get position of text field items in dict 'available_choices' and draw them on screen.
     ARGS:
         screen: pygame window.
@@ -386,14 +424,10 @@ def draw_available_choices(screen, rc_dict, available_choices, inactive_races, i
         available_choices: dict with instances of interactive text fields for race and class selection.
         inactive_races: list of text field instances for non-choose able races.
         inactive_classes: list of text field instances for non-choose able classes.
-        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+        mouse_pos: position of mouse on screen.
     """
     # Create list to check if inactive or selectable text field should be displayed.
-    check_list = []
-    for r in available_choices["races"]:
-        check_list.append(r.text)
-    for c in available_choices["classes"]:
-        check_list.append(c.text)
+    check_list: list[str] = [r.text for r in available_choices["races"]] + [c.text for c in available_choices["classes"]]
 
     # Draw race selection.
     for race in inactive_races:
@@ -422,15 +456,20 @@ def draw_available_choices(screen, rc_dict, available_choices, inactive_races, i
             cls.draw_text()
 
 
-def select_race_class(available_choices, selected_race, selected_class, reset_button, mouse_pos):
+def select_race_class(available_choices: dict[str, list[InteractiveText]], selected_race: InteractiveText | None,
+                      selected_class: InteractiveText | None, reset_button: Button, mouse_pos)\
+                      -> tuple[InteractiveText | None, InteractiveText | None]:
     """Selection logic for characters race and class and return selected text field instances in 'selected_race' and
     'selected class'.
     ARGS:
         available_choices: dict with instances of interactive text fields for race and class selection.
-        selected_race: instance of 'InteractiveText' class representing chosen race.
-        selected_class: instance of 'InteractiveText' class representing chosen class.
+        selected_race: instance of 'InteractiveText' class representing chosen race. 'None' if no race is selected.
+        selected_class: instance of 'InteractiveText' class representing chosen class. 'None' if no class is selected.
         reset_button: entry from gui element dict 'gui_elements["reset_button"]'.
-        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+        mouse_pos: position of mouse on screen.
+    RETURNS:
+        selected_race
+        selected_class
     """
     # Check if the left mouse button is pressed before proceeding with selection logic.
     if pygame.mouse.get_pressed()[0]:

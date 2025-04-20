@@ -89,13 +89,16 @@ def initialize_screen_elements(screen, settings):
 
     # Character menu.
     custom = so.Button(screen, "Create Custom Character", text_medium)
+    custom.button_rect.width = screen.get_rect().width / 3
     random = so.Button(screen, "Create Random Character", text_medium)
+    random.button_rect.width = screen.get_rect().width / 3
 
 
     # Ability scores screen.
     # Screen layout is designed to adapt and fit up to 16 abilities.
     ability_scores_screen_title = so.TextField(screen, "- ABILITIES -", text_large)
     reroll_button = so.Button(screen, "Roll Again", text_medium)
+    reroll_button.button_rect.width = button_width
     # Initialize dictionaries from 'descr' package for info panels.
     ability_descr = abilities.get_ability_descr()
     race_descr = races.get_race_descr()
@@ -126,6 +129,7 @@ def initialize_screen_elements(screen, settings):
     # Screen layout is designed to adapt and fit up to 16 races/classes.
     race_class_selection_screen_title = so.TextField(screen, "- RACE / CLASS SELECTION -", text_large)
     reset_button = so.Button(screen, "RESET", text_medium)
+    reset_button.button_rect.width = button_width
     # Race info Panels.
     humans_info = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True, surface_width=info_panel_width)
     humans_info_table = so.InfoPanel(screen, race_descr["humans"][1], text_small, multi_line=True, surface_width=info_panel_width,

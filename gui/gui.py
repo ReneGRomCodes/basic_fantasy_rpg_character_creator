@@ -123,8 +123,8 @@ def show_race_class_selection_screen(screen, rc_dict: dict, possible_characters,
         screen: PyGame window.
         rc_dict: dict containing all available races/classes in the game as lists of strings.
         possible_characters: list of possible race-class combinations as strings.
-        selected_race: instance of 'InteractiveText' class representing chosen race.
-        selected_class: instance of 'InteractiveText' class representing chosen class.
+        selected_race: instance of 'InteractiveText' class representing chosen race. 'None' if no race is selected.
+        selected_class: instance of 'InteractiveText' class representing chosen class. 'None' if no class is selected.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
