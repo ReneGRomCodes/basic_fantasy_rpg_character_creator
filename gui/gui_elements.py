@@ -89,9 +89,9 @@ def initialize_screen_elements(screen, settings):
 
     # Character menu.
     custom = so.Button(screen, "Create Custom Character", text_medium)
-    custom.button_rect.width = screen.get_rect().width / 3
     random = so.Button(screen, "Create Random Character", text_medium)
-    random.button_rect.width = screen.get_rect().width / 3
+    custom_random_button_width: int = screen.get_rect().width / 3
+    custom.button_rect.width, random.button_rect.width = custom_random_button_width, custom_random_button_width
 
 
     # Ability scores screen.
@@ -208,6 +208,8 @@ def initialize_screen_elements(screen, settings):
     # Choice buttons.
     random_money_button = so.Button(screen, "Roll the dice for your starting money (3d6 x 10)", text_standard)
     custom_money_button = so.Button(screen, "Choose your own amount of gold pieces", text_standard)
+    money_button_width: int = screen.get_rect().width / 2.5
+    random_money_button.button_rect.width, custom_money_button.button_rect.width = money_button_width, money_button_width
     # Random money message field.
     rolling_dice_money_field = so.TextField(screen, "Rolling the dice!", text_large)
     random_money_field = so.TextField(screen, "You receive", text_medium)

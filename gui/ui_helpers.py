@@ -2,7 +2,7 @@ import pygame
 from core.rules import set_starting_money
 import gui.screen_objects as so
 import time
-from gui.screen_objects import TextField, Button, InteractiveText
+from gui.screen_objects import TextField, Button, InteractiveText, TextInputField
 
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
 
@@ -145,7 +145,7 @@ def position_title_screen_elements(screen, gui_elements: dict) -> None:
     # Declare position flag as global.
     global position_flag
     # Assign gui_elements to variables.
-    spacing = gui_elements["title_screen_spacing"]
+    spacing: int = gui_elements["title_screen_spacing"]
     title = gui_elements["title_screen_fields"][0]
     subtitle = gui_elements["title_screen_fields"][1]
     copyright_notice = gui_elements["title_screen_fields"][2]
@@ -176,8 +176,8 @@ def position_main_menu_screen_elements(screen, gui_elements: dict) -> None:
     # Declare position flag as global.
     global position_flag
     # Assign gui_elements to variables.
-    spacing = gui_elements["title_screen_spacing"]
-    button_spacing = gui_elements["button_spacing"]
+    spacing: int = gui_elements["title_screen_spacing"]
+    button_spacing: int = gui_elements["button_spacing"]
     title = gui_elements["main_menu_title"]
     start = gui_elements["start_button"]
     menu_buttons = gui_elements["menu_buttons"]
@@ -216,7 +216,7 @@ def position_character_menu_screen_elements(screen, gui_elements: dict) -> None:
     # Assign gui_elements to variables.
     custom = gui_elements["custom"]
     random = gui_elements["random"]
-    button_spacing = gui_elements["button_spacing"]
+    button_spacing: int = gui_elements["button_spacing"]
 
     if not position_flag:
     # Position buttons.
@@ -512,7 +512,7 @@ def select_race_class(available_choices: dict[str, list[InteractiveText]], selec
 
 """Background functions for character naming screen."""
 
-def build_and_position_prompt(screen, naming_prompt, character):
+def build_and_position_prompt(screen, naming_prompt: TextField, character: object) -> None:
     """Create text for 'TextField' instance 'naming_prompt' to include characters race and class, and position it on
     screen.
     ARGS:
@@ -537,34 +537,35 @@ def build_and_position_prompt(screen, naming_prompt, character):
 
 """Background functions for starting money screen."""
 
-def position_money_screen_elements(screen, gui_elements):
-    """Position objects from 'gui_elements' for starting money screen."""
+def position_money_screen_elements(screen, gui_elements: dict) -> None:
+    """Position objects from 'gui_elements' for starting money screen.
+    ARGS:
+        screen:
+        gui_elements:
+    """
     # Declare position flag as global.
     global position_flag
 
     if not position_flag:
         # Positioning of button instances.
-        money_button_width = screen.get_rect().width / 2.5
-        money_button_pos_y = screen.get_rect().height / 3
+        money_button_pos_y: int = screen.get_rect().height / 3
         random_money_button, custom_money_button = gui_elements["starting_money_choices"][0], gui_elements["starting_money_choices"][1]
-        random_money_button.button_rect.width = money_button_width
-        custom_money_button.button_rect.width = money_button_width
         random_money_button.button_rect.top, random_money_button.button_rect.centerx = money_button_pos_y, screen.get_rect().centerx * 0.5
         custom_money_button.button_rect.top, custom_money_button.button_rect.centerx = money_button_pos_y, screen.get_rect().centerx * 1.5
 
         # Positioning of text input and text field instances.
-        rolling_dice_money_field,random_money_field = gui_elements["random_money"][0], gui_elements["random_money"][1]
+        rolling_dice_money_field, random_money_field = gui_elements["random_money"][0], gui_elements["random_money"][1]
         rolling_dice_money_field.text_rect.centery, random_money_field.text_rect.centery = (screen.get_rect().centery * 1.1,
                                                                                             screen.get_rect().centery * 1.1)
-        money_input_prompt = gui_elements["money_amount_input"][2]
+        money_input_prompt: TextField = gui_elements["money_amount_input"][2]
         money_input_prompt.text_rect.centery = screen.get_rect().centery * 1.05
-        money_amount_field = gui_elements["money_amount_input"][1]
+        money_amount_field: TextInputField = gui_elements["money_amount_input"][1]
         money_amount_field.input_bg_field.top = screen.get_rect().centery * 1.15
 
         position_flag = True
 
 
-def choose_money_option(choices, random_money_flag, custom_money_flag, mouse_pos):
+def choose_money_option(choices: list[Button], random_money_flag: bool, custom_money_flag: bool, mouse_pos) -> tuple[bool, bool]:
     """Choose option to either generate random amount of money or let user input a custom amount, return 'starting_money'
     if random amount is chosen, set and return 'random_money_flag'/'custom_money_flag' accordingly.
     ARGS:
@@ -572,6 +573,9 @@ def choose_money_option(choices, random_money_flag, custom_money_flag, mouse_pos
         random_money_flag: flag to indicate if randomly generated amount of money is chosen.
         custom_money_flag: flag to indicate if custom amount of money is chosen.
         mouse_pos: position of mouse on screen.
+    RETURNS:
+        random_money_flag
+        custom_money_flag
     """
     # Declare global variable 'dice_roll_start_time' to set timer for dice roll effect on screen.
     global dice_roll_start_time
@@ -588,11 +592,12 @@ def choose_money_option(choices, random_money_flag, custom_money_flag, mouse_pos
     return random_money_flag, custom_money_flag
 
 
-def draw_chosen_money_option(screen, starting_money, random_money_flag, custom_money_flag, gui_elements):
+def draw_chosen_money_option(screen, starting_money: int, random_money_flag: bool, custom_money_flag: bool,
+                             gui_elements: dict) -> int:
     """Draw message for random amount of starting money or show input field for custom amount on screen.
     ARGS:
         screen: Pygame window.
-        starting_money: amount of starting money. Starting value is 'None', changes if 'random_money_flag' is 'True'
+        starting_money: amount of starting money. Default value is '0'.
         random_money_flag: flag to indicate if randomly generated amount of money is chosen.
         custom_money_flag: flag to indicate if custom amount of money is chosen.
         gui_elements: dict containing gui element instances.
@@ -600,12 +605,15 @@ def draw_chosen_money_option(screen, starting_money, random_money_flag, custom_m
     # Declare global variable 'dice_roll_start_time' to set timer for dice roll effect on screen.
     global dice_roll_start_time
     # Set duration for dice roll in seconds.
-    dice_roll_duration = 1
+    dice_roll_duration: int | float = 1
 
     # Assign font size and text field instances from dict 'gui_elements' to variables.
-    text_large = gui_elements["text_large"]
+    text_large: int = gui_elements["text_large"]
+    # Random money fields.
     rolling_dice_money_field, random_money_field = gui_elements["random_money"][0], gui_elements["random_money"][1]
-    money_amount_field, money_input_prompt = gui_elements["money_amount_input"][1], gui_elements["money_amount_input"][2]
+    # Money input fields.
+    money_amount_field: TextInputField = gui_elements["money_amount_input"][1]
+    money_input_prompt: TextField = gui_elements["money_amount_input"][2]
 
     if random_money_flag:
         # Check timer to allow for dice roll effect.
@@ -627,23 +635,25 @@ def draw_chosen_money_option(screen, starting_money, random_money_flag, custom_m
     return starting_money
 
 
-def starting_money_dice_roll(screen, starting_money, random_money_field, text_large, rolling=True):
+def starting_money_dice_roll(screen, starting_money: int, random_money_field: TextField, text_large: object | int,
+                             rolling: bool = True) -> None:
     """Display the rolling or final amount of starting money on screen.
     ARGS:
         screen: Pygame window.
         starting_money: amount of starting money to display.
         random_money_field: reference text field to position the money display correctly.
-        text_large: font size instance for text rendering.
+        text_large: font size instance for text rendering. Usually 'gui_elements["text_large"]' is used, but any 'int'
+            can be passed.
         rolling: boolean flag to indicate if the dice roll is still ongoing.
             If 'True', displays a "rolling" message. If 'False', shows the final amount. Default is 'True'.
     """
     # Check if "rolling" message or final amount should be displayed.
     if rolling:
         # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
-        starting_money_message = str(starting_money)
+        starting_money_message: str = str(starting_money)
     else:
         # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
-        starting_money_message = str(starting_money) + " gold pieces"
+        starting_money_message: str = str(starting_money) + " gold pieces"
 
     # Create TextField instance 'random_money_result_field', and position and draw it on screen.
     random_money_result_field = so.TextField(screen, starting_money_message, text_large)
@@ -653,7 +663,8 @@ def starting_money_dice_roll(screen, starting_money, random_money_field, text_la
 
 """Background functions for creation complete screen."""
 
-def position_completion_screen_elements(screen, completion_message, show_character_sheet, gui_elements):
+def position_completion_screen_elements(screen, completion_message: TextField, show_character_sheet: Button,
+                                        gui_elements: dict) -> None:
     """Position screen elements for 'character complete' screen.
     ARGS:
         screen: pygame window.
@@ -664,7 +675,7 @@ def position_completion_screen_elements(screen, completion_message, show_charact
     # Declare position flag as global.
     global position_flag
     # Assign spacing value from 'gui_elements' to variables.
-    spacing = gui_elements["title_screen_spacing"]
+    spacing: int = gui_elements["title_screen_spacing"]
 
     if not position_flag:
         # Position screen elements.
