@@ -16,8 +16,13 @@ class Settings:
         self.frame_rate = 30
         # Default font.
         self.font = "gui/font/EagleLake-Regular.ttf"
+        # Art assets.
+        # Assets are loaded and scaled in 'gui/gui_elements.py' to be then accessible via dict 'gui_elements'.
+        self.bg_image ="gui/art/bg_image.jpg"
+
         # Background color for screen.
-        self.bg_color = (235, 210, 160)
+        self.bg_color = (235, 210, 160)  # OBSOLETE. 'self.bg_image' IS USED NOW.
+
         # Color settings for screen objects.
         self.text_color = (50, 35, 25)
         self.button_border_color = (150, 110, 80)

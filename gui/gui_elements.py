@@ -68,6 +68,8 @@ def initialize_screen_elements(screen, settings):
     back_button.button_rect.bottomleft = (screen.get_rect().left + default_edge_spacing,
                                           screen.get_rect().bottom - default_edge_spacing)
 
+    # Art assets.
+    background_image = pygame.transform.scale(pygame.image.load(settings.bg_image).convert(), (screen_width, screen_height))
 
     # Title screen.
     title = so.TextField(screen, "BASIC FANTASY ROLE-PLAYING GAME", title_size)
@@ -243,6 +245,8 @@ def initialize_screen_elements(screen, settings):
         "continue_button": continue_button,
         "inactive_continue_button": inactive_continue_button,
         "back_button": back_button,
+        # Art assets.
+        "background_image": background_image,
 
         # Title screen.
         "title_screen_fields": (title, subtitle, copyright_notice, title_progress_bar, continue_to_main_menu),

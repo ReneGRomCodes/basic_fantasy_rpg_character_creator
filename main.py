@@ -47,7 +47,8 @@ def run_character_creator() -> None:
         # Keep track of mouse position.
         mouse_pos = pygame.mouse.get_pos()
 
-        screen.fill(settings.bg_color)
+        # Blit background image to screen.
+        screen.blit(gui_elements["background_image"], (0, 0))
 
         # Main states.
         if state in main_states:
