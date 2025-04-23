@@ -27,17 +27,20 @@ class Credits:
         # Credits screen title.
         self.credits_title = so.TextField(screen, "- CREDITS -", title_size)
         # Credits.
-        programmer_title = so.TextField(screen, "Programming & UI Design", text_large)
-        programmer_name = so.TextField(screen, "René Grewe Romero", text_medium)
+        dev_title = so.TextField(screen, "Lead Developer", text_large)
+        dev_name = so.TextField(screen, "René Grewe Romero", text_medium)
         concept_creator_title = so.TextField(screen, "Based on 'Basic Tabletop RPG'", text_large)
         concept_creator_name = so.TextField(screen, "by Chris Gonnerman", text_medium)
+        art_ui_title = so.TextField(screen, "Artwork & UI Design", text_large)
+        art_ui_name = so.TextField(screen, "René Grewe Romero", text_medium)
         font_creator_title = so.TextField(screen, "Font 'Eagle Lake'", text_large)
         font_creator_name = so.TextField(screen, "by Brian J. Bonislawsky", text_medium)
 
         # Array of objects to be shown on screen as instantiated above. Each inner tuple representing a credit category,
         # with the element at index [0] being the category title and the following elements being the credited names.
-        self.credits_elements = ((programmer_title, programmer_name),
+        self.credits_elements = ((dev_title, dev_name),
                                  (concept_creator_title, concept_creator_name),
+                                 (art_ui_title, art_ui_name),
                                  (font_creator_title, font_creator_name))
 
         # Calculate fade-out speed. Represent intervals for alpha value changes per frame when credits fade out at the

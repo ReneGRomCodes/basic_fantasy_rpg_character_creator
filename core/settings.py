@@ -14,9 +14,9 @@ class Settings:
         self.large_screen = (1920,1080)
         # Frame rate.
         self.frame_rate = 30
-        # Default font.
-        self.font = "gui/font/EagleLake-Regular.ttf"
+
         # Art assets.
+        self.font = "gui/art/font/EagleLake-Regular.ttf"
         # Assets are loaded and scaled in 'gui/gui_elements.py' to be then accessible via dict 'gui_elements'.
         self.bg_image ="gui/art/bg_image.jpg"
 

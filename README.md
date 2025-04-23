@@ -74,7 +74,8 @@ project_root/
 │   ├── gui.py             # Handles UI logic and rendering functions
 │   ├── ui_helpers.py      # Helper functions for positioning elements
 │   ├── credits.py         # Credits screen logic
-│   └── settings_gui.py    # Settings screen logic
+│   ├── settings_gui.py    # Settings screen logic
+│   └── art/               # Contains graphic assets
 │
 └── README.md              # You are here
 ```
