@@ -99,12 +99,11 @@ def credits_state_manager(screen, state: str, gui_elements: dict) -> str:
     return state
 
 
-def settings_screen(screen, state: str, settings, settings_gui, gui_elements: dict, mouse_pos) -> tuple[dict, str]:
+def settings_screen(screen, state: str, settings_gui, gui_elements: dict, mouse_pos) -> tuple[dict, str]:
     """State manager for settings screen state 'settings_screen'.
     ARGS:
         screen: PyGame window.
         state: program state.
-        settings: instance of class 'Settings()'.
         settings_gui: instance of class 'SettingsGUI()'.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
@@ -116,7 +115,7 @@ def settings_screen(screen, state: str, settings, settings_gui, gui_elements: di
     state = eh.main_events(screen, state, gui_elements, mouse_pos)
 
     # Display settings screen.
-    gui_elements = settings_gui.show_settings(screen, settings, gui_elements, mouse_pos)
+    gui_elements = settings_gui.show_settings(screen, gui_elements, mouse_pos)
 
     return gui_elements, state
 

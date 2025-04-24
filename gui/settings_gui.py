@@ -2,6 +2,7 @@ import gui.screen_objects as so
 from gui.ui_helpers import draw_screen_title
 import pygame
 from gui.gui_elements import initialize_screen_elements
+from core.settings import settings
 """
 Class for settings screen.
 """
@@ -35,11 +36,10 @@ class SettingsGUI:
         self.settings_gui_objects = (self.title, self.window_size_field, window_size_button_small, window_size_button_medium,
                                      window_size_button_large, window_size_button_full)
 
-    def show_settings(self, screen, settings, gui_elements, mouse_pos):
+    def show_settings(self, screen, gui_elements, mouse_pos):
         """Display settings screen.
             ARGS:
                 screen: PyGame window.
-                settings: instance of class 'Settings'.
                 gui_elements: dict of gui elements as created in module 'gui_elements.py'.
                 mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
             RETURNS:
@@ -52,7 +52,7 @@ class SettingsGUI:
         self.format_settings_screen_elements(screen, gui_elements)
 
         # Select window size and re-initialize 'gui_elements'.
-        gui_elements = self.select_window_size(screen, settings, gui_elements, mouse_pos)
+        gui_elements = self.select_window_size(screen, gui_elements, mouse_pos)
 
         # Draw basic elements on screen.
         draw_screen_title(screen, self.title, gui_elements)
@@ -96,12 +96,11 @@ class SettingsGUI:
         window_size_large.left, window_size_large.top = window_size_anchor.left, window_size_anchor.bottom + spacing
         window_size_full.left, window_size_full.top = window_size_anchor.right + spacing, window_size_anchor.bottom + spacing
 
-    def select_window_size(self, screen, settings, gui_elements, mouse_pos):
+    def select_window_size(self, screen, gui_elements, mouse_pos):
         """Selection logic for programs window size. Change attribute 'self.selected_window_size', re-initialize  and
         return dict 'gui_elements'.
         ARGS:
             screen: PyGame window.
-            settings: instance of class 'Settings'.
             gui_elements: dict of gui elements as created in module 'gui_elements.py'.
             mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
         RETURNS:

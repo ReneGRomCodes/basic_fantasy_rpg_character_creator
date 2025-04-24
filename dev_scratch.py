@@ -14,3 +14,4 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO finish character sheet screen ffs!!!
 # TODO Re-structure 'rules.py' and 'Character' class to get rid of overlap
 # TODO add type hint and type annotations
+# TODO get rid of globals in 'state_manager.py' and 'ui_helpers.py'
