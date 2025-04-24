@@ -145,7 +145,7 @@ def set_character_values(character):
     character.set_carrying_capacity()
 
 
-def set_starting_money():
+def roll_starting_money():
     """Generate and return random amount of starting money."""
     starting_money = dice_roll(3, 6) * 10
 

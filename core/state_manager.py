@@ -167,8 +167,8 @@ def custom_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
         if random_money_flag or custom_money_flag:
             random_money_flag, custom_money_flag = False, False
 
-    elif state == "set_starting_money":
-        # Display starting money screen.
+    elif state == "select_starting_money":
+        # Base state for starting money screen.
         random_money_flag, custom_money_flag, starting_money = gui.show_starting_money_screen(screen, gui_elements,
                                                                                               random_money_flag, custom_money_flag,
                                                                                               starting_money, mouse_pos)
@@ -225,7 +225,7 @@ def random_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
 
     elif state == "set_random_money":
         # Set random amount of starting money in the background without UI.
-        character.money = rls.set_starting_money()
+        character.money = rls.roll_starting_money()
         state = "name_random_character"
 
     elif state == "name_random_character":

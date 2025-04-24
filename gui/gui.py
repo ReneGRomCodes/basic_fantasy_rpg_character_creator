@@ -10,7 +10,7 @@ def show_title_screen(screen, gui_elements: dict) -> None:
         gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Assign gui_elements to variables.
-    title= gui_elements["title_screen_fields"][0]
+    title = gui_elements["title_screen_fields"][0]
     subtitle = gui_elements["title_screen_fields"][1]
     copyright_notice = gui_elements["title_screen_fields"][2]
     progress_bar = gui_elements["title_screen_fields"][3]

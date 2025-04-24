@@ -130,7 +130,8 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
                         rls.set_character_values(character)
                         state = "name_character"
 
-        elif state == "set_starting_money":
+        elif state == "select_starting_money":
+            # Base state for starting money screen.
             if event.type == pygame.MOUSEBUTTONUP:
                 if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     state = "name_character"
@@ -143,6 +144,7 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
                         character.money = context3
                         state = "creation_complete"
                 if context2:
+                    # Special state to handle money input field functionality.
                     state = "custom_input_money"
 
         elif state == "creation_complete":
@@ -203,7 +205,7 @@ def naming_character_events(screen, state: str, character, gui_elements: dict, m
                 character.set_name(character_name_input.manager.value)
                 # Different state value is checked and set depending on whether custom or random character is created.
                 if state == "name_character":
-                    state = "set_starting_money"
+                    state = "select_starting_money"
                 elif state == "name_random_character":
                     state = "creation_complete"
 
@@ -258,6 +260,12 @@ def custom_starting_money_events(screen, state: str, character, gui_elements: di
                 else:
                     character.money = 0
                 state = "creation_complete"
+
+            if gui_elements["starting_money_choices"][0].button_rect.collidepoint(mouse_pos):
+                # Reset input field to empty value when switching from 'custom amount' to 'random amount', and set state
+                # to basic "select_starting_money" for money selection screen.
+                starting_money_input.manager.value = ""
+                state = "select_starting_money"
 
     # Check and update events for 'pygame_textinput' instance 'starting_money_input'
     starting_money_input.update(filtered_keys)

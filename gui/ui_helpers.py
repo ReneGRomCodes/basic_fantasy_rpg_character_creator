@@ -1,5 +1,5 @@
 import pygame
-from core.rules import set_starting_money
+from core.rules import roll_starting_money
 import gui.screen_objects as so
 import time
 from gui.screen_objects import TextField, Button, InteractiveText, TextInputField
@@ -620,7 +620,7 @@ def draw_chosen_money_option(screen, starting_money: int, random_money_flag: boo
         if time.time() - dice_roll_start_time < dice_roll_duration:
             rolling_dice_money_field.draw_text()
             # Generate random int value for 'starting_money'.
-            starting_money = set_starting_money()
+            starting_money = roll_starting_money()
             starting_money_dice_roll(screen, starting_money, random_money_field, text_large)
         # Show final value after timer runs out.
         else:
