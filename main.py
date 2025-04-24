@@ -1,6 +1,6 @@
 import pygame
 import core.state_manager as sm
-from core.settings import Settings
+from core.settings import Settings, settings
 from gui.settings_gui import SettingsGUI
 from gui.gui_elements import initialize_screen_elements
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
@@ -11,8 +11,7 @@ def initialize_character_creator() -> tuple[Settings, pygame.Surface, pygame.tim
     """Initialize Pygame, settings, screen, and GUI elements."""
     # Initialize pygame.
     pygame.init()
-    # Create settings object and initialize default values.
-    settings = Settings()
+    # Set default values for imported instance 'settings' from module 'core.settings'.
     settings.set_default()
     # Create Clock object and pygame window.
     clock = pygame.time.Clock()

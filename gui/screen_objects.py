@@ -1,10 +1,9 @@
 import pygame
-from core.settings import Settings
+from core.settings import settings
 import random
-"""Classes for screen objects (buttons, text, etc.)."""
-
-# Instance of 'Settings' class.
-settings = Settings()
+"""
+Classes for screen objects (buttons, text, etc.).
+"""
 
 
 class TextField:

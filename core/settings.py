@@ -1,5 +1,7 @@
 """
 Settings class for pygame.
+Only instance of this class, 'settings', is created at the bottom of this module and imported/referenced throughout the
+program.
 """
 
 
@@ -51,3 +53,7 @@ class Settings:
     def set_default(self):
         """Set all settings variables to default values as defined in 'self.default_settings'."""
         self.screen_size = self.default_settings[0]
+
+
+# Create shared settings object.
+settings: Settings = Settings()

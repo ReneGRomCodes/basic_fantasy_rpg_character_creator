@@ -1,12 +1,9 @@
 import gui.screen_objects as so
 from gui.ui_helpers import draw_screen_title
-from core.settings import Settings
+from core.settings import settings
 """
 Class for credits screen.
 """
-
-# Instance of 'Settings' class.
-settings = Settings()
 
 
 class Credits:
