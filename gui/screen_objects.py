@@ -3,6 +3,16 @@ from core.settings import settings
 import random
 """
 Classes for screen objects (buttons, text, etc.).
+
+Instances for GUI objects are created in module 'gui/gui_elements.py', scaled if necessary, and then added to dict
+'gui_elements'.
+Functions for the use of screen objects are located in 'gui/gui.py' with helper functions for positioning located in
+'gui/ui_helpers.py'.
+
+Exceptions are 'Credits Screen' and 'Settings Screen' which separately handle their own instances/logic in modules
+'gui/credits.py' and 'gui/settings_gui' respectively.
+
+See documentation in relevant modules for details.
 """
 
 
