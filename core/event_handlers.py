@@ -195,10 +195,10 @@ def naming_character_events(screen, state: str, character, gui_elements: dict, m
                 if state == "name_character":
                     state = "race_class_selection"
                 elif state == "name_random_character":
-                    # Import and call function to reset globals in 'state_manager.py' before returning to previous menu.
+                    # Import and call method to reset shared data in 'state_manager.py' before returning to previous menu.
                     # Not a pretty solution, but it resolves the freezing issue when coming back from the naming screen.
-                    from core.state_manager import globals_janitor
-                    globals_janitor(gui_elements)
+                    from core.shared_data import shared_data
+                    shared_data.shared_data_janitor(gui_elements)
                     state = "character_menu"
 
             if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
