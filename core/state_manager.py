@@ -5,6 +5,7 @@ import gui.gui as gui
 import core.rules as rls
 import shop_functions as sf
 import core.event_handlers as eh
+from gui.settings_gui import SettingsGUI
 from gui.cs_model import CharacterSheet
 from gui.screen_objects import InteractiveText
 import random
@@ -15,6 +16,8 @@ import random
 character: Character
 # Variable for later instance of credits screen object.
 credits_screen: Credits
+# Variable for later instance of settings screen object.
+settings_gui: object = None
 # Variable for later instance of character sheet screen object.
 cs_sheet: CharacterSheet
 # Further variables for character creation.
@@ -99,17 +102,22 @@ def credits_state_manager(screen, state: str, gui_elements: dict) -> str:
     return state
 
 
-def settings_screen(screen, state: str, settings_gui, gui_elements: dict, mouse_pos) -> tuple[dict, str]:
+def settings_screen(screen, state: str, gui_elements: dict, mouse_pos) -> tuple[dict, str]:
     """State manager for settings screen state 'settings_screen'.
     ARGS:
         screen: PyGame window.
         state: program state.
-        settings_gui: instance of class 'SettingsGUI()'.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
         gui_elements, state
     """
+    # Declare global variable to assign instance of class 'SettingsGUI()'.
+    global settings_gui
+
+    # Initialize 'SettingsGUI() object the first time the settings screen is accessed.
+    if not settings_gui:
+        settings_gui = SettingsGUI(screen, gui_elements)
 
     # Call event handler and get program state.
     state = eh.main_events(screen, state, gui_elements, mouse_pos)

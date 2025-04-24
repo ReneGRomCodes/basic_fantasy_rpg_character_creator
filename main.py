@@ -1,13 +1,12 @@
 import pygame
 import core.state_manager as sm
 from core.settings import settings
-from gui.settings_gui import SettingsGUI
 from gui.gui_elements import initialize_screen_elements
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
 It initializes the program and starts the main functionality."""
 
 
-def initialize_character_creator() -> tuple[pygame.Surface, pygame.time.Clock, dict, SettingsGUI]:
+def initialize_character_creator() -> tuple[pygame.Surface, pygame.time.Clock, dict]:
     """Initialize Pygame, settings, screen, and GUI elements."""
     # Initialize pygame.
     pygame.init()
@@ -20,17 +19,15 @@ def initialize_character_creator() -> tuple[pygame.Surface, pygame.time.Clock, d
 
     # Initialize dict with GUI elements. See package 'gui' for details.
     gui_elements: dict = initialize_screen_elements(screen, settings)
-    # Create instance for settings screen.
-    settings_gui = SettingsGUI(screen, gui_elements)
 
-    return screen, clock, gui_elements, settings_gui
+    return screen, clock, gui_elements
 
 
 def run_character_creator() -> None:
     """Start the character creator."""
 
-    # Initialize Pygame, screen, and GUI elements.
-    screen, clock, gui_elements, settings_gui = initialize_character_creator()
+    # Initialize Pygame, screen, clock and GUI elements.
+    screen, clock, gui_elements = initialize_character_creator()
 
     # Set initial state.
     state: str = "title_screen"
@@ -54,7 +51,7 @@ def run_character_creator() -> None:
             state = sm.main_state_manager(screen, state, gui_elements, mouse_pos)
         # Settings state.
         elif state == "settings_screen":
-            gui_elements, state = sm.settings_screen(screen, state, settings_gui, gui_elements, mouse_pos)
+            gui_elements, state = sm.settings_screen(screen, state, gui_elements, mouse_pos)
 
         # Character creation states.
         elif state in custom_character_states:
