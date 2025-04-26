@@ -2,7 +2,6 @@ import pygame
 import sys
 import core.rules as rls
 from character_creation_functions import build_character_sheet
-from gui.ui_helpers import reset_position_flag
 """Contains event handler functions."""
 
 
@@ -286,6 +285,7 @@ def handle_screen_switch_reset(screen, event, gui_elements: dict, mouse_pos) -> 
     # Check for any 'KEYUP' or 'MOUSEBUTTONUP' event. While this leads to the block being executed every time an event
     # occurs, it trades this redundancy for overall maintainability.
     if (event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP) and screen.get_rect().collidepoint(mouse_pos):
-        reset_position_flag()
+        from gui.shared_data import ui_shared_data
+        ui_shared_data.reset_position_flag()
         gui_elements["continue_button"].fade_alpha = 0
         gui_elements["back_button"].fade_alpha = 0

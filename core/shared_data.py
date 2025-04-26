@@ -1,7 +1,7 @@
 from gui.screen_objects import TextField, InteractiveText
 """
 Shared data class for character creation process.
-Only instance of this class, 'settings', is created at the bottom of this module and imported/referenced in
+Only instance of this class, 'shared_data', is created at the bottom of this module and imported/referenced in
 'state_manager.py' and 'event_handlers.py'.
 """
 

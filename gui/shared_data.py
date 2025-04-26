@@ -1,0 +1,27 @@
+"""
+Shared data class for GUI.
+Only instance of this class, 'ui_shared_data', is created at the bottom of this module and imported/referenced in
+'ui_helpers.py' and 'core/event_handlers.py'.
+"""
+
+
+class UISharedData:
+    """Class for initialization and storage of attributes relevant for the positioning functions for pygame screens."""
+
+    def __init__(self):
+        """Initialize shared data attributes."""
+        # Flag to ensure screen-specific elements are positioned only once per appearance.
+        # Used in non-adaptable screens to minimize unnecessary repositioning, but not applied to adaptable screens to
+        # keep functions more maintainable.
+        self.position_flag: bool = False
+
+        # Create int variable 'dice_roll_start_time' to be used as timer for dice roll effect on screen (e.g. starting
+        # money screen).
+        self.dice_roll_start_time: int = 0
+
+    def reset_position_flag(self) -> None:
+        """Reset position flag to 'False'. Used in event handler."""
+        self.position_flag = False
+
+
+ui_shared_data = UISharedData()
