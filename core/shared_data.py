@@ -57,9 +57,9 @@ class SharedData:
             self.selected_class.selected = False
 
         # Reset attributes to 'None'.
-        self.possible_characters = None
-        self.selected_race = None
-        self.selected_class = None
+        self.possible_characters: None = None
+        self.selected_race: None = None
+        self.selected_class: None = None
 
         # Initialize/reset dict for use in 'gui/ui_helpers.py' in function 'position_race_class_elements()' to calculate
         # UI positioning, and automatically populate dict 'rc_dict' once with all races/classes available in the game
