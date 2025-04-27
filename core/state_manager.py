@@ -197,7 +197,7 @@ def random_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
                 sd.selected_race, sd.selected_class = random.choice(sd.possible_characters).split()
                 sd.character.set_race(sd.selected_race)
                 sd.character.set_class(sd.selected_class)
-                rls.set_character_values(sd.character)
+                sd.character.set_character_values()
                 state = "set_random_money"
 
             else:

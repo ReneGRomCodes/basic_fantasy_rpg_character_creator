@@ -42,7 +42,10 @@ class Character:
         self.weapon: object = item_inst.no_weapon
 
     def set_race(self, race_selection: str) -> None:
-        """Set race-specific values based on chosen race."""
+        """Set race-specific values based on chosen race.
+        ARGS:
+            race_selection: string representing the race chosen by the player.
+        """
         self.race_name = race_selection
 
         if race_selection == "Dwarf":
@@ -68,7 +71,10 @@ class Character:
             self.bonuses = (0, 0, 0, 0, 0)
 
     def set_class(self, class_selection: str) -> None:
-        """Set class-specific values based on chosen class."""
+        """Set class-specific values based on chosen class.
+        ARGS:
+            class_selection: string representing the class chosen by the player.
+        """
         self.class_name = class_selection
 
         if class_selection == "Cleric":
@@ -136,6 +142,15 @@ class Character:
                 self.abilities[item][1] += 1
             else:
                 self.abilities[item] = get_ability_score()
+
+    def set_character_values(self) -> None:
+        """Collected method calls to set multiple attributes.
+        Used in 'state_manager.py' and 'event_handlers.py'."""
+        self.set_saving_throws()
+        self.set_specials()
+        self.set_hp()
+        self.set_armor_class()
+        self.set_carrying_capacity()
 
     def set_specials(self) -> None:
         """Get special abilities and add them to attribute list 'self.specials'."""
@@ -240,7 +255,11 @@ class Character:
             return True
 
     def sell_item(self, item: object, amount: int) -> None:
-        """Sell instance 'item' of a class from 'item_model' module."""
+        """Sell instance 'item' of a class from 'item_model' module.
+        ARGS:
+            item: instance of a class from 'item_model' module, instances are listed in module 'item_instances'.
+            amount: number of items to sell.
+        """
         self.weight_carried -= item.weight * amount
         self.money += item.cost * amount
         for i in range(amount):
@@ -248,7 +267,10 @@ class Character:
 
     # Equip/unequip methods. TODO works only for armor right now.
     def equip_item(self, item: object) -> None:
-        """Equip instance 'item' from inventory and move previously equipped item to inventory."""
+        """Equip instance 'item' from inventory and move previously equipped item to inventory.
+        ARGS:
+            item: instance of a class from 'item_model' module, instances are listed in module 'item_instances'.
+        """
         item_index: int = self.inventory.index(item)
         equip = self.inventory.pop(item_index)
 
@@ -270,7 +292,10 @@ class Character:
 
     def unequip_item(self, item: object) -> None:
         """Unequip instance 'item' and move it to inventory. Set 'self.armor' and 'self.shield' to instances 'no_armor'
-        and 'no_shield' if no other item is equipped."""
+        and 'no_shield' if no other item is equipped.
+        ARGS:
+            item: instance of a class from 'item_model' module, instances are listed in module 'item_instances'.
+        """
         self.inventory.append(item)
         if not item.shield:
             self.armor = item_inst.no_armor

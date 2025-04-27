@@ -126,7 +126,7 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
                         # Set race, class and their specific values in character object after confirmation.
                         character.set_race(context1.text)
                         character.set_class(context2.text)
-                        rls.set_character_values(character)
+                        character.set_character_values()
                         state = "name_character"
 
         elif state == "select_starting_money":
