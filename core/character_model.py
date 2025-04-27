@@ -6,42 +6,42 @@ import item_instances as item_inst
 class Character:
     """Represent a character."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize race and class specific attributes and character values."""
         # Race specific attributes.
-        self.race_name = None
-        self.max_hit_die = False
-        self.race_specials = ()
-        self.bonuses = ()
+        self.race_name: str | None = None
+        self.max_hit_die: int | False = False
+        self.race_specials: tuple[str, ...] = ()
+        self.bonuses: tuple[int, ...] = ()
         # Class specific attributes.
-        self.class_name = None
-        self.class_hit_die = 0
-        self.class_specials = ()
-        self.class_saving_throws = ()
+        self.class_name: str | None = None
+        self.class_hit_die: int = 0
+        self.class_specials: tuple[str, ...] = ()
+        self.class_saving_throws: tuple[int, ...] = ()
 
         # Character attributes. Values set based on race and class.
-        self.name = None
-        self.abilities = {}
-        self.armor_class = None
-        self.attack_bonus = 1  # Default attack bonus of +1 for Lvl characters.
-        self.specials = []
-        self.hit_die = 0
-        self.xp = 0
-        self.level = 1
-        self.next_level_xp = 0
-        self.saving_throws = {}
-        self.spells = False
-        self.hp = 0
+        self.name: str | None = None
+        self.abilities: dict[str, list[int]] = {}
+        self.armor_class: int | None = None
+        self.attack_bonus: int = 1  # Default attack bonus of +1 for Lvl characters.
+        self.specials = ()
+        self.hit_die: int = 0
+        self.xp: int = 0
+        self.level: int = 1
+        self.next_level_xp: int = 0
+        self.saving_throws: dict[str, int] = {}
+        self.spells: str | False = False
+        self.hp: int = 0
         # Attributes related to inventory.
-        self.carrying_capacity = {}
-        self.weight_carried = 0
-        self.money = 0
-        self.inventory = []
-        self.armor = item_inst.no_armor
-        self.shield = item_inst.no_shield
-        self.weapon = item_inst.no_weapon
+        self.carrying_capacity: dict[str, int] = {}
+        self.weight_carried: int | float = 0
+        self.money: int | float = 0
+        self.inventory: list = []
+        self.armor: object = item_inst.no_armor
+        self.shield: object = item_inst.no_shield
+        self.weapon: object = item_inst.no_weapon
 
-    def set_race(self, race_selection):
+    def set_race(self, race_selection: str) -> None:
         """Set race-specific values based on chosen race."""
         self.race_name = race_selection
 
@@ -67,7 +67,7 @@ class Character:
             self.race_specials = ("+10% to all earned XP", )
             self.bonuses = (0, 0, 0, 0, 0)
 
-    def set_class(self, class_selection):
+    def set_class(self, class_selection: str) -> None:
         """Set class-specific values based on chosen class."""
         self.class_name = class_selection
 
@@ -113,21 +113,21 @@ class Character:
             self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
 
-    def reset_character(self):
+    def reset_character(self) -> None:
         """Reset values that may not be overwritten when creating a new character."""
         self.spells = False
         self.inventory = []
         self.weight_carried = 0
-        self.specials = []
+        self.specials = ()
 
-    def set_name(self, char_name):
+    def set_name(self, char_name: str) -> None:
         """Set name for character."""
         self.name = char_name
 
-    def set_ability_dict(self):
+    def set_ability_dict(self) -> None:
         """Build attribute dictionary 'self.abilities' for character abilities. Values are lists with base score at
         index 0 and bonus/penalty at index 1."""
-        ability_names = ("str", "dex", "con", "int", "wis", "cha")
+        ability_names: tuple[str, ...] = ("str", "dex", "con", "int", "wis", "cha")
 
         for item in ability_names:
             # Adding default INT bonus of +1.
@@ -137,20 +137,20 @@ class Character:
             else:
                 self.abilities[item] = get_ability_score()
 
-    def set_specials(self):
+    def set_specials(self) -> None:
         """Get special abilities and add them to attribute list 'self.specials'."""
         self.specials = self.race_specials + self.class_specials
 
-    def set_saving_throws(self):
+    def set_saving_throws(self) -> None:
         """Get saving throw values and add them to attribute dict 'self.saving_throws'."""
         # List of saving throws.
-        throws = ("Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells")
+        throws: tuple[str, ...] = ("Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells")
 
         for index, item in enumerate(throws):
             index = throws.index(item)
             self.saving_throws[item] = self.bonuses[index] + self.class_saving_throws[index]
 
-    def set_hp(self):
+    def set_hp(self) -> None:
         """Set HP and adds constitution bonus/penalty."""
 
         if not self.max_hit_die:
@@ -167,17 +167,17 @@ class Character:
         else:
             self.hp += self.abilities["con"][1]
 
-    def set_armor_class(self):
+    def set_armor_class(self) -> None:
         """Set armor class based on equipped armor and shield."""
         self.armor_class = self.armor.armor_class + self.shield.armor_class
 
-    def set_carrying_capacity(self):
+    def set_carrying_capacity(self) -> None:
         """Set dict 'self.carrying_capacity' based on race and ability score and bonus for "strength"."""
-        strength = self.abilities["str"][0]
+        strength: int = self.abilities["str"][0]
 
         # Keys for 'self.carrying_capacity'
-        cap_light_key = "Light Load"
-        cap_heavy_key = "Heavy Load"
+        cap_light_key: str = "Light Load"
+        cap_heavy_key: str = "Heavy Load"
 
         # Basic carrying capacities for Halflings.
         if self.race_name == "Halfling":
@@ -214,7 +214,7 @@ class Character:
                 self.carrying_capacity = {cap_light_key: 80, cap_heavy_key: 195, }
 
     # Inventory and trade related methods.
-    def buy_item(self, item, amount):
+    def buy_item(self, item: object, amount: int) -> bool:
         """Buy 'amount' number of instance 'item' of a class from 'item_model' module.
         ARGS:
             item: instance of a class from 'item_model' module, instances are listed in module 'item_instances'.
@@ -224,9 +224,9 @@ class Character:
             True: trade successful. Items added to list 'self.items', item weight added to 'self.weight_carried' and
             money subtracted from 'self.money'.
         """
-        money = self.money - (item.cost * amount)
-        weight_total = item.weight * amount
-        insufficient_money_message = f"\n\tYou do not have enough money to buy {amount} '{item.name}(s)'"
+        money: int | float = self.money - (item.cost * amount)
+        weight_total: int | float = item.weight * amount
+        insufficient_money_message: str = f"\n\tYou do not have enough money to buy {amount} '{item.name}(s)'"
 
         if money < 0:
             print(insufficient_money_message)
@@ -239,7 +239,7 @@ class Character:
                 self.inventory.append(item)
             return True
 
-    def sell_item(self, item, amount):
+    def sell_item(self, item: object, amount: int) -> None:
         """Sell instance 'item' of a class from 'item_model' module."""
         self.weight_carried -= item.weight * amount
         self.money += item.cost * amount
@@ -247,9 +247,9 @@ class Character:
             self.inventory.remove(item)
 
     # Equip/unequip methods. TODO works only for armor right now.
-    def equip_item(self, item):
+    def equip_item(self, item: object) -> None:
         """Equip instance 'item' from inventory and move previously equipped item to inventory."""
-        item_index = self.inventory.index(item)
+        item_index: int = self.inventory.index(item)
         equip = self.inventory.pop(item_index)
 
         if not equip.shield:
@@ -268,7 +268,7 @@ class Character:
 
         self.set_armor_class()
 
-    def unequip_item(self, item):
+    def unequip_item(self, item: object) -> None:
         """Unequip instance 'item' and move it to inventory. Set 'self.armor' and 'self.shield' to instances 'no_armor'
         and 'no_shield' if no other item is equipped."""
         self.inventory.append(item)

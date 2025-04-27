@@ -9,7 +9,7 @@ Only instance of this class, 'shared_data', is created at the bottom of this mod
 class SharedData:
     """Class for initialization and storage of attributes relevant throughout the character creation process."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize shared data attributes."""
         # Variable for later instances of class objects.
         self.character: object  # Instance 'Character()'.

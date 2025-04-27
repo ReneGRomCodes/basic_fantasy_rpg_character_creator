@@ -8,7 +8,7 @@ Only instance of this class, 'ui_shared_data', is created at the bottom of this 
 class UISharedData:
     """Class for initialization and storage of attributes relevant for the positioning functions for pygame screens."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize shared data attributes."""
         # Flag to ensure screen-specific elements are positioned only once per appearance.
         # Used in non-adaptable screens to minimize unnecessary repositioning, but not applied to adaptable screens to
