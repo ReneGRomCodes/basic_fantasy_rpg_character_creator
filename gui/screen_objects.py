@@ -298,7 +298,7 @@ class InteractiveText(TextField):
     based on user input like mouse collision or mouse button event."""
 
     def __init__(self, screen, text: str, size: int, bg_color: bool | str | tuple[int, int, int] =False,
-                 panel: bool = False, select: bool = False) -> None:
+                 panel: bool | object = False, select: bool = False) -> None:
         """Initialize an interactive text field.
         ARGS:
             screen: pygame window.

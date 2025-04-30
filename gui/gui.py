@@ -7,7 +7,7 @@ def show_title_screen(screen, gui_elements: dict) -> None:
     """Show title screen.
     ARGS:
         screen: PyGame window.
-        gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Assign gui_elements to variables.
     title = gui_elements["title_screen_fields"][0]
@@ -33,7 +33,7 @@ def show_main_menu(screen, gui_elements: dict, mouse_pos) -> None:
     """Display main menu.
     ARGS:
         screen: PyGame window.
-        gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
     # Assign gui_elements to variables.
@@ -57,7 +57,7 @@ def show_character_menu(screen, gui_elements: dict, mouse_pos) -> None:
     """Display character menu.
     ARGS:
         screen: PyGame window.
-        gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
     # Assign gui_elements to variables.
@@ -80,7 +80,7 @@ def show_ability_scores_screen(screen, character, gui_elements: dict, mouse_pos)
     ARGS:
         screen: PyGame window.
         character: instance of class 'Character()'.
-        gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
     # Assign fields and buttons from 'gui_elements' to variables.
@@ -172,7 +172,7 @@ def show_naming_screen(screen, character, gui_elements: dict, mouse_pos) -> None
     ARGS:
         screen: PyGame window.
         character: instance of class 'Character()'.
-        gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
     # Assign fields and buttons from 'gui_elements' to variables.
@@ -243,7 +243,7 @@ def show_character_complete_screen(screen, gui_elements: dict, mouse_pos) -> Non
     """Show message confirming completion of basic character creation and let user proceed to character sheet.
     ARGS:
         screen: PyGame window.
-        gui_elements: gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
     # Assign text field and button from 'gui_elements' to variables.

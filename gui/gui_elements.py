@@ -243,7 +243,7 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
     # 'pygame_textinput' and 'TextInputField' instances.
     character_input_font: pygame.font.Font = pygame.font.Font(settings.font, text_medium)
     character_name_input: pygame_textinput.TextInputVisualizer = pygame_textinput.TextInputVisualizer(font_object=character_input_font)
-    character_name_field: TextInputField = so.TextInputField(screen, character_name_input, screen_width/2)
+    character_name_field: TextInputField = so.TextInputField(screen, character_name_input, int(screen_width/2))
 
 
     # Starting money screen.
@@ -260,7 +260,7 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
     money_input_prompt: TextField = so.TextField(screen, "Enter amount of gold for your character", text_medium)
     money_input_font: pygame.font.Font = pygame.font.Font(settings.font, text_medium)
     money_amount_input: pygame_textinput.TextInputVisualizer = pygame_textinput.TextInputVisualizer(font_object=money_input_font)
-    money_amount_field: TextInputField = so.TextInputField(screen, money_amount_input, screen_width / 4)
+    money_amount_field: TextInputField = so.TextInputField(screen, money_amount_input, int(screen_width / 4))
 
 
     # Character creation complete screen.

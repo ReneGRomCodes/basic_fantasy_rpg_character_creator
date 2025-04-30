@@ -122,7 +122,7 @@ class CharacterSheet:
         # for the fact that number of abilities in 'character.specials' is unpredictable at the start of the character
         # creation. 'draw_format_dynamic_field()' is called from 'show_character_sheet_screen()'.
         self.special_ability: TextField = so.TextField(screen, "", self.text_standard, multi_line=True,
-                                                       surface_width=self.screen_width / 3)
+                                                       surface_width=int(self.screen_width / 3))
         # List to store y-position values for each state of 'self.special_ability' as created in function
         # 'initialize_character_sheet()' in 'state_manager.py'.
         self.specials_pos_y_list: list[int] = []
@@ -357,7 +357,8 @@ class CharacterSheet:
             # Create object with default values to 'hard reset' 'field_object'. Quick and dirty fix for 'field_object'
             # refusing to be reset any other way if 'multi_line' is 'True'.
             if field_object.multi_line:
-                default_object = so.TextField(self.screen, "", self.text_standard, multi_line=True, surface_width=self.screen_width / 3)
+                default_object = so.TextField(self.screen, "", self.text_standard, multi_line=True,
+                                              surface_width=int(self.screen_width / 3))
                 field_object = default_object
 
         return pos_y_list
