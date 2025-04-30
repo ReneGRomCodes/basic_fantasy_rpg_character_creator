@@ -8,7 +8,7 @@ from gui.screen_objects import TextField
 class CharacterSheet:
     """A class to store and manage character sheet elements."""
 
-    def __init__(self, screen, character, gui_elements) -> None:
+    def __init__(self, screen, character: Character, gui_elements: dict) -> None:
         """Initialize the CharacterSheet object with elements.
         ARGS:
             screen: PyGame window.

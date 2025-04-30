@@ -50,7 +50,7 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
         then be positioned and blitted to the screen using the following method::
         image_surface = pygame.transform.scale(pygame.image.load(enter_your_image_here).convert(), (width, height))
         'enter_your_image_here' has to be added to and retrieved from 'Settings' instance 'settings'.
-    Example:
+        Example:
         background_image = pygame.transform.scale(pygame.image.load(settings.bg_image).convert(), (screen_width, screen_height))
 
 
