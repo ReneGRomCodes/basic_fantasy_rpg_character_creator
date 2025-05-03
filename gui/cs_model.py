@@ -1,3 +1,5 @@
+import pygame.draw
+
 import gui.screen_objects as so
 from core.character_model import Character
 from gui.screen_objects import TextField
@@ -15,7 +17,6 @@ class CharacterSheet:
             character: Instance of class 'Character'.
             gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         """
-
         # Assign character object to attribute.
         self.character: Character = character
 
@@ -164,6 +165,8 @@ class CharacterSheet:
         """Draw character sheet elements on screen."""
         # TODO Draw temporary 'return to main' message.
         self.TEMP_RETURN_TO_MAIN_MESSAGE.draw_text()
+        # TODO Draw grid for positioning.
+        self.draw_grid()
 
         # Draw screen title.
         self.title.draw_text()
@@ -407,3 +410,45 @@ class CharacterSheet:
             # Position and draw 'field_object'.
             field_object.text_rect.top, field_object.text_rect.left = pos_y_list[index], anchor.text_rect.left
             field_object.draw_text()
+
+    """
+    WORK IN PROGRESS
+    Methods for new, simplified positioning system using a grid array
+    """
+
+    def draw_grid(self) -> None:
+        grid_array: tuple[tuple, ...] = (
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        (False, False, False, False, False, False, False, False, False, False, False),
+        )
+
+        grid_width: int = len(grid_array[0])
+        grid_height: int = len(grid_array)
+        grid_cell_width: int = int(self.screen_width / grid_width)
+        grid_cell_height: int = int(self.screen_height / grid_height)
+
+        grid_start: list[int] = [0, 0]
+
+        for row in grid_array:
+            pygame.draw.line(self.screen, "black", tuple(grid_start), (self.screen_rect.right, grid_start[1]))
+
+            for column in row:
+                pygame.draw.line(self.screen, "black", tuple(grid_start), (grid_start[0], self.screen_rect.bottom))
+                grid_start[0] += grid_cell_width
+
+            grid_start[0] = 0
+            grid_start[1] += int(grid_cell_height)
