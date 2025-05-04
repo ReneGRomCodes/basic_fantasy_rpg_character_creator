@@ -149,11 +149,10 @@ class CharacterSheet:
         self.special_abilities_title: TextField = so.TextField(screen, "SPECIAL ABILITIES", self.text_standard)
         # 'special_ability' object has its text dynamically modified in method 'draw_format_dynamic_field()' to account
         # for the fact that number of abilities in 'character.specials' is unpredictable at the start of the character
-        # creation. 'draw_format_dynamic_field()' is called from 'show_character_sheet_screen()'.
+        # creation.
         self.special_ability: TextField = so.TextField(screen, "", self.text_standard, multi_line=True,
                                                        surface_width=int(self.screen_width / 3))
-        # List to store y-position values for each state of 'self.special_ability' as created in function
-        # 'initialize_character_sheet()' in 'state_manager.py'.
+        # Create list to store y-position values for each state of 'self.special_ability'.
         self.specials_pos_y_list: list[int] = (
             self.get_position_dynamic_field(self.special_ability, self.character.specials, self.special_abilities_title,
                                             text_prefix=" - "))
@@ -169,8 +168,7 @@ class CharacterSheet:
         # to account for the fact that number of specials in 'character.class_specials' is unpredictable at the start of
         # the character creation.
         self.class_special: TextField = so.TextField(screen, "", self.text_standard)
-        # List to store y-position values for each state of 'self.class_special' as created in function
-        # 'initialize_character_sheet()' in 'state_manager.py'.
+        # Create list to store y-position values for each state of 'self.class_special'.
         self.class_special_pos_y_list: list[int] =(
             self.get_position_dynamic_field(self.class_special, self.character.class_specials, self.class_specials_title))
 
@@ -253,7 +251,7 @@ class CharacterSheet:
                                        self.class_special_pos_y_list)
 
 
-    """Positioning methods for use in 'initialize_character_sheet()' function in 'core/state_manager.py' when the final
+    """Positioning method for use in 'initialize_character_sheet()' function in 'core/state_manager.py' when the final
     character sheet is initialized."""
 
     def position_cs_elements(self):
