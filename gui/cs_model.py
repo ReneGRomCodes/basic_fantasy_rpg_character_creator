@@ -1,5 +1,4 @@
-import pygame.draw
-
+import pygame
 import gui.screen_objects as so
 from core.character_model import Character
 from gui.screen_objects import TextField
@@ -22,7 +21,7 @@ class CharacterSheet:
 
         # Assign screen rect attributes.
         self.screen = screen
-        self.screen_rect = screen.get_rect()
+        self.screen_rect: pygame.Rect = screen.get_rect()
         self.screen_height: int = self.screen_rect.height
         self.screen_width: int = self.screen_rect.width
 
@@ -33,6 +32,35 @@ class CharacterSheet:
         self.text_small: int = gui_elements["text_small"]
         self.title_spacing: int = gui_elements["menu_title_spacing"]
         self.default_spacing: int = gui_elements["default_edge_spacing"]
+
+        # Screen grid for positioning of character sheet elements.
+        self.screen_grid_array: tuple[tuple, ...] = (
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+        )
+        # Set following attribute to 'True' to show grid on screen for layout design.
+        self.show_grid = True
 
         # Following character sheet elements are paired, with attributes having the suffix '_field' representing the
         # field label, while '_char' represent the value from the 'Character' class object.
@@ -126,7 +154,9 @@ class CharacterSheet:
                                                        surface_width=int(self.screen_width / 3))
         # List to store y-position values for each state of 'self.special_ability' as created in function
         # 'initialize_character_sheet()' in 'state_manager.py'.
-        self.specials_pos_y_list: list[int] = []
+        self.specials_pos_y_list: list[int] = (
+            self.get_position_dynamic_field(self.special_ability, self.character.specials, self.special_abilities_title,
+                                            text_prefix=" - "))
 
         # Spell elements for classes 'Magic-User', 'Cleric' or combination classes.
         self.spells_title: TextField = so.TextField(screen, "SPELLS", self.text_standard)
@@ -135,17 +165,20 @@ class CharacterSheet:
         # Class specials elements.
         self.class_specials_title: TextField = so.TextField(screen, character.class_name.upper() + " SPECIALS",
                                                             self.text_standard)
-        # 'class_special' object has its text dynamically modified in method 'draw_format_dynamic_field()' to account
-        # for the fact that number of specials in 'character.class_specials' is unpredictable at the start of the
-        # character creation. 'draw_format_dynamic_field()' is called from 'show_character_sheet_screen()'.
+        # 'class_special' object has its text and position dynamically modified in method 'draw_format_dynamic_field()'
+        # to account for the fact that number of specials in 'character.class_specials' is unpredictable at the start of
+        # the character creation.
         self.class_special: TextField = so.TextField(screen, "", self.text_standard)
         # List to store y-position values for each state of 'self.class_special' as created in function
         # 'initialize_character_sheet()' in 'state_manager.py'.
-        self.class_special_pos_y_list: list[int] = []
+        self.class_special_pos_y_list: list[int] =(
+            self.get_position_dynamic_field(self.class_special, self.character.class_specials, self.class_specials_title))
+
         # TODO ignore me... I am just a marker so the idiot coding this knows where he is at right now.
         self.TEMP_RETURN_TO_MAIN_MESSAGE: TextField = so.TextField(
             screen, "WORK IN PROGRESS - Press any key to return to main menu.", self.text_large, bg_color="red")
         # TODO ignore me... I am just a marker so the idiot coding this knows where he is at right now.
+
         # Inventory elements.
         self.money: TextField = so.TextField(screen, "Money:", self.text_standard)
         self.carrying_capacity: TextField = so.TextField(screen, "Carrying Capacity:", self.text_standard)
@@ -161,12 +194,14 @@ class CharacterSheet:
 
     """Main method to show character sheet. Called from main loop in 'main.py'."""
 
-    def show_character_sheet_screen(self):
+    def show_character_sheet_screen(self) -> None:
         """Draw character sheet elements on screen."""
         # TODO Draw temporary 'return to main' message.
         self.TEMP_RETURN_TO_MAIN_MESSAGE.draw_text()
-        # TODO Draw grid for positioning.
-        self.draw_grid()
+
+        # Draw layout grid on screen if 'self.show_grid' is set to 'True'.
+        if self.show_grid:
+            self.draw_grid()
 
         # Draw screen title.
         self.title.draw_text()
@@ -322,7 +357,31 @@ class CharacterSheet:
         # Group starting on 'x_column_3, 'y_row_5'
         group_ref_rect.top, group_ref_rect.left = y_row_5, x_column_3
 
-    def get_position_dynamic_field(self, field_object, char_attr_list, anchor, text_prefix=""):
+
+    """Helper methods for use within this class."""
+
+    def format_ability_bonus_penalty(self) -> None:
+        """Format output for 0/positive values of ability score's bonus and penalty. Remove value if it is '0' or add '+'
+        if value is positive."""
+        for group in self.ability_groups:
+            if int(group[2].text) == 0:
+                group[2].text = ""
+            elif int(group[2].text) > 0:
+                group[2].text = "+" + group[2].text
+
+            # Update 'group[2].text_surface' and get new rect.
+            group[2].render_new_text_surface()
+
+    def format_saving_throw_scores(self) -> None:
+        """Format output for saving throws by adding a '+' to the score."""
+        for group in self.saving_throw_groups:
+            group[1].text = "+" + group[1].text
+
+            # Update 'group[1].text_surface' and get new rect.
+            group[1].render_new_text_surface()
+
+    def get_position_dynamic_field(self, field_object: TextField, char_attr_list: list[str] | tuple[str, ...],
+                                   anchor: TextField, text_prefix: str = "") -> list[int]:
         """
         Create, populate and return list 'pos_y_list' with y-positions for each state of 'field_object'.
         ARGS:
@@ -338,7 +397,7 @@ class CharacterSheet:
         # Use 'anchor' rect as reference for starting row.
         pos_y = anchor.text_rect.bottom
         # Create list to be returned.
-        pos_y_list = []
+        pos_y_list: list[int] = []
 
         for index, char_attr_item in enumerate(char_attr_list):
             # Assign text to and expand 'field_object.text', update 'field_object.text_surface' and get new rect.
@@ -350,7 +409,7 @@ class CharacterSheet:
                 pos_y_list.append(pos_y)
             # Calculate and append new 'pos_y' in subsequent iterations.
             else:
-                pos_y = pos_y_list[index - 1] + pos_y_list[index]
+                pos_y: int = pos_y_list[index - 1] + pos_y_list[index]
                 pos_y_list[index] = pos_y
 
             # Append height of current 'text_rect' to list for use in following iteration where it will then be overwritten
@@ -360,39 +419,17 @@ class CharacterSheet:
             # Create object with default values to 'hard reset' 'field_object'. Quick and dirty fix for 'field_object'
             # refusing to be reset any other way if 'multi_line' is 'True'.
             if field_object.multi_line:
-                default_object = so.TextField(self.screen, "", self.text_standard, multi_line=True,
+                default_object: TextField = so.TextField(self.screen, "", self.text_standard, multi_line=True,
                                               surface_width=int(self.screen_width / 3))
-                field_object = default_object
+                field_object: TextField = default_object
 
         return pos_y_list
 
-
-    """Helper methods for use within this class."""
-
-    def format_ability_bonus_penalty(self):
-        """Format output for 0/positive values of ability score's bonus and penalty. Remove value if it is '0' or add '+'
-        if value is positive."""
-        for group in self.ability_groups:
-            if int(group[2].text) == 0:
-                group[2].text = ""
-            elif int(group[2].text) > 0:
-                group[2].text = "+" + group[2].text
-
-            # Update 'group[2].text_surface' and get new rect.
-            group[2].render_new_text_surface()
-
-    def format_saving_throw_scores(self):
-        """Format output for saving throws by adding a '+' to the score."""
-        for group in self.saving_throw_groups:
-            group[1].text = "+" + group[1].text
-
-            # Update 'group[1].text_surface' and get new rect.
-            group[1].render_new_text_surface()
-
-    def draw_format_dynamic_field(self, field_object, char_attr_list, anchor, pos_y_list, text_prefix=""):
+    def draw_format_dynamic_field(self, field_object: TextField, char_attr_list: list[str] | tuple[str, ...],
+                                  anchor: TextField, pos_y_list: list[int], text_prefix: str = "") -> None:
         """
-        Dynamically change 'text' attribute for 'field_object' based on list/tuple 'char_attr_list', and draw it on
-        screen.
+        Dynamically change 'text' attribute for 'field_object' based on list/tuple 'char_attr_list', and position/draw
+        it on screen.
         ARGS:
             field_object: instance of class 'TextField' to be dynamically modified using values from 'char_attr_list'.
             char_attr_list: attribute of type LIST or TUPLE from instance of 'Character' containing strings to be
@@ -411,44 +448,22 @@ class CharacterSheet:
             field_object.text_rect.top, field_object.text_rect.left = pos_y_list[index], anchor.text_rect.left
             field_object.draw_text()
 
-    """
-    WORK IN PROGRESS
-    Methods for new, simplified positioning system using a grid array
-    """
-
     def draw_grid(self) -> None:
-        grid_array: tuple[tuple, ...] = (
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        (False, False, False, False, False, False, False, False, False, False, False),
-        )
+        """Draw layout grid on screen based on size of 'self.screen_grid_array'.
+        NOTE: 'self.show_grid' has to be set to 'True' for the grid to appear on screen."""
+        grid_cell_width: int = int(self.screen_width / len(self.screen_grid_array[0]))
+        grid_cell_height: int = int(self.screen_height / len(self.screen_grid_array))
+        grid_pos: list[int] = [0, 0]
 
-        grid_width: int = len(grid_array[0])
-        grid_height: int = len(grid_array)
-        grid_cell_width: int = int(self.screen_width / grid_width)
-        grid_cell_height: int = int(self.screen_height / grid_height)
-
-        grid_start: list[int] = [0, 0]
-
-        for row in grid_array:
-            pygame.draw.line(self.screen, "black", tuple(grid_start), (self.screen_rect.right, grid_start[1]))
+        # Draw lines for each row and column on screen.
+        for row in self.screen_grid_array:
+            pygame.draw.line(self.screen, "black", tuple(grid_pos), (self.screen_rect.right, grid_pos[1]))
 
             for column in row:
-                pygame.draw.line(self.screen, "black", tuple(grid_start), (grid_start[0], self.screen_rect.bottom))
-                grid_start[0] += grid_cell_width
+                pygame.draw.line(self.screen, "black", tuple(grid_pos), (grid_pos[0], self.screen_rect.bottom))
+                # Set new x-position for next column.
+                grid_pos[0] += grid_cell_width
 
-            grid_start[0] = 0
-            grid_start[1] += int(grid_cell_height)
+            # Reset x-position to '0' and set new y-position for next row.
+            grid_pos[0] = 0
+            grid_pos[1] += int(grid_cell_height)

@@ -235,12 +235,6 @@ def character_sheet_state_manager(screen, state: str, gui_elements: dict) -> str
         sd.cs_sheet = CharacterSheet(screen, sd.character, gui_elements)
         # Set positions for character sheet elements on screen.
         sd.cs_sheet.position_cs_elements()
-        sd.cs_sheet.specials_pos_y_list =(
-            sd.cs_sheet.get_position_dynamic_field(sd.cs_sheet.special_ability, sd.character.specials,
-                                                   sd.cs_sheet.special_abilities_title, text_prefix=" - "))
-        sd.cs_sheet.class_special_pos_y_list =(
-            sd.cs_sheet.get_position_dynamic_field(sd.cs_sheet.class_special, sd.character.class_specials,
-                                                   sd.cs_sheet.class_specials_title))
 
         state = "character_sheet"
 
