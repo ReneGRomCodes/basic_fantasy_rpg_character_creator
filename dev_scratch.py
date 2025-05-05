@@ -11,5 +11,4 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO Remove function call 'build_character_sheet()' from event handler when final character sheet is done.
 
 # PRIORITIES:
-# TODO finish character sheet screen ffs!!!
 # TODO Re-structure 'rules.py' and 'Character' class to get rid of overlap

@@ -137,8 +137,6 @@ class CharacterSheet:
             (self.saving_throw_3_label, self.saving_throw_3_score),
             (self.saving_throw_4_label, self.saving_throw_4_score),
         )
-        # Format saving throw score output. See method docstring for details.
-        self.format_saving_throw_scores()
 
         # Special abilities info elements.
         self.special_abilities: TextField = so.TextField(screen, "SPECIAL ABILITIES", self.text_standard)  # ANCHOR
@@ -193,7 +191,7 @@ class CharacterSheet:
             (False, self.name, False, self.xp, False, self.race, False, self.cls, False, self.level, False, self.next_lvl_xp, False, False, False, False),
             (False, self.armor_class, False, self.health_points, False, self.attack_bonus, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, self.abilities, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, self.abilities, False, False, False, self.saving_throws, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -235,6 +233,7 @@ class CharacterSheet:
         # Draw character sheet elements.
         self.draw_basic_info()
         self.draw_ability_scores()
+        self.draw_saving_throws()
 
 
     """Positioning method for use in 'initialize_character_sheet()' function in 'core/state_manager.py' when the final
@@ -248,6 +247,7 @@ class CharacterSheet:
         # Position further elements.
         self.position_basic_info()
         self.position_ability_scores()
+        self.position_saving_throws()
 
 
     """Helper methods for use within this class."""
@@ -318,13 +318,39 @@ class CharacterSheet:
             for item in group:
                 item.draw_text()
 
-    def format_saving_throw_scores(self) -> None:
+    def format_saving_throws(self) -> None:
         """Format output for saving throws by adding a '+' to the score."""
         for group in self.saving_throw_groups:
             group[1].text = "+" + group[1].text
 
             # Update 'group[1].text_surface' and get new rect.
             group[1].render_new_text_surface()
+
+    def position_saving_throws(self) -> None:
+        """Format and position saving throw labels and values on screen."""
+        # Format saving throws output.
+        self.format_saving_throws()
+
+        # Values for spacing between elements.
+        score_spacing: int = int(self.screen_width / 5)
+
+        for index, group in enumerate(self.saving_throw_groups):
+            if index == 0:
+                group[0].text_rect.topleft = self.saving_throws.text_rect.bottomleft
+            else:
+                group[0].text_rect.topleft = self.saving_throw_groups[index - 1][0].text_rect.bottomleft
+
+            group[1].text_rect.top, group[1].text_rect.right = (group[0].text_rect.top,
+                                                                group[0].text_rect.left + score_spacing)
+
+    def draw_saving_throws(self) -> None:
+        """Draw saving throw section on screen."""
+        # Draw sections anchor object 'self.abilities'.
+        self.saving_throws.draw_text()
+
+        for group in self.saving_throw_groups:
+            for item in group:
+                item.draw_text()
 
     def get_position_dynamic_field(self, field_object: TextField, char_attr_list: list[str] | tuple[str, ...],
                                    anchor: TextField, text_prefix: str = "") -> list[int]:
