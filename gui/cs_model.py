@@ -299,11 +299,7 @@ class CharacterSheet:
         bonus_penalty_spacing: int = int(self.screen_width / 40)
 
         for index, group in enumerate(self.ability_groups):
-            if index == 0:
-                group[0].text_rect.topleft = self.abilities.text_rect.bottomleft
-            else:
-                group[0].text_rect.topleft = self.ability_groups[index - 1][0].text_rect.bottomleft
-
+            self.position_first_group_element(index, group, self.ability_groups, self.abilities)
             group[1].text_rect.top, group[1].text_rect.right = (group[0].text_rect.top,
                                                                 group[0].text_rect.left + score_spacing)
             group[2].text_rect.top, group[2].text_rect.left = (group[1].text_rect.top,
@@ -313,10 +309,8 @@ class CharacterSheet:
         """Draw ability score section on screen."""
         # Draw sections anchor object 'self.abilities'.
         self.abilities.draw_text()
-
-        for group in self.ability_groups:
-            for item in group:
-                item.draw_text()
+        # Draw ability score section.
+        self.draw_grouped_fields(self.ability_groups)
 
     def format_saving_throws(self) -> None:
         """Format output for saving throws by adding a '+' to the score."""
@@ -335,20 +329,39 @@ class CharacterSheet:
         score_spacing: int = int(self.screen_width / 5)
 
         for index, group in enumerate(self.saving_throw_groups):
-            if index == 0:
-                group[0].text_rect.topleft = self.saving_throws.text_rect.bottomleft
-            else:
-                group[0].text_rect.topleft = self.saving_throw_groups[index - 1][0].text_rect.bottomleft
-
+            self.position_first_group_element(index, group, self.saving_throw_groups, self.saving_throws)
             group[1].text_rect.top, group[1].text_rect.right = (group[0].text_rect.top,
                                                                 group[0].text_rect.left + score_spacing)
 
     def draw_saving_throws(self) -> None:
         """Draw saving throw section on screen."""
-        # Draw sections anchor object 'self.abilities'.
+        # Draw sections anchor object 'self.saving_throws'.
         self.saving_throws.draw_text()
+        # Draw saving throws section.
+        self.draw_grouped_fields(self.saving_throw_groups)
 
-        for group in self.saving_throw_groups:
+    def position_first_group_element(self, index: int, group: tuple[TextField, ...],
+                                     array: tuple[tuple[TextField, ...], ...], anchor: TextField) -> None:
+        """Position the first element of a group within a vertically stacked section.
+        If it's the first group in the section (index 0), align its top-left corner to the bottom-left of the section's
+        anchor. Otherwise, stack it below the previous group's first element.
+        ARGS:
+            index: index of the current group in the array, passed from enumerate()
+            group: tuple of TextField elements (e.g. label + value) to position
+            array: full tuple containing all grouped elements in the section
+            anchor: anchor TextField that marks the top of this section (e.g. section label)
+        """
+        if index == 0:
+            group[0].text_rect.topleft = anchor.text_rect.bottomleft
+        else:
+            group[0].text_rect.topleft = array[index - 1][0].text_rect.bottomleft
+
+    def draw_grouped_fields(self, array: tuple[tuple[TextField, ...], ...]) -> None:
+        """Draw grouped character sheet elements from array.
+        ARGS:
+            array: tuple containing all grouped elements in the section.
+        """
+        for group in array:
             for item in group:
                 item.draw_text()
 
