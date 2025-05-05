@@ -35,13 +35,23 @@ class CharacterSheet:
         self.title_spacing: int = gui_elements["menu_title_spacing"]
         self.default_spacing: int = gui_elements["default_edge_spacing"]
 
-
-        # Following character sheet elements are paired, with attributes having no suffix representing the field label
-        # which serves as 'anchor' object for positioning, while '_char' suffix represents the value from the 'Character'
-        # class object.
-
         # Initialize character sheet elements.
         self.title: TextField = so.TextField(screen, "- CHARACTER SHEET -", self.text_medium)
+
+        """
+        Character sheet elements are positioned using a grid-based system. Each 'anchor' field (usually just the field
+        label) is placed into 'self.screen_grid_array' at the bottom of '__init__()', which drives the initial layout
+        logic.
+
+        Any related elements (like '_char', '_score', etc.) are positioned relative to their anchor using section-specific
+        methods. These value elements are grouped into arrays used by those methods to handle layout based on the anchor's
+        grid position.
+
+        NOTE: Each section of the screen may handle positioning a bit differently. '# ANCHOR' comments indicate the anchor
+        object, but that object isn't always part of the group array itself.
+        TL;DR: if you're tweaking layout logic, check if the anchor is included in the group array or not, and peek at
+        the related method to see how it's doing its thing ;)
+        """
 
         # Character sheet base info elements.
         self.name: TextField = so.TextField(screen, "Name: ", self.text_standard)  # ANCHOR
@@ -56,14 +66,25 @@ class CharacterSheet:
         self.level_char: TextField = so.TextField(screen, str(character.level), self.text_standard)
         self.next_lvl_xp: TextField = so.TextField(screen, "XP to next level: ", self.text_standard)  # ANCHOR
         self.next_lvl_xp_char: TextField = so.TextField(screen, str(character.next_level_xp), self.text_standard)
-
-        # Combat related info elements.
+        # Combat related basic info elements.
         self.armor_class: TextField = so.TextField(screen, "Armor Class: ", self.text_standard)  # ANCHOR
         self.armor_class_char: TextField = so.TextField(screen, str(character.armor_class), self.text_standard)
         self.health_points: TextField = so.TextField(screen, "Health Points: ", self.text_standard)  # ANCHOR
         self.health_points_char: TextField = so.TextField(screen, str(character.hp), self.text_standard)
         self.attack_bonus: TextField = so.TextField(screen, "Attack Bonus: +", self.text_standard)  # ANCHOR
         self.attack_bonus_char: TextField = so.TextField(screen, str(character.attack_bonus), self.text_standard)
+        # Array of basic info and combat info groups for cleaner positioning/drawing in class methods.
+        self.basic_info_groups: tuple[tuple[TextField, TextField], ...] = (
+            (self.name, self.name_char),
+            (self.xp, self.xp_char),
+            (self.race, self.race_char),
+            (self.cls, self.cls_char),
+            (self.level, self.level_char),
+            (self.next_lvl_xp, self.next_lvl_xp_char),
+            (self.armor_class, self.armor_class_char),
+            (self.health_points, self.health_points_char),
+            (self.attack_bonus, self.attack_bonus_char),
+        )
 
         # Abilities info elements.
         # Suffixes '_score' and '_bonus_penalty' indicate objects with values from the 'Character' class object.
@@ -100,23 +121,23 @@ class CharacterSheet:
 
         # Saving throws info elements.
         self.saving_throws: TextField = so.TextField(screen, "SAVING THROWS", self.text_standard)  # ANCHOR
-        self.saving_throw_0_field: TextField = so.TextField(screen, "Death Ray or Poison:", self.text_standard)
+        self.saving_throw_0_label: TextField = so.TextField(screen, "Death Ray or Poison:", self.text_standard)
         self.saving_throw_0_score: TextField = so.TextField(screen, str(character.saving_throws["Death Ray or Poison"]), self.text_standard)
-        self.saving_throw_1_field: TextField = so.TextField(screen, "Magic Wands:", self.text_standard)
+        self.saving_throw_1_label: TextField = so.TextField(screen, "Magic Wands:", self.text_standard)
         self.saving_throw_1_score: TextField = so.TextField(screen, str(character.saving_throws["Magic Wands"]), self.text_standard)
-        self.saving_throw_2_field: TextField = so.TextField(screen, "Paralysis or Petrify:", self.text_standard)
+        self.saving_throw_2_label: TextField = so.TextField(screen, "Paralysis or Petrify:", self.text_standard)
         self.saving_throw_2_score: TextField = so.TextField(screen, str(character.saving_throws["Paralysis or Petrify"]), self.text_standard)
-        self.saving_throw_3_field: TextField = so.TextField(screen, "Dragon Breath:", self.text_standard)
+        self.saving_throw_3_label: TextField = so.TextField(screen, "Dragon Breath:", self.text_standard)
         self.saving_throw_3_score: TextField = so.TextField(screen, str(character.saving_throws["Dragon Breath"]), self.text_standard)
-        self.saving_throw_4_field: TextField = so.TextField(screen, "Spells:", self.text_standard)
+        self.saving_throw_4_label: TextField = so.TextField(screen, "Spells:", self.text_standard)
         self.saving_throw_4_score: TextField = so.TextField(screen, str(character.saving_throws["Spells"]), self.text_standard)
         # Array of saving throws groups for cleaner positioning/drawing in class methods.
         self.saving_throw_groups: tuple[tuple[TextField, TextField], ...] = (
-            (self.saving_throw_0_field, self.saving_throw_0_score),
-            (self.saving_throw_1_field, self.saving_throw_1_score),
-            (self.saving_throw_2_field, self.saving_throw_2_score),
-            (self.saving_throw_3_field, self.saving_throw_3_score),
-            (self.saving_throw_4_field, self.saving_throw_4_score),
+            (self.saving_throw_0_label, self.saving_throw_0_score),
+            (self.saving_throw_1_label, self.saving_throw_1_score),
+            (self.saving_throw_2_label, self.saving_throw_2_score),
+            (self.saving_throw_3_label, self.saving_throw_3_score),
+            (self.saving_throw_4_label, self.saving_throw_4_score),
         )
         # Format saving throw score output. See method docstring for details.
         self.format_saving_throw_scores()
@@ -148,10 +169,8 @@ class CharacterSheet:
         self.class_special_pos_y_list: list[int] =(
             self.get_position_dynamic_field(self.class_special, self.character.class_specials, self.class_specials))
 
-        # TODO ignore me... I am just a marker so the idiot coding this knows where he is at right now.
         self.TEMP_RETURN_TO_MAIN_MESSAGE: TextField = so.TextField(
             screen, "WORK IN PROGRESS - Press any key to return to main menu.", self.text_large, bg_color="red")
-        # TODO ignore me... I am just a marker so the idiot coding this knows where he is at right now.
 
         # Inventory elements.
         self.money: TextField = so.TextField(screen, "Money:", self.text_standard)  # ANCHOR
@@ -165,14 +184,19 @@ class CharacterSheet:
         self.armor_ac: TextField = so.TextField(screen, "AC:", self.text_standard) # Armor class for worn armor only, not including
                                                                         # base armor class for character.  # ANCHOR
 
-        # Screen grid for positioning of anchor elements. Further elements that belong to anchors are then positioned
-        # via helper methods.
+        """
+        Screen grid for positioning of anchor elements. Further elements that belong to anchors are then positioned
+        dynamically via helper methods if value elements are added to their corresponding group array above.
+        """
+        # Set following attribute to 'True' to show grid on screen for layout design.
+        self.show_grid = True
+
         self.screen_grid_array: tuple[tuple, ...] = (
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, self.name, False, self.xp, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, self.name, False, self.xp, False, self.race, False, self.cls, False, self.level, False, self.next_lvl_xp, False, False),
+            (False, self.armor_class, False, self.health_points, False, self.attack_bonus, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -192,8 +216,6 @@ class CharacterSheet:
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
         )
-        # Set following attribute to 'True' to show grid on screen for layout design.
-        self.show_grid = True
 
 
     """Main method to show character sheet. Called from main loop in 'main.py'."""
@@ -212,16 +234,7 @@ class CharacterSheet:
 
         # Draw character sheet elements.
         # Basic character info fields.
-        self.name.draw_text()
-        self.xp.draw_text()
-        self.race.draw_text()
-        self.cls.draw_text()
-        self.level.draw_text()
-        self.next_lvl_xp.draw_text()
-        # Draw combat info fields.
-        self.armor_class.draw_text()
-        self.health_points.draw_text()
-        self.attack_bonus.draw_text()
+        self.draw_basic_info()
 
 
     """Positioning method for use in 'initialize_character_sheet()' function in 'core/state_manager.py' when the final
@@ -230,6 +243,7 @@ class CharacterSheet:
     def position_cs_elements(self) -> None:
         """Position instances of class 'TextField' on screen."""
         self.position_anchors()
+        self.position_basic_info()
 
 
     """Helper methods for use within this class."""
@@ -246,6 +260,18 @@ class CharacterSheet:
                     element.text_rect.top = self.screen_rect.top + (row_index * grid_cell_height)
                     element.text_rect.left = self.screen_rect.left + (element_index * grid_cell_width)
 
+    def position_basic_info(self) -> None:
+        """Position values for basic character info (name, race, etc.) to corresponding anchor elements as grouped in
+        'self.basic_info_groups'."""
+        # Position value rects 'topleft' position to anchors 'topright'.
+        for info_pair in self.basic_info_groups:
+            info_pair[1].text_rect.topleft = info_pair[0].text_rect.topright
+
+    def draw_basic_info(self) -> None:
+        """Draw info pairs from 'self.basic_info_groups' on screen."""
+        for info_pair in self.basic_info_groups:
+            for field in info_pair:
+                field.draw_text()
 
     def format_ability_bonus_penalty(self) -> None:
         """Format output for 0/positive values of ability score's bonus and penalty. Remove value if it is '0' or add '+'
