@@ -116,8 +116,6 @@ class CharacterSheet:
             (self.wis_label, self.wis_score, self.wis_bonus_penalty),
             (self.cha_label, self.cha_score, self.cha_bonus_penalty),
         )
-        # Format ability bonus/penalty output. See method docstring for details.
-        self.format_ability_bonus_penalty()
 
         # Saving throws info elements.
         self.saving_throws: TextField = so.TextField(screen, "SAVING THROWS", self.text_standard)  # ANCHOR
@@ -169,9 +167,6 @@ class CharacterSheet:
         self.class_special_pos_y_list: list[int] =(
             self.get_position_dynamic_field(self.class_special, self.character.class_specials, self.class_specials))
 
-        self.TEMP_RETURN_TO_MAIN_MESSAGE: TextField = so.TextField(
-            screen, "WORK IN PROGRESS - Press any key to return to main menu.", self.text_large, bg_color="red")
-
         # Inventory elements.
         self.money: TextField = so.TextField(screen, "Money:", self.text_standard)  # ANCHOR
         self.carrying_capacity: TextField = so.TextField(screen, "Carrying Capacity:", self.text_standard)  # ANCHOR
@@ -185,37 +180,42 @@ class CharacterSheet:
                                                                         # base armor class for character.  # ANCHOR
 
         """
-        Screen grid for positioning of anchor elements. Further elements that belong to anchors are then positioned
+        16x24 screen grid for positioning of anchor elements. Further elements that belong to anchors are then positioned
         dynamically via helper methods if value elements are added to their corresponding group array above.
         """
         # Set following attribute to 'True' to show grid on screen for layout design.
         self.show_grid = True
 
-        self.screen_grid_array: tuple[tuple, ...] = (
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, self.name, False, self.xp, False, self.race, False, self.cls, False, self.level, False, self.next_lvl_xp, False, False),
-            (False, self.armor_class, False, self.health_points, False, self.attack_bonus, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+        self.screen_grid_array: tuple[tuple[False | TextField, ...], ...] = (
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, self.name, False, self.xp, False, self.race, False, self.cls, False, self.level, False, self.next_lvl_xp, False, False, False, False),
+            (False, self.armor_class, False, self.health_points, False, self.attack_bonus, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, self.abilities, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
         )
+
+        # TODO Temporary 'return to main' message.
+        self.TEMP_RETURN_TO_MAIN_MESSAGE: TextField = so.TextField(
+            screen, "WORK IN PROGRESS - Press any key to return to main menu.", self.text_large, bg_color="red")
 
 
     """Main method to show character sheet. Called from main loop in 'main.py'."""
@@ -233,8 +233,8 @@ class CharacterSheet:
         draw_screen_title(self.screen, self.title, self.gui_elements)
 
         # Draw character sheet elements.
-        # Basic character info fields.
         self.draw_basic_info()
+        self.draw_ability_scores()
 
 
     """Positioning method for use in 'initialize_character_sheet()' function in 'core/state_manager.py' when the final
@@ -242,8 +242,12 @@ class CharacterSheet:
 
     def position_cs_elements(self) -> None:
         """Position instances of class 'TextField' on screen."""
+        # Position anchor objects based on entry in 'self.screen_grid_array'.
         self.position_anchors()
+
+        # Position further elements.
         self.position_basic_info()
+        self.position_ability_scores()
 
 
     """Helper methods for use within this class."""
@@ -273,7 +277,7 @@ class CharacterSheet:
             for field in info_pair:
                 field.draw_text()
 
-    def format_ability_bonus_penalty(self) -> None:
+    def format_ability_scores(self) -> None:
         """Format output for 0/positive values of ability score's bonus and penalty. Remove value if it is '0' or add '+'
         if value is positive."""
         for group in self.ability_groups:
@@ -284,6 +288,35 @@ class CharacterSheet:
 
             # Update 'group[2].text_surface' and get new rect.
             group[2].render_new_text_surface()
+
+    def position_ability_scores(self) -> None:
+        """Format and position ability score labels and values on screen."""
+        # Format ability bonus/penalty output.
+        self.format_ability_scores()
+
+        # Values for spacing between elements.
+        score_spacing: int = int(self.screen_width / 15)
+        bonus_penalty_spacing: int = int(self.screen_width / 40)
+
+        for index, group in enumerate(self.ability_groups):
+            if index == 0:
+                group[0].text_rect.topleft = self.abilities.text_rect.bottomleft
+            else:
+                group[0].text_rect.topleft = self.ability_groups[index - 1][0].text_rect.bottomleft
+
+            group[1].text_rect.top, group[1].text_rect.right = (group[0].text_rect.top,
+                                                                group[0].text_rect.left + score_spacing)
+            group[2].text_rect.top, group[2].text_rect.left = (group[1].text_rect.top,
+                                                               group[1].text_rect.right + bonus_penalty_spacing)
+
+    def draw_ability_scores(self) -> None:
+        """Draw ability score section on screen."""
+        # Draw sections anchor object 'self.abilities'.
+        self.abilities.draw_text()
+
+        for group in self.ability_groups:
+            for item in group:
+                item.draw_text()
 
     def format_saving_throw_scores(self) -> None:
         """Format output for saving throws by adding a '+' to the score."""
@@ -338,7 +371,7 @@ class CharacterSheet:
 
         return pos_y_list
 
-    def draw_format_dynamic_field(self, field_object: TextField, char_attr_list: list[str] | tuple[str, ...],
+    def format_and_draw_dynamic_field(self, field_object: TextField, char_attr_list: list[str] | tuple[str, ...],
                                   anchor: TextField, pos_y_list: list[int], text_prefix: str = "") -> None:
         """
         Dynamically change 'text' attribute for 'field_object' based on list/tuple 'char_attr_list', and position/draw
