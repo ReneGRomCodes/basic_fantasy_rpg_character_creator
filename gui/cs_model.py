@@ -216,7 +216,8 @@ class CharacterSheet:
             screen, "WORK IN PROGRESS - Press any key to return to main menu.", self.text_large, bg_color="red")
 
 
-    """Main method to show character sheet. Called from main loop in 'main.py'."""
+    """Main method to show character sheet. Called from function 'character_sheet_state_manager()' in
+    'core/state_manager.py'."""
 
     def show_character_sheet_screen(self) -> None:
         """Draw character sheet elements on screen."""
@@ -236,8 +237,8 @@ class CharacterSheet:
         self.draw_saving_throws()
 
 
-    """Positioning method for use in 'initialize_character_sheet()' function in 'core/state_manager.py' when the final
-    character sheet is initialized."""
+    """Main positioning method for use in 'character_sheet_state_manager()' function in 'core/state_manager.py' when the
+    final character sheet is initialized."""
 
     def position_cs_elements(self) -> None:
         """Position instances of class 'TextField' on screen."""
@@ -302,7 +303,7 @@ class CharacterSheet:
             self.position_first_group_element(index, group, self.ability_groups, self.abilities)
             group[1].text_rect.top, group[1].text_rect.right = (group[0].text_rect.top,
                                                                 group[0].text_rect.left + score_spacing)
-            group[2].text_rect.top, group[2].text_rect.left = (group[1].text_rect.top,
+            group[2].text_rect.top, group[2].text_rect.right = (group[1].text_rect.top,
                                                                group[1].text_rect.right + bonus_penalty_spacing)
 
     def draw_ability_scores(self) -> None:
