@@ -10,8 +10,8 @@ Instances for GUI objects are created in module 'gui/gui_elements.py', scaled if
 Functions for the use of screen objects are located in 'gui/gui.py' with helper functions for positioning located in
 'gui/ui_helpers.py'.
 
-Exceptions are 'Credits Screen' and 'Settings Screen' which separately handle their own instances/logic in modules
-'gui/credits.py' and 'gui/settings_gui' respectively.
+Exceptions are 'Credits Screen', 'Settings Screen' and 'Character Sheet Screen' which separately handle their own
+instances/logic in modules 'gui/credits.py' and 'gui/settings_gui' respectively.
 
 See documentation in relevant modules for details.
 """

@@ -159,9 +159,8 @@ class CharacterSheet:
         # to account for the fact that number of specials in 'character.class_specials' is unpredictable at the start of
         # the character creation.
         self.class_special: TextField = so.TextField(screen, "", self.text_standard)
-        # Create list to store y-position values for each state of 'self.class_special'.
-        self.class_special_pos_y_list: list[int] =(
-            self.get_position_dynamic_field(self.class_special, self.character.class_specials, self.class_specials))
+        # Create empty list to store y-position values for each state of 'self.class_special'.
+        self.class_special_pos_y_list: list[int] = []
 
         # Inventory elements.
         self.money: TextField = so.TextField(screen, "Money:", self.text_standard)  # ANCHOR
@@ -183,9 +182,9 @@ class CharacterSheet:
         self.show_grid = True
 
         # Assign attributes to shorter variables for use in 'self.screen_grid_array' to allow for better readability.
-        name, xp, race, cls, level, nxtxp, ac, hp, ab, ablts, st, sa =(
+        name, xp, race, cls, level, nxtxp, ac, hp, ab, ablts, st, sa, spls = (
             self.name, self.xp, self.race, self.cls, self.level, self.next_lvl_xp, self.armor_class, self.health_points,
-            self.attack_bonus, self.abilities, self.saving_throws, self.special_abilities)
+            self.attack_bonus, self.abilities, self.saving_throws, self.special_abilities, self.spells)
 
         self.screen_grid_array: tuple[tuple[False | TextField, ...], ...] = (
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -204,7 +203,7 @@ class CharacterSheet:
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, spls , False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -240,6 +239,10 @@ class CharacterSheet:
         self.draw_saving_throws()
         self.draw_special_abilities()
 
+        # Draw spells section if character is of a magic related class (Magic-User, Cleric, etc.).
+        if self.character.spells:
+            self.draw_spells()
+
 
     """Main positioning method for use in 'character_sheet_state_manager()' function in 'core/state_manager.py' when the
     final character sheet is initialized."""
@@ -254,8 +257,22 @@ class CharacterSheet:
         self.position_ability_scores()
         self.position_saving_throws()
 
+        # Get lists for dynamically positioned elements.
+        self.specials_pos_y_list: list[int] = self.get_position_dynamic_field(self.special_ability, self.character.specials,
+                                                                              self.special_abilities, text_prefix=" - ")
+        self.class_special_pos_y_list: list[int] = self.get_position_dynamic_field(self.class_special, self.character.class_specials,
+                                                                                   self.class_specials)
 
-    """Helper methods for use within this class."""
+        # Position spells section if character is of a magic related class (Magic-User, Cleric, etc.).
+        if self.character.spells:
+            self.position_spells()
+
+
+    """Helper methods for use within this class.
+    
+    Each section of the character sheet has its own dedicated methods for formatting, positioning, and drawing. 
+    Some of these methods may be similar or even identical, but they've been kept separate for the sake of clarity 
+    and easier future modification of individual sections."""
 
     def position_anchors(self) -> None:
         """Assign screen positions to elements in 'self.screen_grid_array' based on their grid index.
@@ -346,19 +363,25 @@ class CharacterSheet:
         self.draw_grouped_fields(self.saving_throw_groups)
 
     def draw_special_abilities(self) -> None:
-        """Format, position and draw special abilities section on screen."""
+        """Format, position and draw special abilities elements on screen."""
         # Draw sections anchor object 'self.special_abilities'.
         self.special_abilities.draw_text()
 
-        # Check if list for y-positions is populated, get values if not.
-        if not self.specials_pos_y_list:
-            self.specials_pos_y_list: list[int] =(
-                self.get_position_dynamic_field(self.special_ability, self.character.specials, self.special_abilities,
-                                                text_prefix=" - "))
-
-        # Format, position and draw section elements.
+        # Format, position and draw special abilities.
         self.format_and_draw_dynamic_field(self.special_ability, self.character.specials, self.special_abilities,
                                            self.specials_pos_y_list, text_prefix=" - ")
+
+    def position_spells(self) -> None:
+        """Position spells elements on screen."""
+        self.spell.text_rect.topleft = self.spells.text_rect.bottomleft
+
+    def draw_spells(self) -> None:
+        """Position and draw spells elements on screen."""
+        # Draw sections anchor object 'self.spells'.
+        self.spells.draw_text()
+
+        # Draw spells.
+        self.spell.draw_text()
 
     @staticmethod
     def position_first_group_element(index: int, group: tuple[TextField, ...],
