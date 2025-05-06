@@ -48,7 +48,7 @@ class CharacterSheet:
         grid position.
 
         NOTE: Each section of the screen may handle positioning a bit differently. '# ANCHOR' comments indicate the anchor
-        object, but that object isn't always part of the group array itself.
+        object, but that object isn't usually part of the group array itself.
         TL;DR: if you're tweaking layout logic, check if the anchor is included in the group array or not, and peek at
         the related method to see how it's doing its thing ;)
         """
@@ -145,10 +145,8 @@ class CharacterSheet:
         # creation.
         self.special_ability: TextField = so.TextField(screen, "", self.text_standard, multi_line=True,
                                                        surface_width=int(self.screen_width / 3))
-        # Create list to store y-position values for each state of 'self.special_ability'.
-        self.specials_pos_y_list: list[int] = (
-            self.get_position_dynamic_field(self.special_ability, self.character.specials, self.special_abilities,
-                                            text_prefix=" - "))
+        # Create empty list to store y-position values for each state of 'self.special_ability'.
+        self.specials_pos_y_list: list[int] = []
 
         # Spell elements for classes 'Magic-User', 'Cleric' or combination classes.
         self.spells: TextField = so.TextField(screen, "SPELLS", self.text_standard)  # ANCHOR
@@ -184,14 +182,19 @@ class CharacterSheet:
         # Set following attribute to 'True' to show grid on screen for layout design.
         self.show_grid = True
 
+        # Assign attributes to shorter variables for use in 'self.screen_grid_array' to allow for better readability.
+        name, xp, race, cls, level, nxtxp, ac, hp, ab, ablts, st, sa =(
+            self.name, self.xp, self.race, self.cls, self.level, self.next_lvl_xp, self.armor_class, self.health_points,
+            self.attack_bonus, self.abilities, self.saving_throws, self.special_abilities)
+
         self.screen_grid_array: tuple[tuple[False | TextField, ...], ...] = (
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, self.name, False, self.xp, False, self.race, False, self.cls, False, self.level, False, self.next_lvl_xp, False, False, False, False),
-            (False, self.armor_class, False, self.health_points, False, self.attack_bonus, False, False, False, False, False, False, False, False, False, False),
+            (False, name , False, xp   , False, race , False, cls  , False, level, False, nxtxp, False, False, False, False),
+            (False, ac   , False, hp   , False, ab   , False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, self.abilities, False, False, False, self.saving_throws, False, False, False, False, False, False, False, False, False, False),
+            (False, ablts, False, False, False, st   , False, False, False, False, sa   , False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -235,6 +238,7 @@ class CharacterSheet:
         self.draw_basic_info()
         self.draw_ability_scores()
         self.draw_saving_throws()
+        self.draw_special_abilities()
 
 
     """Main positioning method for use in 'character_sheet_state_manager()' function in 'core/state_manager.py' when the
@@ -341,7 +345,23 @@ class CharacterSheet:
         # Draw saving throws section.
         self.draw_grouped_fields(self.saving_throw_groups)
 
-    def position_first_group_element(self, index: int, group: tuple[TextField, ...],
+    def draw_special_abilities(self) -> None:
+        """Format, position and draw special abilities section on screen."""
+        # Draw sections anchor object 'self.special_abilities'.
+        self.special_abilities.draw_text()
+
+        # Check if list for y-positions is populated, get values if not.
+        if not self.specials_pos_y_list:
+            self.specials_pos_y_list: list[int] =(
+                self.get_position_dynamic_field(self.special_ability, self.character.specials, self.special_abilities,
+                                                text_prefix=" - "))
+
+        # Format, position and draw section elements.
+        self.format_and_draw_dynamic_field(self.special_ability, self.character.specials, self.special_abilities,
+                                           self.specials_pos_y_list, text_prefix=" - ")
+
+    @staticmethod
+    def position_first_group_element(index: int, group: tuple[TextField, ...],
                                      array: tuple[tuple[TextField, ...], ...], anchor: TextField) -> None:
         """Position the first element of a group within a vertically stacked section.
         If it's the first group in the section (index 0), align its top-left corner to the bottom-left of the section's
@@ -357,7 +377,8 @@ class CharacterSheet:
         else:
             group[0].text_rect.topleft = array[index - 1][0].text_rect.bottomleft
 
-    def draw_grouped_fields(self, array: tuple[tuple[TextField, ...], ...]) -> None:
+    @staticmethod
+    def draw_grouped_fields(array: tuple[tuple[TextField, ...], ...]) -> None:
         """Draw grouped character sheet elements from array.
         ARGS:
             array: tuple containing all grouped elements in the section.
@@ -411,7 +432,8 @@ class CharacterSheet:
 
         return pos_y_list
 
-    def format_and_draw_dynamic_field(self, field_object: TextField, char_attr_list: list[str] | tuple[str, ...],
+    @staticmethod
+    def format_and_draw_dynamic_field(field_object: TextField, char_attr_list: list[str] | tuple[str, ...],
                                   anchor: TextField, pos_y_list: list[int], text_prefix: str = "") -> None:
         """
         Dynamically change 'text' attribute for 'field_object' based on list/tuple 'char_attr_list', and position/draw
