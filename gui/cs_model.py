@@ -182,9 +182,9 @@ class CharacterSheet:
         self.show_grid = True
 
         # Assign attributes to shorter variables for use in 'self.screen_grid_array' to allow for better readability.
-        name, xp, race, cls, level, nxtxp, ac, hp, ab, ablts, st, sa, spls = (
+        name, xp, race, cls, level, nxtxp, ac, hp, ab, ablts, st, sa, spls, clssp = (
             self.name, self.xp, self.race, self.cls, self.level, self.next_lvl_xp, self.armor_class, self.health_points,
-            self.attack_bonus, self.abilities, self.saving_throws, self.special_abilities, self.spells)
+            self.attack_bonus, self.abilities, self.saving_throws, self.special_abilities, self.spells, self.class_specials)
 
         self.screen_grid_array: tuple[tuple[False | TextField, ...], ...] = (
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -203,7 +203,7 @@ class CharacterSheet:
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, spls , False, False, False),
+            (False, False, False, False, False, False, False, spls , False, False, False, clssp, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -239,9 +239,12 @@ class CharacterSheet:
         self.draw_saving_throws()
         self.draw_special_abilities()
 
-        # Draw spells section if character is of a magic related class (Magic-User, Cleric, etc.).
+        # Draw 'spells' section if character is of a magic related class (Magic-User, Cleric, etc.).
         if self.character.spells:
             self.draw_spells()
+        # Draw 'class specials' section if character class has special abilities.
+        if self.character.class_specials:
+            self.draw_class_specials()
 
 
     """Main positioning method for use in 'character_sheet_state_manager()' function in 'core/state_manager.py' when the
@@ -263,7 +266,7 @@ class CharacterSheet:
         self.class_special_pos_y_list: list[int] = self.get_position_dynamic_field(self.class_special, self.character.class_specials,
                                                                                    self.class_specials)
 
-        # Position spells section if character is of a magic related class (Magic-User, Cleric, etc.).
+        # Position 'spells' section if character is of a magic related class (Magic-User, Cleric, etc.).
         if self.character.spells:
             self.position_spells()
 
@@ -320,6 +323,7 @@ class CharacterSheet:
         score_spacing: int = int(self.screen_width / 15)
         bonus_penalty_spacing: int = int(self.screen_width / 40)
 
+        # Position label, score and bonus/penalty fields.
         for index, group in enumerate(self.ability_groups):
             self.position_first_group_element(index, group, self.ability_groups, self.abilities)
             group[1].text_rect.top, group[1].text_rect.right = (group[0].text_rect.top,
@@ -350,6 +354,7 @@ class CharacterSheet:
         # Values for spacing between elements.
         score_spacing: int = int(self.screen_width / 5)
 
+        # Position label and value fields.
         for index, group in enumerate(self.saving_throw_groups):
             self.position_first_group_element(index, group, self.saving_throw_groups, self.saving_throws)
             group[1].text_rect.top, group[1].text_rect.right = (group[0].text_rect.top,
@@ -366,7 +371,6 @@ class CharacterSheet:
         """Format, position and draw special abilities elements on screen."""
         # Draw sections anchor object 'self.special_abilities'.
         self.special_abilities.draw_text()
-
         # Format, position and draw special abilities.
         self.format_and_draw_dynamic_field(self.special_ability, self.character.specials, self.special_abilities,
                                            self.specials_pos_y_list, text_prefix=" - ")
@@ -379,9 +383,16 @@ class CharacterSheet:
         """Position and draw spells elements on screen."""
         # Draw sections anchor object 'self.spells'.
         self.spells.draw_text()
-
         # Draw spells.
         self.spell.draw_text()
+
+    def draw_class_specials(self) -> None:
+        """Format, position and draw special abilities elements on screen."""
+        # Draw sections anchor object 'self.class_specials'.
+        self.class_specials.draw_text()
+        # Format, position and draw special abilities.
+        self.format_and_draw_dynamic_field(self.class_special, self.character.class_specials, self.class_specials,
+                                           self.class_special_pos_y_list, text_prefix=" - ")
 
     @staticmethod
     def position_first_group_element(index: int, group: tuple[TextField, ...],
