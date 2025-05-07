@@ -66,6 +66,8 @@ class CharacterSheet:
         self.level_char: TextField = so.TextField(screen, str(character.level), self.text_standard)
         self.next_lvl_xp: TextField = so.TextField(screen, "XP to next level: ", self.text_standard)  # ANCHOR
         self.next_lvl_xp_char: TextField = so.TextField(screen, str(character.next_level_xp), self.text_standard)
+        self.money: TextField = so.TextField(screen, "Money: ", self.text_standard)  # ANCHOR
+        self.money_char: so.TextField = so.TextField(screen, str(self.character.money) + " gold pieces", self.text_standard)
         # Combat related basic info elements.
         self.armor_class: TextField = so.TextField(screen, "Armor Class: ", self.text_standard)  # ANCHOR
         self.armor_class_char: TextField = so.TextField(screen, str(character.armor_class), self.text_standard)
@@ -81,6 +83,7 @@ class CharacterSheet:
             (self.cls, self.cls_char),
             (self.level, self.level_char),
             (self.next_lvl_xp, self.next_lvl_xp_char),
+            (self.money, self.money_char),
             (self.armor_class, self.armor_class_char),
             (self.health_points, self.health_points_char),
             (self.attack_bonus, self.attack_bonus_char),
@@ -162,16 +165,31 @@ class CharacterSheet:
         # Create empty list to store y-position values for each state of 'self.class_special'.
         self.class_special_pos_y_list: list[int] = []
 
-        # Inventory elements.
-        self.money: TextField = so.TextField(screen, "Money:", self.text_standard)  # ANCHOR
-        self.carrying_capacity: TextField = so.TextField(screen, "Carrying Capacity:", self.text_standard)  # ANCHOR
-        self.weight_carried: TextField = so.TextField(screen, "Weight Carried:", self.text_standard)  # ANCHOR
-        self.inventory: TextField = so.TextField(screen, "Inventory:", self.text_standard)  # ANCHOR
+        # Weight/carrying capacity elements.
+        unit: str = " lbs"
+        self.carrying_cap: TextField = so.TextField(screen, "CARRYING CAPACITY", self.text_standard)  # ANCHOR
+        self.carrying_cap_light_label: TextField = so.TextField(screen, "Light Load:", self.text_standard)
+        self.carrying_cap_light_char: TextField = so.TextField(screen, str(self.character.carrying_capacity["Light Load"]) + unit,
+                                                               self.text_standard)
+        self.carrying_cap_heavy_label: TextField = so.TextField(screen, "Heavy Load:", self.text_standard)
+        self.carrying_cap_heavy_char: TextField = so.TextField(screen, str(self.character.carrying_capacity["Heavy Load"]) + unit,
+                                                               self.text_standard)
+        self.weight_carried_label: TextField = so.TextField(screen, "Weight Carried:", self.text_standard)
+        self.weight_carried_char: TextField = so.TextField(screen, str(self.character.weight_carried) + unit, self.text_standard)
+        # Array of weight/carrying capacity groups for cleaner positioning/drawing in class methods.
+        self.weight_group: tuple[tuple[TextField, TextField], ...] = (
+            (self.carrying_cap_light_label, self.carrying_cap_light_char),
+            (self.carrying_cap_heavy_label, self.carrying_cap_heavy_char),
+            (self.weight_carried_label, self.weight_carried_char),
+        )
+
+        # Inventory
+        self.inventory: TextField = so.TextField(screen, "Inventory: ", self.text_standard)  # ANCHOR
 
         # Weapons and armor elements.
-        self.weapons: TextField = so.TextField(screen, "Weapons:", self.text_standard)  # ANCHOR
-        self.armor: TextField = so.TextField(screen, "Armor:", self.text_standard)  # ANCHOR
-        self.armor_ac: TextField = so.TextField(screen, "AC:", self.text_standard) # Armor class for worn armor only, not including
+        self.weapons: TextField = so.TextField(screen, "Weapons: ", self.text_standard)  # ANCHOR
+        self.armor: TextField = so.TextField(screen, "Armor: ", self.text_standard)  # ANCHOR
+        self.armor_ac: TextField = so.TextField(screen, "AC: ", self.text_standard) # Armor class for worn armor only, not including
                                                                         # base armor class for character.  # ANCHOR
 
         """
@@ -182,27 +200,28 @@ class CharacterSheet:
         self.show_grid = True
 
         # Assign attributes to shorter variables for use in 'self.screen_grid_array' to allow for better readability.
-        name, xp, race, cls, level, nxtxp, ac, hp, ab, ablts, st, sa, spls, clssp = (
-            self.name, self.xp, self.race, self.cls, self.level, self.next_lvl_xp, self.armor_class, self.health_points,
-            self.attack_bonus, self.abilities, self.saving_throws, self.special_abilities, self.spells, self.class_specials)
+        name, xp, race, cls, level, nxtxp, money, arcls, hp, atbns, ablts, svgth, spabl, spls, clssp, crcap = (
+            self.name, self.xp, self.race, self.cls, self.level, self.next_lvl_xp, self.money, self.armor_class,
+            self.health_points, self.attack_bonus, self.abilities, self.saving_throws, self.special_abilities, self.spells,
+            self.class_specials, self.carrying_cap)
 
         self.screen_grid_array: tuple[tuple[False | TextField, ...], ...] = (
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, name , False, xp   , False, race , False, cls  , False, level, False, nxtxp, False, False, False, False),
-            (False, ac   , False, hp   , False, ab   , False, False, False, False, False, False, False, False, False, False),
+            (False, arcls, False, hp   , False, atbns, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, ablts, False, False, False, st   , False, False, False, False, sa   , False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, ablts, False, False, False, svgth, False, False, False, False, spabl, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, money, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, crcap, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, spls , False, False, False, clssp, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -238,6 +257,7 @@ class CharacterSheet:
         self.draw_ability_scores()
         self.draw_saving_throws()
         self.draw_special_abilities()
+        self.draw_weight_carrying_capacity()
 
         # Draw 'spells' section if character is of a magic related class (Magic-User, Cleric, etc.).
         if self.character.spells:
@@ -259,6 +279,7 @@ class CharacterSheet:
         self.position_basic_info()
         self.position_ability_scores()
         self.position_saving_throws()
+        self.position_weight_carrying_capacity()
 
         # Get lists for dynamically positioned elements.
         self.specials_pos_y_list: list[int] = self.get_position_dynamic_field(self.special_ability, self.character.specials,
@@ -393,6 +414,24 @@ class CharacterSheet:
         # Format, position and draw special abilities.
         self.format_and_draw_dynamic_field(self.class_special, self.character.class_specials, self.class_specials,
                                            self.class_special_pos_y_list, text_prefix=" - ")
+
+    def position_weight_carrying_capacity(self) -> None:
+        """Position weight/carrying capacity elements on screen."""
+        # Value for spacing between elements.
+        cap_spacing: int = int(self.screen_width / 5)
+
+        # Position label and value fields.
+        for index, group in enumerate(self.weight_group):
+            self.position_first_group_element(index, group, self.weight_group, self.carrying_cap)
+            group[1].text_rect.top, group[1].text_rect.right = (group[0].text_rect.top,
+                                                                group[0].text_rect.left + cap_spacing)
+
+    def draw_weight_carrying_capacity(self) -> None:
+        """Draw weight/carrying capacity elements on screen."""
+        # Draw sections anchor object 'self.carrying_cap'.
+        self.carrying_cap.draw_text()
+        # Draw weight/carrying capacity section.
+        self.draw_grouped_fields(self.weight_group)
 
     @staticmethod
     def position_first_group_element(index: int, group: tuple[TextField, ...],
