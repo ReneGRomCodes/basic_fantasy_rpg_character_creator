@@ -24,7 +24,7 @@ class Character:
         self.abilities: dict[str, list[int]] = {}
         self.armor_class: int | None = None
         self.attack_bonus: int = 1  # Default attack bonus of +1 for Lvl characters.
-        self.specials = ()
+        self.specials: tuple[str, ...] = ()
         self.hit_die: int = 0
         self.xp: int = 0
         self.level: int = 1
@@ -36,7 +36,7 @@ class Character:
         self.carrying_capacity: dict[str, int] = {}
         self.weight_carried: int | float = 0
         self.money: int | float = 0
-        self.inventory: list = []
+        self.inventory: list[object] = []
         self.armor: object = item_inst.no_armor
         self.shield: object = item_inst.no_shield
         self.weapon: object = item_inst.no_weapon

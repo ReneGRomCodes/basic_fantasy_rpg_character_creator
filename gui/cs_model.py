@@ -35,10 +35,15 @@ class CharacterSheet:
         self.title_spacing: int = gui_elements["menu_title_spacing"]
         self.default_spacing: int = gui_elements["default_edge_spacing"]
 
-        # Initialize character sheet elements.
+        # Strings for measurement units used on character sheet.
+        self.weight_unit: str = " lbs"
+        self.money_unit: str = " gold pieces"
+
+        # Draw character sheet title.
         self.title: TextField = so.TextField(screen, "- CHARACTER SHEET -", self.text_medium)
 
         """
+        INITIALIZE CHARACTER SHEET ELEMENTS.
         Character sheet elements are positioned using a grid-based system. Each 'anchor' field (usually just the field
         label) is placed into 'self.screen_grid_array' at the bottom of '__init__()', which drives the initial layout
         logic.
@@ -67,7 +72,7 @@ class CharacterSheet:
         self.next_lvl_xp: TextField = so.TextField(screen, "XP to next level: ", self.text_standard)  # ANCHOR
         self.next_lvl_xp_char: TextField = so.TextField(screen, str(character.next_level_xp), self.text_standard)
         self.money: TextField = so.TextField(screen, "Money: ", self.text_standard)  # ANCHOR
-        self.money_char: so.TextField = so.TextField(screen, str(self.character.money) + " gold pieces", self.text_standard)
+        self.money_char: so.TextField = so.TextField(screen, str(self.character.money) + self.money_unit, self.text_standard)
         # Combat related basic info elements.
         self.armor_class: TextField = so.TextField(screen, "Armor Class: ", self.text_standard)  # ANCHOR
         self.armor_class_char: TextField = so.TextField(screen, str(character.armor_class), self.text_standard)
@@ -166,7 +171,7 @@ class CharacterSheet:
         self.class_special_pos_y_list: list[int] = []
 
         # Weight/carrying capacity elements.
-        unit: str = " lbs"
+        unit = self.weight_unit
         self.carrying_cap: TextField = so.TextField(screen, "CARRYING CAPACITY", self.text_standard)  # ANCHOR
         self.carrying_cap_light_label: TextField = so.TextField(screen, "Light Load:", self.text_standard)
         self.carrying_cap_light_char: TextField = so.TextField(screen, str(self.character.carrying_capacity["Light Load"]) + unit,
@@ -183,8 +188,18 @@ class CharacterSheet:
             (self.weight_carried_label, self.weight_carried_char),
         )
 
-        # Inventory
-        self.inventory: TextField = so.TextField(screen, "Inventory: ", self.text_standard)  # ANCHOR
+        # Inventory elements.
+        self.inventory: TextField = so.TextField(screen, "INVENTORY: ", self.text_standard)  # ANCHOR
+        # 'inventory_item' and 'inventory_item_weight' objects have their text and position dynamically modified in
+        # methods 'draw_format_dynamic_field()' and 'position_and_draw_inventory_weight()' respectively to account for
+        # the fact that number of items in 'character.inventory' is unpredictable at the start of the character creation.
+        self.inventory_item: TextField = so.TextField(screen, "", self.text_standard)
+        self.inventory_item_weight: TextField = so.TextField(screen, "", self.text_standard)
+        # Create and populate lists of inventory item names and weight as strings to position/format 'inventory_item'
+        # and 'inventory_item_weight'.
+        self.inventory_item_list, self.inventory_item_weight_list = self.get_inventory_strings()
+        # Create empty list to store y-position values for each state of 'self.inventory'.
+        self.inventory_pos_y_list: list[int] = []
 
         # Weapons and armor elements.
         self.weapons: TextField = so.TextField(screen, "Weapons: ", self.text_standard)  # ANCHOR
@@ -200,10 +215,10 @@ class CharacterSheet:
         self.show_grid = True
 
         # Assign attributes to shorter variables for use in 'self.screen_grid_array' to allow for better readability.
-        name, xp, race, cls, level, nxtxp, money, arcls, hp, atbns, ablts, svgth, spabl, spls, clssp, crcap = (
+        name, xp, race, cls, level, nxtxp, money, arcls, hp, atbns, ablts, svgth, spabl, spls, clssp, crcap, invty = (
             self.name, self.xp, self.race, self.cls, self.level, self.next_lvl_xp, self.money, self.armor_class,
             self.health_points, self.attack_bonus, self.abilities, self.saving_throws, self.special_abilities, self.spells,
-            self.class_specials, self.carrying_cap)
+            self.class_specials, self.carrying_cap, self.inventory)
 
         self.screen_grid_array: tuple[tuple[False | TextField, ...], ...] = (
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -225,7 +240,7 @@ class CharacterSheet:
             (False, False, False, False, False, False, False, spls , False, False, False, clssp, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, invty, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -258,6 +273,7 @@ class CharacterSheet:
         self.draw_saving_throws()
         self.draw_special_abilities()
         self.draw_weight_carrying_capacity()
+        self.draw_inventory()
 
         # Draw 'spells' section if character is of a magic related class (Magic-User, Cleric, etc.).
         if self.character.spells:
@@ -286,6 +302,8 @@ class CharacterSheet:
                                                                               self.special_abilities, text_prefix=" - ")
         self.class_special_pos_y_list: list[int] = self.get_position_dynamic_field(self.class_special, self.character.class_specials,
                                                                                    self.class_specials)
+        self.inventory_pos_y_list: list[object] = self.get_position_dynamic_field(self.inventory_item, self.inventory_item_list,
+                                                                                  self.inventory)
 
         # Position 'spells' section if character is of a magic related class (Magic-User, Cleric, etc.).
         if self.character.spells:
@@ -295,8 +313,8 @@ class CharacterSheet:
     """Helper methods for use within this class.
     
     Each section of the character sheet has its own dedicated methods for formatting, positioning, and drawing. 
-    Some of these methods may be similar or even identical, but they've been kept separate for the sake of clarity 
-    and easier future modification of individual sections."""
+    Some of these methods may be similar or even identical, but they've been kept separate for the sake of clarity and
+    easier future modification of individual sections."""
 
     def position_anchors(self) -> None:
         """Assign screen positions to elements in 'self.screen_grid_array' based on their grid index.
@@ -433,6 +451,47 @@ class CharacterSheet:
         # Draw weight/carrying capacity section.
         self.draw_grouped_fields(self.weight_group)
 
+    def get_inventory_strings(self) -> tuple[list[str], list[str]]:
+        """Create and populate lists of inventory item names and weight as strings. Values are retrieved from 'Item'
+        instances in 'self.character.inventory'."""
+        # Create empty lists to be populated and returned.
+        name_list: list[str] = []
+        weight_list: list[str]= []
+
+        # Retrieve attributes from items in 'self.character.inventory' as strings and append them to lists.
+        for item in self.character.inventory:
+            name_list.append(str(item.name))
+            weight_list.append(str(item.weight))
+
+        return name_list, weight_list
+
+    def position_and_draw_inventory_weight(self) -> None:
+        """Format, position and draw 'self.inventory_item_weight'.
+        Specialized version of method 'format_and_draw_dynamic_field()' to account for additional 'weight' element in
+        inventory section."""
+        # Value for spacing between elements.
+        weight_spacing: int = int(self.screen_width / 4.5)
+
+        for index, weight in enumerate(self.inventory_item_weight_list):
+            # Assign text to and expand 'inventory_item_weight.text', update 'inventory_item_weight.text_surface' and
+            # get new rect.
+            self.inventory_item_weight.text = weight + self.weight_unit
+            self.inventory_item_weight.render_new_text_surface()
+
+            # Position and draw 'inventory_item_weight'.
+            self.inventory_item_weight.text_rect.top, self.inventory_item_weight.text_rect.right = (
+                self.inventory_pos_y_list[index], self.inventory.text_rect.left + weight_spacing)
+            self.inventory_item_weight.draw_text()
+
+    def draw_inventory(self) -> None:
+        """Format, position and inventory elements on screen."""
+        # Draw sections anchor object 'self.inventory'.
+        self.inventory.draw_text()
+        # Format, position and draw inventory item names and weight.
+        self.format_and_draw_dynamic_field(self.inventory_item, self.inventory_item_list, self.inventory,
+                                           self.inventory_pos_y_list)
+        self.position_and_draw_inventory_weight()
+
     @staticmethod
     def position_first_group_element(index: int, group: tuple[TextField, ...],
                                      array: tuple[tuple[TextField, ...], ...], anchor: TextField) -> None:
@@ -466,8 +525,7 @@ class CharacterSheet:
         Create, populate and return list 'pos_y_list' with y-positions for each state of 'field_object'.
         ARGS:
             field_object: instance of class 'TextField' to be dynamically modified using values from 'char_attr_list'.
-            char_attr_list: attribute of type LIST or TUPLE from instance of 'Character' containing strings to be
-                            dynamically added to 'field_object'.
+            char_attr_list: attribute of type LIST or TUPLE containing strings to be dynamically added to 'field_object'.
             anchor: anchor object for thematic group that 'field_object' belongs to. Used for positioning along x-axis.
             text_prefix: string with prefix to be added to 'field_object.text' together with 'char_attr_item', i.e. " - ".
                          Default is "".
@@ -513,8 +571,7 @@ class CharacterSheet:
         it on screen.
         ARGS:
             field_object: instance of class 'TextField' to be dynamically modified using values from 'char_attr_list'.
-            char_attr_list: attribute of type LIST or TUPLE from instance of 'Character' containing strings to be
-                            dynamically added to 'field_object'.
+            char_attr_list: attribute of type LIST or TUPLE containing strings to be dynamically added to 'field_object'.
             anchor: anchor object for thematic group that 'field_object' belongs to. Used for positioning along x-axis.
             pos_y_list: list containing y-positions for 'field_object' as populated by function 'get_position_dynamic_field'
             text_prefix: string with prefix to be added to 'field_object.text' together with 'char_attr_item', i.e. " - ".
