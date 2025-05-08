@@ -32,8 +32,6 @@ class CharacterSheet:
         self.text_large: int = gui_elements["text_large"]
         self.text_medium: int = gui_elements["text_medium"]
         self.text_small: int = gui_elements["text_small"]
-        self.title_spacing: int = gui_elements["menu_title_spacing"]
-        self.default_spacing: int = gui_elements["default_edge_spacing"]
 
         # Strings for measurement units used on character sheet.
         self.weight_unit: str = " lbs"
@@ -59,91 +57,91 @@ class CharacterSheet:
         """
 
         # Character sheet base info elements.
-        self.name: TextField = so.TextField(screen, "Name: ", self.text_standard)  # ANCHOR
-        self.name_char: TextField = so.TextField(screen, character.name, self.text_standard)
-        self.xp: TextField = so.TextField(screen, "XP: ", self.text_standard)  # ANCHOR
-        self.xp_char: TextField = so.TextField(screen, str(character.xp), self.text_standard)
-        self.race: TextField = so.TextField(screen, "Race: ", self.text_standard)  # ANCHOR
-        self.race_char: TextField = so.TextField(screen, character.race_name, self.text_standard)
-        self.cls: TextField = so.TextField(screen, "Class: ", self.text_standard)  # ANCHOR
-        self.cls_char: TextField = so.TextField(screen, character.class_name, self.text_standard)
-        self.level: TextField = so.TextField(screen, "Level: ", self.text_standard)  # ANCHOR
-        self.level_char: TextField = so.TextField(screen, str(character.level), self.text_standard)
-        self.next_lvl_xp: TextField = so.TextField(screen, "XP to next level: ", self.text_standard)  # ANCHOR
-        self.next_lvl_xp_char: TextField = so.TextField(screen, str(character.next_level_xp), self.text_standard)
-        self.money: TextField = so.TextField(screen, "Money: ", self.text_standard)  # ANCHOR
-        self.money_char: so.TextField = so.TextField(screen, str(self.character.money) + self.money_unit, self.text_standard)
+        name: TextField = so.TextField(screen, "Name: ", self.text_standard)  # ANCHOR
+        name_char: TextField = so.TextField(screen, character.name, self.text_standard)
+        xp: TextField = so.TextField(screen, "XP: ", self.text_standard)  # ANCHOR
+        xp_char: TextField = so.TextField(screen, str(character.xp), self.text_standard)
+        race: TextField = so.TextField(screen, "Race: ", self.text_standard)  # ANCHOR
+        race_char: TextField = so.TextField(screen, character.race_name, self.text_standard)
+        cls: TextField = so.TextField(screen, "Class: ", self.text_standard)  # ANCHOR
+        cls_char: TextField = so.TextField(screen, character.class_name, self.text_standard)
+        level: TextField = so.TextField(screen, "Level: ", self.text_standard)  # ANCHOR
+        level_char: TextField = so.TextField(screen, str(character.level), self.text_standard)
+        next_lvl_xp: TextField = so.TextField(screen, "XP to next level: ", self.text_standard)  # ANCHOR
+        next_lvl_xp_char: TextField = so.TextField(screen, str(character.next_level_xp), self.text_standard)
+        money: TextField = so.TextField(screen, "Money: ", self.text_standard)  # ANCHOR
+        money_char: so.TextField = so.TextField(screen, str(self.character.money) + self.money_unit, self.text_standard)
         # Combat related basic info elements.
-        self.armor_class: TextField = so.TextField(screen, "Armor Class: ", self.text_standard)  # ANCHOR
-        self.armor_class_char: TextField = so.TextField(screen, str(character.armor_class), self.text_standard)
-        self.health_points: TextField = so.TextField(screen, "Health Points: ", self.text_standard)  # ANCHOR
-        self.health_points_char: TextField = so.TextField(screen, str(character.hp), self.text_standard)
-        self.attack_bonus: TextField = so.TextField(screen, "Attack Bonus: +", self.text_standard)  # ANCHOR
-        self.attack_bonus_char: TextField = so.TextField(screen, str(character.attack_bonus), self.text_standard)
+        armor_class: TextField = so.TextField(screen, "Armor Class: ", self.text_standard)  # ANCHOR
+        armor_class_char: TextField = so.TextField(screen, str(character.armor_class), self.text_standard)
+        health_points: TextField = so.TextField(screen, "Health Points: ", self.text_standard)  # ANCHOR
+        health_points_char: TextField = so.TextField(screen, str(character.hp), self.text_standard)
+        attack_bonus: TextField = so.TextField(screen, "Attack Bonus: +", self.text_standard)  # ANCHOR
+        attack_bonus_char: TextField = so.TextField(screen, str(character.attack_bonus), self.text_standard)
         # Array of basic info and combat info groups for cleaner positioning/drawing in class methods.
         self.basic_info_groups: tuple[tuple[TextField, TextField], ...] = (
-            (self.name, self.name_char),
-            (self.xp, self.xp_char),
-            (self.race, self.race_char),
-            (self.cls, self.cls_char),
-            (self.level, self.level_char),
-            (self.next_lvl_xp, self.next_lvl_xp_char),
-            (self.money, self.money_char),
-            (self.armor_class, self.armor_class_char),
-            (self.health_points, self.health_points_char),
-            (self.attack_bonus, self.attack_bonus_char),
+            (name, name_char),
+            (xp, xp_char),
+            (race, race_char),
+            (cls, cls_char),
+            (level, level_char),
+            (next_lvl_xp, next_lvl_xp_char),
+            (money, money_char),
+            (armor_class, armor_class_char),
+            (health_points, health_points_char),
+            (attack_bonus, attack_bonus_char),
         )
 
         # Abilities info elements.
         # Suffixes '_score' and '_bonus_penalty' indicate objects with values from the 'Character' class object.
         self.abilities: TextField = so.TextField(screen, "ABILITIES", self.text_standard)  # ANCHOR
-        self.str_label: TextField = so.TextField(screen, "str", self.text_standard)
-        self.str_score: TextField = so.TextField(screen, str(character.abilities["str"][0]), self.text_standard)
-        self.str_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["str"][1]), self.text_standard)
-        self.dex_label: TextField = so.TextField(screen, "dex", self.text_standard)
-        self.dex_score: TextField = so.TextField(screen, str(character.abilities["dex"][0]), self.text_standard)
-        self.dex_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["dex"][1]), self.text_standard)
-        self.con_label: TextField = so.TextField(screen, "con", self.text_standard)
-        self.con_score: TextField = so.TextField(screen, str(character.abilities["con"][0]), self.text_standard)
-        self.con_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["con"][1]), self.text_standard)
-        self.int_label: TextField = so.TextField(screen, "int", self.text_standard)
-        self.int_score: TextField = so.TextField(screen, str(character.abilities["int"][0]), self.text_standard)
-        self.int_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["int"][1]), self.text_standard)
-        self.wis_label: TextField = so.TextField(screen, "wis", self.text_standard)
-        self.wis_score: TextField = so.TextField(screen, str(character.abilities["wis"][0]), self.text_standard)
-        self.wis_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["wis"][1]), self.text_standard)
-        self.cha_label: TextField = so.TextField(screen, "cha", self.text_standard)
-        self.cha_score: TextField = so.TextField(screen, str(character.abilities["cha"][0]), self.text_standard)
-        self.cha_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["cha"][1]), self.text_standard)
+        str_label: TextField = so.TextField(screen, "str", self.text_standard)
+        str_score: TextField = so.TextField(screen, str(character.abilities["str"][0]), self.text_standard)
+        str_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["str"][1]), self.text_standard)
+        dex_label: TextField = so.TextField(screen, "dex", self.text_standard)
+        dex_score: TextField = so.TextField(screen, str(character.abilities["dex"][0]), self.text_standard)
+        dex_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["dex"][1]), self.text_standard)
+        con_label: TextField = so.TextField(screen, "con", self.text_standard)
+        con_score: TextField = so.TextField(screen, str(character.abilities["con"][0]), self.text_standard)
+        con_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["con"][1]), self.text_standard)
+        int_label: TextField = so.TextField(screen, "int", self.text_standard)
+        int_score: TextField = so.TextField(screen, str(character.abilities["int"][0]), self.text_standard)
+        int_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["int"][1]), self.text_standard)
+        wis_label: TextField = so.TextField(screen, "wis", self.text_standard)
+        wis_score: TextField = so.TextField(screen, str(character.abilities["wis"][0]), self.text_standard)
+        wis_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["wis"][1]), self.text_standard)
+        cha_label: TextField = so.TextField(screen, "cha", self.text_standard)
+        cha_score: TextField = so.TextField(screen, str(character.abilities["cha"][0]), self.text_standard)
+        cha_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["cha"][1]), self.text_standard)
         # Array of ability groups for cleaner positioning/drawing in class methods.
         self.ability_groups: tuple[tuple[TextField, TextField, TextField], ...] = (
-            (self.str_label, self.str_score, self.str_bonus_penalty),
-            (self.dex_label, self.dex_score, self.dex_bonus_penalty),
-            (self.con_label, self.con_score, self.con_bonus_penalty),
-            (self.int_label, self.int_score, self.int_bonus_penalty),
-            (self.wis_label, self.wis_score, self.wis_bonus_penalty),
-            (self.cha_label, self.cha_score, self.cha_bonus_penalty),
+            (str_label, str_score, str_bonus_penalty),
+            (dex_label, dex_score, dex_bonus_penalty),
+            (con_label, con_score, con_bonus_penalty),
+            (int_label, int_score, int_bonus_penalty),
+            (wis_label, wis_score, wis_bonus_penalty),
+            (cha_label, cha_score, cha_bonus_penalty),
         )
 
         # Saving throws info elements.
         self.saving_throws: TextField = so.TextField(screen, "SAVING THROWS", self.text_standard)  # ANCHOR
-        self.saving_throw_0_label: TextField = so.TextField(screen, "Death Ray or Poison:", self.text_standard)
-        self.saving_throw_0_score: TextField = so.TextField(screen, str(character.saving_throws["Death Ray or Poison"]), self.text_standard)
-        self.saving_throw_1_label: TextField = so.TextField(screen, "Magic Wands:", self.text_standard)
-        self.saving_throw_1_score: TextField = so.TextField(screen, str(character.saving_throws["Magic Wands"]), self.text_standard)
-        self.saving_throw_2_label: TextField = so.TextField(screen, "Paralysis or Petrify:", self.text_standard)
-        self.saving_throw_2_score: TextField = so.TextField(screen, str(character.saving_throws["Paralysis or Petrify"]), self.text_standard)
-        self.saving_throw_3_label: TextField = so.TextField(screen, "Dragon Breath:", self.text_standard)
-        self.saving_throw_3_score: TextField = so.TextField(screen, str(character.saving_throws["Dragon Breath"]), self.text_standard)
-        self.saving_throw_4_label: TextField = so.TextField(screen, "Spells:", self.text_standard)
-        self.saving_throw_4_score: TextField = so.TextField(screen, str(character.saving_throws["Spells"]), self.text_standard)
+        saving_throw_0_label: TextField = so.TextField(screen, "Death Ray or Poison:", self.text_standard)
+        saving_throw_0_score: TextField = so.TextField(screen, str(character.saving_throws["Death Ray or Poison"]), self.text_standard)
+        saving_throw_1_label: TextField = so.TextField(screen, "Magic Wands:", self.text_standard)
+        saving_throw_1_score: TextField = so.TextField(screen, str(character.saving_throws["Magic Wands"]), self.text_standard)
+        saving_throw_2_label: TextField = so.TextField(screen, "Paralysis or Petrify:", self.text_standard)
+        saving_throw_2_score: TextField = so.TextField(screen, str(character.saving_throws["Paralysis or Petrify"]), self.text_standard)
+        saving_throw_3_label: TextField = so.TextField(screen, "Dragon Breath:", self.text_standard)
+        saving_throw_3_score: TextField = so.TextField(screen, str(character.saving_throws["Dragon Breath"]), self.text_standard)
+        saving_throw_4_label: TextField = so.TextField(screen, "Spells:", self.text_standard)
+        saving_throw_4_score: TextField = so.TextField(screen, str(character.saving_throws["Spells"]), self.text_standard)
         # Array of saving throws groups for cleaner positioning/drawing in class methods.
         self.saving_throw_groups: tuple[tuple[TextField, TextField], ...] = (
-            (self.saving_throw_0_label, self.saving_throw_0_score),
-            (self.saving_throw_1_label, self.saving_throw_1_score),
-            (self.saving_throw_2_label, self.saving_throw_2_score),
-            (self.saving_throw_3_label, self.saving_throw_3_score),
-            (self.saving_throw_4_label, self.saving_throw_4_score),
+            (saving_throw_0_label, saving_throw_0_score),
+            (saving_throw_1_label, saving_throw_1_score),
+            (saving_throw_2_label, saving_throw_2_score),
+            (saving_throw_3_label, saving_throw_3_score),
+            (saving_throw_4_label, saving_throw_4_score),
         )
 
         # Special abilities info elements.
@@ -173,19 +171,19 @@ class CharacterSheet:
         # Weight/carrying capacity elements.
         unit = self.weight_unit
         self.carrying_cap: TextField = so.TextField(screen, "CARRYING CAPACITY", self.text_standard)  # ANCHOR
-        self.carrying_cap_light_label: TextField = so.TextField(screen, "Light Load:", self.text_standard)
-        self.carrying_cap_light_char: TextField = so.TextField(screen, str(self.character.carrying_capacity["Light Load"]) + unit,
+        carrying_cap_light_label: TextField = so.TextField(screen, "Light Load:", self.text_standard)
+        carrying_cap_light_char: TextField = so.TextField(screen, str(self.character.carrying_capacity["Light Load"]) + unit,
                                                                self.text_standard)
-        self.carrying_cap_heavy_label: TextField = so.TextField(screen, "Heavy Load:", self.text_standard)
-        self.carrying_cap_heavy_char: TextField = so.TextField(screen, str(self.character.carrying_capacity["Heavy Load"]) + unit,
+        carrying_cap_heavy_label: TextField = so.TextField(screen, "Heavy Load:", self.text_standard)
+        carrying_cap_heavy_char: TextField = so.TextField(screen, str(self.character.carrying_capacity["Heavy Load"]) + unit,
                                                                self.text_standard)
-        self.weight_carried_label: TextField = so.TextField(screen, "Weight Carried:", self.text_standard)
-        self.weight_carried_char: TextField = so.TextField(screen, str(self.character.weight_carried) + unit, self.text_standard)
+        weight_carried_label: TextField = so.TextField(screen, "Weight Carried:", self.text_standard)
+        weight_carried_char: TextField = so.TextField(screen, str(self.character.weight_carried) + unit, self.text_standard)
         # Array of weight/carrying capacity groups for cleaner positioning/drawing in class methods.
         self.weight_group: tuple[tuple[TextField, TextField], ...] = (
-            (self.carrying_cap_light_label, self.carrying_cap_light_char),
-            (self.carrying_cap_heavy_label, self.carrying_cap_heavy_char),
-            (self.weight_carried_label, self.weight_carried_char),
+            (carrying_cap_light_label, carrying_cap_light_char),
+            (carrying_cap_heavy_label, carrying_cap_heavy_char),
+            (weight_carried_label, weight_carried_char),
         )
 
         # Inventory elements.
@@ -202,14 +200,14 @@ class CharacterSheet:
         self.inventory_pos_y_list: list[int] = []
 
         # Weapons and armor elements.
-        self.weapon: TextField = so.TextField(screen, "WEAPON", self.text_standard)  # ANCHOR
-        self.weapon_char: TextField = so.TextField(screen, self.character.weapon.name, self.text_standard)
-        self.armor: TextField = so.TextField(screen, "ARMOR", self.text_standard)  # ANCHOR
-        self.armor_char: TextField = so.TextField(screen, self.character.armor.name, self.text_standard)
+        weapon: TextField = so.TextField(screen, "WEAPON", self.text_standard)  # ANCHOR
+        weapon_char: TextField = so.TextField(screen, self.character.weapon.name, self.text_standard)
+        armor: TextField = so.TextField(screen, "ARMOR", self.text_standard)  # ANCHOR
+        armor_char: TextField = so.TextField(screen, self.character.armor.name, self.text_standard)
         # Array of weapon/armor groups for cleaner positioning/drawing in class methods.
         self.weapon_armor_groups: tuple[tuple[TextField, TextField], ...] = (
-            (self.weapon, self.weapon_char),
-            (self.armor, self.armor_char),
+            (weapon, weapon_char),
+            (armor, armor_char),
         )
 
         """
@@ -217,19 +215,19 @@ class CharacterSheet:
         dynamically via helper methods if value elements are added to their corresponding group array above.
         """
         # Set following attribute to 'True' to show grid on screen for layout design.
-        self.show_grid = True
+        self.show_grid = False
 
         # Assign attributes to shorter variables for use in 'self.screen_grid_array' to allow for better readability.
-        name: TextField = self.name
-        xp: TextField = self.xp
-        race: TextField = self.race
-        cls: TextField = self.cls
-        level: TextField = self.level
-        nxtxp: TextField = self.next_lvl_xp
-        money: TextField = self.money
-        arcls: TextField = self.armor_class
-        hp: TextField = self.health_points
-        atbns: TextField = self.attack_bonus
+        name: TextField = name
+        xp: TextField = xp
+        race: TextField = race
+        cls: TextField = cls
+        level: TextField = level
+        nxtxp: TextField = next_lvl_xp
+        money: TextField = money
+        arcls: TextField = armor_class
+        hp: TextField = health_points
+        atbns: TextField = attack_bonus
         ablts: TextField = self.abilities
         svgth: TextField = self.saving_throws
         spabl: TextField = self.special_abilities
@@ -237,8 +235,8 @@ class CharacterSheet:
         clssp: TextField = self.class_specials
         crcap: TextField = self.carrying_cap
         invty: TextField = self.inventory
-        weapn: TextField = self.weapon
-        armor: TextField = self.armor
+        weapn: TextField = weapon
+        armor: TextField = armor
 
         self.screen_grid_array: tuple[tuple[False | TextField, ...], ...] = (
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
