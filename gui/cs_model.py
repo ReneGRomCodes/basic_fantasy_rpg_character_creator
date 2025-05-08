@@ -26,20 +26,22 @@ class CharacterSheet:
         self.screen_height: int = self.screen_rect.height
         self.screen_width: int = self.screen_rect.width
 
-        # Size and spacing variables from dict 'gui_elements' that are calculated based on screen size for scalability.
+        # Size variables and elements from dict 'gui_elements'.
         self.gui_elements: dict = gui_elements
         self.continue_button: Button = gui_elements["continue_button"]
         self.text_standard: int = gui_elements["text_standard"]
         self.text_large: int = gui_elements["text_large"]
         self.text_medium: int = gui_elements["text_medium"]
         self.text_small: int = gui_elements["text_small"]
+        self.edge_spacing: int = gui_elements["default_edge_spacing"]
 
         # Strings for measurement units used on character sheet.
         self.weight_unit: str = " lbs"
         self.money_unit: str = " gold pieces"
 
-        # Draw character sheet title.
+        # General screen objects.
         self.title: TextField = so.TextField(screen, "- CHARACTER SHEET -", self.text_medium)
+        self.main_menu_button: Button = so.Button(screen, "Main Menu", self.text_medium)
 
         """
         INITIALIZE CHARACTER SHEET ELEMENTS.
@@ -279,8 +281,9 @@ class CharacterSheet:
         if self.show_grid:
             self.draw_grid()
 
-        # Draw screen title.
+        # Draw general screen objects.
         draw_screen_title(self.screen, self.title, self.gui_elements)
+        self.main_menu_button.draw_button(mouse_pos)
 
         # Draw character sheet elements.
         self.draw_basic_info()
@@ -298,9 +301,6 @@ class CharacterSheet:
         if self.character.class_specials:
             self.draw_class_specials()
 
-        # Draw buttons.
-        self.continue_button.draw_button(mouse_pos)
-
 
     """Main positioning method for use in 'character_sheet_state_manager()' function in 'core/state_manager.py' when the
     final character sheet is initialized."""
@@ -309,6 +309,10 @@ class CharacterSheet:
         """Position instances of class 'TextField' on screen."""
         # Position anchor objects based on entry in 'self.screen_grid_array'.
         self.position_anchors()
+
+        # Position basic screen elements.
+        self.main_menu_button.button_rect.bottomright = (self.screen_rect.right - self.edge_spacing,
+                                                         self.screen_rect.bottom - self.edge_spacing)
 
         # Position further elements.
         self.position_basic_info()

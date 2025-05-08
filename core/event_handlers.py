@@ -2,6 +2,7 @@ import pygame
 import sys
 import core.rules as rls
 from character_creation_functions import build_character_sheet
+from core.shared_data import shared_data as sd
 """Contains event handler functions."""
 
 
@@ -69,7 +70,7 @@ def main_events(screen, state: str, gui_elements: dict, mouse_pos) -> str:
 
         elif state == "character_sheet":
             if event.type == pygame.MOUSEBUTTONUP:
-                if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                if sd.cs_sheet.main_menu_button.button_rect.collidepoint(mouse_pos):
                     state = "pre_main_menu"
 
     return state
