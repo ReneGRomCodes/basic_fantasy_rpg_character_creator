@@ -51,7 +51,7 @@ def main_state_manager(screen, state: str, gui_elements: dict, mouse_pos) -> str
 
     elif state in {"init_character_sheet", "character_sheet"}:
         # Use of 'secondary' state manager for character sheet screen.
-        state = character_sheet_state_manager(screen, state, gui_elements)
+        state = character_sheet_state_manager(screen, state, gui_elements, mouse_pos)
 
     return state
 
@@ -217,7 +217,7 @@ def random_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
     return state
 
 
-def character_sheet_state_manager(screen, state: str, gui_elements: dict) -> str:
+def character_sheet_state_manager(screen, state: str, gui_elements: dict, mouse_pos) -> str:
     """'Secondary' state manager for use in 'main_state_manager' to create and return instance of class 'CharacterSheet'
     with screen elements for the character sheet, call position methods and set the state to 'character_sheet'.
     This function ensures that 'cs_sheet' is always created before the character sheet screen is displayed, reinitializing
@@ -227,6 +227,7 @@ def character_sheet_state_manager(screen, state: str, gui_elements: dict) -> str
         screen: PyGame window.
         state: program state.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
         state
     """
@@ -239,7 +240,7 @@ def character_sheet_state_manager(screen, state: str, gui_elements: dict) -> str
         state = "character_sheet"
 
     elif state == "character_sheet":
-        sd.cs_sheet.show_character_sheet_screen()
+        sd.cs_sheet.show_character_sheet_screen(mouse_pos)
 
     return state
 

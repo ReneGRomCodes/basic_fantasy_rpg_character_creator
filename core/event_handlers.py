@@ -68,8 +68,9 @@ def main_events(screen, state: str, gui_elements: dict, mouse_pos) -> str:
                     state = "main_menu"
 
         elif state == "character_sheet":
-            if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP and screen.get_rect().collidepoint(mouse_pos):
-                state = "pre_main_menu"
+            if event.type == pygame.MOUSEBUTTONUP:
+                if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                    state = "pre_main_menu"
 
     return state
 

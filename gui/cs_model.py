@@ -1,7 +1,7 @@
 import pygame
 import gui.screen_objects as so
 from core.character_model import Character
-from gui.screen_objects import TextField
+from gui.screen_objects import TextField, Button
 from gui.ui_helpers import draw_screen_title
 
 """Helper class to organize and access character sheet objects as attributes."""
@@ -28,6 +28,7 @@ class CharacterSheet:
 
         # Size and spacing variables from dict 'gui_elements' that are calculated based on screen size for scalability.
         self.gui_elements: dict = gui_elements
+        self.continue_button: Button = gui_elements["continue_button"]
         self.text_standard: int = gui_elements["text_standard"]
         self.text_large: int = gui_elements["text_large"]
         self.text_medium: int = gui_elements["text_medium"]
@@ -269,8 +270,11 @@ class CharacterSheet:
     """Main method to show character sheet. Called from function 'character_sheet_state_manager()' in
     'core/state_manager.py'."""
 
-    def show_character_sheet_screen(self) -> None:
-        """Draw character sheet elements on screen."""
+    def show_character_sheet_screen(self, mouse_pos) -> None:
+        """Draw character sheet elements on screen.
+        ARGS:
+            mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+        """
         # Draw layout grid on screen if 'self.show_grid' is set to 'True'.
         if self.show_grid:
             self.draw_grid()
@@ -293,6 +297,9 @@ class CharacterSheet:
         # Draw 'class specials' section if character class has special abilities.
         if self.character.class_specials:
             self.draw_class_specials()
+
+        # Draw buttons.
+        self.continue_button.draw_button(mouse_pos)
 
 
     """Main positioning method for use in 'character_sheet_state_manager()' function in 'core/state_manager.py' when the
