@@ -202,10 +202,15 @@ class CharacterSheet:
         self.inventory_pos_y_list: list[int] = []
 
         # Weapons and armor elements.
-        self.weapons: TextField = so.TextField(screen, "Weapons: ", self.text_standard)  # ANCHOR
-        self.armor: TextField = so.TextField(screen, "Armor: ", self.text_standard)  # ANCHOR
-        self.armor_ac: TextField = so.TextField(screen, "AC: ", self.text_standard) # Armor class for worn armor only, not including
-                                                                        # base armor class for character.  # ANCHOR
+        self.weapon: TextField = so.TextField(screen, "WEAPON", self.text_standard)  # ANCHOR
+        self.weapon_char: TextField = so.TextField(screen, self.character.weapon.name, self.text_standard)
+        self.armor: TextField = so.TextField(screen, "ARMOR", self.text_standard)  # ANCHOR
+        self.armor_char: TextField = so.TextField(screen, self.character.armor.name, self.text_standard)
+        # Array of weapon/armor groups for cleaner positioning/drawing in class methods.
+        self.weapon_armor_groups: tuple[tuple[TextField, TextField], ...] = (
+            (self.weapon, self.weapon_char),
+            (self.armor, self.armor_char),
+        )
 
         """
         16x24 screen grid for positioning of anchor elements. Further elements that belong to anchors are then positioned
@@ -215,17 +220,33 @@ class CharacterSheet:
         self.show_grid = True
 
         # Assign attributes to shorter variables for use in 'self.screen_grid_array' to allow for better readability.
-        name, xp, race, cls, level, nxtxp, money, arcls, hp, atbns, ablts, svgth, spabl, spls, clssp, crcap, invty = (
-            self.name, self.xp, self.race, self.cls, self.level, self.next_lvl_xp, self.money, self.armor_class,
-            self.health_points, self.attack_bonus, self.abilities, self.saving_throws, self.special_abilities, self.spells,
-            self.class_specials, self.carrying_cap, self.inventory)
+        name: TextField = self.name
+        xp: TextField = self.xp
+        race: TextField = self.race
+        cls: TextField = self.cls
+        level: TextField = self.level
+        nxtxp: TextField = self.next_lvl_xp
+        money: TextField = self.money
+        arcls: TextField = self.armor_class
+        hp: TextField = self.health_points
+        atbns: TextField = self.attack_bonus
+        ablts: TextField = self.abilities
+        svgth: TextField = self.saving_throws
+        spabl: TextField = self.special_abilities
+        splss: TextField = self.spells
+        clssp: TextField = self.class_specials
+        crcap: TextField = self.carrying_cap
+        invty: TextField = self.inventory
+        weapn: TextField = self.weapon
+        armor: TextField = self.armor
 
         self.screen_grid_array: tuple[tuple[False | TextField, ...], ...] = (
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, name , False, xp   , False, race , False, cls  , False, level, False, nxtxp, False, False, False, False),
-            (False, arcls, False, hp   , False, atbns, False, False, False, False, False, False, False, False, False, False),
+            (False, arcls, False, hp   , False, atbns, False, False, weapn, False, False, False, armor, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, ablts, False, False, False, svgth, False, False, False, False, spabl, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -234,22 +255,17 @@ class CharacterSheet:
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, money, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, money, False, False, False, invty, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, splss, False, False, clssp, False, False),
             (False, crcap, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, False, False, False, spls , False, False, False, clssp, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, False, False, False, invty, False, False, False, False, False, False, False, False, False, False, False),
+            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
         )
-
-        # TODO Temporary 'return to main' message.
-        self.TEMP_RETURN_TO_MAIN_MESSAGE: TextField = so.TextField(
-            screen, "WORK IN PROGRESS - Press any key to return to main menu.", self.text_large, bg_color="red")
 
 
     """Main method to show character sheet. Called from function 'character_sheet_state_manager()' in
@@ -257,9 +273,6 @@ class CharacterSheet:
 
     def show_character_sheet_screen(self) -> None:
         """Draw character sheet elements on screen."""
-        # TODO Draw temporary 'return to main' message.
-        self.TEMP_RETURN_TO_MAIN_MESSAGE.draw_text()
-
         # Draw layout grid on screen if 'self.show_grid' is set to 'True'.
         if self.show_grid:
             self.draw_grid()
@@ -274,6 +287,7 @@ class CharacterSheet:
         self.draw_special_abilities()
         self.draw_weight_carrying_capacity()
         self.draw_inventory()
+        self.draw_armor_weapon()
 
         # Draw 'spells' section if character is of a magic related class (Magic-User, Cleric, etc.).
         if self.character.spells:
@@ -296,6 +310,7 @@ class CharacterSheet:
         self.position_ability_scores()
         self.position_saving_throws()
         self.position_weight_carrying_capacity()
+        self.position_armor_weapon()
 
         # Get lists for dynamically positioned elements.
         self.specials_pos_y_list: list[int] = self.get_position_dynamic_field(self.special_ability, self.character.specials,
@@ -337,9 +352,7 @@ class CharacterSheet:
 
     def draw_basic_info(self) -> None:
         """Draw info pairs from 'self.basic_info_groups' on screen."""
-        for info_pair in self.basic_info_groups:
-            for field in info_pair:
-                field.draw_text()
+        self.draw_grouped_fields(self.basic_info_groups)
 
     def format_ability_scores(self) -> None:
         """Format output for 0/positive values of ability score's bonus and penalty. Remove value if it is '0' or add '+'
@@ -491,6 +504,16 @@ class CharacterSheet:
         self.format_and_draw_dynamic_field(self.inventory_item, self.inventory_item_list, self.inventory,
                                            self.inventory_pos_y_list)
         self.position_and_draw_inventory_weight()
+
+    def position_armor_weapon(self) -> None:
+        """Position values for weapon/armor info to corresponding anchor elements as grouped in 'self.weapon_armor_groups'."""
+        # Position value rects 'topleft' position to anchors 'bottomleft'.
+        for info_pair in self.weapon_armor_groups:
+            info_pair[1].text_rect.topleft = info_pair[0].text_rect.bottomleft
+
+    def draw_armor_weapon(self) -> None:
+        """Draw info pairs from 'self.weapon_armor_groups' on screen."""
+        self.draw_grouped_fields(self.weapon_armor_groups)
 
     @staticmethod
     def position_first_group_element(index: int, group: tuple[TextField, ...],
