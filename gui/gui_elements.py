@@ -153,7 +153,7 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
     # Race/class selection screen.
     # Screen layout is designed to adapt and fit up to 16 races/classes.
     race_class_selection_screen_title: TextField = so.TextField(screen, "- RACE / CLASS SELECTION -", text_large)
-    reset_button: Button = so.Button(screen, "RESET", text_medium)
+    reset_button: Button = so.Button(screen, "DESELECT ALL", text_medium)
     reset_button.button_rect.width = button_width
     # Race info Panels.
     humans_info: InfoPanel = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True,

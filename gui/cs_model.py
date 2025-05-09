@@ -28,20 +28,21 @@ class CharacterSheet:
 
         # Size variables and elements from dict 'gui_elements'.
         self.gui_elements: dict = gui_elements
-        self.continue_button: Button = gui_elements["continue_button"]
-        self.text_standard: int = gui_elements["text_standard"]
-        self.text_large: int = gui_elements["text_large"]
-        self.text_medium: int = gui_elements["text_medium"]
-        self.text_small: int = gui_elements["text_small"]
         self.edge_spacing: int = gui_elements["default_edge_spacing"]
+        text_medium: int = gui_elements["text_medium"]
+
+        # Class specific size variables.
+        self.text_standard: int = int(self.screen_height / 50)
+        text_large: int = int(self.screen_height / 45)
+        title_size: int = int(self.screen_height / 35)
 
         # Strings for measurement units used on character sheet.
         self.weight_unit: str = " lbs"
         self.money_unit: str = " gold pieces"
 
         # General screen objects.
-        self.title: TextField = so.TextField(screen, "- CHARACTER SHEET -", self.text_medium)
-        self.main_menu_button: Button = so.Button(screen, "Main Menu", self.text_medium)
+        self.title: TextField = so.TextField(screen, "- CHARACTER SHEET -", title_size)
+        self.main_menu_button: Button = so.Button(screen, "Main Menu", text_medium)
 
         """
         INITIALIZE CHARACTER SHEET ELEMENTS.
@@ -60,20 +61,20 @@ class CharacterSheet:
         """
 
         # Character sheet base info elements.
-        name: TextField = so.TextField(screen, "Name: ", self.text_standard)  # ANCHOR
-        name_char: TextField = so.TextField(screen, character.name, self.text_standard)
-        xp: TextField = so.TextField(screen, "XP: ", self.text_standard)  # ANCHOR
-        xp_char: TextField = so.TextField(screen, str(character.xp), self.text_standard)
-        race: TextField = so.TextField(screen, "Race: ", self.text_standard)  # ANCHOR
-        race_char: TextField = so.TextField(screen, character.race_name, self.text_standard)
-        cls: TextField = so.TextField(screen, "Class: ", self.text_standard)  # ANCHOR
-        cls_char: TextField = so.TextField(screen, character.class_name, self.text_standard)
-        level: TextField = so.TextField(screen, "Level: ", self.text_standard)  # ANCHOR
-        level_char: TextField = so.TextField(screen, str(character.level), self.text_standard)
-        next_lvl_xp: TextField = so.TextField(screen, "XP to next level: ", self.text_standard)  # ANCHOR
-        next_lvl_xp_char: TextField = so.TextField(screen, str(character.next_level_xp), self.text_standard)
-        money: TextField = so.TextField(screen, "Money: ", self.text_standard)  # ANCHOR
-        money_char: so.TextField = so.TextField(screen, str(self.character.money) + self.money_unit, self.text_standard)
+        name: TextField = so.TextField(screen, "Name: ", text_large)  # ANCHOR
+        name_char: TextField = so.TextField(screen, character.name, text_large)
+        xp: TextField = so.TextField(screen, "XP: ", text_large)  # ANCHOR
+        xp_char: TextField = so.TextField(screen, str(character.xp), text_large)
+        race: TextField = so.TextField(screen, "Race: ", text_large)  # ANCHOR
+        race_char: TextField = so.TextField(screen, character.race_name, text_large)
+        cls: TextField = so.TextField(screen, "Class: ", text_large)  # ANCHOR
+        cls_char: TextField = so.TextField(screen, character.class_name, text_large)
+        level: TextField = so.TextField(screen, "Level: ", text_large)  # ANCHOR
+        level_char: TextField = so.TextField(screen, str(character.level), text_large)
+        next_lvl_xp: TextField = so.TextField(screen, "XP to next level: ", text_large)  # ANCHOR
+        next_lvl_xp_char: TextField = so.TextField(screen, str(character.next_level_xp), text_large)
+        money: TextField = so.TextField(screen, "Money: ", text_large)  # ANCHOR
+        money_char: so.TextField = so.TextField(screen, str(self.character.money) + self.money_unit, text_large)
         # Combat related basic info elements.
         armor_class: TextField = so.TextField(screen, "Armor Class: ", self.text_standard)  # ANCHOR
         armor_class_char: TextField = so.TextField(screen, str(character.armor_class), self.text_standard)
@@ -97,7 +98,7 @@ class CharacterSheet:
 
         # Abilities info elements.
         # Suffixes '_score' and '_bonus_penalty' indicate objects with values from the 'Character' class object.
-        self.abilities: TextField = so.TextField(screen, "ABILITIES", self.text_standard)  # ANCHOR
+        self.abilities: TextField = so.TextField(screen, "ABILITIES", text_large)  # ANCHOR
         str_label: TextField = so.TextField(screen, "str", self.text_standard)
         str_score: TextField = so.TextField(screen, str(character.abilities["str"][0]), self.text_standard)
         str_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["str"][1]), self.text_standard)
@@ -127,7 +128,7 @@ class CharacterSheet:
         )
 
         # Saving throws info elements.
-        self.saving_throws: TextField = so.TextField(screen, "SAVING THROWS", self.text_standard)  # ANCHOR
+        self.saving_throws: TextField = so.TextField(screen, "SAVING THROWS", text_large)  # ANCHOR
         saving_throw_0_label: TextField = so.TextField(screen, "Death Ray or Poison:", self.text_standard)
         saving_throw_0_score: TextField = so.TextField(screen, str(character.saving_throws["Death Ray or Poison"]), self.text_standard)
         saving_throw_1_label: TextField = so.TextField(screen, "Magic Wands:", self.text_standard)
@@ -148,7 +149,7 @@ class CharacterSheet:
         )
 
         # Special abilities info elements.
-        self.special_abilities: TextField = so.TextField(screen, "SPECIAL ABILITIES", self.text_standard)  # ANCHOR
+        self.special_abilities: TextField = so.TextField(screen, "SPECIAL ABILITIES", text_large)  # ANCHOR
         # 'special_ability' object has its text dynamically modified in method 'draw_format_dynamic_field()' to account
         # for the fact that number of abilities in 'character.specials' is unpredictable at the start of the character
         # creation.
@@ -158,12 +159,12 @@ class CharacterSheet:
         self.specials_pos_y_list: list[int] = []
 
         # Spell elements for classes 'Magic-User', 'Cleric' or combination classes.
-        self.spells: TextField = so.TextField(screen, "SPELLS", self.text_standard)  # ANCHOR
+        self.spells: TextField = so.TextField(screen, "SPELLS", text_large)  # ANCHOR
         self.spell: TextField = so.TextField(screen, str(character.spells), self.text_standard)
 
         # Class specials elements.
         self.class_specials: TextField = so.TextField(screen, character.class_name.upper() + " SPECIALS",
-                                                            self.text_standard)  # ANCHOR
+                                                            text_large)  # ANCHOR
         # 'class_special' object has its text and position dynamically modified in method 'draw_format_dynamic_field()'
         # to account for the fact that number of specials in 'character.class_specials' is unpredictable at the start of
         # the character creation.
@@ -173,7 +174,7 @@ class CharacterSheet:
 
         # Weight/carrying capacity elements.
         unit = self.weight_unit
-        self.carrying_cap: TextField = so.TextField(screen, "CARRYING CAPACITY", self.text_standard)  # ANCHOR
+        self.carrying_cap: TextField = so.TextField(screen, "CARRYING CAPACITY", text_large)  # ANCHOR
         carrying_cap_light_label: TextField = so.TextField(screen, "Light Load:", self.text_standard)
         carrying_cap_light_char: TextField = so.TextField(screen, str(self.character.carrying_capacity["Light Load"]) + unit,
                                                                self.text_standard)
@@ -190,7 +191,7 @@ class CharacterSheet:
         )
 
         # Inventory elements.
-        self.inventory: TextField = so.TextField(screen, "INVENTORY: ", self.text_standard)  # ANCHOR
+        self.inventory: TextField = so.TextField(screen, "INVENTORY: ", text_large)  # ANCHOR
         # 'inventory_item' and 'inventory_item_weight' objects have their text and position dynamically modified in
         # methods 'draw_format_dynamic_field()' and 'position_and_draw_inventory_weight()' respectively to account for
         # the fact that number of items in 'character.inventory' is unpredictable at the start of the character creation.
@@ -203,9 +204,9 @@ class CharacterSheet:
         self.inventory_pos_y_list: list[int] = []
 
         # Weapons and armor elements.
-        weapon: TextField = so.TextField(screen, "WEAPON", self.text_standard)  # ANCHOR
+        weapon: TextField = so.TextField(screen, "WEAPON", text_large)  # ANCHOR
         weapon_char: TextField = so.TextField(screen, self.character.weapon.name, self.text_standard)
-        armor: TextField = so.TextField(screen, "ARMOR", self.text_standard)  # ANCHOR
+        armor: TextField = so.TextField(screen, "ARMOR", text_large)  # ANCHOR
         armor_char: TextField = so.TextField(screen, self.character.armor.name, self.text_standard)
         # Array of weapon/armor groups for cleaner positioning/drawing in class methods.
         self.weapon_armor_groups: tuple[tuple[TextField, TextField], ...] = (
@@ -216,6 +217,9 @@ class CharacterSheet:
         """
         16x24 screen grid for positioning of anchor elements. Further elements that belong to anchors are then positioned
         dynamically via helper methods if value elements are added to their corresponding group array above.
+        
+        The grid size can be modified without the need to edit other parts of the the class. Only thing to keep in mind
+        is that each tuple within 'self.screen_grid_array' has to contain the same number of items.
         """
         # Set following attribute to 'True' to show grid on screen for layout design.
         self.show_grid = False
@@ -245,9 +249,9 @@ class CharacterSheet:
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, name , False, xp   , False, race , False, cls  , False, level, False, nxtxp, False, False, False, False),
-            (False, arcls, False, hp   , False, atbns, False, False, weapn, False, False, False, armor, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
+            (False, name , False, False, level, False, False, False, arcls, False, atbns, False, hp   , False, False, False),
+            (False, race , False, False, cls  , False, False, False, weapn, False, False, False, armor, False, False, False),
+            (False, xp   , False, False, nxtxp, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, ablts, False, False, False, svgth, False, False, False, False, spabl, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
