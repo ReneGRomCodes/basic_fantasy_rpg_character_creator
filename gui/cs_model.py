@@ -204,32 +204,13 @@ class CharacterSheet:
         self.inventory_pos_y_list: list[int] = []
 
         # Weapons and armor elements.
-        weapon: TextField = so.TextField(screen, "WEAPON", text_large)  # ANCHOR
-        weapon_char: TextField = so.TextField(screen, self.character.weapon.name, self.text_standard)
-        armor: TextField = so.TextField(screen, "ARMOR", text_large)  # ANCHOR
-        armor_char: TextField = so.TextField(screen, self.character.armor.name, self.text_standard)
-        shield_char: TextField = so.TextField(screen, self.character.shield.name, self.text_standard)
-        # Empty attribute for weapon/armor groups for cleaner positioning/drawing in class methods.
-        self.weapon_armor_groups: tuple[tuple[TextField, ...], ...] | None = None
-        # Assign arrays of character sheet elements based on character class.
-        # 'Magic-User' can't use any armor, 'Thief' classes can't use shields.
-        no_armor_classes = {"Magic-User"}
-        no_shield_classes = {"Thief", "Magic-User/Thief"}
-
-        if self.character.class_name in no_armor_classes:
-            self.weapon_armor_groups = (
-                (weapon, weapon_char),
-            )
-        elif self.character.class_name in no_shield_classes:
-            self.weapon_armor_groups = (
-                (weapon, weapon_char),
-                (armor, armor_char),
-            )
-        else:
-            self.weapon_armor_groups = (
-                (weapon, weapon_char),
-                (armor, armor_char, shield_char),
-            )
+        self.weapon: TextField = so.TextField(screen, "WEAPON", text_large)  # ANCHOR
+        self.weapon_char: TextField = so.TextField(screen, self.character.weapon.name, self.text_standard)
+        self.armor: TextField = so.TextField(screen, "ARMOR", text_large)  # ANCHOR
+        self.armor_char: TextField = so.TextField(screen, self.character.armor.name, self.text_standard)
+        self.shield_char: TextField = so.TextField(screen, self.character.shield.name, self.text_standard)
+        # Get array for weapon/armor groups for cleaner positioning/drawing in class methods.
+        self.weapon_armor_groups: tuple[tuple[TextField, ...], ...] = self.get_weapon_armor_groups()
 
         """
         16x24 screen grid for positioning of anchor elements. Further elements that belong to anchors are then positioned
@@ -259,8 +240,8 @@ class CharacterSheet:
         clssp: TextField = self.class_specials
         crcap: TextField = self.carrying_cap
         invty: TextField = self.inventory
-        weapn: TextField = weapon
-        armor: TextField = armor
+        weapn: TextField = self.weapon
+        armor: TextField = self.armor
 
         self.screen_grid_array: tuple[tuple[False | TextField, ...], ...] = (
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -534,6 +515,33 @@ class CharacterSheet:
         self.format_and_draw_dynamic_field(self.inventory_item, self.inventory_item_list, self.inventory,
                                            self.inventory_pos_y_list)
         self.position_and_draw_inventory_weight()
+
+    def get_weapon_armor_groups(self) -> tuple[tuple[TextField, ...], ...]:
+        """Create, populate and return array 'weapon_armor_group' based on selected race/class.
+        RETURNS:
+            'tuple[tuple[TextField, ...], ...]' containing relevant character sheet elements.
+        """
+        # Sets for class checks. 'Magic-User' can't use any armor, 'Thief' classes can't use shields.
+        no_armor_classes: set[str] = {"Magic-User"}
+        no_shield_classes: set[str] = {"Thief", "Magic-User/Thief"}
+
+        # Assign array of character sheet elements based on character class.
+        if self.character.class_name in no_armor_classes:
+            weapon_armor_groups = (
+                (self.weapon, self.weapon_char),
+            )
+        elif self.character.class_name in no_shield_classes:
+            weapon_armor_groups = (
+                (self.weapon, self.weapon_char),
+                (self.armor, self.armor_char),
+            )
+        else:
+            weapon_armor_groups = (
+                (self.weapon, self.weapon_char),
+                (self.armor, self.armor_char, self.shield_char),
+            )
+
+        return weapon_armor_groups
 
     def position_armor_weapon(self) -> None:
         """Position values for weapon/armor info elements as grouped in 'self.weapon_armor_groups'."""
