@@ -10,14 +10,16 @@ class Character:
         """Initialize race and class specific attributes and character values."""
         # Race specific attributes.
         self.race_name: str | None = None
-        self.race_hit_die: int | False = False
         self.race_specials: tuple[str, ...] = ()
         self.bonuses: tuple[int, ...] = ()
         # Class specific attributes.
         self.class_name: str | None = None
-        self.class_hit_die: int = 0
         self.class_specials: tuple[str, ...] = ()
         self.class_saving_throws: tuple[int, ...] = ()
+
+        # Race/class maximum hit die. Attributes only used to set characters maximum hit die.
+        self.race_hit_die: int | False = False
+        self.class_hit_die: int = 0
 
         # Character attributes. Values set based on race and class.
         self.name: str | None = None

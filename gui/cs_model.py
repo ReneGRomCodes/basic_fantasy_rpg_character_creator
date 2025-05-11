@@ -208,11 +208,28 @@ class CharacterSheet:
         weapon_char: TextField = so.TextField(screen, self.character.weapon.name, self.text_standard)
         armor: TextField = so.TextField(screen, "ARMOR", text_large)  # ANCHOR
         armor_char: TextField = so.TextField(screen, self.character.armor.name, self.text_standard)
-        # Array of weapon/armor groups for cleaner positioning/drawing in class methods.
-        self.weapon_armor_groups: tuple[tuple[TextField, TextField], ...] = (
-            (weapon, weapon_char),
-            (armor, armor_char),
-        )
+        shield_char: TextField = so.TextField(screen, self.character.shield.name, self.text_standard)
+        # Empty attribute for weapon/armor groups for cleaner positioning/drawing in class methods.
+        self.weapon_armor_groups: tuple[tuple[TextField, ...], ...] | None = None
+        # Assign arrays of character sheet elements based on character class.
+        # 'Magic-User' can't use any armor, 'Thief' classes can't use shields.
+        no_armor_classes = {"Magic-User"}
+        no_shield_classes = {"Thief", "Magic-User/Thief"}
+
+        if self.character.class_name in no_armor_classes:
+            self.weapon_armor_groups = (
+                (weapon, weapon_char),
+            )
+        elif self.character.class_name in no_shield_classes:
+            self.weapon_armor_groups = (
+                (weapon, weapon_char),
+                (armor, armor_char),
+            )
+        else:
+            self.weapon_armor_groups = (
+                (weapon, weapon_char),
+                (armor, armor_char, shield_char),
+            )
 
         """
         16x24 screen grid for positioning of anchor elements. Further elements that belong to anchors are then positioned
@@ -519,10 +536,16 @@ class CharacterSheet:
         self.position_and_draw_inventory_weight()
 
     def position_armor_weapon(self) -> None:
-        """Position values for weapon/armor info to corresponding anchor elements as grouped in 'self.weapon_armor_groups'."""
-        # Position value rects 'topleft' position to anchors 'bottomleft'.
+        """Position values for weapon/armor info elements as grouped in 'self.weapon_armor_groups'."""
+        # Position value rects 'topleft' position to 'bottomleft' of previous element.
         for info_pair in self.weapon_armor_groups:
-            info_pair[1].text_rect.topleft = info_pair[0].text_rect.bottomleft
+            for index, item in enumerate(info_pair):
+                # Explicit if-statement to make clear that anchor object (index 0) positioning is skipped, as this is
+                # done via 'self.screen_grid_array'.
+                if index == 0:
+                    pass
+                else:
+                    item.text_rect.topleft = info_pair[index - 1].text_rect.bottomleft
 
     def draw_armor_weapon(self) -> None:
         """Draw info pairs from 'self.weapon_armor_groups' on screen."""
