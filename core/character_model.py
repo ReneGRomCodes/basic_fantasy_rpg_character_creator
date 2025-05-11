@@ -10,7 +10,7 @@ class Character:
         """Initialize race and class specific attributes and character values."""
         # Race specific attributes.
         self.race_name: str | None = None
-        self.max_hit_die: int | False = False
+        self.race_hit_die: int | False = False
         self.race_specials: tuple[str, ...] = ()
         self.bonuses: tuple[int, ...] = ()
         # Class specific attributes.
@@ -25,7 +25,7 @@ class Character:
         self.armor_class: int | None = None
         self.attack_bonus: int = 1  # Default attack bonus of +1 for Lvl characters.
         self.specials: tuple[str, ...] = ()
-        self.hit_die: int = 0
+        self.max_hit_die: int = 0
         self.xp: int = 0
         self.level: int = 1
         self.next_level_xp: int = 0
@@ -49,24 +49,24 @@ class Character:
         self.race_name = race_selection
 
         if race_selection == "Dwarf":
-            self.max_hit_die = False
+            self.race_hit_die = False
             self.race_specials = ("Darkvision 60'",
                                   "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6")
             self.bonuses = (4, 4, 4, 3, 4)
         elif race_selection == "Elf":
-            self.max_hit_die = 6
+            self.race_hit_die = 6
             self.race_specials = ("Darkvision 60'",
                                   "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
                                   "Range reduction by 1 for surprise checks")
             self.bonuses = (0, 2, 1, 0, 2)
         elif race_selection == "Halfling":
-            self.max_hit_die = 6
+            self.race_hit_die = 6
             self.race_specials = ("+1 attack bonus on ranged weapons",
                                   "+1 to initiative die rolls",
                                   "Hide (10% chance to be detected outdoors, 30% chance to be detected indoors")
             self.bonuses = (4, 4, 4, 3, 4)
         elif race_selection == "Human":
-            self.max_hit_die = False
+            self.race_hit_die = False
             self.race_specials = ("+10% to all earned XP", )
             self.bonuses = (0, 0, 0, 0, 0)
 
@@ -146,11 +146,19 @@ class Character:
     def set_character_values(self) -> None:
         """Collected method calls to set multiple attributes.
         Used in 'state_manager.py' and 'event_handlers.py'."""
+        self.set_max_hit_die()
         self.set_saving_throws()
         self.set_specials()
         self.set_hp()
         self.set_armor_class()
         self.set_carrying_capacity()
+
+    def set_max_hit_die(self) -> None:
+        """Set 'self.max_hit_die' based on chosen race and class."""
+        if self.race_hit_die and self.class_hit_die > self.race_hit_die:
+            self.max_hit_die = self.race_hit_die
+        else:
+            self.max_hit_die = self.class_hit_die
 
     def set_specials(self) -> None:
         """Get special abilities and add them to attribute list 'self.specials'."""
@@ -167,14 +175,8 @@ class Character:
 
     def set_hp(self) -> None:
         """Set HP and adds constitution bonus/penalty."""
-
-        if not self.max_hit_die:
-            self.hp = dice_roll(1, self.class_hit_die)
-        else:
-            if self.max_hit_die >= self.class_hit_die:
-                self.hp = dice_roll(1, self.class_hit_die)
-            else:
-                self.hp = dice_roll(1, self.max_hit_die)
+        # Roll for base hp with max hit die.
+        self.hp = dice_roll(1, self.max_hit_die)
 
         # Adding constitution bonus/penalty to HP or set to minimum value of 1:
         if self.hp + self.abilities["con"][1] < 1:
