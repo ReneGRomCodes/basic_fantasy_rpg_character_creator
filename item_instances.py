@@ -91,27 +91,27 @@ quarrel_heavy_silver = item.Projectile("Heavy Quarrel (Silver)", 10, 0.1, 8)
 bullet_sling = item.Projectile("Bullet", 0.1, 0.1, 4)
 stone_sling = item.Projectile("Stone", 0, 0.1, 3)
 # Grenade-like items. 'holy_water' and 'oil_flask' are listed in 'general_items'.
-holy_water = item.Projectile("Holy Water, per vial", 10, 0.1, 8, 6, [10, 30, 50], throw=True)
-oil_flask = item.Projectile("Oil, per flask", 1, 1, 8, 6, [10, 30, 50], throw=True)
+holy_water = item.Projectile("Holy Water, per vial", 10, 0.1, 8, 6, (10, 30, 50), throw=True)
+oil_flask = item.Projectile("Oil, per flask", 1, 1, 8, 6, (10, 30, 50), throw=True)
 
 
 # Ranged weapons (args = "name, cost, weight, size, damage, range_list, ammo=False, throw=False").
 # Note that bows and crossbows need projectiles to do damage, therefor damage for them is '0'.
-shortbow = item.RangedWeapon("Shortbow", 25, 2, "M", 0, [50, 100, 150],
-                             ammo=[arrow_shortbow, arrow_shortbow_silver])
-longbow = item.RangedWeapon("Longbow", 60, 3, "L", 0, [70, 140, 210],
-                            ammo=[arrow_longbow, arrow_longbow_silver])
-crossbow_light = item.RangedWeapon("Light Crossbow", 30, 7, "M", 0, [60, 120, 180],
-                                   ammo=[quarrel_light, quarrel_light_silver])
-crossbow_heavy = item.RangedWeapon("Heavy Crossbow", 50, 14, "L", 0, [80, 160, 240],
-                                   ammo=[quarrel_heavy, quarrel_heavy_silver])
-sling = item.RangedWeapon("Sling", 1, 0.1, "S", 0, [30, 60, 90],
-                          ammo=[bullet_sling, stone_sling])
+shortbow = item.RangedWeapon("Shortbow", 25, 2, "M", 0, (50, 100, 150),
+                             ammo=(arrow_shortbow, arrow_shortbow_silver))
+longbow = item.RangedWeapon("Longbow", 60, 3, "L", 0, (70, 140, 210),
+                            ammo=(arrow_longbow, arrow_longbow_silver))
+crossbow_light = item.RangedWeapon("Light Crossbow", 30, 7, "M", 0, (60, 120, 180),
+                                   ammo=(quarrel_light, quarrel_light_silver))
+crossbow_heavy = item.RangedWeapon("Heavy Crossbow", 50, 14, "L", 0, (80, 160, 240),
+                                   ammo=(quarrel_heavy, quarrel_heavy_silver))
+sling = item.RangedWeapon("Sling", 1, 0.1, "S", 0, (30, 60, 90),
+                          ammo=(bullet_sling, stone_sling))
 # Throwable weapons. Listed under their respective key in dict 'weapons'.
-dagger = item.RangedWeapon("Dagger", 2, 1, "S", 4, [10, 20, 30], throw=True)
-dagger_silver = item.RangedWeapon("Dagger (Silver)", 25, 1, "S", 4, [10, 20, 30], throw=True)
-warhammer = item.RangedWeapon("Warhammer", 4, 6, "S", 6, [10, 20, 30], throw=True)
-hand_axe = item.RangedWeapon("Hand Axe", 4, 5, "S", 6, [10, 20, 30], throw=True)
+dagger = item.RangedWeapon("Dagger", 2, 1, "S", 4, (10, 20, 30), throw=True)
+dagger_silver = item.RangedWeapon("Dagger (Silver)", 25, 1, "S", 4, (10, 20, 30), throw=True)
+warhammer = item.RangedWeapon("Warhammer", 4, 6, "S", 6, (10, 20, 30), throw=True)
+hand_axe = item.RangedWeapon("Hand Axe", 4, 5, "S", 6, (10, 20, 30), throw=True)
 
 
 # Armor (args = "name, cost, weight, armor_class, shield=False"). 'no_armor' and 'no_shield' are not part of list
@@ -124,28 +124,28 @@ no_shield = item.Armor("No Shield", 0, 0, 0, shield = True)
 shield = item.Armor("Shield", 7, 5, 1, shield = True)
 
 
-# Lists/dicts of instances.
-general_items = [
+# Tuples/dicts of instances.
+general_items = (
     backpack, belt_pouch, bit_and_bridle, candles_12, chalk, cloak, clothing_common, glass_bottle_vial, grappling_hook,
     holy_symbol, holy_water, horseshoes, ink_jar, iron_spikes_12, ladder_10ft, lantern, lantern_bullseye,
     lantern_hooded, manacles, map_scroll_case, mirror_small, oil_flask, padlock, paper_sheet, pole_wood, quill,
     quill_knife, quiver_bolt_case, dry_rations_week, rope_hemp, rope_silk, sack_large, sack_small, saddle_pack,
     saddle_riding, saddlebags_pair, spellbook, tent_large, tent_small, thieves_tools, tinderbox, torches_6, whetstone,
     whistle, skin_wine_water, winter_blanket
-]
+)
 
 weapons = {
-    "Axes": [hand_axe, battle_axe, great_axe],
-    "Swords": [shortsword, longsword, scimitar, two_handed_sword],
-    "Daggers": [dagger, dagger_silver],
-    "Hammers and Maces": [warhammer, mace, maul],
-    "Ranged Weapons": [shortbow, longbow, crossbow_light, crossbow_heavy, sling],
-    "Other Weapons": [club, cudgel, walking_staff, quarterstaff, pole_arm],
+    "Axes": (hand_axe, battle_axe, great_axe),
+    "Swords": (shortsword, longsword, scimitar, two_handed_sword),
+    "Daggers": (dagger, dagger_silver),
+    "Hammers and Maces": (warhammer, mace, maul),
+    "Ranged Weapons": (shortbow, longbow, crossbow_light, crossbow_heavy, sling),
+    "Other Weapons": (club, cudgel, walking_staff, quarterstaff, pole_arm),
 }
 
-projectiles = [
+projectiles = (
     arrow_shortbow, arrow_shortbow_silver, arrow_longbow, arrow_longbow_silver, quarrel_light, quarrel_light_silver,
     quarrel_heavy, quarrel_heavy_silver, bullet_sling, stone_sling
-]
+)
 
-armors = [leather_armor, chain_mail, plate_mail, shield]
+armors = (leather_armor, chain_mail, plate_mail, shield)

@@ -204,11 +204,19 @@ class CharacterSheet:
         self.inventory_pos_y_list: list[int] = []
 
         # Weapons and armor elements.
-        self.weapon: TextField = so.TextField(screen, "WEAPON", text_large)  # ANCHOR
-        self.weapon_char: TextField = so.TextField(screen, self.character.weapon.name, self.text_standard)
-        self.armor: TextField = so.TextField(screen, "ARMOR", text_large)  # ANCHOR
-        self.armor_char: TextField = so.TextField(screen, self.character.armor.name, self.text_standard)
-        self.shield_char: TextField = so.TextField(screen, self.character.shield.name, self.text_standard)
+        # String attributes to be passed as arguments for TextField instances.
+        weapon_header: str = f"WEAPON{0:}Size{0:}Weight{0:}Dmg{0:}SML"
+        armor_header: str = f"ARMOR{0:}AC"
+        weapon_item_str: str = (f"{self.character.weapon.name}{self.character.weapon.size}{self.character.weapon.weight}"
+                                f"{self.character.weapon.damage}")
+        armor_item_str: str = f"{self.character.armor.name}{self.character.armor.armor_class}"
+        shield_item_str: str = f"{self.character.shield.name}{self.character.shield.armor_class}"
+        # TextField instances for weapons and armor elements.
+        self.weapon: TextField = so.TextField(screen, weapon_header, self.text_standard)  # ANCHOR
+        self.weapon_char: TextField = so.TextField(screen, weapon_item_str, self.text_standard)
+        self.armor: TextField = so.TextField(screen, armor_header, self.text_standard)  # ANCHOR
+        self.armor_char: TextField = so.TextField(screen, armor_item_str, self.text_standard)
+        self.shield_char: TextField = so.TextField(screen, shield_item_str, self.text_standard)
         # Get array for weapon/armor groups for cleaner positioning/drawing in class methods.
         self.weapon_armor_groups: tuple[tuple[TextField, ...], ...] = self.get_weapon_armor_groups()
 

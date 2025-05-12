@@ -19,7 +19,7 @@ class Character:
 
         # Race/class maximum hit die. Attributes only used to set characters maximum hit die.
         self.race_hit_die: int | False = False
-        self.class_hit_die: int = 0
+        self.class_hit_die: int | False = False
 
         # Character attributes. Values set based on race and class.
         self.name: str | None = None
@@ -27,7 +27,7 @@ class Character:
         self.armor_class: int | None = None
         self.attack_bonus: int = 1  # Default attack bonus of +1 for Lvl characters.
         self.specials: tuple[str, ...] = ()
-        self.max_hit_die: int = 0
+        self.max_hit_die: int | False = False
         self.xp: int = 0
         self.level: int = 1
         self.next_level_xp: int = 0
@@ -188,7 +188,8 @@ class Character:
 
     def set_armor_class(self) -> None:
         """Set armor class based on equipped armor and shield."""
-        self.armor_class = self.armor.armor_class + self.shield.armor_class
+        # Add AC of worn armor, shield and dexterity bonus/penalty.
+        self.armor_class = self.armor.armor_class + self.shield.armor_class + self.abilities["dex"][1]
 
     def set_carrying_capacity(self) -> None:
         """Set dict 'self.carrying_capacity' based on race and ability score and bonus for "strength"."""
