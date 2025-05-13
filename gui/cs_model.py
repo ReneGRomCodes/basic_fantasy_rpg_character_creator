@@ -212,9 +212,9 @@ class CharacterSheet:
         # Further Header elements.
         self.weapon_header_size: TextField = so.TextField(screen, "Size", self.text_standard)
         self.weapon_header_damage: TextField = so.TextField(screen, "Dmg", self.text_standard)
-        self.weapon_header_s: TextField = so.TextField(screen, "S", self.text_standard)
+        self.weapon_header_s: TextField = so.TextField(screen, "S +1", self.text_standard)
         self.weapon_header_m: TextField = so.TextField(screen, "M", self.text_standard)
-        self.weapon_header_l: TextField = so.TextField(screen, "L", self.text_standard)
+        self.weapon_header_l: TextField = so.TextField(screen, "L -2", self.text_standard)
         self.armor_header_ac: TextField = so.TextField(screen, "AC", self.text_standard)
         # Characters weapon/armor/shield elements.
         weapon_item_str: str = f"{self.character.weapon.name}"
@@ -262,7 +262,7 @@ class CharacterSheet:
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, name , False, False, level, False, False, False, arcls, False, atbns, False, hp   , False, False, False),
-            (False, race , False, False, cls  , False, False, False, weapn, False, False, False, armor, False, False, False),
+            (False, race , False, False, cls  , False, False, False, weapn, False, False, False, False, armor, False, False),
             (False, xp   , False, False, nxtxp, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, ablts, False, False, False, svgth, False, False, False, False, spabl, False, False, False, False, False),
@@ -308,7 +308,7 @@ class CharacterSheet:
         self.draw_special_abilities()
         self.draw_weight_carrying_capacity()
         self.draw_inventory()
-        self.draw_armor_weapon()
+        self.draw_weapon_armor()
 
         # Draw 'spells' section if character is of a magic related class (Magic-User, Cleric, etc.).
         if self.character.spells:
@@ -335,7 +335,7 @@ class CharacterSheet:
         self.position_ability_scores()
         self.position_saving_throws()
         self.position_weight_carrying_capacity()
-        self.position_armor_weapon()
+        self.position_weapon_armor()
 
         # Get lists for dynamically positioned elements.
         self.specials_pos_y_list: list[int] = self.get_position_dynamic_field(self.special_ability, self.character.specials,
@@ -571,12 +571,11 @@ class CharacterSheet:
 
     def position_weapon_armor_header_elements(self) -> None:
         # Spacing values.
-        spacing_1 = int(self.screen_width / 50)
-        spacing_2 = int(self.screen_width / 50)
-        spacing_3 = int(self.screen_width / 50)
-        spacing_4 = int(self.screen_width / 50)
-        spacing_5 = int(self.screen_width / 50)
-        spacing_6 = int(self.screen_width / 50)
+        size_spacing: int = int(self.screen_width / 12)
+        dmg_spacing: int = int(self.screen_width / 70)
+        range_spacing: int = int(self.screen_width / 70)
+        sml_spacing: int = int(self.screen_width / 100)
+        armor_ac_spacing: int = int(self.screen_width / 18)
 
         # Assign y-positions based on anchor objects.
         for weapon_header in self.weapon_header_group:
@@ -584,15 +583,16 @@ class CharacterSheet:
         for armor_header in self.armor_header_group:
             armor_header.text_rect.bottom = self.armor.text_rect.bottom
 
-        self.weapon_header_size.text_rect.left = self.weapon.text_rect.right + spacing_1
-        self.weapon_header_damage.text_rect.left = self.weapon_header_size.text_rect.right + spacing_2
-        self.weapon_header_s.text_rect.left = self.weapon_header_damage.text_rect.right + spacing_3
-        self.weapon_header_m.text_rect.left = self.weapon_header_s.text_rect.right + spacing_4
-        self.weapon_header_l.text_rect.left = self.weapon_header_m.text_rect.right + spacing_5
+        # Position weapon header elements.
+        self.weapon_header_size.text_rect.left = self.weapon.text_rect.right + size_spacing
+        self.weapon_header_damage.text_rect.left = self.weapon_header_size.text_rect.right + dmg_spacing
+        self.weapon_header_s.text_rect.left = self.weapon_header_damage.text_rect.right + range_spacing
+        self.weapon_header_m.text_rect.left = self.weapon_header_s.text_rect.right + sml_spacing
+        self.weapon_header_l.text_rect.left = self.weapon_header_m.text_rect.right + sml_spacing
+        # Position armor header elements.
+        self.armor_header_ac.text_rect.left = self.armor.text_rect.right + armor_ac_spacing
 
-        self.armor_header_ac.text_rect.left = self.armor.text_rect.right + spacing_6
-
-    def position_armor_weapon(self) -> None:
+    def position_weapon_armor(self) -> None:
         """Position weapon/armor elements from header groups and 'self.weapon_armor_groups'."""
         # Position header elements.
         self.position_weapon_armor_header_elements()
@@ -606,7 +606,7 @@ class CharacterSheet:
                 else:
                     item.text_rect.topleft = info_pair[index - 1].text_rect.bottomleft
 
-    def draw_armor_weapon(self) -> None:
+    def draw_weapon_armor(self) -> None:
         """Draw elements from header groups and 'self.weapon_armor_groups' on screen."""
         # Draw header elements.
         for header_group in (self.weapon_header_group, self.armor_header_group):
