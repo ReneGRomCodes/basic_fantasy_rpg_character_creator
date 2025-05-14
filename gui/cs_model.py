@@ -203,28 +203,34 @@ class CharacterSheet:
         # Create empty list to store y-position values for each state of 'self.inventory'.
         self.inventory_pos_y_list: list[int] = []
 
-        # Weapons and armor elements.
-        # NOTE: While 'weapons' and 'armor' are two distinct sections, with their respective anchor elements being
-        # separately positioned via 'self.screen_grid_array', they are using joint class methods for positioning/drawing
-        # of each section's internal elements because of their similar structure and thematic relation.
-        self.weapon: TextField = so.TextField(screen, "WEAPON", self.text_standard)  # ANCHOR
-        self.armor: TextField = so.TextField(screen, "ARMOR", self.text_standard)  # ANCHOR
+        # Weapon elements.
+        self.weapon_label: TextField = so.TextField(screen, "WEAPON", self.text_standard)  # ANCHOR
         # Further Header elements.
         self.weapon_header_size: TextField = so.TextField(screen, "Size", self.text_standard)
         self.weapon_header_damage: TextField = so.TextField(screen, "Dmg", self.text_standard)
         self.weapon_header_s: TextField = so.TextField(screen, "S +1", self.text_standard)
         self.weapon_header_m: TextField = so.TextField(screen, "M", self.text_standard)
         self.weapon_header_l: TextField = so.TextField(screen, "L -2", self.text_standard)
-        self.armor_header_ac: TextField = so.TextField(screen, "AC", self.text_standard)
-        # Characters weapon/armor/shield elements.
+        # Characters weapon elements.
         weapon_item_str: str = f"{self.character.weapon.name}"
-        armor_item_str: str = f"{self.character.armor.name}{self.character.armor.armor_class}"
-        shield_item_str: str = f"{self.character.shield.name}"
         self.weapon_char: TextField = so.TextField(screen, weapon_item_str, self.text_standard)
+        # Arrays for weapon groups for cleaner positioning/drawing in class methods.
+        self.weapon_header_group: tuple[TextField, ...] = (
+            self.weapon_header_size, self.weapon_header_damage, self.weapon_header_s, self.weapon_header_m,
+            self.weapon_header_l
+        )
+        self.weapon_group: tuple[TextField, ...] = (self.weapon_char, )
+
+        # Armor elements.
+        self.armor_label: TextField = so.TextField(screen, "ARMOR", self.text_standard)  # ANCHOR
+        self.armor_header_ac: TextField = so.TextField(screen, "AC", self.text_standard)
+        # Characters armor elements.
+        armor_item_str: str = f"{self.character.armor.name}"
+        shield_item_str: str = f"{self.character.shield.name}"
         self.armor_char: TextField = so.TextField(screen, armor_item_str, self.text_standard)
         self.shield_char: TextField = so.TextField(screen, shield_item_str, self.text_standard)
-        # Get arrays for weapon/armor groups for cleaner positioning/drawing in class methods.
-        self.weapon_header_group, self.armor_header_group, self.weapon_armor_groups = self.get_weapon_armor_groups()
+        # Get arrays for armor groups for cleaner positioning/drawing in class methods.
+        self.armor_header_group, self.armor_group = self.get_armor_groups()
 
         """
         16x24 screen grid for positioning of anchor elements. Further elements that belong to anchors are then positioned
@@ -254,8 +260,8 @@ class CharacterSheet:
         clssp: TextField = self.class_specials
         crcap: TextField = self.carrying_cap
         invty: TextField = self.inventory
-        weapn: TextField = self.weapon
-        armor: TextField = self.armor
+        weapn: TextField = self.weapon_label
+        armor: TextField = self.armor_label
 
         self.screen_grid_array: tuple[tuple[False | TextField, ...], ...] = (
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -308,7 +314,7 @@ class CharacterSheet:
         self.draw_special_abilities()
         self.draw_weight_carrying_capacity()
         self.draw_inventory()
-        self.draw_weapon_armor()
+        self.draw_weapon()
 
         # Draw 'spells' section if character is of a magic related class (Magic-User, Cleric, etc.).
         if self.character.spells:
@@ -316,6 +322,9 @@ class CharacterSheet:
         # Draw 'class specials' section if character class has special abilities.
         if self.character.class_specials:
             self.draw_class_specials()
+        # Don't draw 'armor' section for classes that can't use armor.
+        if self.character.class_name not in {"Magic-User"}:
+            self.draw_armor()
 
 
     """Main positioning method for use in 'character_sheet_state_manager()' function in 'core/state_manager.py' when the
@@ -335,7 +344,8 @@ class CharacterSheet:
         self.position_ability_scores()
         self.position_saving_throws()
         self.position_weight_carrying_capacity()
-        self.position_weapon_armor()
+        self.position_weapon()
+        self.position_armor()
 
         # Get lists for dynamically positioned elements.
         self.specials_pos_y_list: list[int] = self.get_position_dynamic_field(self.special_ability, self.character.specials,
@@ -530,90 +540,115 @@ class CharacterSheet:
                                            self.inventory_pos_y_list)
         self.position_and_draw_inventory_weight()
 
-    def get_weapon_armor_groups(self) -> tuple[tuple[TextField, ...], tuple[TextField, ...], tuple[tuple[TextField, ...], ...]]:
-        """Create, populate and return arrays 'weapon_header_group', 'armor_header_group' and 'item_group' based on
-        selected race/class.
-        RETURNS:
-            weapon_header_group: 'tuple[TextField, ...]' containing weapon header elements WITHOUT the section anchor.
-            armor_header_group: 'tuple[TextField, ...]' containing armor header elements WITHOUT the section anchor.
-            item_group: 'tuple[tuple[TextField, ...], ...]' containing item value elements and section anchors.
-        """
-        # Sets for class checks. 'Magic-User' can't use any armor, 'Thief' classes can't use shields.
-        no_armor_classes: set[str] = {"Magic-User"}
-        no_shield_classes: set[str] = {"Thief", "Magic-User/Thief"}
-
-        # Tuples for weapon and armor header elements.
-        weapon_header_group: tuple[TextField, ...] = (
-                self.weapon_header_size, self.weapon_header_damage, self.weapon_header_s, self.weapon_header_m,
-                self.weapon_header_l
-            )
-        armor_header_group: tuple[TextField, ...] = (self.armor_header_ac, )
-
-        # Assign array of character sheet elements based on character class.
-        if self.character.class_name in no_armor_classes:
-            item_groups: tuple[tuple[TextField, ...], ...] = (
-                (self.weapon, self.weapon_char),
-            )
-            # Empty armor header tuple for classes that can't use armor.
-            armor_header_group = ()
-        elif self.character.class_name in no_shield_classes:
-            item_groups: tuple[tuple[TextField, ...], ...] = (
-                (self.weapon, self.weapon_char),
-                (self.armor, self.armor_char),
-            )
-        else:
-            item_groups: tuple[tuple[TextField, ...], ...] = (
-                (self.weapon, self.weapon_char),
-                (self.armor, self.armor_char, self.shield_char),
-            )
-
-        return weapon_header_group, armor_header_group, item_groups
-
-    def position_weapon_armor_header_elements(self) -> None:
+    def position_weapon_header_elements(self) -> None:
+        """Position weapon header elements."""
+        # Anchor element 'self.weapon_label'.
+        anchor = self.weapon_label
         # Spacing values.
         size_spacing: int = int(self.screen_width / 12)
         dmg_spacing: int = int(self.screen_width / 70)
         range_spacing: int = int(self.screen_width / 70)
         sml_spacing: int = int(self.screen_width / 100)
-        armor_ac_spacing: int = int(self.screen_width / 18)
 
         # Assign y-positions based on anchor objects.
         for weapon_header in self.weapon_header_group:
-            weapon_header.text_rect.bottom = self.weapon.text_rect.bottom
-        for armor_header in self.armor_header_group:
-            armor_header.text_rect.bottom = self.armor.text_rect.bottom
+            weapon_header.text_rect.bottom = anchor.text_rect.bottom
 
-        # Position weapon header elements.
-        self.weapon_header_size.text_rect.left = self.weapon.text_rect.right + size_spacing
+        # Assign x-position for weapon header elements.
+        self.weapon_header_size.text_rect.left = anchor.text_rect.right + size_spacing
         self.weapon_header_damage.text_rect.left = self.weapon_header_size.text_rect.right + dmg_spacing
         self.weapon_header_s.text_rect.left = self.weapon_header_damage.text_rect.right + range_spacing
         self.weapon_header_m.text_rect.left = self.weapon_header_s.text_rect.right + sml_spacing
         self.weapon_header_l.text_rect.left = self.weapon_header_m.text_rect.right + sml_spacing
-        # Position armor header elements.
-        self.armor_header_ac.text_rect.left = self.armor.text_rect.right + armor_ac_spacing
 
-    def position_weapon_armor(self) -> None:
-        """Position weapon/armor elements from header groups and 'self.weapon_armor_groups'."""
+    def position_weapon(self) -> None:
+        """Position weapon elements."""
+        # Anchor element 'self.weapon_label'.
+        anchor: TextField = self.weapon_label
         # Position header elements.
-        self.position_weapon_armor_header_elements()
-        # Position value rects 'topleft' position to 'bottomleft' of previous element.
-        for info_pair in self.weapon_armor_groups:
-            for index, item in enumerate(info_pair):
-                # Explicit if-statement to make clear that anchor object (index 0) positioning is skipped, as this is
-                # done via 'self.screen_grid_array'.
-                if index == 0:
-                    pass
-                else:
-                    item.text_rect.topleft = info_pair[index - 1].text_rect.bottomleft
+        self.position_weapon_header_elements()
 
-    def draw_weapon_armor(self) -> None:
-        """Draw elements from header groups and 'self.weapon_armor_groups' on screen."""
-        # Draw header elements.
-        for header_group in (self.weapon_header_group, self.armor_header_group):
-            for header in header_group:
-                header.draw_text()
-        # Draw anchors and further weapon/armor elements.
-        self.draw_grouped_fields(self.weapon_armor_groups)
+        # Position elements in 'self.weapon_group'. First element is positioned in reference to anchor, following positions
+        # use preceding element in group.
+        for index, item in enumerate(self.weapon_group):
+            if index == 0:
+                item.text_rect.topleft = anchor.text_rect.bottomleft
+            else:
+                item.text_rect.topleft = self.armor_group[index - 1].text_rect.bottomleft
+
+    def draw_weapon(self) -> None:
+        """Draw armor elements."""
+        # Draw anchor/label for section.
+        self.weapon_label.draw_text()
+
+        # Draw further elements from header- and weapon groups.
+        for group in (self.weapon_header_group, self.weapon_group):
+            for item in group:
+                item.draw_text()
+
+    def get_armor_groups(self) -> tuple[tuple[TextField, ...], tuple[TextField, ...]]:
+        """Create, populate and return arrays 'armor_header_group' and 'armor_group' based on selected race/class.
+        RETURNS:
+            armor_header_group: 'tuple[TextField, ...]' containing armor header elements WITHOUT the section anchor.
+            armor_group: 'tuple[TextField, ...]' containing armor value elements.
+        """
+        # Sets for class checks. 'Magic-User' can't use any armor, 'Thief' classes can't use shields.
+        no_armor_classes: set[str] = {"Magic-User"}
+        no_shield_classes: set[str] = {"Thief", "Magic-User/Thief"}
+
+        # Tuple armor header elements.
+        armor_header_group: tuple[TextField, ...] = (self.armor_header_ac, )
+
+        # Assign arrays of armor elements based on character class.
+        if self.character.class_name in no_armor_classes:
+            # Empty tuples for classes that can't use armor.
+            armor_header_group = ()
+            armor_group = ()
+        elif self.character.class_name in no_shield_classes:
+            armor_group: tuple[TextField, ...] = (self.armor_char, )
+        else:
+            armor_group: tuple[TextField, ...] = (self.armor_char, self.shield_char, )
+
+        return armor_header_group, armor_group
+
+    def position_armor_header_elements(self) -> None:
+        """Position armor header elements."""
+        # Anchor element 'self.armor_label'.
+        anchor: TextField = self.armor_label
+        # Spacing values.
+        spacing: int = int(self.screen_width / 18)
+
+        # Assign y-positions based on anchor objects.
+        for armor_header in self.armor_header_group:
+            armor_header.text_rect.bottom = anchor.text_rect.bottom
+
+        # Assign x-position for armor header elements.
+        self.armor_header_ac.text_rect.left = anchor.text_rect.right + spacing
+
+    def position_armor(self) -> None:
+        """Position armor elements."""
+        # Anchor element 'self.armor_label'.
+        anchor: TextField = self.armor_label
+        # Position header elements.
+        self.position_armor_header_elements()
+
+        # Position elements in 'self.armor_group'. First element is positioned in reference to anchor, following positions
+        # use preceding element in group.
+        for index, item in enumerate(self.armor_group):
+            if index == 0:
+                item.text_rect.topleft = anchor.text_rect.bottomleft
+            else:
+                item.text_rect.topleft = self.armor_group[index - 1].text_rect.bottomleft
+
+    def draw_armor(self) -> None:
+        """Draw armor elements."""
+        # Draw anchor/label for section.
+        self.armor_label.draw_text()
+
+        # Draw further elements from header- and armor groups.
+        for group in (self.armor_header_group, self.armor_group):
+            for item in group:
+                item.draw_text()
 
     @staticmethod
     def position_first_group_element(index: int, group: tuple[TextField, ...],
