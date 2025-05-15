@@ -9,7 +9,8 @@ this point it has become mostly a dumping ground for 'todos'."""
 # Shit to keep in mind:
 # TODO keep an eye on functions in 'core\rules.py' and 'character_creation_functions.py' that will be obsolete after migration.
 # TODO Remove function call 'build_character_sheet()' from event handler when final character sheet is done.
-# TODO add section for magic/spell selection.
 
 # PRIORITIES:
 # TODO Re-structure 'rules.py' and 'Character' class to get rid of overlap
+# TODO add sections for languages, movement and thief skills to character sheet.
+# TODO add screen for magic/spell selection.

@@ -191,7 +191,7 @@ class CharacterSheet:
         )
 
         # Inventory elements.
-        self.inventory: TextField = so.TextField(screen, "INVENTORY: ", text_large)  # ANCHOR
+        self.inventory: TextField = so.TextField(screen, "INVENTORY", text_large)  # ANCHOR
         # 'inventory_item' and 'inventory_item_weight' objects have their text and position dynamically modified in
         # methods 'draw_format_dynamic_field()' and 'position_and_draw_inventory_weight()' respectively to account for
         # the fact that number of items in 'character.inventory' is unpredictable at the start of the character creation.
