@@ -226,9 +226,13 @@ class CharacterSheet:
         self.armor_header_ac: TextField = so.TextField(screen, "AC", self.text_standard)
         # Characters armor elements.
         armor_item_str: str = f"{self.character.armor.name}"
+        armor_ac_str: str = f"{self.character.armor.armor_class}"
         shield_item_str: str = f"{self.character.shield.name}"
+        shield_ac_str: str = f"{self.character.shield.armor_class}"
         self.armor_char: TextField = so.TextField(screen, armor_item_str, self.text_standard)
+        self.armor_char_ac: TextField = so.TextField(screen, armor_ac_str, self.text_standard)
         self.shield_char: TextField = so.TextField(screen, shield_item_str, self.text_standard)
+        self.shield_char_ac: TextField = so.TextField(screen, shield_ac_str, self.text_standard)
         # Get arrays for armor groups for cleaner positioning/drawing in class methods.
         self.armor_header_group, self.armor_group = self.get_armor_groups()
 
@@ -403,6 +407,8 @@ class CharacterSheet:
 
     def position_ability_scores(self) -> None:
         """Format and position ability score labels and values on screen."""
+        # Anchor element 'self.abilities'.
+        anchor = self.abilities
         # Format ability bonus/penalty output.
         self.format_ability_scores()
 
@@ -412,7 +418,7 @@ class CharacterSheet:
 
         # Position label, score and bonus/penalty fields.
         for index, group in enumerate(self.ability_groups):
-            self.position_first_group_element(index, group, self.ability_groups, self.abilities)
+            self.position_first_group_element(index, group, self.ability_groups, anchor)
             group[1].text_rect.top, group[1].text_rect.right = (group[0].text_rect.top,
                                                                 group[0].text_rect.left + score_spacing)
             group[2].text_rect.top, group[2].text_rect.right = (group[1].text_rect.top,
@@ -435,6 +441,8 @@ class CharacterSheet:
 
     def position_saving_throws(self) -> None:
         """Format and position saving throw labels and values on screen."""
+        # Anchor element 'self.saving_throws'.
+        anchor = self.saving_throws
         # Format saving throws output.
         self.format_saving_throws()
 
@@ -443,7 +451,7 @@ class CharacterSheet:
 
         # Position label and value fields.
         for index, group in enumerate(self.saving_throw_groups):
-            self.position_first_group_element(index, group, self.saving_throw_groups, self.saving_throws)
+            self.position_first_group_element(index, group, self.saving_throw_groups, anchor)
             group[1].text_rect.top, group[1].text_rect.right = (group[0].text_rect.top,
                                                                 group[0].text_rect.left + score_spacing)
 
@@ -483,12 +491,14 @@ class CharacterSheet:
 
     def position_weight_carrying_capacity(self) -> None:
         """Position weight/carrying capacity elements on screen."""
+        # Anchor element 'self.carrying_cap'.
+        anchor = self.carrying_cap
         # Value for spacing between elements.
         cap_spacing: int = int(self.screen_width / 5)
 
         # Position label and value fields.
         for index, group in enumerate(self.weight_group):
-            self.position_first_group_element(index, group, self.weight_group, self.carrying_cap)
+            self.position_first_group_element(index, group, self.weight_group, anchor)
             group[1].text_rect.top, group[1].text_rect.right = (group[0].text_rect.top,
                                                                 group[0].text_rect.left + cap_spacing)
 
@@ -574,7 +584,7 @@ class CharacterSheet:
             if index == 0:
                 item.text_rect.topleft = anchor.text_rect.bottomleft
             else:
-                item.text_rect.topleft = self.armor_group[index - 1].text_rect.bottomleft
+                item.text_rect.topleft = self.weapon_group[index - 1].text_rect.bottomleft
 
     def draw_weapon(self) -> None:
         """Draw armor elements."""
@@ -586,7 +596,7 @@ class CharacterSheet:
             for item in group:
                 item.draw_text()
 
-    def get_armor_groups(self) -> tuple[tuple[TextField, ...], tuple[TextField, ...]]:
+    def get_armor_groups(self) -> tuple[tuple[TextField, ...], tuple]:
         """Create, populate and return arrays 'armor_header_group' and 'armor_group' based on selected race/class.
         RETURNS:
             armor_header_group: 'tuple[TextField, ...]' containing armor header elements WITHOUT the section anchor.
@@ -602,12 +612,17 @@ class CharacterSheet:
         # Assign arrays of armor elements based on character class.
         if self.character.class_name in no_armor_classes:
             # Empty tuples for classes that can't use armor.
-            armor_header_group = ()
-            armor_group = ()
+            armor_header_group: tuple = ()
+            armor_group: tuple = ()
         elif self.character.class_name in no_shield_classes:
-            armor_group: tuple[TextField, ...] = (self.armor_char, )
+            armor_group: tuple[tuple[TextField, TextField], ...] = (
+                (self.armor_char, self.armor_char_ac),
+            )
         else:
-            armor_group: tuple[TextField, ...] = (self.armor_char, self.shield_char, )
+            armor_group: tuple[tuple[TextField, TextField], ...] = (
+                (self.armor_char, self.armor_char_ac),
+                (self.shield_char, self.shield_char_ac),
+            )
 
         return armor_header_group, armor_group
 
@@ -632,23 +647,25 @@ class CharacterSheet:
         # Position header elements.
         self.position_armor_header_elements()
 
-        # Position elements in 'self.armor_group'. First element is positioned in reference to anchor, following positions
-        # use preceding element in group.
-        for index, item in enumerate(self.armor_group):
-            if index == 0:
-                item.text_rect.topleft = anchor.text_rect.bottomleft
-            else:
-                item.text_rect.topleft = self.armor_group[index - 1].text_rect.bottomleft
+        # Value for spacing between elements.
+        ac_spacing: int = int(self.screen_width / 10)
+
+        # Position label and value fields.
+        for index, group in enumerate(self.armor_group):
+            self.position_first_group_element(index, group, self.armor_group, anchor)
+            group[1].text_rect.top = group[0].text_rect.top
+            group[1].text_rect.centerx = self.armor_header_group[0].text_rect.centerx
 
     def draw_armor(self) -> None:
         """Draw armor elements."""
         # Draw anchor/label for section.
         self.armor_label.draw_text()
 
-        # Draw further elements from header- and armor groups.
-        for group in (self.armor_header_group, self.armor_group):
-            for item in group:
-                item.draw_text()
+        # Draw section header.
+        for element in self.armor_header_group:
+            element.draw_text()
+        # Draw armor elements.
+        self.draw_grouped_fields(self.armor_group)
 
     @staticmethod
     def position_first_group_element(index: int, group: tuple[TextField, ...],
@@ -657,10 +674,10 @@ class CharacterSheet:
         If it's the first group in the section (index 0), align its top-left corner to the bottom-left of the section's
         anchor. Otherwise, stack it below the previous group's first element.
         ARGS:
-            index: index of the current group in the array, passed from enumerate()
-            group: tuple of TextField elements (e.g. label + value) to position
-            array: full tuple containing all grouped elements in the section
-            anchor: anchor TextField that marks the top of this section (e.g. section label)
+            index: index of the current group in the array, passed from enumerate().
+            group: tuple of TextField elements (e.g. label + value) to position.
+            array: full tuple containing all grouped elements in the section.
+            anchor: anchor TextField that marks the top of this section (e.g. section label).
         """
         if index == 0:
             group[0].text_rect.topleft = anchor.text_rect.bottomleft
