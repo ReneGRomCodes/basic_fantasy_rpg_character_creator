@@ -34,6 +34,7 @@ class Character:
         self.saving_throws: dict[str, int] = {}
         self.spells: str | False = False
         self.hp: int = 0
+        self.movement: int | None = None
         # Attributes related to inventory.
         self.carrying_capacity: dict[str, int] = {}
         self.weight_carried: int | float = 0
@@ -154,6 +155,7 @@ class Character:
         self.set_hp()
         self.set_armor_class()
         self.set_carrying_capacity()
+        self.set_movement_rate()
 
     def set_max_hit_die(self) -> None:
         """Set 'self.max_hit_die' based on chosen race and class."""
@@ -233,6 +235,27 @@ class Character:
             else:
                 self.carrying_capacity = {cap_light_key: 80, cap_heavy_key: 195, }
 
+    def set_movement_rate(self) -> None:
+        """Set movement rate in feet based on encumbrance ('self.carrying_capacity') and worn armor."""
+        # Movement rates for lightly loaded characters.
+        if self.weight_carried <= self.carrying_capacity["Light Load"]:
+            if self.armor == item_inst.no_armor:
+                self.movement: int = 40
+            elif self.armor == item_inst.leather_armor:
+                self.movement: int = 30
+            # Movement rate for armor heavier than leather armor.
+            else:
+                self.movement: int = 20
+        # Movement rates for heavily loaded characters.
+        elif self.weight_carried <= self.carrying_capacity["Heavy Load"]:
+            if self.armor == item_inst.no_armor:
+                self.movement: int = 30
+            elif self.armor == item_inst.leather_armor:
+                self.movement: int = 20
+            # Movement rate for armor heavier than leather armor.
+            else:
+                self.movement: int = 10
+
     # Inventory and trade related methods.
     def buy_item(self, item: object, amount: int) -> bool:
         """Buy 'amount' number of instance 'item' of a class from 'item_model' module.
@@ -253,6 +276,7 @@ class Character:
             return False
         else:
             self.weight_carried += weight_total
+            self.set_movement_rate()
             self.money = money
             # Add each item individually to list 'self.items'
             for i in range(amount):
@@ -266,6 +290,7 @@ class Character:
             amount: number of items to sell.
         """
         self.weight_carried -= item.weight * amount
+        self.set_movement_rate()
         self.money += item.cost * amount
         for i in range(amount):
             self.inventory.remove(item)
@@ -294,6 +319,7 @@ class Character:
                 self.shield = equip
 
         self.set_armor_class()
+        self.set_movement_rate()
 
     def unequip_item(self, item: object) -> None:
         """Unequip instance 'item' and move it to inventory. Set 'self.armor' and 'self.shield' to instances 'no_armor'
@@ -307,3 +333,4 @@ class Character:
         else:
             self.shield = item_inst.no_shield
         self.set_armor_class()
+        self.set_movement_rate()

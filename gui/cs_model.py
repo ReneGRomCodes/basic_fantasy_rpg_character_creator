@@ -39,6 +39,7 @@ class CharacterSheet:
         # Strings for measurement units used on character sheet.
         self.weight_unit: str = " lbs"
         self.money_unit: str = " gold pieces"
+        self.distance_unit: str = "'"
 
         # General screen objects.
         self.title: TextField = so.TextField(screen, "- CHARACTER SHEET -", title_size)
@@ -75,6 +76,9 @@ class CharacterSheet:
         next_lvl_xp_char: TextField = so.TextField(screen, str(character.next_level_xp), text_large)
         money: TextField = so.TextField(screen, "Money: ", text_large)  # ANCHOR
         money_char: so.TextField = so.TextField(screen, str(self.character.money) + self.money_unit, text_large)
+        movement: TextField = so.TextField(screen, "Movement: ", self.text_standard)  # ANCHOR
+        movement_value_str: str = f"{self.character.movement}{self.distance_unit}"
+        movement_char: TextField = so.TextField(screen, movement_value_str, self.text_standard)
         # Combat related basic info elements.
         armor_class: TextField = so.TextField(screen, "Armor Class: ", self.text_standard)  # ANCHOR
         armor_class_char: TextField = so.TextField(screen, str(character.armor_class), self.text_standard)
@@ -91,6 +95,7 @@ class CharacterSheet:
             (level, level_char),
             (next_lvl_xp, next_lvl_xp_char),
             (money, money_char),
+            (movement, movement_char),
             (armor_class, armor_class_char),
             (health_points, health_points_char),
             (attack_bonus, attack_bonus_char),
@@ -254,6 +259,7 @@ class CharacterSheet:
         level: TextField = level
         nxtxp: TextField = next_lvl_xp
         money: TextField = money
+        mvmnt: TextField = movement
         arcls: TextField = armor_class
         hp: TextField = health_points
         atbns: TextField = attack_bonus
@@ -271,7 +277,7 @@ class CharacterSheet:
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
-            (False, name , False, False, level, False, False, False, arcls, False, atbns, False, hp   , False, False, False),
+            (False, name , False, False, level, False, False, False, arcls, False, atbns, False, hp   , False, mvmnt, False),
             (False, race , False, False, cls  , False, False, False, weapn, False, False, False, False, armor, False, False),
             (False, xp   , False, False, nxtxp, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),

@@ -1,7 +1,6 @@
 import pygame
 import sys
 import core.rules as rls
-from character_creation_functions import build_character_sheet
 from core.shared_data import shared_data as sd
 """Contains event handler functions."""
 
@@ -151,7 +150,6 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
         elif state == "creation_complete":
             if event.type == pygame.MOUSEBUTTONUP:
                 if gui_elements["show_character_sheet"].button_rect.collidepoint(mouse_pos):
-                    build_character_sheet(character)  # TODO Character sheet in console for checks. Remove when done.
                     state = "init_character_sheet"
 
     return possible_characters, state
