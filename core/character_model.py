@@ -1,5 +1,6 @@
 from core.rules import dice_roll, get_ability_score
 import item_instances as item_inst
+from item_model import Armor
 """Class for character."""
 
 
@@ -236,7 +237,8 @@ class Character:
                 self.carrying_capacity = {cap_light_key: 80, cap_heavy_key: 195, }
 
     def set_movement_rate(self) -> None:
-        """Set movement rate in feet based on encumbrance ('self.carrying_capacity') and worn armor."""
+        """Set movement rate in feet based on encumbrance ('self.carrying_capacity') and worn armor. Has to be called
+        whenever changes to 'self.weight_carried' are made in other methods."""
         # Movement rates for lightly loaded characters.
         if self.weight_carried <= self.carrying_capacity["Light Load"]:
             if self.armor == item_inst.no_armor:
@@ -275,7 +277,7 @@ class Character:
             print(insufficient_money_message)
             return False
         else:
-            self.weight_carried += weight_total
+            self.modify_weight_carried(item, amount, "add")
             self.set_movement_rate()
             self.money = money
             # Add each item individually to list 'self.items'
@@ -289,7 +291,7 @@ class Character:
             item: instance of a class from 'item_model' module, instances are listed in module 'item_instances'.
             amount: number of items to sell.
         """
-        self.weight_carried -= item.weight * amount
+        self.modify_weight_carried(item, amount, "remove")
         self.set_movement_rate()
         self.money += item.cost * amount
         for i in range(amount):
@@ -334,3 +336,32 @@ class Character:
             self.shield = item_inst.no_shield
         self.set_armor_class()
         self.set_movement_rate()
+
+    def modify_weight_carried(self, item: object, amount: int, add_remove: str) -> None:
+        """Change 'self.weight_carried' by adding/subtracting 'item.weight', taking following race-specific modifiers
+        into account:
+        HALFLINGS: instance of class 'Armor' are calculated with 1/4 of the weight.
+
+        NOTE: Method has to be called whenever any item transaction from/to the character occurs.
+
+        ARGS:
+            item: instance of a class from 'item_model' module, instances are listed in module 'item_instances'.
+            amount: amount: number of items to add/remove.
+            add_remove: keyword string to switch between addition and subtraction of item weight from 'self.weight_carried'.
+                "add": addition of items to character.
+                "remove": subtraction of item from character.
+        """
+        # Halfling armor weight modifier.
+        modified_halfling_armor_weight: float = item.weight * 0.25
+
+        if add_remove == "add":
+            if isinstance(item, Armor) and self.race_name == "Halfling":
+                self.weight_carried += modified_halfling_armor_weight * amount
+            else:
+                self.weight_carried += item.weight * amount
+
+        elif add_remove == "remove":
+            if isinstance(item, Armor) and self.race_name == "Halfling":
+                self.weight_carried -= modified_halfling_armor_weight * amount
+            else:
+                self.weight_carried -= item.weight * amount
