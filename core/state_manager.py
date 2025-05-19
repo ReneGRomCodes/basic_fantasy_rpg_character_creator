@@ -136,6 +136,12 @@ def custom_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
             eh.custom_character_events(screen, state, sd.character, gui_elements, mouse_pos, sd.possible_characters,
                                        sd.selected_race, sd.selected_class))
 
+    elif state == "spell_selection":
+        # Display spell selection screen for Magic-Users.
+        gui.show_spell_selection_screen(screen, sd.character, gui_elements, mouse_pos)
+        sd.possible_characters, state =(
+            eh.custom_character_events(screen, state, sd.character, gui_elements, mouse_pos, sd.possible_characters))
+
     elif state == "name_character":
         # Display character naming screen.
         gui.show_naming_screen(screen, sd.character, gui_elements, mouse_pos)

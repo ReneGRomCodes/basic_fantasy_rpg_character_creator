@@ -491,10 +491,45 @@ def select_race_class(available_choices: dict[str, list[InteractiveText]], selec
     return selected_race, selected_class
 
 
+"""Background functions for spell selection screen."""
+
+def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...]) -> None:
+    """Position elements for spell selection on screen.
+    ARGS:
+        screen: pygame window.
+        spells: tuple containing instances of class 'InteractiveText' representing available spells.
+    """
+    # Get dynamic y-positions for items in 'spells'.
+    pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, spells)
+
+    for index, spell in enumerate(spells):
+        # Align element x-position at screen center.
+        spell.interactive_rect.centerx = screen.get_rect().centerx
+        # Assign dynamic y-positions to elements.
+        if index == 0:
+            spell.interactive_rect.centery = pos_y_start
+        else:
+            spell.interactive_rect.centery = pos_y_start + pos_y_offset * index
+
+
+def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...], mouse_pos) -> None:
+    """Call positioning method 'position_spell_selection_screen_elements()' and draw item from tuple 'spells' on screen.
+    ARGS:
+        screen: pygame window.
+        spells: tuple containing instances of class 'InteractiveText' representing available spells.
+        mouse_pos: position of mouse on screen.
+    """
+    # Position elements on screen.
+    position_spell_selection_screen_elements(screen, spells)
+    # Draw elements from 'spells'.
+    for spell in spells:
+        spell.draw_interactive_text(mouse_pos)
+
+
 """Background functions for character naming screen."""
 
 def build_and_position_prompt(screen, naming_prompt: TextField, character: object) -> None:
-    """Create text for 'TextField' instance 'naming_prompt' to include characters race and class, and position it on
+    """Create text for 'TextField' instance 'naming_prompt' to include character's race and class, and position it on
     screen.
     ARGS:
         screen: PyGame window.

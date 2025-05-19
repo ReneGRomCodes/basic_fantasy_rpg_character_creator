@@ -8,7 +8,7 @@ class Character:
     """Represent a character."""
 
     def __init__(self) -> None:
-        """Initialize race and class specific attributes and character values."""
+        """Initialize race and class-specific attributes and character values."""
         # Race specific attributes.
         self.race_name: str | None = None
         self.race_specials: tuple[str, ...] = ()
@@ -105,7 +105,7 @@ class Character:
             self.next_level_xp = 1250
             self.class_specials = ("Sneak Attack", "Thief Abilities")
             self.class_saving_throws = (13, 14, 13, 16, 15)
-        # Elf specific combination classes.
+        # Elf-specific combination classes.
         elif class_selection == "Fighter/Magic-User":
             self.class_hit_die = 6
             self.next_level_xp = 4500
@@ -340,7 +340,7 @@ class Character:
     def modify_weight_carried(self, item: object, amount: int, add_remove: str) -> None:
         """Change 'self.weight_carried' by adding/subtracting 'item.weight', taking following race-specific modifiers
         into account:
-        HALFLINGS: instance of class 'Armor' are calculated with 1/4 of the weight.
+        HALFLINGS: instances of class 'Armor' are calculated with 1/4 of the weight.
 
         NOTE: Method has to be called whenever any item transaction from/to the character occurs.
 

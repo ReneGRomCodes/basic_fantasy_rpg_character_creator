@@ -167,6 +167,29 @@ def show_race_class_selection_screen(screen, rc_dict: dict, possible_characters,
     return selected_race, selected_class
 
 
+def show_spell_selection_screen(screen, character, gui_elements: dict, mouse_pos) -> None:
+    """Display spell selection screen.
+        ARGS:
+            screen: PyGame window.
+            character: instance of class 'Character()'.
+            gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+            mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+        """
+    # Assign fields and buttons from 'gui_elements' to variables.
+    screen_title = gui_elements["spell_title"]
+    back_button = gui_elements["back_button"]
+    continue_button = gui_elements["continue_button"]
+    spells = gui_elements["spell_fields"]
+
+    # Draw screen title and buttons.
+    ui.draw_screen_title(screen, screen_title, gui_elements)
+    back_button.draw_button(mouse_pos)
+    continue_button.draw_button(mouse_pos)
+
+    # Draw spell selection on screen.
+    ui.draw_spell_selection_screen_elements(screen, spells, mouse_pos)
+
+
 def show_naming_screen(screen, character, gui_elements: dict, mouse_pos) -> None:
     """Display character naming screen and prompt user for input.
     ARGS:

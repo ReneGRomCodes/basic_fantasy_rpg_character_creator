@@ -10,6 +10,4 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO keep an eye on functions in 'core\rules.py' that will be obsolete after migration.
 
 # PRIORITIES:
-# TODO Re-structure 'rules.py' and 'Character' class to get rid of overlap
 # TODO add sections for languages and thief skills to character sheet.
-# TODO add screen for magic/spell selection.

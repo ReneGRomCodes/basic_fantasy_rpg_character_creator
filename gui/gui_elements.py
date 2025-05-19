@@ -234,6 +234,21 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
     inactive_magic_user_thief_field: TextField = so.TextField(screen, "Magic-User/Thief", text_medium, text_color="inactive")
 
 
+    # Spell selection screen.
+    spell_selection_screen_title: TextField = so.TextField(screen, "- SELECT A SPELL -", text_large)
+    spell_01_field: InteractiveText = so.InteractiveText(screen, "Charm Person", text_medium, panel=False, select=False)
+    spell_02_field: InteractiveText = so.InteractiveText(screen, "Detect Magic", text_medium, panel=False, select=False)
+    spell_03_field: InteractiveText = so.InteractiveText(screen, "Floating Disc", text_medium, panel=False, select=False)
+    spell_04_field: InteractiveText = so.InteractiveText(screen, "Hold Portal", text_medium, panel=False, select=False)
+    spell_05_field: InteractiveText = so.InteractiveText(screen, "Light *", text_medium, panel=False, select=False)
+    spell_06_field: InteractiveText = so.InteractiveText(screen, "Magic Missile", text_medium, panel=False, select=False)
+    spell_07_field: InteractiveText = so.InteractiveText(screen, "Magic Mouth", text_medium, panel=False, select=False)
+    spell_08_field: InteractiveText = so.InteractiveText(screen, "Protection from Evil *", text_medium, panel=False, select=False)
+    spell_09_field: InteractiveText = so.InteractiveText(screen, "Read Languages", text_medium, panel=False, select=False)
+    spell_10_field: InteractiveText = so.InteractiveText(screen, "Shield", text_medium, panel=False, select=False)
+    spell_11_field: InteractiveText = so.InteractiveText(screen, "Sleep", text_medium, panel=False, select=False)
+    spell_12_field: InteractiveText = so.InteractiveText(screen, "Ventriloquism", text_medium, panel=False, select=False)
+
     # Character naming screen.
     # NOTE: 'character_naming_prompt' has an empty string as text attribute. The final text will be assigned in function
     # 'ui_helpers.py/build_and_position_prompt()' for the naming screen to include character race/class. This allows the
@@ -314,6 +329,10 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
         "inactive_races": (inactive_human_field, inactive_elf_field, inactive_dwarf_field, inactive_halfling_field),
         "inactive_classes": (inactive_fighter_field, inactive_cleric_field, inactive_magic_user_field, inactive_thief_field,
                              inactive_fighter_magic_user_field, inactive_magic_user_thief_field),
+        # Spell selection screen.
+        "spell_title": spell_selection_screen_title,
+        "spell_fields": (spell_01_field, spell_02_field, spell_03_field, spell_04_field, spell_05_field, spell_06_field,
+                         spell_07_field, spell_08_field, spell_09_field, spell_10_field, spell_11_field, spell_12_field),
         # Character naming screen.
         "naming_prompt": character_naming_prompt,
         "character_name_input": (character_name_input, character_name_field),

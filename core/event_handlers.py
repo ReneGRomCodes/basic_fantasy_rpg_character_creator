@@ -4,6 +4,9 @@ import core.rules as rls
 from core.shared_data import shared_data as sd
 """Contains event handler functions."""
 
+# Set to check for magic using character classes when showing class-specific screens (i.e. 'spell selection screen').
+magic_character_classes: set[str] = {"Magic-User", "Fighter/Magic-User", "Magic-User/Thief"}
+
 
 def main_events(screen, state: str, gui_elements: dict, mouse_pos) -> str:
     """Check and handle main pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'.
@@ -128,7 +131,19 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
                         character.set_race(context1.text)
                         character.set_class(context2.text)
                         character.set_character_values()
-                        state = "name_character"
+                        if character.class_name in magic_character_classes:
+                            state = "spell_selection"
+                        else:
+                            state = "name_character"
+
+        # Magic-User specific state for spell selection.
+        elif state == "spell_selection":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                    state = "race_class_selection"
+
+                if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                    state = "name_character"
 
         elif state == "select_starting_money":
             # Base state for starting money screen.
@@ -192,7 +207,10 @@ def naming_character_events(screen, state: str, character, gui_elements: dict, m
                 # Different state value is checked and set depending on whether custom or random character is created.
                 character.reset_character()
                 if state == "name_character":
-                    state = "race_class_selection"
+                    if character.class_name in magic_character_classes:
+                        state = "spell_selection"
+                    else:
+                        state = "race_class_selection"
                 elif state == "name_random_character":
                     # Import and call method to reset shared data in 'state_manager.py' before returning to previous menu.
                     # Not a pretty solution, but it resolves the freezing issue when coming back from the naming screen.
