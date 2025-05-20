@@ -493,12 +493,18 @@ def select_race_class(available_choices: dict[str, list[InteractiveText]], selec
 
 """Background functions for spell selection screen."""
 
-def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...]) -> None:
+def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...],
+                                             screen_note: TextField,) -> None:
     """Position elements for spell selection on screen.
     ARGS:
         screen: pygame window.
         spells: tuple containing instances of class 'InteractiveText' representing available spells.
+        screen_note: 'TextField' instance showing note for spell selection.
     """
+    # Position note at the screen bottom.
+    screen_note.text_rect.bottom, screen_note.text_rect.centerx = (screen.get_rect().bottom - screen.get_rect().height / 10,
+                                                                 screen.get_rect().centerx)
+
     # Get dynamic y-positions for items in 'spells'.
     pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, spells)
 
@@ -512,18 +518,23 @@ def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveTe
             spell.interactive_rect.centery = pos_y_start + pos_y_offset * index
 
 
-def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...], mouse_pos) -> None:
+def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...], screen_note: TextField,
+                                         mouse_pos) -> None:
     """Call positioning method 'position_spell_selection_screen_elements()' and draw item from tuple 'spells' on screen.
     ARGS:
         screen: pygame window.
         spells: tuple containing instances of class 'InteractiveText' representing available spells.
+        screen_note: 'TextField' instance showing note for spell selection.
         mouse_pos: position of mouse on screen.
     """
     # Position elements on screen.
-    position_spell_selection_screen_elements(screen, spells)
+    position_spell_selection_screen_elements(screen, spells, screen_note)
     # Draw elements from 'spells'.
     for spell in spells:
         spell.draw_interactive_text(mouse_pos)
+
+    # Draw further elements on screen.
+    screen_note.draw_text()
 
 
 """Background functions for character naming screen."""

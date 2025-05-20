@@ -177,6 +177,7 @@ def show_spell_selection_screen(screen, character, gui_elements: dict, mouse_pos
         """
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["spell_title"]
+    screen_note = gui_elements["spell_note"]
     back_button = gui_elements["back_button"]
     continue_button = gui_elements["continue_button"]
     spells = gui_elements["spell_fields"]
@@ -187,7 +188,7 @@ def show_spell_selection_screen(screen, character, gui_elements: dict, mouse_pos
     continue_button.draw_button(mouse_pos)
 
     # Position and draw spell selection elements on screen.
-    ui.draw_spell_selection_screen_elements(screen, spells, mouse_pos)
+    ui.draw_spell_selection_screen_elements(screen, spells, screen_note, mouse_pos)
 
     # Call helper function to properly handle info panels (see function and class docstrings for details).
     ui.show_info_panels(spells, mouse_pos)
