@@ -186,8 +186,11 @@ def show_spell_selection_screen(screen, character, gui_elements: dict, mouse_pos
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
 
-    # Draw spell selection on screen.
+    # Position and draw spell selection elements on screen.
     ui.draw_spell_selection_screen_elements(screen, spells, mouse_pos)
+
+    # Call helper function to properly handle info panels (see function and class docstrings for details).
+    ui.show_info_panels(spells, mouse_pos)
 
 
 def show_naming_screen(screen, character, gui_elements: dict, mouse_pos) -> None:

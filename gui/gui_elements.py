@@ -235,19 +235,53 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
 
 
     # Spell selection screen.
-    spell_selection_screen_title: TextField = so.TextField(screen, "- SELECT A SPELL -", text_large)
-    spell_01_field: InteractiveText = so.InteractiveText(screen, "Charm Person", text_medium, panel=False, select=False)
-    spell_02_field: InteractiveText = so.InteractiveText(screen, "Detect Magic", text_medium, panel=False, select=False)
-    spell_03_field: InteractiveText = so.InteractiveText(screen, "Floating Disc", text_medium, panel=False, select=False)
-    spell_04_field: InteractiveText = so.InteractiveText(screen, "Hold Portal", text_medium, panel=False, select=False)
-    spell_05_field: InteractiveText = so.InteractiveText(screen, "Light *", text_medium, panel=False, select=False)
-    spell_06_field: InteractiveText = so.InteractiveText(screen, "Magic Missile", text_medium, panel=False, select=False)
-    spell_07_field: InteractiveText = so.InteractiveText(screen, "Magic Mouth", text_medium, panel=False, select=False)
-    spell_08_field: InteractiveText = so.InteractiveText(screen, "Protection from Evil *", text_medium, panel=False, select=False)
-    spell_09_field: InteractiveText = so.InteractiveText(screen, "Read Languages", text_medium, panel=False, select=False)
-    spell_10_field: InteractiveText = so.InteractiveText(screen, "Shield", text_medium, panel=False, select=False)
-    spell_11_field: InteractiveText = so.InteractiveText(screen, "Sleep", text_medium, panel=False, select=False)
-    spell_12_field: InteractiveText = so.InteractiveText(screen, "Ventriloquism", text_medium, panel=False, select=False)
+    # Screen title.
+    spell_selection_screen_title: TextField = so.TextField(screen, "- SELECT   A   FIRST   LEVEL   SPELL -", text_large)
+    # Spell info panels.
+    spell_01_info: InfoPanel = so.InfoPanel(screen, "BOILERPLATE", text_small, multi_line=True,
+                                            surface_width=info_panel_width, pos="left")
+    spell_02_info: InfoPanel = so.InfoPanel(screen, "BOILERPLATE", text_small, multi_line=True,
+                                            surface_width=info_panel_width, pos="left")
+    spell_03_info: InfoPanel = so.InfoPanel(screen, "BOILERPLATE", text_small, multi_line=True,
+                                            surface_width=info_panel_width, pos="left")
+    spell_04_info: InfoPanel = so.InfoPanel(screen, "BOILERPLATE", text_small, multi_line=True,
+                                            surface_width=info_panel_width, pos="left")
+    spell_05_info: InfoPanel = so.InfoPanel(screen, "BOILERPLATE", text_small, multi_line=True,
+                                            surface_width=info_panel_width, pos="left")
+    spell_06_info: InfoPanel = so.InfoPanel(screen, "BOILERPLATE", text_small, multi_line=True,
+                                            surface_width=info_panel_width, pos="left")
+    spell_07_info: InfoPanel = so.InfoPanel(screen, "BOILERPLATE", text_small, multi_line=True,
+                                            surface_width=info_panel_width, pos="left")
+    spell_08_info: InfoPanel = so.InfoPanel(screen, "BOILERPLATE", text_small, multi_line=True,
+                                            surface_width=info_panel_width, pos="left")
+    spell_09_info: InfoPanel = so.InfoPanel(screen, "BOILERPLATE", text_small, multi_line=True,
+                                            surface_width=info_panel_width, pos="left")
+    spell_10_info: InfoPanel = so.InfoPanel(screen, "BOILERPLATE", text_small, multi_line=True,
+                                            surface_width=info_panel_width, pos="left")
+    spell_11_info: InfoPanel = so.InfoPanel(screen, "BOILERPLATE", text_small, multi_line=True,
+                                            surface_width=info_panel_width, pos="left")
+    spell_12_info: InfoPanel = so.InfoPanel(screen, "BOILERPLATE", text_small, multi_line=True,
+                                            surface_width=info_panel_width, pos="left")
+    # Selectable spell fields.
+    spell_01_field: InteractiveText = so.InteractiveText(screen, "Charm Person", text_medium, panel=(spell_01_info, ), select=False)
+    spell_02_field: InteractiveText = so.InteractiveText(screen, "Detect Magic", text_medium, panel=(spell_02_info, ), select=False)
+    spell_03_field: InteractiveText = so.InteractiveText(screen, "Floating Disc", text_medium, panel=(spell_03_info, ), select=False)
+    spell_04_field: InteractiveText = so.InteractiveText(screen, "Hold Portal", text_medium, panel=(spell_04_info, ), select=False)
+    spell_05_field: InteractiveText = so.InteractiveText(screen, "Light *", text_medium, panel=(spell_05_info, ), select=False)
+    spell_06_field: InteractiveText = so.InteractiveText(screen, "Magic Missile", text_medium, panel=(spell_06_info, ), select=False)
+    spell_07_field: InteractiveText = so.InteractiveText(screen, "Magic Mouth", text_medium, panel=(spell_07_info, ), select=False)
+    spell_08_field: InteractiveText = so.InteractiveText(screen, "Protection from Evil *", text_medium, panel=(spell_08_info, ), select=False)
+    spell_09_field: InteractiveText = so.InteractiveText(screen, "Read Languages", text_medium, panel=(spell_09_info, ), select=False)
+    spell_10_field: InteractiveText = so.InteractiveText(screen, "Shield", text_medium, panel=(spell_10_info, ), select=False)
+    spell_11_field: InteractiveText = so.InteractiveText(screen, "Sleep", text_medium, panel=(spell_11_info, ), select=False)
+    spell_12_field: InteractiveText = so.InteractiveText(screen, "Ventriloquism", text_medium, panel=(spell_12_info, ), select=False)
+    # Tuple of spell fields for resizing in for-loop.
+    spells = (spell_01_field, spell_02_field, spell_03_field, spell_04_field, spell_05_field, spell_06_field,
+              spell_07_field, spell_08_field, spell_09_field, spell_10_field, spell_11_field, spell_12_field)
+    # Resize spell field rects.
+    for spell in spells:
+        spell.interactive_rect.width = int(screen_width / 4)
+
 
     # Character naming screen.
     # NOTE: 'character_naming_prompt' has an empty string as text attribute. The final text will be assigned in function
