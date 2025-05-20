@@ -129,25 +129,25 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
     race_descr = races.get_race_descr()
     class_descr = classes.get_class_descr()
     # Info panels.
-    strength_info: InfoPanel = so.InfoPanel(screen, ability_descr["str_descr"], text_small, multi_line=True,
+    ability_01_info: InfoPanel = so.InfoPanel(screen, ability_descr["str_descr"], text_small, multi_line=True,
                                             surface_width=info_panel_width, pos="topright")
-    dexterity_info: InfoPanel = so.InfoPanel(screen, ability_descr["dex_descr"], text_small, multi_line=True,
+    ability_02_info: InfoPanel = so.InfoPanel(screen, ability_descr["dex_descr"], text_small, multi_line=True,
                                              surface_width=info_panel_width, pos="topright")
-    constitution_info: InfoPanel = so.InfoPanel(screen, ability_descr["con_descr"], text_small, multi_line=True,
+    ability_03_info: InfoPanel = so.InfoPanel(screen, ability_descr["con_descr"], text_small, multi_line=True,
                                                 surface_width=info_panel_width, pos="topright")
-    intelligence_info: InfoPanel = so.InfoPanel(screen, ability_descr["int_descr"], text_small, multi_line=True,
+    ability_04_info: InfoPanel = so.InfoPanel(screen, ability_descr["int_descr"], text_small, multi_line=True,
                                                 surface_width=info_panel_width, pos="topright")
-    wisdom_info: InfoPanel = so.InfoPanel(screen, ability_descr["wis_descr"], text_small, multi_line=True,
+    ability_05_info: InfoPanel = so.InfoPanel(screen, ability_descr["wis_descr"], text_small, multi_line=True,
                                           surface_width=info_panel_width, pos="topright")
-    charisma_info: InfoPanel = so.InfoPanel(screen, ability_descr["cha_descr"], text_small, multi_line=True,
+    ability_06_info: InfoPanel = so.InfoPanel(screen, ability_descr["cha_descr"], text_small, multi_line=True,
                                             surface_width=info_panel_width, pos="topright")
     # Ability text fields.
-    strength_field: InteractiveText = so.InteractiveText(screen, "Strength", text_medium, panel=(strength_info, ))
-    dexterity_field: InteractiveText = so.InteractiveText(screen, "Dexterity", text_medium, panel=(dexterity_info, ))
-    constitution_field: InteractiveText = so.InteractiveText(screen, "Constitution", text_medium, panel=(constitution_info, ))
-    intelligence_field: InteractiveText = so.InteractiveText(screen, "Intelligence", text_medium, panel=(intelligence_info, ))
-    wisdom_field: InteractiveText = so.InteractiveText(screen, "Wisdom", text_medium, panel=(wisdom_info, ))
-    charisma_field: InteractiveText = so.InteractiveText(screen, "Charisma", text_medium, panel=(charisma_info, ))
+    ability_01_field: InteractiveText = so.InteractiveText(screen, "Strength", text_medium, panel=(ability_01_info, ))
+    ability_02_field: InteractiveText = so.InteractiveText(screen, "Dexterity", text_medium, panel=(ability_02_info, ))
+    ability_03_field: InteractiveText = so.InteractiveText(screen, "Constitution", text_medium, panel=(ability_03_info, ))
+    ability_04_field: InteractiveText = so.InteractiveText(screen, "Intelligence", text_medium, panel=(ability_04_info, ))
+    ability_05_field: InteractiveText = so.InteractiveText(screen, "Wisdom", text_medium, panel=(ability_05_info, ))
+    ability_06_field: InteractiveText = so.InteractiveText(screen, "Charisma", text_medium, panel=(ability_06_info, ))
 
 
     # Race/class selection screen.
@@ -156,82 +156,89 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
     reset_button: Button = so.Button(screen, "DESELECT ALL", text_medium)
     reset_button.button_rect.width = button_width
     # Race info Panels.
-    humans_info: InfoPanel = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True,
+    race_01_info: InfoPanel = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True,
                                           surface_width=info_panel_width)
-    humans_info_table: InfoPanel = so.InfoPanel(screen, race_descr["humans"][1], text_small, multi_line=True,
+    race_01_info_table: InfoPanel = so.InfoPanel(screen, race_descr["humans"][1], text_small, multi_line=True,
                                                 surface_width=info_panel_width, pos="right")
-    elves_info: InfoPanel = so.InfoPanel(screen, race_descr["elves"][0], text_small, multi_line=True,
+    race_02_info: InfoPanel = so.InfoPanel(screen, race_descr["elves"][0], text_small, multi_line=True,
                                          surface_width=info_panel_width)
-    elves_info_table: InfoPanel = so.InfoPanel(screen, race_descr["elves"][1], text_small, multi_line=True,
+    race_02_info_table: InfoPanel = so.InfoPanel(screen, race_descr["elves"][1], text_small, multi_line=True,
                                                surface_width=info_panel_width, pos="right")
-    dwarves_info: InfoPanel = so.InfoPanel(screen, race_descr["dwarves"][0], text_small, multi_line=True,
+    race_03_info: InfoPanel = so.InfoPanel(screen, race_descr["dwarves"][0], text_small, multi_line=True,
                                            surface_width=info_panel_width)
-    dwarves_info_table: InfoPanel = so.InfoPanel(screen, race_descr["dwarves"][1], text_small, multi_line=True,
+    race_03_info_table: InfoPanel = so.InfoPanel(screen, race_descr["dwarves"][1], text_small, multi_line=True,
                                                  surface_width=info_panel_width, pos="right")
-    halflings_info: InfoPanel = so.InfoPanel(screen, race_descr["halflings"][0], text_small, multi_line=True,
+    race_04_info: InfoPanel = so.InfoPanel(screen, race_descr["halflings"][0], text_small, multi_line=True,
                                              surface_width=info_panel_width)
-    halflings_info_table: InfoPanel = so.InfoPanel(screen, race_descr["halflings"][1], text_small, multi_line=True,
+    race_04_info_table: InfoPanel = so.InfoPanel(screen, race_descr["halflings"][1], text_small, multi_line=True,
                                                    surface_width=info_panel_width, pos="right")
     # Class info panels.
-    fighter_info: InfoPanel = so.InfoPanel(screen, class_descr["fighter"][0], text_small, multi_line=True,
+    class_01_info: InfoPanel = so.InfoPanel(screen, class_descr["fighter"][0], text_small, multi_line=True,
                                            surface_width=info_panel_width)
-    fighter_info_table: InfoPanel = so.InfoPanel(screen, class_descr["fighter"][1], text_small, multi_line=True,
+    class_01_info_table: InfoPanel = so.InfoPanel(screen, class_descr["fighter"][1], text_small, multi_line=True,
                                                  surface_width=info_panel_width, pos="left")
-    cleric_info: InfoPanel = so.InfoPanel(screen, class_descr["cleric"][0], text_small, multi_line=True,
+    class_02_info: InfoPanel = so.InfoPanel(screen, class_descr["cleric"][0], text_small, multi_line=True,
                                           surface_width=info_panel_width)
-    cleric_info_table: InfoPanel = so.InfoPanel(screen, class_descr["cleric"][1], text_small, multi_line=True,
+    class_02_info_table: InfoPanel = so.InfoPanel(screen, class_descr["cleric"][1], text_small, multi_line=True,
                                                 surface_width=info_panel_width, pos="left")
-    magic_user_info: InfoPanel = so.InfoPanel(screen, class_descr["magic-user"][0], text_small, multi_line=True,
+    class_03_info: InfoPanel = so.InfoPanel(screen, class_descr["magic-user"][0], text_small, multi_line=True,
                                               surface_width=info_panel_width)
-    magic_user_info_table: InfoPanel = so.InfoPanel(screen, class_descr["magic-user"][1], text_small, multi_line=True,
+    class_03_info_table: InfoPanel = so.InfoPanel(screen, class_descr["magic-user"][1], text_small, multi_line=True,
                                                     surface_width=info_panel_width, pos="left")
-    thief_info: InfoPanel = so.InfoPanel(screen, class_descr["thief"][0], text_small, multi_line=True,
+    class_04_info: InfoPanel = so.InfoPanel(screen, class_descr["thief"][0], text_small, multi_line=True,
                                          surface_width=info_panel_width)
-    thief_info_table: InfoPanel = so.InfoPanel(screen, class_descr["thief"][1], text_small, multi_line=True,
+    class_04_info_table: InfoPanel = so.InfoPanel(screen, class_descr["thief"][1], text_small, multi_line=True,
                                                surface_width=info_panel_width, pos="left")
-    fighter_magic_user_info: InfoPanel = so.InfoPanel(screen, class_descr["fighter_magic-user"][0], text_small,
+    class_05_info: InfoPanel = so.InfoPanel(screen, class_descr["fighter_magic-user"][0], text_small,
                                                       multi_line=True, surface_width=info_panel_width)
-    fighter_magic_user_info_table: InfoPanel = so.InfoPanel(screen, class_descr["fighter_magic-user"][1], text_small,
+    class_05_info_table: InfoPanel = so.InfoPanel(screen, class_descr["fighter_magic-user"][1], text_small,
                                                             multi_line=True, surface_width=info_panel_width, pos="left")
-    magic_user_thief_info: InfoPanel = so.InfoPanel(screen, class_descr["magic-user_thief"][0], text_small,
+    class_06_info: InfoPanel = so.InfoPanel(screen, class_descr["magic-user_thief"][0], text_small,
                                                     multi_line=True, surface_width=info_panel_width)
-    magic_user_thief_info_table: InfoPanel = so.InfoPanel(screen, class_descr["magic-user_thief"][1], text_small,
+    class_06_info_table: InfoPanel = so.InfoPanel(screen, class_descr["magic-user_thief"][1], text_small,
                                                           multi_line=True, surface_width=info_panel_width, pos="left")
     # Active race/class text fields. Used when a race/class can be chosen in the race/class selection.
-    race_human_field: InteractiveText = so.InteractiveText(screen, "Human", text_medium,
-                                                           panel=(humans_info, humans_info_table), select=True)
-    race_elf_field: InteractiveText = so.InteractiveText(screen, "Elf", text_medium,
-                                                         panel=(elves_info, elves_info_table), select=True)
-    race_dwarf_field: InteractiveText = so.InteractiveText(screen, "Dwarf", text_medium,
-                                                           panel=(dwarves_info, dwarves_info_table), select=True)
-    race_halfling_field: InteractiveText = so.InteractiveText(screen, "Halfling", text_medium,
-                                                              panel=(halflings_info, halflings_info_table), select=True)
-    class_fighter_field: InteractiveText = so.InteractiveText(screen, "Fighter", text_medium,
-                                                              panel=(fighter_info, fighter_info_table), select=True)
-    class_cleric_field: InteractiveText = so.InteractiveText(screen, "Cleric", text_medium,
-                                                             panel=(cleric_info, cleric_info_table), select=True)
-    class_magic_user_field: InteractiveText = so.InteractiveText(screen, "Magic-User", text_medium,
-                                                                 panel=(magic_user_info, magic_user_info_table), select=True)
-    class_thief_field: InteractiveText = so.InteractiveText(screen, "Thief", text_medium,
-                                                            panel=(thief_info, thief_info_table), select=True)
-    class_fighter_magic_user_field: InteractiveText = so.InteractiveText(screen, "Fighter/Magic-User", text_medium,
-                                                                         panel=(fighter_magic_user_info, fighter_magic_user_info_table),
+    race_01_field: InteractiveText = so.InteractiveText(screen, "Human", text_medium,
+                                                           panel=(race_01_info, race_01_info_table), select=True)
+    race_02_field: InteractiveText = so.InteractiveText(screen, "Elf", text_medium,
+                                                         panel=(race_02_info, race_02_info_table), select=True)
+    race_03_field: InteractiveText = so.InteractiveText(screen, "Dwarf", text_medium,
+                                                           panel=(race_03_info, race_03_info_table), select=True)
+    race_04_field: InteractiveText = so.InteractiveText(screen, "Halfling", text_medium,
+                                                              panel=(race_04_info, race_04_info_table), select=True)
+    class_01_field: InteractiveText = so.InteractiveText(screen, "Fighter", text_medium,
+                                                              panel=(class_01_info, class_01_info_table), select=True)
+    class_02_field: InteractiveText = so.InteractiveText(screen, "Cleric", text_medium,
+                                                             panel=(class_02_info, class_02_info_table), select=True)
+    class_03_field: InteractiveText = so.InteractiveText(screen, "Magic-User", text_medium,
+                                                                 panel=(class_03_info, class_03_info_table), select=True)
+    class_04_field: InteractiveText = so.InteractiveText(screen, "Thief", text_medium,
+                                                            panel=(class_04_info, class_04_info_table), select=True)
+    class_05_field: InteractiveText = so.InteractiveText(screen, "Fighter/Magic-User", text_medium,
+                                                                         panel=(class_05_info, class_05_info_table),
                                                                          select=True)
-    class_magic_user_thief_field = so.InteractiveText(screen, "Magic-User/Thief", text_medium,
-                                                      panel=(magic_user_thief_info, magic_user_thief_info_table),
+    class_06_field = so.InteractiveText(screen, "Magic-User/Thief", text_medium,
+                                                      panel=(class_06_info, class_06_info_table),
                                                       select=True)
+    # Tuple of race and class fields for resizing in for-loop.
+    race_class_fields: tuple[InteractiveText, ...] = (race_01_field, race_02_field, race_03_field, race_04_field,
+                                                      class_01_field, class_02_field, class_03_field, class_04_field,
+                                                      class_05_field, class_06_field)
+    # Resize race and class field rects.
+    for race_class in race_class_fields:
+        race_class.interactive_rect.width = int(screen_width / 5)
     # Inactive race/class text fields. Used when a race/class is unavailable in the race/class selection.
     # NOTE: every instance has to have the same 'text' attribute as their active counterpart.
-    inactive_human_field: TextField = so.TextField(screen, "Human", text_medium, text_color="inactive")
-    inactive_elf_field: TextField = so.TextField(screen, "Elf", text_medium, text_color="inactive")
-    inactive_dwarf_field: TextField = so.TextField(screen, "Dwarf", text_medium, text_color="inactive")
-    inactive_halfling_field: TextField = so.TextField(screen, "Halfling", text_medium, text_color="inactive")
-    inactive_fighter_field: TextField = so.TextField(screen, "Fighter", text_medium, text_color="inactive")
-    inactive_cleric_field: TextField = so.TextField(screen, "Cleric", text_medium, text_color="inactive")
-    inactive_magic_user_field: TextField = so.TextField(screen, "Magic-User", text_medium, text_color="inactive")
-    inactive_thief_field: TextField = so.TextField(screen, "Thief", text_medium, text_color="inactive")
-    inactive_fighter_magic_user_field: TextField = so.TextField(screen, "Fighter/Magic-User", text_medium, text_color="inactive")
-    inactive_magic_user_thief_field: TextField = so.TextField(screen, "Magic-User/Thief", text_medium, text_color="inactive")
+    race_01_inactive_field: TextField = so.TextField(screen, "Human", text_medium, text_color="inactive")
+    race_02_inactive_field: TextField = so.TextField(screen, "Elf", text_medium, text_color="inactive")
+    race_03_inactive_field: TextField = so.TextField(screen, "Dwarf", text_medium, text_color="inactive")
+    race_04_inactive_field: TextField = so.TextField(screen, "Halfling", text_medium, text_color="inactive")
+    class_01_inactive_field: TextField = so.TextField(screen, "Fighter", text_medium, text_color="inactive")
+    class_02_inactive_field: TextField = so.TextField(screen, "Cleric", text_medium, text_color="inactive")
+    class_03_inactive_field: TextField = so.TextField(screen, "Magic-User", text_medium, text_color="inactive")
+    class_04_inactive_field: TextField = so.TextField(screen, "Thief", text_medium, text_color="inactive")
+    class_05_inactive_field: TextField = so.TextField(screen, "Fighter/Magic-User", text_medium, text_color="inactive")
+    class_06_inactive_field: TextField = so.TextField(screen, "Magic-User/Thief", text_medium, text_color="inactive")
 
 
     # Spell selection screen.
@@ -278,8 +285,9 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
     spell_11_field: InteractiveText = so.InteractiveText(screen, "Sleep", text_medium, panel=(spell_11_info, ), select=False)
     spell_12_field: InteractiveText = so.InteractiveText(screen, "Ventriloquism", text_medium, panel=(spell_12_info, ), select=False)
     # Tuple of spell fields for resizing in for-loop.
-    spell_fields = (spell_01_field, spell_02_field, spell_03_field, spell_04_field, spell_05_field, spell_06_field,
-              spell_07_field, spell_08_field, spell_09_field, spell_10_field, spell_11_field, spell_12_field)
+    spell_fields: tuple[InteractiveText, ...] = (spell_01_field, spell_02_field, spell_03_field, spell_04_field,
+                                                 spell_05_field, spell_06_field, spell_07_field, spell_08_field,
+                                                 spell_09_field, spell_10_field, spell_11_field, spell_12_field)
     # Resize spell field rects.
     for spell in spell_fields:
         spell.interactive_rect.width = int(screen_width / 4)
@@ -353,18 +361,17 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
         "random": random,
         # Ability scores screen.
         "abilities_title": ability_scores_screen_title,
-        "ability_fields": (strength_field, dexterity_field, constitution_field, intelligence_field, wisdom_field,
-                           charisma_field),
+        "ability_fields": (ability_01_field, ability_02_field, ability_03_field, ability_04_field, ability_05_field,
+                           ability_06_field),
         "reroll_button": reroll_button,
         # Race/class selection screen.
         "race_class_title": race_class_selection_screen_title,
         "reset_button": reset_button,
-        "active_races": (race_human_field, race_elf_field, race_dwarf_field, race_halfling_field),
-        "active_classes": (class_fighter_field, class_cleric_field, class_magic_user_field, class_thief_field,
-                              class_fighter_magic_user_field, class_magic_user_thief_field),
-        "inactive_races": (inactive_human_field, inactive_elf_field, inactive_dwarf_field, inactive_halfling_field),
-        "inactive_classes": (inactive_fighter_field, inactive_cleric_field, inactive_magic_user_field, inactive_thief_field,
-                             inactive_fighter_magic_user_field, inactive_magic_user_thief_field),
+        "active_races": (race_01_field, race_02_field, race_03_field, race_04_field),
+        "active_classes": (class_01_field, class_02_field, class_03_field, class_04_field, class_05_field, class_06_field),
+        "inactive_races": (race_01_inactive_field, race_02_inactive_field, race_03_inactive_field, race_04_inactive_field),
+        "inactive_classes": (class_01_inactive_field, class_02_inactive_field, class_03_inactive_field, class_04_inactive_field,
+                             class_05_inactive_field, class_06_inactive_field),
         # Spell selection screen.
         "spell_title": spell_selection_screen_title,
         "spell_fields": (spell_01_field, spell_02_field, spell_03_field, spell_04_field, spell_05_field, spell_06_field,
