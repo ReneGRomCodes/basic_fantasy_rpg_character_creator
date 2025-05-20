@@ -1,10 +1,10 @@
 """Contains function for the race descriptions."""
 
-def get_race_descr() -> dict[str, list[str]]:
+def get_race_descr() -> dict[str, tuple[str, str]]:
     """Initialize variables containing race descriptions and return them in dict 'race_descr'.
     NOTE: String variables created have to be then added manually to dict 'race_descr'.
     RETURNS:
-        race_descr: dict containing lists for race description texts as strings.
+        race_descr: dict containing tuples for race description texts as strings.
     """
 
     humans_descr: str = ("Description: Humans come in a broad variety of shapes and sizes; the Game Master must decide "
@@ -157,11 +157,11 @@ def get_race_descr() -> dict[str, list[str]]:
                             "Common and halfling language, - +1 / point of INT bonus")
 
 
-    race_descr: dict[str, list[str]] = {
-        "humans": [humans_descr, humans_table],
-        "elves": [elves_descr, elves_table],
-        "dwarves": [dwarfes_descr, dwarves_table],
-        "halflings": [halflings_desc, halflings_table],
+    race_descr: dict[str, tuple[str, str]] = {
+        "humans": (humans_descr, humans_table),
+        "elves": (elves_descr, elves_table),
+        "dwarves": (dwarfes_descr, dwarves_table),
+        "halflings": (halflings_desc, halflings_table),
     }
 
     return race_descr

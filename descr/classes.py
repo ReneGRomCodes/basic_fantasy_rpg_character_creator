@@ -1,10 +1,10 @@
 """Contains function for the class descriptions."""
 
-def get_class_descr() -> dict[str, list[str]]:
+def get_class_descr() -> dict[str, tuple[str, str]]:
     """Initialize variables containing class descriptions and return them in dict 'class_descr'.
     NOTE: String variables created have to be then added manually to dict 'class_descr'.
     RETURNS:
-        class_descr: dict containing lists for class description texts as strings.
+        class_descr: dict containing tuples for class description texts as strings.
     """
 
     fighter_descr: str = ("Fighters include soldiers, guardsmen, barbarian warriors, and anyone else for whom fighting "
@@ -297,13 +297,13 @@ def get_class_descr() -> dict[str, list[str]]:
                                    "- Ventriloquism")
 
 
-    class_descr: dict[str, list[str]] = {
-        "fighter": [fighter_descr, fighter_table],
-        "cleric": [cleric_descr, cleric_table],
-        "magic-user": [magic_user_descr, magic_user_table],
-        "thief": [thief_descr, thief_table],
-        "fighter_magic-user": [fighter_magic_user_descr, fighter_magic_user_table],
-        "magic-user_thief": [magic_user_thief_descr, magic_user_thief_table],
+    class_descr: dict[str, tuple[str, str]] = {
+        "fighter": (fighter_descr, fighter_table),
+        "cleric": (cleric_descr, cleric_table),
+        "magic-user": (magic_user_descr, magic_user_table),
+        "thief": (thief_descr, thief_table),
+        "fighter_magic-user": (fighter_magic_user_descr, fighter_magic_user_table),
+        "magic-user_thief": (magic_user_thief_descr, magic_user_thief_table),
     }
 
     return class_descr

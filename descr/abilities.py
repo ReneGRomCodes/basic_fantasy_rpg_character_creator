@@ -1,4 +1,4 @@
-"""Contains function for the characters ability score descriptions."""
+"""Contains function for the character's ability score descriptions."""
 
 
 def get_ability_descr() -> dict[str, str]:
