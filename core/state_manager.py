@@ -1,9 +1,7 @@
-import os
 from core.character_model import Character
 from gui.credits import Credits
 import gui.gui as gui
 import core.rules as rls
-import shop_functions as sf
 import core.event_handlers as eh
 from core.shared_data import shared_data as sd
 from gui.settings_gui import SettingsGUI
@@ -249,30 +247,3 @@ def character_sheet_state_manager(screen, state: str, gui_elements: dict, mouse_
         sd.cs_sheet.show_character_sheet_screen(mouse_pos)
 
     return state
-
-
-"""
-OLD MAIN SHOP FUNCTION FOR CONSOLE PART OF THE PROGRAM. DELETE WHEN MIGRATED TO PYGAME.
-"""
-
-def show_main_shop():
-    """Main loop for shop 'main menu'."""
-    shop_sections = ["General Items", "Weapons", "Projectiles", "Armor", "Inventory", "EXIT"]
-
-    while True:
-        print(" - SHOP -\n")
-        shop_section = rls.select_from_list(shop_sections, "\nWhat items do you want to buy? ")
-        os.system('cls')
-
-        if shop_section == "General Items":
-            sf.set_shop(sd.character, shop_section)
-        elif shop_section == "Weapons":
-            sf.set_shop(sd.character, shop_section)
-        elif shop_section == "Projectiles":
-            sf.set_shop(sd.character, shop_section)
-        elif shop_section == "Armor":
-            sf.set_shop(sd.character, shop_section)
-        elif shop_section == "Inventory":
-            sf.set_shop(sd.character, shop_section)
-        else:
-            break
