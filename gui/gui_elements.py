@@ -218,7 +218,7 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
                                                          panel=(class_05_info, class_05_info_table), select=True)
     class_06_field: InteractiveText = so.InteractiveText(screen, "Magic-User/Thief", text_medium,
                                                          panel=(class_06_info, class_06_info_table), select=True)
-    # Tuple of race and class fields for resizing in for-loop.
+    # Tuple of race and class fields for resizing in for-loop below.
     race_class_fields: tuple[InteractiveText, ...] = (race_01_field, race_02_field, race_03_field, race_04_field,
                                                       class_01_field, class_02_field, class_03_field, class_04_field,
                                                       class_05_field, class_06_field)
@@ -290,7 +290,7 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
     spell_10_field: InteractiveText = so.InteractiveText(screen, "Shield", text_medium, panel=(spell_10_info, ), select=False)
     spell_11_field: InteractiveText = so.InteractiveText(screen, "Sleep", text_medium, panel=(spell_11_info, ), select=False)
     spell_12_field: InteractiveText = so.InteractiveText(screen, "Ventriloquism", text_medium, panel=(spell_12_info, ), select=False)
-    # Tuple of spell fields for resizing in for-loop.
+    # Tuple of spell fields for resizing in for-loop below.
     spell_fields: tuple[InteractiveText, ...] = (default_spell_field,
                                                  spell_01_field, spell_02_field, spell_03_field, spell_04_field,
                                                  spell_05_field, spell_06_field, spell_07_field, spell_08_field,

@@ -7,7 +7,6 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO fully implement weapons shop within 'shop_functions.py'
 
 # Shit to keep in mind:
-# TODO keep an eye on functions in 'core\rules.py' that will be obsolete after migration.
 
 # PRIORITIES:
 # TODO add sections for languages and thief skills to character sheet.
