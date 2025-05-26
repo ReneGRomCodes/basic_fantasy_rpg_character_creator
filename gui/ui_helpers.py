@@ -439,8 +439,8 @@ def draw_available_choices(screen, rc_dict: dict[str, list[str]], available_choi
 
 def select_race_class(gui_elements: dict, selected_race: InteractiveText | None, selected_class: InteractiveText | None,
                       reset_button: Button, mouse_pos) -> tuple[InteractiveText | None, InteractiveText | None]:
-    """Selection logic for characters race and class and return selected text field instances in 'selected_race' and
-    'selected class'.
+    """Selection logic for characters race and class and return selected interactive text field instances in
+    'selected_race' and 'selected class'.
     ARGS:
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         selected_race: instance of 'InteractiveText' class representing chosen race. 'None' if no race is selected.

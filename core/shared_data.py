@@ -26,10 +26,10 @@ class SharedData:
         # 'None' as starting value before actual value is assigned.
         self.possible_characters: list[str] | None = None
 
-        # 'TextField' instances representing selected race and class in custom creation, string in random creation.
+        # 'InteractiveText' instances representing selected race and class in custom creation, string in random creation.
         # 'None' as default values before actual values are assigned.
-        self.selected_race: TextField | str | None = None
-        self.selected_class: TextField | str | None = None
+        self.selected_race: InteractiveText | str | None = None
+        self.selected_class: InteractiveText | str | None = None
 
         # Characters starting money.
         self.starting_money: int = 0

@@ -1,5 +1,3 @@
-from zoneinfo import available_timezones
-
 from core.character_model import Character
 from gui.credits import Credits
 import gui.gui as gui
