@@ -153,7 +153,7 @@ def show_race_class_selection_screen(screen, rc_dict: dict, possible_characters,
     ui.draw_available_choices(screen, rc_dict, available_choices, inactive_races, inactive_classes, mouse_pos)
 
     # Select race and class.
-    selected_race, selected_class = ui.select_race_class(available_choices, selected_race, selected_class, reset_button, mouse_pos)
+    selected_race, selected_class = ui.select_race_class(gui_elements, selected_race, selected_class, reset_button, mouse_pos)
 
     # Draw buttons.
     ui.draw_special_button(screen, reset_button, gui_elements, mouse_pos)

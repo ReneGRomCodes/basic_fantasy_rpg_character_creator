@@ -1,3 +1,5 @@
+from zoneinfo import available_timezones
+
 from core.character_model import Character
 from gui.credits import Credits
 import gui.gui as gui
@@ -123,6 +125,16 @@ def custom_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
         # Display ability score screen.
         gui.show_ability_scores_screen(screen, sd.character, gui_elements, mouse_pos)
         sd.possible_characters, state = eh.custom_character_events(screen, state, sd.character, gui_elements, mouse_pos)
+
+    elif state == "init_race_class_selection":
+        # Initialize/reset screen object instance attributes and reset shared data to start with a clean sheet when
+        # accessing race/class selection or returning to it from a different screen.
+        sd.selected_race, sd.selected_class = None, None
+
+        for item in gui_elements["active_races"] + gui_elements["active_classes"]:
+            item.selected = False
+
+        state = "race_class_selection"
 
     elif state == "race_class_selection":
         # Display race/class selection screen.

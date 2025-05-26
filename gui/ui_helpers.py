@@ -437,13 +437,12 @@ def draw_available_choices(screen, rc_dict: dict[str, list[str]], available_choi
             cls.draw_text()
 
 
-def select_race_class(available_choices: dict[str, list[InteractiveText]], selected_race: InteractiveText | None,
-                      selected_class: InteractiveText | None, reset_button: Button, mouse_pos)\
-                      -> tuple[InteractiveText | None, InteractiveText | None]:
+def select_race_class(gui_elements: dict, selected_race: InteractiveText | None, selected_class: InteractiveText | None,
+                      reset_button: Button, mouse_pos) -> tuple[InteractiveText | None, InteractiveText | None]:
     """Selection logic for characters race and class and return selected text field instances in 'selected_race' and
     'selected class'.
     ARGS:
-        available_choices: dict with instances of interactive text fields for race and class selection.
+        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         selected_race: instance of 'InteractiveText' class representing chosen race. 'None' if no race is selected.
         selected_class: instance of 'InteractiveText' class representing chosen class. 'None' if no class is selected.
         reset_button: entry from gui element dict 'gui_elements["reset_button"]'.
@@ -452,6 +451,10 @@ def select_race_class(available_choices: dict[str, list[InteractiveText]], selec
         selected_race
         selected_class
     """
+    # Assign entries from 'gui_elements' to variables.
+    races: tuple[InteractiveText, ...] = gui_elements["active_races"]
+    classes: tuple[InteractiveText, ...] = gui_elements["active_classes"]
+
     # Check if the left mouse button is pressed before proceeding with selection logic.
     if pygame.mouse.get_pressed()[0]:
         # Reset selected race/class if 'reset button' is clicked.
@@ -462,27 +465,29 @@ def select_race_class(available_choices: dict[str, list[InteractiveText]], selec
             if selected_class:
                 selected_class.selected = False
                 selected_class = None
+            for item in races + classes:
+                item.selected = False
 
         # Loop through each available race and class option to see if any were clicked.
-        for race in available_choices["races"]:
+        for race in races:
             if race.text_rect.collidepoint(mouse_pos):
                 selected_race = race
                 break
-        for cls in available_choices["classes"]:
+        for cls in classes:
             if cls.text_rect.collidepoint(mouse_pos):
                 selected_class = cls
                 break
 
         if selected_race:
             # Unselect the previous selected race, if any.
-            for race in available_choices["races"]:
+            for race in races:
                 if race.selected:
                     race.selected = False  # Set the selected attribute of the previously selected race to False.
             # Select the new race.
             selected_race.selected = True
         if selected_class:
             # Unselect the previous selected class, if any.
-            for cls in available_choices["classes"]:
+            for cls in classes:
                 if cls.selected:
                     cls.selected = False  # Set the selected attribute of the previously selected class to False.
             # Select the new class.
