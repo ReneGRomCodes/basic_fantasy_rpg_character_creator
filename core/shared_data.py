@@ -1,4 +1,4 @@
-from gui.screen_objects import TextField, InteractiveText
+from gui.screen_objects import Button, InteractiveText
 """
 Shared data class for character creation process.
 Only instance of this class, 'shared_data', is created at the bottom of this module and imported/referenced in
@@ -35,6 +35,54 @@ class SharedData:
         self.starting_money: int = 0
         self.random_money_flag: bool = False  # Flag to check money selection.
         self.custom_money_flag: bool = False  # Flag to check money selection.
+
+    def select_race_class(self, gui_elements: dict, mouse_pos) -> None:
+        """Selection logic for race/class selection screen. Set class attributes 'selected_race' and 'selected_class'
+        to interactive text field instances.
+        ARGS:
+            gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+            mouse_pos: position of mouse on screen.
+        """
+        # Assign entries from 'gui_elements' to variables.
+        races: tuple[InteractiveText, ...] = gui_elements["active_races"]
+        classes: tuple[InteractiveText, ...] = gui_elements["active_classes"]
+        reset_button: Button = gui_elements["reset_button"]
+
+        # Reset selected race/class if 'reset button' is clicked.
+        if reset_button.button_rect.collidepoint(mouse_pos):
+            if self.selected_race:
+                self.selected_race.selected = False
+                self.selected_race = None
+            if self.selected_class:
+                self.selected_class.selected = False
+                self.selected_class = None
+            for item in races + classes:
+                item.selected = False
+
+        # Loop through each available race and class option to see if any were clicked.
+        for race in races:
+            if race.interactive_rect.collidepoint(mouse_pos):
+                self.selected_race = race
+                break
+        for cls in classes:
+            if cls.interactive_rect.collidepoint(mouse_pos):
+                self.selected_class = cls
+                break
+
+        if self.selected_race:
+            # Unselect the previous selected race, if any.
+            for race in races:
+                if race.selected:
+                    race.selected = False  # Set the selected attribute of the previously selected race to False.
+            # Select the new race.
+            self.selected_race.selected = True
+        if self.selected_class:
+            # Unselect the previous selected class, if any.
+            for cls in classes:
+                if cls.selected:
+                    cls.selected = False  # Set the selected attribute of the previously selected class to False.
+            # Select the new class.
+            self.selected_class.selected = True
 
     def shared_data_janitor(self, gui_elements: dict) -> None:
         """Reset shared data not automatically overwritten elsewhere with default values in case of a switch to a

@@ -121,6 +121,10 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
 
         elif state == "race_class_selection":
             if event.type == pygame.MOUSEBUTTONUP:
+                for option in gui_elements["active_races"] + gui_elements["active_classes"]:
+                    if option.interactive_rect.collidepoint(mouse_pos):
+                        sd.select_race_class(gui_elements, mouse_pos)
+
                 if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     state = "show_abilities"
 
