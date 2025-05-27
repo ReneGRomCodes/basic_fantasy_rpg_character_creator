@@ -117,13 +117,16 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
                 if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                     # Set and return available races/classes and state after confirmation of ability scores.
                     possible_characters = rls.build_possible_characters_list(character)
-                    state = "init_race_class_selection"
+                    state = "race_class_selection"
 
         elif state == "race_class_selection":
             if event.type == pygame.MOUSEBUTTONUP:
+                # Race/class selection logic.
                 for option in gui_elements["active_races"] + gui_elements["active_classes"]:
                     if option.interactive_rect.collidepoint(mouse_pos):
                         sd.select_race_class(gui_elements, mouse_pos)
+                if gui_elements["reset_button"].button_rect.collidepoint(mouse_pos):
+                    sd.select_race_class(gui_elements, mouse_pos, reset=True)
 
                 if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     state = "show_abilities"
@@ -144,7 +147,7 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
         elif state == "spell_selection":
             if event.type == pygame.MOUSEBUTTONUP:
                 if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
-                    state = "init_race_class_selection"
+                    state = "race_class_selection"
 
                 if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                     state = "name_character"
@@ -214,7 +217,7 @@ def naming_character_events(screen, state: str, character, gui_elements: dict, m
                     if magic_character_classes in character.class_name:
                         state = "spell_selection"
                     else:
-                        state = "init_race_class_selection"
+                        state = "race_class_selection"
                 elif state == "name_random_character":
                     # Import and call method to reset shared data in 'state_manager.py' before returning to previous menu.
                     # Not a pretty solution, but it resolves the freezing issue when coming back from the naming screen.
