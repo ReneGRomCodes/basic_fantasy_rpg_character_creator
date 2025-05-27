@@ -120,6 +120,8 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
 
 
     # Ability scores screen.
+    # NOTE: Ability score fields have to be added to tuple 'abilities_array' in function 'show_ability_scores_screen'
+    # from module 'gui/gui.py' in addition to the dict in this module. Otherwise, the fields won't show up on screen.
     # Screen layout is designed to adapt and fit up to 16 abilities.
     ability_scores_screen_title: TextField = so.TextField(screen, "- ABILITIES -", text_large)
     reroll_button: Button = so.Button(screen, "Roll Again", text_medium)

@@ -146,6 +146,11 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
         # Magic-User specific state for spell selection.
         elif state == "spell_selection":
             if event.type == pygame.MOUSEBUTTONUP:
+                # Spell selection logic.
+                for option in gui_elements["spell_fields"]:
+                    if option.interactive_rect.collidepoint(mouse_pos):
+                        sd.select_spell(gui_elements["spell_fields"], mouse_pos)
+
                 if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     state = "race_class_selection"
 

@@ -466,38 +466,6 @@ def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveTe
             spell.interactive_rect.centery = pos_y_start + pos_y_offset * index
 
 
-def select_spell(spells: tuple[InteractiveText, ...], mouse_pos) -> None:
-    """Selection logic for character's spell and return selected text field instances in 'selected_spell'.
-    ARGS:
-        spells: tuple with instances of interactive text fields for spell selection.
-        mouse_pos: position of mouse on screen.
-    RETURNS:
-        selected_spell
-    """
-    # TEMPORARY VARIABLE FOR SELECTED SPELL.
-    selected_spell = None
-
-    # Create new tuple that excludes the first element. That element represents the default spell 'Read Magic', known by
-    # all Magic-Users and cannot be selected/unselected.
-    selectable_spells: tuple[InteractiveText, ...] = spells[1:]
-    # Check if the left mouse button is pressed before proceeding with selection logic.
-    if pygame.mouse.get_pressed()[0]:
-
-        # Loop through each available spell option to see if any were clicked.
-        for spell in selectable_spells:
-            if spell.text_rect.collidepoint(mouse_pos):
-                selected_spell = spell
-                break
-
-        if selected_spell:
-            # Unselect the previous selected spell, if any.
-            for spell in selectable_spells:
-                if spell.selected:
-                    spell.selected = False  # Set the selected attribute of the previously selected spell to False.
-            # Select the new spell.
-            selected_spell.selected = True
-
-
 def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...], screen_notes: tuple[TextField, ...],
                                          mouse_pos) -> None:
     """Call positioning method 'position_spell_selection_screen_elements()' and draw item from tuple 'spells' on screen.

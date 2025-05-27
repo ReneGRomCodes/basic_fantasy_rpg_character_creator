@@ -31,6 +31,8 @@ class SharedData:
         self.selected_race: InteractiveText | str | None = None
         self.selected_class: InteractiveText | str | None = None
 
+        self.selected_spell: InteractiveText | None = None
+
         # Characters starting money.
         self.starting_money: int = 0
         self.random_money_flag: bool = False  # Flag to check money selection.
@@ -82,6 +84,31 @@ class SharedData:
             if self.selected_class:
                 self.selected_class.selected = False
                 self.selected_class = None
+
+    def select_spell(self, spells: tuple[InteractiveText, ...], mouse_pos) -> None:
+        """Selection logic for character's spell. Set class attribute 'selected_spell' to interactive text instance.
+        ARGS:
+            spells: tuple with instances of interactive text fields for spell selection.
+                NOTE: item at index '0' is not processed here as it represents the default spell for all magic-users.
+            mouse_pos: position of mouse on screen.
+        """
+        # Create new tuple that excludes the first element. That element represents the default spell 'Read Magic', known
+        # by all Magic-Users and cannot be selected/unselected.
+        selectable_spells: tuple[InteractiveText, ...] = spells[1:]
+
+        # Loop through each available spell option to see if any were clicked.
+        for spell in selectable_spells:
+            if spell.interactive_rect.collidepoint(mouse_pos):
+                self.selected_spell = spell
+                break
+
+        if self.selected_spell:
+            # Unselect the previous selected spell, if any.
+            for spell in selectable_spells:
+                if spell.selected:
+                    spell.selected = False  # Set the selected attribute of the previously selected spell to False.
+            # Select the new spell.
+            self.selected_spell.selected = True
 
     def shared_data_janitor(self, gui_elements: dict) -> None:
         """Reset shared data not automatically overwritten elsewhere with default values in case of a switch to a
