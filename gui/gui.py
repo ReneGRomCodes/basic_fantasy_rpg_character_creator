@@ -165,7 +165,7 @@ def show_race_class_selection_screen(screen, rc_dict: dict, possible_characters,
     return selected_race, selected_class
 
 
-def show_spell_selection_screen(screen, character, gui_elements: dict, mouse_pos) -> None:
+def show_spell_selection_screen(screen, gui_elements: dict, mouse_pos) -> None:
     """Display spell selection screen.
         ARGS:
             screen: PyGame window.

@@ -129,11 +129,15 @@ class SharedData:
             self.selected_race.selected = False
         if isinstance(self.selected_class, InteractiveText):
             self.selected_class.selected = False
+        # Unselect spell selection if user visited spell selection screen previously.
+        if self.selected_spell:
+            self.selected_spell.selected = False
 
         # Reset attributes to 'None'.
         self.possible_characters: None = None
         self.selected_race: None = None
         self.selected_class: None = None
+        self.selected_spell: None = None
 
         # Initialize/reset dict for use in 'gui/ui_helpers.py' in function 'position_race_class_elements()' to calculate
         # UI positioning, and automatically populate dict 'rc_dict' once with all races/classes available in the game

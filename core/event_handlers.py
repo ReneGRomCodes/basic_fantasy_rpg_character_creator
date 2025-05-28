@@ -155,6 +155,9 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
                     state = "race_class_selection"
 
                 if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                    # Append spell to list 'character.spells' if one is selected and confirmed.
+                    if context1:
+                        character.spells.append(context1.text)
                     state = "name_character"
 
         elif state == "select_starting_money":

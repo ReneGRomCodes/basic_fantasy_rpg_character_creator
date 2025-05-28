@@ -33,7 +33,7 @@ class Character:
         self.level: int = 1
         self.next_level_xp: int = 0
         self.saving_throws: dict[str, int] = {}
-        self.spells: str | False = False
+        self.spells: list[str] = []
         self.hp: int = 0
         self.movement: int | None = None
         # Attributes related to inventory.
@@ -86,7 +86,7 @@ class Character:
             self.next_level_xp = 1500
             self.class_specials = ("Turn the Undead", )
             self.class_saving_throws = (11, 12, 14, 16, 15)
-            self.spells = "No Spells"
+            self.spells = ["No Spells"]
         elif class_selection == "Fighter":
             self.class_hit_die = 8
             self.next_level_xp = 2000
@@ -97,7 +97,7 @@ class Character:
             self.next_level_xp = 2500
             self.class_specials = ()
             self.class_saving_throws = (13, 14, 13, 16, 15)
-            self.spells = "Read Magic"
+            self.spells = ["Read Magic"]
             self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Thief":
@@ -111,7 +111,7 @@ class Character:
             self.next_level_xp = 4500
             self.class_specials = ()
             self.class_saving_throws = (13, 14, 14, 16, 17)
-            self.spells = "Read Magic"
+            self.spells = ["Read Magic"]
             self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Magic-User/Thief":
@@ -119,13 +119,13 @@ class Character:
             self.next_level_xp = 3750
             self.class_specials = ("Sneak Attack", "Thief Abilities")
             self.class_saving_throws = (13, 14, 13, 16, 15)
-            self.spells = "Read Magic"
+            self.spells = ["Read Magic"]
             self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
 
     def reset_character(self) -> None:
         """Reset values that may not be overwritten when creating a new character."""
-        self.spells = False
+        self.spells = []
         self.inventory = []
         self.weight_carried = 0
         self.specials = ()

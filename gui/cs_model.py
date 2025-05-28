@@ -165,7 +165,12 @@ class CharacterSheet:
 
         # Spell elements for classes 'Magic-User', 'Cleric' or combination classes.
         self.spells: TextField = so.TextField(screen, "SPELLS", text_large)  # ANCHOR
+        # 'spell' object has its text and position dynamically modified in method 'draw_format_dynamic_field()' to
+        # account for the fact that number of specials in 'character.spell' is unpredictable at the start of the
+        # character creation.
         self.spell: TextField = so.TextField(screen, str(character.spells), self.text_standard)
+        # Create empty list to store y-position values for each state of 'self.spell'.
+        self.spell_pos_y_list: list[int] = []
 
         # Class specials elements.
         self.class_specials: TextField = so.TextField(screen, character.class_name.upper() + " SPECIALS",
@@ -367,7 +372,8 @@ class CharacterSheet:
 
         # Position 'spells' section if character is of a magic related class (Magic-User, Cleric, etc.).
         if self.character.spells:
-            self.position_spells()
+            self.spell_pos_y_list: list[int] = self.get_position_dynamic_field(self.spell, self.character.spells,
+                                                                               self.spells)
 
 
     """Helper methods for use within this class.
@@ -484,8 +490,8 @@ class CharacterSheet:
         """Position and draw spells elements on screen."""
         # Draw sections anchor object 'self.spells'.
         self.spells.draw_text()
-        # Draw spells.
-        self.spell.draw_text()
+        # Format, position and draw spells.
+        self.format_and_draw_dynamic_field(self.spell, self.character.spells, self.spells, self.spell_pos_y_list)
 
     def draw_class_specials(self) -> None:
         """Format, position and draw special abilities elements on screen."""

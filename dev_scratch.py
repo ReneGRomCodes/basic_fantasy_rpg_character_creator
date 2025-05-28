@@ -10,4 +10,3 @@ this point it has become mostly a dumping ground for 'todos'."""
 
 # PRIORITIES:
 # TODO add sections for languages and thief skills to character sheet.
-# TODO move race/class selection away from GUI logic into event handler and 'SharedData' class.
