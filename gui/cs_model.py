@@ -1,6 +1,7 @@
 import pygame
 import gui.screen_objects as so
 from core.character_model import Character
+from core.shared_data import SharedData
 from gui.screen_objects import TextField, Button
 from gui.ui_helpers import draw_screen_title
 
@@ -10,15 +11,16 @@ from gui.ui_helpers import draw_screen_title
 class CharacterSheet:
     """A class to store and manage character sheet elements."""
 
-    def __init__(self, screen, character: Character, gui_elements: dict) -> None:
+    def __init__(self, screen, shared_data, gui_elements: dict) -> None:
         """Initialize the CharacterSheet object with elements.
         ARGS:
             screen: PyGame window.
-            character: Instance of class 'Character'.
+            shared_data: Instance of class 'SharedData'.
             gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         """
-        # Assign character object to attribute.
-        self.character: Character = character
+        # Assign shared data and character objects to attribute.
+        self.shared_data: SharedData = shared_data
+        self.character: Character = shared_data.character
 
         # Assign screen rect attributes.
         self.screen = screen
@@ -63,17 +65,17 @@ class CharacterSheet:
 
         # Character sheet base info elements.
         name: TextField = so.TextField(screen, "Name: ", text_large)  # ANCHOR
-        name_char: TextField = so.TextField(screen, character.name, text_large)
+        name_char: TextField = so.TextField(screen, self.character.name, text_large)
         xp: TextField = so.TextField(screen, "XP: ", text_large)  # ANCHOR
-        xp_char: TextField = so.TextField(screen, str(character.xp), text_large)
+        xp_char: TextField = so.TextField(screen, str(self.character.xp), text_large)
         race: TextField = so.TextField(screen, "Race: ", text_large)  # ANCHOR
-        race_char: TextField = so.TextField(screen, character.race_name, text_large)
+        race_char: TextField = so.TextField(screen, self.character.race_name, text_large)
         cls: TextField = so.TextField(screen, "Class: ", text_large)  # ANCHOR
-        cls_char: TextField = so.TextField(screen, character.class_name, text_large)
+        cls_char: TextField = so.TextField(screen, self.character.class_name, text_large)
         level: TextField = so.TextField(screen, "Level: ", text_large)  # ANCHOR
-        level_char: TextField = so.TextField(screen, str(character.level), text_large)
+        level_char: TextField = so.TextField(screen, str(self.character.level), text_large)
         next_lvl_xp: TextField = so.TextField(screen, "XP to next level: ", text_large)  # ANCHOR
-        next_lvl_xp_char: TextField = so.TextField(screen, str(character.next_level_xp), text_large)
+        next_lvl_xp_char: TextField = so.TextField(screen, str(self.character.next_level_xp), text_large)
         money: TextField = so.TextField(screen, "Money: ", text_large)  # ANCHOR
         money_char: so.TextField = so.TextField(screen, str(self.character.money) + self.money_unit, text_large)
         movement: TextField = so.TextField(screen, "Movement: ", self.text_standard)  # ANCHOR
@@ -81,11 +83,11 @@ class CharacterSheet:
         movement_char: TextField = so.TextField(screen, movement_value_str, self.text_standard)
         # Combat related basic info elements.
         armor_class: TextField = so.TextField(screen, "Armor Class: ", self.text_standard)  # ANCHOR
-        armor_class_char: TextField = so.TextField(screen, str(character.armor_class), self.text_standard)
+        armor_class_char: TextField = so.TextField(screen, str(self.character.armor_class), self.text_standard)
         health_points: TextField = so.TextField(screen, "Health Points: ", self.text_standard)  # ANCHOR
-        health_points_char: TextField = so.TextField(screen, str(character.hp), self.text_standard)
+        health_points_char: TextField = so.TextField(screen, str(self.character.hp), self.text_standard)
         attack_bonus: TextField = so.TextField(screen, "Attack Bonus: +", self.text_standard)  # ANCHOR
-        attack_bonus_char: TextField = so.TextField(screen, str(character.attack_bonus), self.text_standard)
+        attack_bonus_char: TextField = so.TextField(screen, str(self.character.attack_bonus), self.text_standard)
         # Array of basic info and combat info groups for cleaner positioning/drawing in class methods.
         self.basic_info_groups: tuple[tuple[TextField, TextField], ...] = (
             (name, name_char),
@@ -105,23 +107,23 @@ class CharacterSheet:
         # Suffixes '_score' and '_bonus_penalty' indicate objects with values from the 'Character' class object.
         self.abilities: TextField = so.TextField(screen, "ABILITIES", text_large)  # ANCHOR
         str_label: TextField = so.TextField(screen, "str", self.text_standard)
-        str_score: TextField = so.TextField(screen, str(character.abilities["str"][0]), self.text_standard)
-        str_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["str"][1]), self.text_standard)
+        str_score: TextField = so.TextField(screen, str(self.character.abilities["str"][0]), self.text_standard)
+        str_bonus_penalty: TextField = so.TextField(screen, str(self.character.abilities["str"][1]), self.text_standard)
         dex_label: TextField = so.TextField(screen, "dex", self.text_standard)
-        dex_score: TextField = so.TextField(screen, str(character.abilities["dex"][0]), self.text_standard)
-        dex_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["dex"][1]), self.text_standard)
+        dex_score: TextField = so.TextField(screen, str(self.character.abilities["dex"][0]), self.text_standard)
+        dex_bonus_penalty: TextField = so.TextField(screen, str(self.character.abilities["dex"][1]), self.text_standard)
         con_label: TextField = so.TextField(screen, "con", self.text_standard)
-        con_score: TextField = so.TextField(screen, str(character.abilities["con"][0]), self.text_standard)
-        con_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["con"][1]), self.text_standard)
+        con_score: TextField = so.TextField(screen, str(self.character.abilities["con"][0]), self.text_standard)
+        con_bonus_penalty: TextField = so.TextField(screen, str(self.character.abilities["con"][1]), self.text_standard)
         int_label: TextField = so.TextField(screen, "int", self.text_standard)
-        int_score: TextField = so.TextField(screen, str(character.abilities["int"][0]), self.text_standard)
-        int_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["int"][1]), self.text_standard)
+        int_score: TextField = so.TextField(screen, str(self.character.abilities["int"][0]), self.text_standard)
+        int_bonus_penalty: TextField = so.TextField(screen, str(self.character.abilities["int"][1]), self.text_standard)
         wis_label: TextField = so.TextField(screen, "wis", self.text_standard)
-        wis_score: TextField = so.TextField(screen, str(character.abilities["wis"][0]), self.text_standard)
-        wis_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["wis"][1]), self.text_standard)
+        wis_score: TextField = so.TextField(screen, str(self.character.abilities["wis"][0]), self.text_standard)
+        wis_bonus_penalty: TextField = so.TextField(screen, str(self.character.abilities["wis"][1]), self.text_standard)
         cha_label: TextField = so.TextField(screen, "cha", self.text_standard)
-        cha_score: TextField = so.TextField(screen, str(character.abilities["cha"][0]), self.text_standard)
-        cha_bonus_penalty: TextField = so.TextField(screen, str(character.abilities["cha"][1]), self.text_standard)
+        cha_score: TextField = so.TextField(screen, str(self.character.abilities["cha"][0]), self.text_standard)
+        cha_bonus_penalty: TextField = so.TextField(screen, str(self.character.abilities["cha"][1]), self.text_standard)
         # Array of ability groups for cleaner positioning/drawing in class methods.
         self.ability_groups: tuple[tuple[TextField, TextField, TextField], ...] = (
             (str_label, str_score, str_bonus_penalty),
@@ -135,15 +137,15 @@ class CharacterSheet:
         # Saving throws info elements.
         self.saving_throws: TextField = so.TextField(screen, "SAVING THROWS", text_large)  # ANCHOR
         saving_throw_0_label: TextField = so.TextField(screen, "Death Ray or Poison:", self.text_standard)
-        saving_throw_0_score: TextField = so.TextField(screen, str(character.saving_throws["Death Ray or Poison"]), self.text_standard)
+        saving_throw_0_score: TextField = so.TextField(screen, str(self.character.saving_throws["Death Ray or Poison"]), self.text_standard)
         saving_throw_1_label: TextField = so.TextField(screen, "Magic Wands:", self.text_standard)
-        saving_throw_1_score: TextField = so.TextField(screen, str(character.saving_throws["Magic Wands"]), self.text_standard)
+        saving_throw_1_score: TextField = so.TextField(screen, str(self.character.saving_throws["Magic Wands"]), self.text_standard)
         saving_throw_2_label: TextField = so.TextField(screen, "Paralysis or Petrify:", self.text_standard)
-        saving_throw_2_score: TextField = so.TextField(screen, str(character.saving_throws["Paralysis or Petrify"]), self.text_standard)
+        saving_throw_2_score: TextField = so.TextField(screen, str(self.character.saving_throws["Paralysis or Petrify"]), self.text_standard)
         saving_throw_3_label: TextField = so.TextField(screen, "Dragon Breath:", self.text_standard)
-        saving_throw_3_score: TextField = so.TextField(screen, str(character.saving_throws["Dragon Breath"]), self.text_standard)
+        saving_throw_3_score: TextField = so.TextField(screen, str(self.character.saving_throws["Dragon Breath"]), self.text_standard)
         saving_throw_4_label: TextField = so.TextField(screen, "Spells:", self.text_standard)
-        saving_throw_4_score: TextField = so.TextField(screen, str(character.saving_throws["Spells"]), self.text_standard)
+        saving_throw_4_score: TextField = so.TextField(screen, str(self.character.saving_throws["Spells"]), self.text_standard)
         # Array of saving throws groups for cleaner positioning/drawing in class methods.
         self.saving_throw_groups: tuple[tuple[TextField, TextField], ...] = (
             (saving_throw_0_label, saving_throw_0_score),
@@ -168,12 +170,12 @@ class CharacterSheet:
         # 'spell' object has its text and position dynamically modified in method 'draw_format_dynamic_field()' to
         # account for the fact that number of specials in 'character.spell' is unpredictable at the start of the
         # character creation.
-        self.spell: TextField = so.TextField(screen, str(character.spells), self.text_standard)
+        self.spell: TextField = so.TextField(screen, str(self.character.spells), self.text_standard)
         # Create empty list to store y-position values for each state of 'self.spell'.
         self.spell_pos_y_list: list[int] = []
 
         # Class specials elements.
-        self.class_specials: TextField = so.TextField(screen, character.class_name.upper() + " SPECIALS",
+        self.class_specials: TextField = so.TextField(screen, self.character.class_name.upper() + " SPECIALS",
                                                             text_large)  # ANCHOR
         # 'class_special' object has its text and position dynamically modified in method 'draw_format_dynamic_field()'
         # to account for the fact that number of specials in 'character.class_specials' is unpredictable at the start of
@@ -331,14 +333,14 @@ class CharacterSheet:
         self.draw_inventory()
         self.draw_weapon()
 
-        # Draw 'spells' section if character is of a magic related class (Magic-User, Cleric, etc.).
-        if self.character.spells:
+        # Draw 'spells' section if character is of a spell casting class (Magic-User, Cleric, etc.).
+        if self.character.class_name in self.shared_data.spell_using_classes:
             self.draw_spells()
         # Draw 'class specials' section if character class has special abilities.
         if self.character.class_specials:
             self.draw_class_specials()
         # Don't draw 'armor' section for classes that can't use armor.
-        if self.character.class_name not in {"Magic-User"}:
+        if self.character.class_name not in self.shared_data.no_armor_classes:
             self.draw_armor()
 
 
@@ -370,8 +372,8 @@ class CharacterSheet:
         self.inventory_pos_y_list: list[object] = self.get_position_dynamic_field(self.inventory_item, self.inventory_item_list,
                                                                                   self.inventory)
 
-        # Position 'spells' section if character is of a magic related class (Magic-User, Cleric, etc.).
-        if self.character.spells:
+        # Position 'spells' section if character is of a spell casting class (Magic-User, Cleric, etc.).
+        if self.character.class_name in self.shared_data.spell_using_classes:
             self.spell_pos_y_list: list[int] = self.get_position_dynamic_field(self.spell, self.character.spells,
                                                                                self.spells)
 

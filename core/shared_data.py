@@ -1,4 +1,5 @@
-from gui.screen_objects import Button, InteractiveText
+from gui.screen_objects import InteractiveText
+from core.rules import get_class_categories
 """
 Shared data class for character creation process.
 Only instance of this class, 'shared_data', is created at the bottom of this module and imported/referenced in
@@ -17,8 +18,8 @@ class SharedData:
         self.settings_gui: object = None  # Instance 'SettingsGUI()'
         self.cs_sheet: object  # Instance of 'CharacterSheet'.
 
-        # Set of magic using classes for checks (for example, if spell selection should be displayed).
-        self.magic_character_classes = {"Magic-User", "Fighter/Magic-User", "Magic-User/Thief"}
+        # Class sets for category checks (example: spell selection screen shown only for magic using classes).
+        self.spell_using_classes, self.magic_classes, self.no_armor_classes = get_class_categories()
 
         # All available races/classes in the game.
         # 'None' as starting value, dict is created in 'shared_data_janitor()' when method is called in from module

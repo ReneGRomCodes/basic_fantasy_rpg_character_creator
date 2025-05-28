@@ -135,7 +135,7 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
                         character.set_race(context1.text)
                         character.set_class(context2.text)
                         character.set_character_values()
-                        if character.class_name in sd.magic_character_classes:
+                        if character.class_name in sd.magic_classes:
                             state = "spell_selection"
                         else:
                             state = "name_character"
@@ -219,7 +219,7 @@ def naming_character_events(screen, state: str, character, gui_elements: dict, m
                 # Different state value is checked and set depending on whether custom or random character is created.
                 character.reset_character()
                 if state == "name_character":
-                    if character.class_name in sd.magic_character_classes:
+                    if character.class_name in sd.magic_classes:
                         state = "spell_selection"
                     else:
                         state = "race_class_selection"

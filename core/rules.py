@@ -1,9 +1,27 @@
-import os
 import random
 
 """Helper and check functions to generate and return values in accordance to game rules."""
 
 """General functions."""
+
+def get_class_categories() -> tuple[set[str], ...]:
+    """Create and return class sets for category checks (example: spell selection screen shown only for magic using
+    classes, etc.).
+    Function is called from within 'SharedData' class in module 'core/shared_data.py' from where the sets are used
+    throughout the program.
+    RETURNS:
+        spell_using_classes
+        magic_classes
+        no_armor_classes
+    """
+    # ALL spell casters.
+    spell_using_classes = {"Cleric", "Magic-User", "Fighter/Magic-User", "Magic-User/Thief"}
+    # Only 'true' magic users.
+    magic_classes: set[str] = {"Magic-User", "Fighter/Magic-User", "Magic-User/Thief"}
+    # Classes that are not allowed to wear armor.
+    no_armor_classes: set[str] = {"Magic-User"}
+
+    return spell_using_classes, magic_classes, no_armor_classes
 
 
 def dice_roll(n: int, m: int) -> int:

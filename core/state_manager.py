@@ -204,7 +204,7 @@ def random_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
                 sd.character.set_class(sd.selected_class)
                 sd.character.set_character_values()
                 # Chose random starter spell for magic using characters.
-                if sd.character.class_name in sd.magic_character_classes:
+                if sd.character.class_name in sd.magic_classes:
                     sd.character.spells.append(random.choice(gui_elements["spell_fields"][1:]).text)
                 state = "set_random_money"
 
@@ -241,7 +241,7 @@ def character_sheet_state_manager(screen, state: str, gui_elements: dict, mouse_
     """
     if state == "init_character_sheet":
         # Create instance of class 'CharacterSheet'.
-        sd.cs_sheet = CharacterSheet(screen, sd.character, gui_elements)
+        sd.cs_sheet = CharacterSheet(screen, sd, gui_elements)
         # Set positions for character sheet elements on screen.
         sd.cs_sheet.position_cs_elements()
 
