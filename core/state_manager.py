@@ -203,6 +203,9 @@ def random_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
                 sd.character.set_race(sd.selected_race)
                 sd.character.set_class(sd.selected_class)
                 sd.character.set_character_values()
+                # Chose random starter spell for magic using characters.
+                if sd.character.class_name in sd.magic_character_classes:
+                    sd.character.spells.append(random.choice(gui_elements["spell_fields"][1:]).text)
                 state = "set_random_money"
 
             else:

@@ -17,6 +17,9 @@ class SharedData:
         self.settings_gui: object = None  # Instance 'SettingsGUI()'
         self.cs_sheet: object  # Instance of 'CharacterSheet'.
 
+        # Set of magic using classes for checks (for example, if spell selection should be displayed).
+        self.magic_character_classes = {"Magic-User", "Fighter/Magic-User", "Magic-User/Thief"}
+
         # All available races/classes in the game.
         # 'None' as starting value, dict is created in 'shared_data_janitor()' when method is called in from module
         # 'state_manager.py' in state "pre_main_menu".
