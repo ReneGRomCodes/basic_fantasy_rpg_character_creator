@@ -3,7 +3,7 @@ from core.rules import roll_starting_money
 import gui.screen_objects as so
 import time
 from gui.screen_objects import TextField, Button, InteractiveText, TextInputField
-from gui.shared_data import ui_shared_data as sd
+from gui.shared_data import ui_shared_data as uisd
 
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
 
@@ -137,7 +137,7 @@ def position_title_screen_elements(screen, gui_elements: dict) -> None:
     progress_bar = gui_elements["title_screen_fields"][3]
     continue_to_main = gui_elements["title_screen_fields"][4]
 
-    if not sd.position_flag:
+    if not uisd.position_flag:
         # Position title, subtitle and copyright notice.
         title.text_rect.centerx = screen.get_rect().centerx
         title.text_rect.bottom = screen.get_rect().centery - spacing
@@ -147,7 +147,7 @@ def position_title_screen_elements(screen, gui_elements: dict) -> None:
         copyright_notice.text_rect.bottom = screen.get_rect().bottom - spacing
         progress_bar.container_rect.centery = screen.get_rect().height * 0.7
         continue_to_main.text_rect.centery = progress_bar.container_rect.centery
-        sd.position_flag = True
+        uisd.position_flag = True
 
 
 """Background functions for main menu screen."""
@@ -165,7 +165,7 @@ def position_main_menu_screen_elements(screen, gui_elements: dict) -> None:
     start = gui_elements["start_button"]
     menu_buttons = gui_elements["menu_buttons"]
 
-    if not sd.position_flag:
+    if not uisd.position_flag:
         # Format/position title text field and start button.
         title.text_rect.centery = screen.get_rect().height / 4
         title.text_rect.centerx = screen.get_rect().centerx
@@ -183,7 +183,7 @@ def position_main_menu_screen_elements(screen, gui_elements: dict) -> None:
             else:
                 button.button_rect.top = menu_buttons[index - 1].button_rect.bottom + button_spacing
 
-        sd.position_flag = True
+        uisd.position_flag = True
 
 
 """Background functions for character menu screen."""
@@ -199,14 +199,14 @@ def position_character_menu_screen_elements(screen, gui_elements: dict) -> None:
     random = gui_elements["random"]
     button_spacing: int = gui_elements["button_spacing"]
 
-    if not sd.position_flag:
+    if not uisd.position_flag:
     # Position buttons.
         custom.button_rect.centerx = screen.get_rect().centerx
         custom.button_rect.bottom = screen.get_rect().centery - (button_spacing / 2)
         random.button_rect.centerx = screen.get_rect().centerx
         random.button_rect.top = screen.get_rect().centery + (button_spacing / 2)
 
-        sd.position_flag = True
+        uisd.position_flag = True
 
 
 """Background functions for ability scores screen."""
@@ -496,7 +496,7 @@ def build_and_position_prompt(screen, naming_prompt: TextField, character: objec
         naming_prompt: instance of 'TextField' class prompting the user to input a character name.
         character: instance of 'Character' class.
     """
-    if not sd.position_flag:
+    if not uisd.position_flag:
         # Add naming prompt to 'naming_prompt.text' attribute and render text_rect.
         naming_prompt.text = f"Name your {character.race_name} {character.class_name}"
         naming_prompt.text_surface = naming_prompt.font.render(naming_prompt.text, True, naming_prompt.text_color)
@@ -505,7 +505,7 @@ def build_and_position_prompt(screen, naming_prompt: TextField, character: objec
         # Position final naming prompt on screen.
         naming_prompt.text_rect.centerx, naming_prompt.text_rect.centery = screen.get_rect().centerx, screen.get_rect().centery / 1.3
 
-        sd.position_flag = True
+        uisd.position_flag = True
 
 
 """Background functions for starting money screen."""
@@ -516,7 +516,7 @@ def position_money_screen_elements(screen, gui_elements: dict) -> None:
         screen: PyGame window.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
-    if not sd.position_flag:
+    if not uisd.position_flag:
         # Positioning of button instances.
         money_button_pos_y: int = screen.get_rect().height / 3
         random_money_button, custom_money_button = gui_elements["starting_money_choices"][0], gui_elements["starting_money_choices"][1]
@@ -532,7 +532,7 @@ def position_money_screen_elements(screen, gui_elements: dict) -> None:
         money_amount_field: TextInputField = gui_elements["money_amount_input"][1]
         money_amount_field.input_bg_field.top = screen.get_rect().centery * 1.15
 
-        sd.position_flag = True
+        uisd.position_flag = True
 
 
 def choose_money_option(choices: list[Button], random_money_flag: bool, custom_money_flag: bool, mouse_pos) -> tuple[bool, bool]:
@@ -552,7 +552,7 @@ def choose_money_option(choices: list[Button], random_money_flag: bool, custom_m
         if choices[0].button_rect.collidepoint(mouse_pos):
             random_money_flag, custom_money_flag = True, False
             # Set dice roll timer.
-            sd.dice_roll_start_time = time.time()
+            uisd.dice_roll_start_time = time.time()
         if choices[1].button_rect.collidepoint(mouse_pos):
             random_money_flag, custom_money_flag = False, True
 
@@ -582,7 +582,7 @@ def draw_chosen_money_option(screen, starting_money: int, random_money_flag: boo
 
     if random_money_flag:
         # Check timer to allow for dice roll effect.
-        if time.time() - sd.dice_roll_start_time < dice_roll_duration:
+        if time.time() - uisd.dice_roll_start_time < dice_roll_duration:
             rolling_dice_money_field.draw_text()
             # Generate random int value for 'starting_money'.
             starting_money = roll_starting_money()
@@ -592,7 +592,7 @@ def draw_chosen_money_option(screen, starting_money: int, random_money_flag: boo
             random_money_field.draw_text()
             starting_money_dice_roll(screen, starting_money, random_money_field, text_large, rolling=False)
             # Reset global dice roll timer. Not strictly necessary, but better safe than sorry.
-            sd.dice_roll_start_time = 0
+            uisd.dice_roll_start_time = 0
     elif custom_money_flag:
         money_input_prompt.draw_text()
         money_amount_field.draw_input_field()
@@ -640,10 +640,10 @@ def position_completion_screen_elements(screen, completion_message: TextField, s
     # Assign spacing value from 'gui_elements' to variables.
     spacing: int = gui_elements["title_screen_spacing"]
 
-    if not sd.position_flag:
+    if not uisd.position_flag:
         # Position screen elements.
         completion_message.text_rect.bottom = screen.get_rect().centery - spacing
         show_character_sheet.button_rect.top = screen.get_rect().centery + spacing
         show_character_sheet.button_rect.centerx = screen.get_rect().centerx
 
-        sd.position_flag = True
+        uisd.position_flag = True
