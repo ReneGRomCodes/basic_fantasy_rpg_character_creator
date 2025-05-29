@@ -1,5 +1,5 @@
 import gui.ui_helpers as ui
-from gui.screen_objects import InteractiveText
+from core.shared_data import shared_data as sd
 
 """Main GUI functions."""
 
@@ -75,12 +75,11 @@ def show_character_menu(screen, gui_elements: dict, mouse_pos) -> None:
     back_button.draw_button(mouse_pos)
 
 
-def show_ability_scores_screen(screen, character, gui_elements: dict, mouse_pos) -> None:
+def show_ability_scores_screen(screen, gui_elements: dict, mouse_pos) -> None:
     """Display ability scores from 'Character' class instance 'character' and bonus/penalty on screen.
     Screen layout is designed to adapt and fit up to 16 abilities.
     ARGS:
         screen: PyGame window.
-        character: instance of class 'Character()'.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
@@ -95,12 +94,12 @@ def show_ability_scores_screen(screen, character, gui_elements: dict, mouse_pos)
     # character object at index 1. 'character.abilities[]' stores values in a dict as lists with base score at index 0
     # and bonus/penalty at index 1.
     abilities_array: tuple[tuple[object, list[int]], ...] = (
-        (ability_fields[0], character.abilities["str"]),  # Strength
-        (ability_fields[1], character.abilities["dex"]),  # Dexterity
-        (ability_fields[2], character.abilities["con"]),  # Constitution
-        (ability_fields[3], character.abilities["int"]),  # Intelligence
-        (ability_fields[4], character.abilities["wis"]),  # Wisdom
-        (ability_fields[5], character.abilities["cha"]),  # Charisma
+        (ability_fields[0], sd.character.abilities["str"]),  # Strength
+        (ability_fields[1], sd.character.abilities["dex"]),  # Dexterity
+        (ability_fields[2], sd.character.abilities["con"]),  # Constitution
+        (ability_fields[3], sd.character.abilities["int"]),  # Intelligence
+        (ability_fields[4], sd.character.abilities["wis"]),  # Wisdom
+        (ability_fields[5], sd.character.abilities["cha"]),  # Charisma
     )
 
     # Position and draw each ability pair from 'abilities_array' on screen.
@@ -116,21 +115,13 @@ def show_ability_scores_screen(screen, character, gui_elements: dict, mouse_pos)
     ui.show_info_panels(ability_fields, mouse_pos)
 
 
-def show_race_class_selection_screen(screen, rc_dict: dict, possible_characters, selected_race, selected_class,
-                                     gui_elements: dict, mouse_pos) -> tuple[object, object]:
+def show_race_class_selection_screen(screen, gui_elements: dict, mouse_pos) -> None:
     """Display race/class selection on screen.
     Screen layout is designed to adapt and fit up to 16 races/classes.
     ARGS:
         screen: PyGame window.
-        rc_dict: dict containing all available races/classes in the game as lists of strings.
-        possible_characters: list of possible race-class combinations as strings.
-        selected_race: instance of 'InteractiveText' class representing chosen race. 'None' if no race is selected.
-        selected_class: instance of 'InteractiveText' class representing chosen class. 'None' if no class is selected.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-    RETURNS:
-        selected_race
-        selected_class
     """
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["race_class_title"]
@@ -146,23 +137,20 @@ def show_race_class_selection_screen(screen, rc_dict: dict, possible_characters,
 
     # Get dict of race and class interactive text field instances 'available_choices', which are then ready to be drawn
     # on screen.
-    available_choices = ui.get_available_choices(possible_characters, active_races, active_classes, selected_race,
-                                                selected_class)
+    available_choices = ui.get_available_choices(active_races, active_classes)
 
     # Position and draw instances from dict 'available_choices' on screen.
-    ui.draw_available_choices(screen, rc_dict, available_choices, inactive_races, inactive_classes, mouse_pos)
+    ui.draw_available_choices(screen, available_choices, inactive_races, inactive_classes, mouse_pos)
 
     # Draw buttons.
     ui.draw_special_button(screen, reset_button, gui_elements, mouse_pos)
     back_button.draw_button(mouse_pos)
     # Show continue button only if race AND class have been selected otherwise show inactive continue button.
-    ui.draw_continue_button_inactive(selected_race, selected_class, gui_elements, mouse_pos, check_mode="all")
+    ui.draw_continue_button_inactive(sd.selected_race, sd.selected_class, gui_elements, mouse_pos, check_mode="all")
 
     # Call helper function to properly handle info panels (see function and class docstrings for details).
     ui.show_info_panels(active_races, mouse_pos)
     ui.show_info_panels(active_classes, mouse_pos)
-
-    return selected_race, selected_class
 
 
 def show_spell_selection_screen(screen, gui_elements: dict, mouse_pos) -> None:
@@ -191,11 +179,10 @@ def show_spell_selection_screen(screen, gui_elements: dict, mouse_pos) -> None:
     ui.show_info_panels(spells, mouse_pos)
 
 
-def show_naming_screen(screen, character, gui_elements: dict, mouse_pos) -> None:
+def show_naming_screen(screen, gui_elements: dict, mouse_pos) -> None:
     """Display character naming screen and prompt user for input.
     ARGS:
         screen: PyGame window.
-        character: instance of class 'Character()'.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
@@ -206,7 +193,7 @@ def show_naming_screen(screen, character, gui_elements: dict, mouse_pos) -> None
     character_name_field = gui_elements["character_name_input"][1]
 
     # Create text attribute for naming prompt object to include chosen race and class, and position it on screen.
-    ui.build_and_position_prompt(screen, naming_prompt, character)
+    ui.build_and_position_prompt(screen, naming_prompt)
     # Draw naming prompt.
     naming_prompt.draw_text()
 
@@ -218,20 +205,12 @@ def show_naming_screen(screen, character, gui_elements: dict, mouse_pos) -> None
     continue_button.draw_button(mouse_pos)
 
 
-def show_starting_money_screen(screen, gui_elements: dict, random_money_flag: bool, custom_money_flag: bool,
-                               starting_money: int, mouse_pos) -> tuple[bool, bool, int]:
+def show_starting_money_screen(screen, gui_elements: dict,  mouse_pos) -> None:
     """Display money input screen and prompt user to choose random or custom amount of money.
     ARGS:
         screen: PyGame window.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
-        random_money_flag: boolean from 'state_manager.py' to reflect user choice.
-        custom_money_flag: boolean from 'state_manager.py' to reflect user choice.
-        starting_money: int amount of starting money.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-    RETURNS:
-        random_money_flag
-        custom_money_flag
-        starting_money
     """
     # Assign text fields and buttons from 'gui_elements' to variables.
     screen_title = gui_elements["starting_money_title"]
@@ -250,17 +229,15 @@ def show_starting_money_screen(screen, gui_elements: dict, random_money_flag: bo
 
     # Choose option to either generate random amount of money or let user input a custom amount.
     # Set 'random_money_flag' and 'custom_money_flag' accordingly.
-    random_money_flag, custom_money_flag = ui.choose_money_option(choices, random_money_flag, custom_money_flag, mouse_pos)
+    ui.choose_money_option(choices, mouse_pos)
 
     # Set and draw message for random amount of starting money or show input field for custom amount based on user choice above.
-    starting_money = ui.draw_chosen_money_option(screen, starting_money, random_money_flag, custom_money_flag, gui_elements)
+    ui.draw_chosen_money_option(screen, gui_elements)
 
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)
     # Show continue button only if a money option has been selected otherwise show inactive continue button.
-    ui.draw_continue_button_inactive(random_money_flag, custom_money_flag, gui_elements, mouse_pos)
-
-    return random_money_flag, custom_money_flag, starting_money
+    ui.draw_continue_button_inactive(sd.random_money_flag, sd.custom_money_flag, gui_elements, mouse_pos)
 
 
 def show_character_complete_screen(screen, gui_elements: dict, mouse_pos) -> None:

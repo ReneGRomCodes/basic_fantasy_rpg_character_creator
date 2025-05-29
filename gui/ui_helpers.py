@@ -3,6 +3,7 @@ from core.rules import roll_starting_money
 import gui.screen_objects as so
 import time
 from gui.screen_objects import TextField, Button, InteractiveText, TextInputField
+from core.shared_data import shared_data as sd
 from gui.shared_data import ui_shared_data as uisd
 
 """Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
@@ -302,18 +303,14 @@ def race_class_check(available_choices: dict[str, list[InteractiveText]], active
     return available_choices
 
 
-def get_available_choices(possible_characters: list[str], active_races: tuple[InteractiveText],
-                          active_classes: tuple[InteractiveText], selected_race: InteractiveText | None,
-                          selected_class: InteractiveText | None) -> dict[str, list[InteractiveText]]:
+def get_available_choices(active_races: tuple[InteractiveText], active_classes: tuple[InteractiveText])\
+        -> dict[str, list[InteractiveText]]:
     """Create dict and populate it with instances from 'active_races' and 'active_classes' using function
         'race_class_check()' if their 'text' attributes match entries in 'possible_characters' (first word for race,
         second for class) and return it in 'available_choices'.
     ARGS:
-        possible_characters: list of possible race-class combinations as strings.
         active_races: entry from gui element dict 'gui_elements["active_races"]'.
         active_classes: entry from gui element dict 'gui_elements["active_classes"]'.
-        selected_race: instance of 'InteractiveText' class representing chosen race. 'None' if no race is selected.
-        selected_class: instance of 'InteractiveText' class representing chosen class. 'None' if no class is selected.
     RETURNS:
         available_choices: dict for instances of 'InteractiveText' for allowed race/class combinations.
     """
@@ -323,34 +320,33 @@ def get_available_choices(possible_characters: list[str], active_races: tuple[In
         "classes": [],
     }
 
-    for character in possible_characters:
+    for character in sd.possible_characters:
         # Split each possible character to get race and class.
         race_name, class_name = character.split()
 
         # Add all available races and classes to dict if none are selected.
-        if not selected_race and not selected_class:
+        if not sd.selected_race and not sd.selected_class:
             available_choices = race_class_check(available_choices, active_races, active_classes, race_name, class_name)
 
         # Add only classes that are compatible with selected race to dict.
-        elif selected_race and selected_race.text == race_name:
+        elif sd.selected_race and sd.selected_race.text == race_name:
             available_choices = race_class_check(available_choices, active_races, active_classes, race_name, class_name)
 
         # Add only races that are compatible with selected class to dict.
-        elif selected_class and selected_class.text == class_name:
+        elif sd.selected_class and sd.selected_class.text == class_name:
             available_choices = race_class_check(available_choices, active_races, active_classes, race_name, class_name)
 
     return available_choices
 
 
-def get_position_race_class_element(screen, race_class: InteractiveText | TextField, inactive_elements: list[TextField],
-                                    rc_dict: dict[str, list[str]]) -> tuple[int, int]:
+def get_position_race_class_element(screen, race_class: InteractiveText | TextField, inactive_elements: list[TextField])\
+        -> tuple[int, int]:
     """Get and return x and y values for GUI elements in function 'draw_available_choices()'.
     ARGS:
         screen: PyGame window.
         race_class: GUI element to be positioned.
         inactive_elements: list of text field instances for non-choose able races/classes. Used here only to be passed
             to function 'get_race_class_y_position()' for further y-coordinates calculations.
-        rc_dict: dict containing all available races/classes in the game as lists of strings.
     RETURNS:
         x, y: x and y position on screen for 'race_class' object.
     """
@@ -358,8 +354,8 @@ def get_position_race_class_element(screen, race_class: InteractiveText | TextFi
     race_x_pos: int = int(screen.get_rect().width / 4)
     class_x_pos: int = race_x_pos * 3
     # Lists of races and classes from dict 'rc_dict' for checks and calculation of y-positions.
-    races_list: list[str] = rc_dict["races"]
-    classes_list: list[str] = rc_dict["classes"]
+    races_list: list[str] = sd.rc_dict["races"]
+    classes_list: list[str] = sd.rc_dict["classes"]
 
     # Check if 'race_class' represents a race or a class and retrieve correct x- and y-positions.
     if race_class.text in races_list:
@@ -396,12 +392,11 @@ def get_race_class_y_position(screen, race_class: InteractiveText | TextField, r
     return y
 
 
-def draw_available_choices(screen, rc_dict: dict[str, list[str]], available_choices: dict[str, list[InteractiveText]],
+def draw_available_choices(screen, available_choices: dict[str, list[InteractiveText]],
                            inactive_races: list[TextField], inactive_classes: list[TextField], mouse_pos) -> None:
     """Get position of text field items in dict 'available_choices' and draw them on screen.
     ARGS:
         screen: pygame window.
-        rc_dict: dict containing all available races/classes in the game as lists of strings.
         available_choices: dict with instances of interactive text fields for race and class selection.
         inactive_races: list of text field instances for non-choose able races.
         inactive_classes: list of text field instances for non-choose able classes.
@@ -416,11 +411,10 @@ def draw_available_choices(screen, rc_dict: dict[str, list[str]], available_choi
         if race.text in check_list:
             for r in available_choices["races"]:
                 r.interactive_rect.centerx, r.interactive_rect.centery = get_position_race_class_element(screen, r,
-                                                                                                      inactive_races, rc_dict)
+                                                                                                      inactive_races)
                 r.draw_interactive_text(mouse_pos)
         else:
-            race.text_rect.centerx, race.text_rect.centery = get_position_race_class_element(screen, race, inactive_races,
-                                                                                          rc_dict)
+            race.text_rect.centerx, race.text_rect.centery = get_position_race_class_element(screen, race, inactive_races)
             race.draw_text()
 
     # Draw class selection.
@@ -429,11 +423,10 @@ def draw_available_choices(screen, rc_dict: dict[str, list[str]], available_choi
         if cls.text in check_list:
             for c in available_choices["classes"]:
                 c.interactive_rect.centerx, c.interactive_rect.centery = get_position_race_class_element(screen, c,
-                                                                                                      inactive_classes, rc_dict)
+                                                                                                      inactive_classes)
                 c.draw_interactive_text(mouse_pos)
         else:
-            cls.text_rect.centerx, cls.text_rect.centery = get_position_race_class_element(screen, cls, inactive_classes,
-                                                                                        rc_dict)
+            cls.text_rect.centerx, cls.text_rect.centery = get_position_race_class_element(screen, cls, inactive_classes)
             cls.draw_text()
 
 
@@ -488,17 +481,16 @@ def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, 
 
 """Background functions for character naming screen."""
 
-def build_and_position_prompt(screen, naming_prompt: TextField, character: object) -> None:
+def build_and_position_prompt(screen, naming_prompt: TextField) -> None:
     """Create text for 'TextField' instance 'naming_prompt' to include character's race and class, and position it on
     screen.
     ARGS:
         screen: PyGame window.
         naming_prompt: instance of 'TextField' class prompting the user to input a character name.
-        character: instance of 'Character' class.
     """
     if not uisd.position_flag:
         # Add naming prompt to 'naming_prompt.text' attribute and render text_rect.
-        naming_prompt.text = f"Name your {character.race_name} {character.class_name}"
+        naming_prompt.text = f"Name your {sd.character.race_name} {sd.character.class_name}"
         naming_prompt.text_surface = naming_prompt.font.render(naming_prompt.text, True, naming_prompt.text_color)
         naming_prompt.text_rect = naming_prompt.text_surface.get_rect()
 
@@ -535,38 +527,27 @@ def position_money_screen_elements(screen, gui_elements: dict) -> None:
         uisd.position_flag = True
 
 
-def choose_money_option(choices: list[Button], random_money_flag: bool, custom_money_flag: bool, mouse_pos) -> tuple[bool, bool]:
+def choose_money_option(choices: list[Button], mouse_pos) -> None:
     """Choose option to either generate random amount of money or let user input a custom amount, return 'starting_money'
     if random amount is chosen, set and return 'random_money_flag'/'custom_money_flag' accordingly.
     ARGS:
         choices: List of instances of 'Button' class from dict 'gui_elements'.
-        random_money_flag: flag to indicate if randomly generated amount of money is chosen.
-        custom_money_flag: flag to indicate if custom amount of money is chosen.
         mouse_pos: position of mouse on screen.
-    RETURNS:
-        random_money_flag
-        custom_money_flag
     """
     if pygame.mouse.get_pressed()[0]:
         # Set flags to appropriate values based chosen option.
         if choices[0].button_rect.collidepoint(mouse_pos):
-            random_money_flag, custom_money_flag = True, False
+            sd.random_money_flag, sd.custom_money_flag = True, False
             # Set dice roll timer.
             uisd.dice_roll_start_time = time.time()
         if choices[1].button_rect.collidepoint(mouse_pos):
-            random_money_flag, custom_money_flag = False, True
-
-    return random_money_flag, custom_money_flag
+            sd.random_money_flag, sd.custom_money_flag = False, True
 
 
-def draw_chosen_money_option(screen, starting_money: int, random_money_flag: bool, custom_money_flag: bool,
-                             gui_elements: dict) -> int:
+def draw_chosen_money_option(screen, gui_elements: dict) -> None:
     """Draw message for random amount of starting money or show input field for custom amount on screen.
     ARGS:
         screen: PyGame window.
-        starting_money: amount of starting money. Default value is '0'.
-        random_money_flag: flag to indicate if randomly generated amount of money is chosen.
-        custom_money_flag: flag to indicate if custom amount of money is chosen.
         gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Set duration for dice roll in seconds.
@@ -580,32 +561,28 @@ def draw_chosen_money_option(screen, starting_money: int, random_money_flag: boo
     money_amount_field: TextInputField = gui_elements["money_amount_input"][1]
     money_input_prompt: TextField = gui_elements["money_amount_input"][2]
 
-    if random_money_flag:
+    if sd.random_money_flag:
         # Check timer to allow for dice roll effect.
         if time.time() - uisd.dice_roll_start_time < dice_roll_duration:
             rolling_dice_money_field.draw_text()
             # Generate random int value for 'starting_money'.
-            starting_money = roll_starting_money()
-            starting_money_dice_roll(screen, starting_money, random_money_field, text_large)
+            sd.starting_money = roll_starting_money()
+            starting_money_dice_roll(screen, random_money_field, text_large)
         # Show final value after timer runs out.
         else:
             random_money_field.draw_text()
-            starting_money_dice_roll(screen, starting_money, random_money_field, text_large, rolling=False)
+            starting_money_dice_roll(screen, random_money_field, text_large, rolling=False)
             # Reset global dice roll timer. Not strictly necessary, but better safe than sorry.
             uisd.dice_roll_start_time = 0
-    elif custom_money_flag:
+    elif sd.custom_money_flag:
         money_input_prompt.draw_text()
         money_amount_field.draw_input_field()
 
-    return starting_money
 
-
-def starting_money_dice_roll(screen, starting_money: int, random_money_field: TextField, text_large: object | int,
-                             rolling: bool = True) -> None:
+def starting_money_dice_roll(screen, random_money_field: TextField, text_large: object | int, rolling: bool = True) -> None:
     """Display the rolling or final amount of starting money on screen.
     ARGS:
         screen: PyGame window.
-        starting_money: amount of starting money to display.
         random_money_field: reference text field to position the money display correctly.
         text_large: font size instance for text rendering. Usually 'gui_elements["text_large"]' is used, but any 'int'
             can be passed.
@@ -615,10 +592,10 @@ def starting_money_dice_roll(screen, starting_money: int, random_money_field: Te
     # Check if "rolling" message or final amount should be displayed.
     if rolling:
         # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
-        starting_money_message: str = str(starting_money)
+        starting_money_message: str = str(sd.starting_money)
     else:
         # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
-        starting_money_message: str = str(starting_money) + " gold pieces"
+        starting_money_message: str = str(sd.starting_money) + " gold pieces"
 
     # Create TextField instance 'random_money_result_field', and position and draw it on screen.
     random_money_result_field = so.TextField(screen, starting_money_message, text_large)

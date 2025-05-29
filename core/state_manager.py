@@ -121,59 +121,44 @@ def custom_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
         # Reset any shared data in case user returns to ability score screen from race/class selection screen.
         sd.shared_data_janitor(gui_elements)
         # Display ability score screen.
-        gui.show_ability_scores_screen(screen, sd.character, gui_elements, mouse_pos)
-        sd.possible_characters, state = eh.custom_character_events(screen, state, sd.character, gui_elements, mouse_pos)
+        gui.show_ability_scores_screen(screen, gui_elements, mouse_pos)
+        state = eh.custom_character_events(screen, state, gui_elements, mouse_pos)
 
     elif state == "race_class_selection":
         # Display race/class selection screen.
-        sd.selected_race, sd.selected_class =(
-            gui.show_race_class_selection_screen(screen, sd.rc_dict, sd.possible_characters, sd.selected_race,
-                                                 sd.selected_class, gui_elements, mouse_pos))
-
-        sd.possible_characters, state =(
-            eh.custom_character_events(screen, state, sd.character, gui_elements, mouse_pos, sd.possible_characters,
-                                       sd.selected_race, sd.selected_class))
+        gui.show_race_class_selection_screen(screen, gui_elements, mouse_pos)
+        state = eh.custom_character_events(screen, state, gui_elements, mouse_pos, sd.selected_race, sd.selected_class)
 
     elif state == "spell_selection":
         # Display spell selection screen for Magic-Users.
         gui.show_spell_selection_screen(screen, gui_elements, mouse_pos)
-        sd.possible_characters, state =(
-            eh.custom_character_events(screen, state, sd.character, gui_elements, mouse_pos, sd.possible_characters,
-                                       sd.selected_spell))
+        state = eh.custom_character_events(screen, state, gui_elements, mouse_pos, sd.selected_spell)
 
     elif state == "name_character":
         # Display character naming screen.
-        gui.show_naming_screen(screen, sd.character, gui_elements, mouse_pos)
-        state = eh.naming_character_events(screen, state, sd.character, gui_elements, mouse_pos)
+        gui.show_naming_screen(screen, gui_elements, mouse_pos)
+        state = eh.naming_character_events(screen, state, gui_elements, mouse_pos)
 
-        # Unselect money flags, set variables to 'False' if user returns to naming screen from starting money screen.
+        # Unselect 'shared_data' money flags, set variables to 'False' if user returns to naming screen from starting
+        # money screen.
         if sd.random_money_flag or sd.custom_money_flag:
             sd.random_money_flag, sd.custom_money_flag = False, False
 
     elif state == "select_starting_money":
         # Base state for starting money screen.
-        sd.random_money_flag, sd.custom_money_flag, sd.starting_money =(
-            gui.show_starting_money_screen(screen, gui_elements, sd.random_money_flag, sd.custom_money_flag,
-                                           sd.starting_money, mouse_pos))
-
-        sd.possible_characters, state =(
-            eh.custom_character_events(screen, state, sd.character, gui_elements, mouse_pos, sd.possible_characters,
-                                       sd.random_money_flag, sd.custom_money_flag, sd.starting_money))
+        gui.show_starting_money_screen(screen, gui_elements, mouse_pos)
+        state = eh.custom_character_events(screen, state, gui_elements, mouse_pos, sd.random_money_flag,
+                                           sd.custom_money_flag, sd.starting_money)
 
     elif state == "custom_input_money":
         # Special state for starting money screen to call 'custom_starting_money_events' for user input.
-        sd.random_money_flag, sd.custom_money_flag, sd.starting_money =(
-            gui.show_starting_money_screen(screen, gui_elements, sd.random_money_flag, sd.custom_money_flag,
-                                           sd.starting_money, mouse_pos))
-
-        state = eh.custom_starting_money_events(screen, state, sd.character, gui_elements, mouse_pos)
+        gui.show_starting_money_screen(screen, gui_elements, mouse_pos)
+        state = eh.custom_starting_money_events(screen, state, gui_elements, mouse_pos)
 
     elif state == "creation_complete":
         # Display message screen stating that basic character creation is completed.
         gui.show_character_complete_screen(screen, gui_elements, mouse_pos)
-
-        sd.possible_characters, state =(
-            eh.custom_character_events(screen, state, sd.character, gui_elements, mouse_pos, sd.possible_characters))
+        state = eh.custom_character_events(screen, state, gui_elements, mouse_pos)
 
     return state
 
@@ -219,8 +204,8 @@ def random_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
     elif state == "name_random_character":
         # Display character naming screen.
         # 'creation_complete' state that follows afterward is handled in 'custom_character()' to avoid duplicate code.
-        gui.show_naming_screen(screen, sd.character, gui_elements, mouse_pos)
-        state = eh.naming_character_events(screen, state, sd.character, gui_elements, mouse_pos)
+        gui.show_naming_screen(screen, gui_elements, mouse_pos)
+        state = eh.naming_character_events(screen, state, gui_elements, mouse_pos)
 
     return state
 
@@ -241,7 +226,7 @@ def character_sheet_state_manager(screen, state: str, gui_elements: dict, mouse_
     """
     if state == "init_character_sheet":
         # Create instance of class 'CharacterSheet'.
-        sd.cs_sheet = CharacterSheet(screen, sd, gui_elements)
+        sd.cs_sheet = CharacterSheet(screen, gui_elements)
         # Set positions for character sheet elements on screen.
         sd.cs_sheet.position_cs_elements()
 

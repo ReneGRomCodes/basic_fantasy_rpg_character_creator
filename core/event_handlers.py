@@ -75,23 +75,21 @@ def main_events(screen, state: str, gui_elements: dict, mouse_pos) -> str:
     return state
 
 
-def custom_character_events(screen, state: str, character, gui_elements: dict, mouse_pos, possible_characters: list[str]=None,
-                            context1: any=None, context2: any=None, context3: any=None) -> tuple[list, str]:
+def custom_character_events(screen, state: str, gui_elements: dict, mouse_pos, context1: any=None, context2: any=None,
+                            context3: any=None) -> str:
     """Check and handle events in function 'custom_character()' in 'state_manager.py' and return 'state'.
     ARGS:
         screen: PyGame window.
         state: program state.
-        character: instance of class 'Character'.
         gui_elements: dict of GUI elements.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-        possible_characters: list of possible race-class combinations. Default is 'None'.
             NOTE: arg must always be passed in function 'custom_character()' in 'state_manager.py' from state
             'race_class_selection' onwards to keep list stored and not have it reset to 'None'.
         context1: context specific argument whose role depends on current state.
         context2: context specific argument whose role depends on current state.
         context3: context specific argument whose role depends on current state.
     RETURNS:
-        possible_characters, state
+        state
     """
 
     for event in pygame.event.get():
@@ -113,7 +111,7 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
 
                 if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                     # Set and return available races/classes and state after confirmation of ability scores.
-                    possible_characters = rls.build_possible_characters_list(character)
+                    sd.possible_characters = rls.build_possible_characters_list(sd.character)
                     state = "race_class_selection"
 
         elif state == "race_class_selection":
@@ -132,10 +130,10 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
                 if context1 and context2:
                     if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                         # Set race, class and their specific values in character object after confirmation.
-                        character.set_race(context1.text)
-                        character.set_class(context2.text)
-                        character.set_character_values()
-                        if character.class_name in sd.magic_classes:
+                        sd.character.set_race(context1.text)
+                        sd.character.set_class(context2.text)
+                        sd.character.set_character_values()
+                        if sd.character.class_name in sd.magic_classes:
                             state = "spell_selection"
                         else:
                             state = "name_character"
@@ -154,7 +152,7 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
                 if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                     # Append spell to list 'character.spells' if one is selected and confirmed.
                     if context1:
-                        character.spells.append(context1.text)
+                        sd.character.spells.append(context1.text)
                     state = "name_character"
 
         elif state == "select_starting_money":
@@ -168,7 +166,7 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
                 if context1:
                     if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                         # Set starting money to int 'context3' (starting_money) if 'random_money' is 'True'.
-                        character.money = context3
+                        sd.character.money = context3
                         state = "creation_complete"
                 if context2:
                     # Special state to handle money input field functionality.
@@ -179,19 +177,18 @@ def custom_character_events(screen, state: str, character, gui_elements: dict, m
                 if gui_elements["show_character_sheet"].button_rect.collidepoint(mouse_pos):
                     state = "init_character_sheet"
 
-    return possible_characters, state
+    return state
 
 
 """Event handlers for screens where pygame_textinput library is used so 'pygame.event.get()' can be split between pygame
 events and pygame_textinput events."""
 
-def naming_character_events(screen, state: str, character, gui_elements: dict, mouse_pos) -> str:
+def naming_character_events(screen, state: str, gui_elements: dict, mouse_pos) -> str:
     """Check and handle text input field events in functions 'custom_character()' and 'random_character' for each naming
     character state.
     ARGS:
         screen: PyGame window.
         state: program state. Entry and exit state differ based on custom or random character creation.
-        character: instance of class 'Character'.
         gui_elements: dict of GUI elements.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
@@ -217,21 +214,20 @@ def naming_character_events(screen, state: str, character, gui_elements: dict, m
         if event.type == pygame.MOUSEBUTTONUP:
             if gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                 # Different state value is checked and set depending on whether custom or random character is created.
-                character.reset_character()
+                sd.character.reset_character()
                 if state == "name_character":
-                    if character.class_name in sd.magic_classes:
+                    if sd.character.class_name in sd.magic_classes:
                         state = "spell_selection"
                     else:
                         state = "race_class_selection"
                 elif state == "name_random_character":
-                    # Import and call method to reset shared data in 'state_manager.py' before returning to previous menu.
+                    # Call method to reset shared data before returning to previous menu.
                     # Not a pretty solution, but it resolves the freezing issue when coming back from the naming screen.
-                    from core.shared_data import shared_data
-                    shared_data.shared_data_janitor(gui_elements)
+                    sd.shared_data_janitor(gui_elements)
                     state = "character_menu"
 
             if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                character.set_name(character_name_input.manager.value)
+                sd.character.set_name(character_name_input.manager.value)
                 # Different state value is checked and set depending on whether custom or random character is created.
                 if state == "name_character":
                     state = "select_starting_money"
@@ -241,13 +237,12 @@ def naming_character_events(screen, state: str, character, gui_elements: dict, m
     return state
 
 
-def custom_starting_money_events(screen, state: str, character, gui_elements: dict, mouse_pos) -> str:
+def custom_starting_money_events(screen, state: str, gui_elements: dict, mouse_pos) -> str:
     """Check and handle text input field events in function 'custom_character()' for state 'custom_input_money' in
     'state_manager.py'.
     ARGS:
         screen: PyGame window.
         state: program state. Entry and exit state differ based on custom or random character creation.
-        character: instance of class 'Character'.
         gui_elements: dict of GUI elements.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
@@ -285,9 +280,9 @@ def custom_starting_money_events(screen, state: str, character, gui_elements: di
             if gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                 # Set characters starting money to '0' if input field is left empty.
                 if starting_money_input.manager.value:
-                    character.money = int(starting_money_input.manager.value)
+                    sd.character.money = int(starting_money_input.manager.value)
                 else:
-                    character.money = 0
+                    sd.character.money = 0
                 state = "creation_complete"
 
             if gui_elements["starting_money_choices"][0].button_rect.collidepoint(mouse_pos):

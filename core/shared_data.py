@@ -8,15 +8,16 @@ Only instance of this class, 'shared_data', is created at the bottom of this mod
 
 
 class SharedData:
-    """Class for initialization and storage of attributes relevant throughout the character creation process."""
+    """Class for initialization and storage of attributes relevant throughout the character creation process and contains
+    selection logic methods for various screens (race/class selection, spell selection, etc.)."""
 
     def __init__(self) -> None:
         """Initialize shared data attributes."""
         # Variable for later instances of class objects.
-        self.character: object  # Instance 'Character()'.
-        self.credits_screen: object  # Instance 'Credits()'.
+        self.character: object | None = None  # Instance 'Character()'.
+        self.credits_screen: object | None = None  # Instance 'Credits()'.
         self.settings_gui: object = None  # Instance 'SettingsGUI()'
-        self.cs_sheet: object  # Instance of 'CharacterSheet'.
+        self.cs_sheet: object | None = None  # Instance of 'CharacterSheet'.
 
         # Class sets for category checks (example: spell selection screen shown only for magic using classes).
         self.spell_using_classes, self.magic_classes, self.no_armor_classes = get_class_categories()
@@ -35,6 +36,8 @@ class SharedData:
         self.selected_race: InteractiveText | str | None = None
         self.selected_class: InteractiveText | str | None = None
 
+        # 'InteractiveText' instances representing selected spell for spell casters.
+        # 'None' as default values before actual values are assigned.
         self.selected_spell: InteractiveText | None = None
 
         # Characters starting money.
@@ -118,8 +121,8 @@ class SharedData:
         """Reset shared data not automatically overwritten elsewhere with default values in case of a switch to a
         previous screen or the main menu.
 
-        Method is imported into and called in event handler 'naming_character_events()' when returning to character menu
-        from 'name_random_character' state, in addition to its function calls in states 'pre_main_menu' and 'show_abilities'.
+        Method is called in event handler 'naming_character_events()' when returning to character menu from
+        'name_random_character' state, in addition to its method calls in states 'pre_main_menu' and 'show_abilities'.
         This resolves multiple issues that caused the program to freeze when switching between different screens or when
         creating a new character after one has already been created.
 

@@ -1,7 +1,7 @@
 import pygame
 import gui.screen_objects as so
 from core.character_model import Character
-from core.shared_data import SharedData
+from core.shared_data import SharedData, shared_data
 from gui.screen_objects import TextField, Button
 from gui.ui_helpers import draw_screen_title
 
@@ -11,11 +11,10 @@ from gui.ui_helpers import draw_screen_title
 class CharacterSheet:
     """A class to store and manage character sheet elements."""
 
-    def __init__(self, screen, shared_data, gui_elements: dict) -> None:
+    def __init__(self, screen, gui_elements: dict) -> None:
         """Initialize the CharacterSheet object with elements.
         ARGS:
             screen: PyGame window.
-            shared_data: Instance of class 'SharedData'.
             gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         """
         # Assign shared data and character objects to attribute.
