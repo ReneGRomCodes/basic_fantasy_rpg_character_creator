@@ -320,7 +320,7 @@ class CharacterSheet:
             self.draw_grid()
 
         # Draw general screen objects.
-        draw_screen_title(self.screen, self.title, self.gui_elements)
+        draw_screen_title(self.screen, self.title)
         self.main_menu_button.draw_button(mouse_pos)
 
         # Draw character sheet elements.

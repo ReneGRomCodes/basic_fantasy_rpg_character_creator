@@ -57,7 +57,7 @@ class Credits:
             screen: PyGame window.
         """
 
-        draw_screen_title(screen, self.credits_title, uisd.gui_elements)
+        draw_screen_title(screen, self.credits_title)
 
         # Iterate through 'credits_elements' array, set positioning and spacing, and draw objects on screen.
         for category in self.credits_elements:

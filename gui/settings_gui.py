@@ -59,7 +59,7 @@ class SettingsGUI:
         self.select_window_size(screen, mouse_pos)
 
         # Draw basic elements on screen.
-        draw_screen_title(screen, self.title, uisd.gui_elements)
+        draw_screen_title(screen, self.title)
         back_button.draw_button(mouse_pos)
         # Draw window size selection on screen.
         self.window_size_field.draw_text()

@@ -25,19 +25,19 @@ def main_state_manager(screen, state: str, mouse_pos) -> str:
 
     if state == "title_screen":
         # Display title screen.
-        gui.show_title_screen(screen, uisd.gui_elements)
+        gui.show_title_screen(screen)
 
     elif state == "pre_main_menu":
         # Create/re-initialize instance of class 'Character' and reset shared data to start with a clean sheet when
         # accessing main menu or returning to it from a different screen.
         sd.character = Character()
-        sd.shared_data_janitor(uisd.gui_elements)
+        sd.shared_data_janitor()
 
         state = "main_menu"
 
     elif state == "main_menu":
         # Display main menu screen.
-        gui.show_main_menu(screen, uisd.gui_elements, mouse_pos)
+        gui.show_main_menu(screen, mouse_pos)
 
     elif state in {"init_credits", "credits"}:
         # Use of 'secondary' state manager for credits screen.
@@ -45,7 +45,7 @@ def main_state_manager(screen, state: str, mouse_pos) -> str:
 
     elif state == "character_menu":
         # Display character menu screen
-        gui.show_character_menu(screen, uisd.gui_elements, mouse_pos)
+        gui.show_character_menu(screen, mouse_pos)
 
     elif state in {"init_character_sheet", "character_sheet"}:
         # Use of 'secondary' state manager for character sheet screen.
@@ -116,24 +116,24 @@ def custom_character(screen, state: str, mouse_pos) -> str:
 
     elif state == "show_abilities":
         # Reset any shared data in case user returns to ability score screen from race/class selection screen.
-        sd.shared_data_janitor(uisd.gui_elements)
+        sd.shared_data_janitor()
         # Display ability score screen.
-        gui.show_ability_scores_screen(screen, uisd.gui_elements, mouse_pos)
+        gui.show_ability_scores_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state, mouse_pos)
 
     elif state == "race_class_selection":
         # Display race/class selection screen.
-        gui.show_race_class_selection_screen(screen, uisd.gui_elements, mouse_pos)
+        gui.show_race_class_selection_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state,  mouse_pos, sd.selected_race, sd.selected_class)
 
     elif state == "spell_selection":
         # Display spell selection screen for Magic-Users.
-        gui.show_spell_selection_screen(screen, uisd.gui_elements, mouse_pos)
+        gui.show_spell_selection_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state, mouse_pos, sd.selected_spell)
 
     elif state == "name_character":
         # Display character naming screen.
-        gui.show_naming_screen(screen, uisd.gui_elements, mouse_pos)
+        gui.show_naming_screen(screen, mouse_pos)
         state = eh.naming_character_events(screen, state, mouse_pos)
 
         # Unselect 'shared_data' money flags, set variables to 'False' if user returns to naming screen from starting
@@ -143,18 +143,18 @@ def custom_character(screen, state: str, mouse_pos) -> str:
 
     elif state == "select_starting_money":
         # Base state for starting money screen.
-        gui.show_starting_money_screen(screen, uisd.gui_elements, mouse_pos)
+        gui.show_starting_money_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state, mouse_pos, sd.random_money_flag, sd.custom_money_flag,
                                            sd.starting_money)
 
     elif state == "custom_input_money":
         # Special state for starting money screen to call 'custom_starting_money_events' for user input.
-        gui.show_starting_money_screen(screen, uisd.gui_elements, mouse_pos)
+        gui.show_starting_money_screen(screen, mouse_pos)
         state = eh.custom_starting_money_events(screen, state, mouse_pos)
 
     elif state == "creation_complete":
         # Display message screen stating that basic character creation is completed.
-        gui.show_character_complete_screen(screen, uisd.gui_elements, mouse_pos)
+        gui.show_character_complete_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state, mouse_pos)
 
     return state
@@ -200,7 +200,7 @@ def random_character(screen, state: str, mouse_pos) -> str:
     elif state == "name_random_character":
         # Display character naming screen.
         # 'creation_complete' state that follows afterward is handled in 'custom_character()' to avoid duplicate code.
-        gui.show_naming_screen(screen, uisd.gui_elements, mouse_pos)
+        gui.show_naming_screen(screen, mouse_pos)
         state = eh.naming_character_events(screen, state, mouse_pos)
 
     return state

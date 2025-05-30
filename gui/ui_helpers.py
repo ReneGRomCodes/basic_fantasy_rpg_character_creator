@@ -11,44 +11,42 @@ from gui.shared_data import ui_shared_data as uisd
 
 """General functions."""
 
-def draw_screen_title(screen, screen_title: TextField, gui_elements: dict) -> None:
+def draw_screen_title(screen, screen_title: TextField) -> None:
     """Draw 'screen_title' object on screen at default position.
     ARGS:
         screen: PyGame window.
         screen_title: instance of class 'TextField()' representing the screen title.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
-    screen_title.text_rect.top = screen.get_rect().top + gui_elements["default_edge_spacing"]
+    screen_title.text_rect.top = screen.get_rect().top + uisd.gui_elements["default_edge_spacing"]
     screen_title.text_rect.centerx = screen.get_rect().centerx
     screen_title.draw_text()
 
 
-def draw_special_button(screen, button: Button, gui_elements: dict, mouse_pos) -> None:
+def draw_special_button(screen, button: Button, mouse_pos) -> None:
     """Draw special use button (i.e. 'Roll Again' or 'Reset') at the bottom center of the screen.
     ARGS:
         screen: PyGame window.
         button: instance of class 'Button()' representing the special use button.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen.
     """
     button.button_rect.centerx = screen.get_rect().centerx
-    button.button_rect.bottom = screen.get_rect().bottom - gui_elements["default_edge_spacing"]
+    button.button_rect.bottom = screen.get_rect().bottom - uisd.gui_elements["default_edge_spacing"]
     button.draw_button(mouse_pos)
 
 
-def draw_continue_button_inactive(condition_1: object | bool, condition_2: object | bool, gui_elements: dict, mouse_pos,
-                                  check_mode: str = "any") -> None:
+def draw_continue_button_inactive(condition_1: object | bool, condition_2: object | bool, mouse_pos, check_mode: str = "any")\
+        -> None:
     """Draw either active or inactive instance of continue button from module 'gui_elements'.
     ARGS:
         condition_1: first condition to be checked.
         condition_2: second condition to be checked.
-        gui_elements: dict containing gui element instances.
         mouse_pos: mouse position on screen.
         check_mode: String to determine whether one or both conditions must be met. Use "any" to require at least one condition,
                     or "all" to require both. Default is "any".
     """
     # Assign buttons from dict 'gui_elements' to variables.
-    continue_button, inactive_continue_button = gui_elements["continue_button"], gui_elements["inactive_continue_button"]
+    continue_button, inactive_continue_button = (uisd.gui_elements["continue_button"],
+                                                 uisd.gui_elements["inactive_continue_button"])
 
     # Check if condition_1 and/or condition_2 have valid values and draw appropriate (active/inactive) continue button on
     # screen.
@@ -124,19 +122,18 @@ def show_info_panels(elements: list | tuple, mouse_pos) -> None:
 
 """Background functions for title screen."""
 
-def position_title_screen_elements(screen, gui_elements: dict) -> None:
+def position_title_screen_elements(screen) -> None:
     """Position objects from 'gui_elements' for title screen.
     ARGS:
         screen: PyGame window.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Assign gui_elements to variables.
-    spacing: int = gui_elements["title_screen_spacing"]
-    title = gui_elements["title_screen_fields"][0]
-    subtitle = gui_elements["title_screen_fields"][1]
-    copyright_notice = gui_elements["title_screen_fields"][2]
-    progress_bar = gui_elements["title_screen_fields"][3]
-    continue_to_main = gui_elements["title_screen_fields"][4]
+    spacing: int = uisd.gui_elements["title_screen_spacing"]
+    title = uisd.gui_elements["title_screen_fields"][0]
+    subtitle = uisd.gui_elements["title_screen_fields"][1]
+    copyright_notice = uisd.gui_elements["title_screen_fields"][2]
+    progress_bar = uisd.gui_elements["title_screen_fields"][3]
+    continue_to_main = uisd.gui_elements["title_screen_fields"][4]
 
     if not uisd.position_flag:
         # Position title, subtitle and copyright notice.
@@ -153,18 +150,17 @@ def position_title_screen_elements(screen, gui_elements: dict) -> None:
 
 """Background functions for main menu screen."""
 
-def position_main_menu_screen_elements(screen, gui_elements: dict) -> None:
+def position_main_menu_screen_elements(screen) -> None:
     """Format and position objects from 'gui_elements' for main menu screen.
     ARGS:
         screen: PyGame window.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Assign gui_elements to variables.
-    spacing: int = gui_elements["title_screen_spacing"]
-    button_spacing: int = gui_elements["button_spacing"]
-    title = gui_elements["main_menu_title"]
-    start = gui_elements["start_button"]
-    menu_buttons = gui_elements["menu_buttons"]
+    spacing: int = uisd.gui_elements["title_screen_spacing"]
+    button_spacing: int = uisd.gui_elements["button_spacing"]
+    title = uisd.gui_elements["main_menu_title"]
+    start = uisd.gui_elements["start_button"]
+    menu_buttons = uisd.gui_elements["menu_buttons"]
 
     if not uisd.position_flag:
         # Format/position title text field and start button.
@@ -189,16 +185,15 @@ def position_main_menu_screen_elements(screen, gui_elements: dict) -> None:
 
 """Background functions for character menu screen."""
 
-def position_character_menu_screen_elements(screen, gui_elements: dict) -> None:
+def position_character_menu_screen_elements(screen) -> None:
     """Position objects from 'gui_elements' for character menu screen.
     ARGS:
         screen: PyGame window.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Assign gui_elements to variables.
-    custom = gui_elements["custom"]
-    random = gui_elements["random"]
-    button_spacing: int = gui_elements["button_spacing"]
+    custom = uisd.gui_elements["custom"]
+    random = uisd.gui_elements["random"]
+    button_spacing: int = uisd.gui_elements["button_spacing"]
 
     if not uisd.position_flag:
     # Position buttons.
@@ -502,26 +497,29 @@ def build_and_position_prompt(screen, naming_prompt: TextField) -> None:
 
 """Background functions for starting money screen."""
 
-def position_money_screen_elements(screen, gui_elements: dict) -> None:
+def position_money_screen_elements(screen) -> None:
     """Position objects from 'gui_elements' for starting money screen.
     ARGS:
         screen: PyGame window.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     if not uisd.position_flag:
         # Positioning of button instances.
         money_button_pos_y: int = screen.get_rect().height / 3
-        random_money_button, custom_money_button = gui_elements["starting_money_choices"][0], gui_elements["starting_money_choices"][1]
-        random_money_button.button_rect.top, random_money_button.button_rect.centerx = money_button_pos_y, screen.get_rect().centerx * 0.5
-        custom_money_button.button_rect.top, custom_money_button.button_rect.centerx = money_button_pos_y, screen.get_rect().centerx * 1.5
+        random_money_button, custom_money_button = (uisd.gui_elements["starting_money_choices"][0],
+                                                    uisd.gui_elements["starting_money_choices"][1])
+        random_money_button.button_rect.top, random_money_button.button_rect.centerx = (money_button_pos_y,
+                                                                                        screen.get_rect().centerx * 0.5)
+        custom_money_button.button_rect.top, custom_money_button.button_rect.centerx = (money_button_pos_y,
+                                                                                        screen.get_rect().centerx * 1.5)
 
         # Positioning of text input and text field instances.
-        rolling_dice_money_field, random_money_field = gui_elements["random_money"][0], gui_elements["random_money"][1]
+        rolling_dice_money_field, random_money_field = (uisd.gui_elements["random_money"][0],
+                                                        uisd.gui_elements["random_money"][1])
         rolling_dice_money_field.text_rect.centery, random_money_field.text_rect.centery = (screen.get_rect().centery * 1.1,
                                                                                             screen.get_rect().centery * 1.1)
-        money_input_prompt: TextField = gui_elements["money_amount_input"][2]
+        money_input_prompt: TextField = uisd.gui_elements["money_amount_input"][2]
         money_input_prompt.text_rect.centery = screen.get_rect().centery * 1.05
-        money_amount_field: TextInputField = gui_elements["money_amount_input"][1]
+        money_amount_field: TextInputField = uisd.gui_elements["money_amount_input"][1]
         money_amount_field.input_bg_field.top = screen.get_rect().centery * 1.15
 
         uisd.position_flag = True
@@ -544,22 +542,22 @@ def choose_money_option(choices: list[Button], mouse_pos) -> None:
             sd.random_money_flag, sd.custom_money_flag = False, True
 
 
-def draw_chosen_money_option(screen, gui_elements: dict) -> None:
+def draw_chosen_money_option(screen) -> None:
     """Draw message for random amount of starting money or show input field for custom amount on screen.
     ARGS:
         screen: PyGame window.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Set duration for dice roll in seconds.
     dice_roll_duration: int | float = 1
 
     # Assign font size and text field instances from dict 'gui_elements' to variables.
-    text_large: int = gui_elements["text_large"]
+    text_large: int = uisd.gui_elements["text_large"]
     # Random money fields.
-    rolling_dice_money_field, random_money_field = gui_elements["random_money"][0], gui_elements["random_money"][1]
+    rolling_dice_money_field, random_money_field = (uisd.gui_elements["random_money"][0],
+                                                    uisd.gui_elements["random_money"][1])
     # Money input fields.
-    money_amount_field: TextInputField = gui_elements["money_amount_input"][1]
-    money_input_prompt: TextField = gui_elements["money_amount_input"][2]
+    money_amount_field: TextInputField = uisd.gui_elements["money_amount_input"][1]
+    money_input_prompt: TextField = uisd.gui_elements["money_amount_input"][2]
 
     if sd.random_money_flag:
         # Check timer to allow for dice roll effect.
@@ -605,17 +603,15 @@ def starting_money_dice_roll(screen, random_money_field: TextField, text_large: 
 
 """Background functions for creation complete screen."""
 
-def position_completion_screen_elements(screen, completion_message: TextField, show_character_sheet: Button,
-                                        gui_elements: dict) -> None:
+def position_completion_screen_elements(screen, completion_message: TextField, show_character_sheet: Button) -> None:
     """Position screen elements for 'character complete' screen.
     ARGS:
         screen: PyGame window.
         completion_message: instance of class 'TextField' showing completion message.
         show_character_sheet: instance of class 'Button' to proceed to character sheet.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     """
     # Assign spacing value from 'gui_elements' to variables.
-    spacing: int = gui_elements["title_screen_spacing"]
+    spacing: int = uisd.gui_elements["title_screen_spacing"]
 
     if not uisd.position_flag:
         # Position screen elements.

@@ -118,9 +118,9 @@ def custom_character_events(screen, state: str, mouse_pos, context1: any=None, c
                 # Race/class selection logic.
                 for option in uisd.gui_elements["active_races"] + uisd.gui_elements["active_classes"]:
                     if option.interactive_rect.collidepoint(mouse_pos):
-                        sd.select_race_class(uisd.gui_elements, mouse_pos)
+                        sd.select_race_class(mouse_pos)
                 if uisd.gui_elements["reset_button"].button_rect.collidepoint(mouse_pos):
-                    sd.select_race_class(uisd.gui_elements, mouse_pos, reset=True)
+                    sd.select_race_class(mouse_pos, reset=True)
 
                 if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     state = "show_abilities"
@@ -221,7 +221,7 @@ def naming_character_events(screen, state: str, mouse_pos) -> str:
                 elif state == "name_random_character":
                     # Call method to reset shared data before returning to previous menu.
                     # Not a pretty solution, but it resolves the freezing issue when coming back from the naming screen.
-                    sd.shared_data_janitor(uisd.gui_elements)
+                    sd.shared_data_janitor()
                     state = "character_menu"
 
             if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):

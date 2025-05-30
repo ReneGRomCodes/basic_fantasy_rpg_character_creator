@@ -1,5 +1,6 @@
 from gui.screen_objects import InteractiveText
 from core.rules import get_class_categories
+from gui.shared_data import ui_shared_data as uisd
 """
 Shared data class for character creation process.
 Only instance of this class, 'shared_data', is created at the bottom of this module and imported/referenced in
@@ -45,17 +46,16 @@ class SharedData:
         self.random_money_flag: bool = False  # Flag to check money selection.
         self.custom_money_flag: bool = False  # Flag to check money selection.
 
-    def select_race_class(self, gui_elements: dict, mouse_pos, reset: bool = False) -> None:
+    def select_race_class(self, mouse_pos, reset: bool = False) -> None:
         """Selection logic for race/class selection screen. Set class attributes 'selected_race' and 'selected_class'
         to interactive text field instances.
         ARGS:
-            gui_elements: dict of gui elements as created in module 'gui_elements.py'.
             mouse_pos: position of mouse on screen.
             reset: bool to reset race/class selection. Default is 'False'.
         """
         # Assign entries from 'gui_elements' to variables.
-        races: tuple[InteractiveText, ...] = gui_elements["active_races"]
-        classes: tuple[InteractiveText, ...] = gui_elements["active_classes"]
+        races: tuple[InteractiveText, ...] = uisd.gui_elements["active_races"]
+        classes: tuple[InteractiveText, ...] = uisd.gui_elements["active_classes"]
 
         # Loop through each available race and class option to see if any were clicked.
         for race in races:
@@ -117,7 +117,7 @@ class SharedData:
             # Select the new spell.
             self.selected_spell.selected = True
 
-    def shared_data_janitor(self, gui_elements: dict) -> None:
+    def shared_data_janitor(self) -> None:
         """Reset shared data not automatically overwritten elsewhere with default values in case of a switch to a
         previous screen or the main menu.
 
@@ -125,9 +125,6 @@ class SharedData:
         'name_random_character' state, in addition to its method calls in states 'pre_main_menu' and 'show_abilities'.
         This resolves multiple issues that caused the program to freeze when switching between different screens or when
         creating a new character after one has already been created.
-
-        ARGS:
-            gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         """
         # Unselect race and class selection if user visited race/class selection screen previously. 'isinstance' check is
         # necessary as variables can hold either a screen object or a string during custom and random character creation
@@ -150,8 +147,8 @@ class SharedData:
         # UI positioning, and automatically populate dict 'rc_dict' once with all races/classes available in the game
         # for later use in race/class selection.
         self.rc_dict = {
-            "races": [race.text for race in gui_elements["active_races"]],
-            "classes": [cls.text for cls in gui_elements["active_classes"]],
+            "races": [race.text for race in uisd.gui_elements["active_races"]],
+            "classes": [cls.text for cls in uisd.gui_elements["active_classes"]],
         }
 
 
