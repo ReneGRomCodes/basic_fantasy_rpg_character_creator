@@ -4,6 +4,7 @@ from core.character_model import Character
 from core.shared_data import SharedData, shared_data
 from gui.screen_objects import TextField, Button
 from gui.ui_helpers import draw_screen_title
+from gui.shared_data import ui_shared_data as uisd
 
 """Helper class to organize and access character sheet objects as attributes."""
 
@@ -11,11 +12,10 @@ from gui.ui_helpers import draw_screen_title
 class CharacterSheet:
     """A class to store and manage character sheet elements."""
 
-    def __init__(self, screen, gui_elements: dict) -> None:
+    def __init__(self, screen) -> None:
         """Initialize the CharacterSheet object with elements.
         ARGS:
             screen: PyGame window.
-            gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         """
         # Assign shared data and character objects to attribute.
         self.shared_data: SharedData = shared_data
@@ -28,9 +28,9 @@ class CharacterSheet:
         self.screen_width: int = self.screen_rect.width
 
         # Size variables and elements from dict 'gui_elements'.
-        self.gui_elements: dict = gui_elements
-        self.edge_spacing: int = gui_elements["default_edge_spacing"]
-        text_medium: int = gui_elements["text_medium"]
+        self.gui_elements: dict = uisd.gui_elements
+        self.edge_spacing: int = uisd.gui_elements["default_edge_spacing"]
+        text_medium: int = uisd.gui_elements["text_medium"]
 
         # Class specific size variables.
         self.text_standard: int = int(self.screen_height / 50)

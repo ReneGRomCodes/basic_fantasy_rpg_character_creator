@@ -1,6 +1,6 @@
 import pygame.font
 import gui.screen_objects as so
-from core.settings import Settings
+from core.settings import settings
 from descr import abilities, races, classes, spells
 import pygame_textinput
 from gui.screen_objects import Button, TextField, ProgressBar, InfoPanel, InteractiveText, TextInputField
@@ -8,12 +8,13 @@ from gui.screen_objects import Button, TextField, ProgressBar, InfoPanel, Intera
 """Initialize instances of classes from 'screen_objects.py' for use in GUI."""
 
 
-def initialize_screen_elements(screen, settings: Settings) -> dict:
+def initialize_screen_elements(screen) -> dict:
     """Initialize instances of classes from 'screen_objects.py' for use in GUI in addition to default size and spacing
     values for automatic scalability of screen objects. Return dict of instances 'gui_elements'.
     NOTE: Instances created have to be then added manually to dict 'gui_elements'!
-    Function is first called from function 'initialize_character_creator()' in 'main.py', and needs to be called again
-    if changes to screen size (i.e. in settings screen) are made.
+    Function is first called from function 'initialize_character_creator()' in 'main.py' with the returned dict being
+    stored in instance 'ui_shared_data' of class 'UISharedData', from where it can be accessed when necessary.
+    'initialize_screen_elements()' needs to be called again if changes to screen size (i.e. in settings screen) are made.
 
 
     Class overview (imported as 'so'):
@@ -56,7 +57,6 @@ def initialize_screen_elements(screen, settings: Settings) -> dict:
 
     ARGS:
         screen: PyGame window.
-        settings: Instance of class 'Settings'.
     RETURNS:
         gui_elements: dict containing screen objects and important size values.
     """

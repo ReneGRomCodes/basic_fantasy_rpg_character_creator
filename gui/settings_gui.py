@@ -4,6 +4,7 @@ from gui.ui_helpers import draw_screen_title
 import pygame
 from gui.gui_elements import initialize_screen_elements
 from core.settings import settings
+from gui.shared_data import ui_shared_data as uisd
 """
 Class for settings screen.
 """
@@ -12,15 +13,15 @@ Class for settings screen.
 class SettingsGUI:
     """Class to store, manage and show settings screen for pygame."""
 
-    def __init__(self, screen, gui_elements: dict) -> None:
+    def __init__(self, screen) -> None:
         """Initialize settings screen elements.
         ARGS:
-            gui_elements: dict of gui elements as created in module 'gui_elements.py'.
+            screen: PyGame window.
         """
         # Assign text sizes from 'gui_elements' to attributes.
-        self.title_size: int = gui_elements["title_size"]
-        self.text_large: int = gui_elements["text_large"]
-        self.text_medium: int = gui_elements["text_medium"]
+        self.title_size: int = uisd.gui_elements["title_size"]
+        self.text_large: int = uisd.gui_elements["text_large"]
+        self.text_medium: int = uisd.gui_elements["text_medium"]
 
         # Screen title.
         self.title: TextField = so.TextField(screen, "- SETTINGS -", self.title_size)
@@ -42,26 +43,23 @@ class SettingsGUI:
                                                                               window_size_button_small, window_size_button_medium,
                                                                               window_size_button_large, window_size_button_full)
 
-    def show_settings(self, screen, gui_elements: dict, mouse_pos) -> dict:
+    def show_settings(self, screen, mouse_pos) -> None:
         """Display settings screen.
             ARGS:
                 screen: PyGame window.
-                gui_elements: dict of gui elements as created in module 'gui_elements.py'.
                 mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-            RETURNS:
-                Re-initialized dict 'gui_elements'.
             """
         # Assign gui_elements to variables.
-        back_button: Button = gui_elements["back_button"]
+        back_button: Button = uisd.gui_elements["back_button"]
 
         # Format elements on screen.
-        self.format_settings_screen_elements(screen, gui_elements)
+        self.format_settings_screen_elements(screen)
 
         # Select window size and re-initialize 'gui_elements'.
-        gui_elements = self.select_window_size(screen, gui_elements, mouse_pos)
+        self.select_window_size(screen, mouse_pos)
 
         # Draw basic elements on screen.
-        draw_screen_title(screen, self.title, gui_elements)
+        draw_screen_title(screen, self.title, uisd.gui_elements)
         back_button.draw_button(mouse_pos)
         # Draw window size selection on screen.
         self.window_size_field.draw_text()
@@ -73,12 +71,10 @@ class SettingsGUI:
 
             button.draw_interactive_text(mouse_pos)
 
-        return gui_elements
-
-    def format_settings_screen_elements(self, screen, gui_elements: dict) -> None:
+    def format_settings_screen_elements(self, screen) -> None:
         """Format and position objects from 'gui_elements' for settings screen."""
         # Assign elements to variables.
-        spacing: int = gui_elements["default_edge_spacing"]
+        spacing: int = uisd.gui_elements["default_edge_spacing"]
         screen_x: int = screen.get_rect().centerx
         screen_y: int = screen.get_rect().centery
         # Assign anchor object 'window_size_buttons[0].interactive_rect' (small window) and further options to variables for
@@ -102,15 +98,12 @@ class SettingsGUI:
         window_size_large.left, window_size_large.top = window_size_anchor.left, window_size_anchor.bottom + spacing
         window_size_full.left, window_size_full.top = window_size_anchor.right + spacing, window_size_anchor.bottom + spacing
 
-    def select_window_size(self, screen, gui_elements: dict, mouse_pos) -> dict:
-        """Selection logic for programs window size. Change attribute 'self.selected_window_size', re-initialize  and
+    def select_window_size(self, screen, mouse_pos) -> None:
+        """Selection logic for program's window size. Change attribute 'self.selected_window_size', re-initialize  and
         return dict 'gui_elements'.
         ARGS:
             screen: PyGame window.
-            gui_elements: dict of gui elements as created in module 'gui_elements.py'.
             mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-        RETURNS:
-            Re-initialized dict 'gui_elements'.
         """
         # Tuple to store window size UI objects and corresponding 'settings' attributes. Last item represents full screen,
         # and has no settings attribute assigned, instead using 'pygame.FULLSCREEN' when setting window size.
@@ -162,9 +155,9 @@ class SettingsGUI:
                 pygame.time.wait(200)
 
                 # Re-initialize dict 'gui_elements' for proper size and positions of gui objects based on screen size.
-                gui_elements = initialize_screen_elements(screen, settings)
+                uisd.gui_elements = initialize_screen_elements(screen)
                 # Update text size of screen elements in settings screen. See method docstring for details.
-                self.update_text_size(gui_elements)
+                self.update_text_size()
 
             # Re-assign window size to 'selected_window_size' by comparing 'text' attributes with 'pair[0]', replacing
             # 'selected_window_size' with equivalent object and set its attribute to 'True'. Re-initialization of dict
@@ -173,9 +166,7 @@ class SettingsGUI:
                 self.selected_window_size: InteractiveText = pair[0]
                 self.selected_window_size.selected = True
 
-        return gui_elements
-
-    def update_text_size(self, gui_elements: dict) -> None:
+    def update_text_size(self) -> None:
         """Assign new values to text size attributes in '__init__()', then resize and render text for screen elements in
         settings screen.
         To be called after new window size is selected and 'gui_elements' is re-initialized. Screen element instances
@@ -186,9 +177,9 @@ class SettingsGUI:
         text_medium_old: int = self.text_medium
 
         # Assign updated values to text size attributes.
-        self.title_size: int = gui_elements["title_size"]
-        self.text_large: int = gui_elements["text_large"]
-        self.text_medium: int = gui_elements["text_medium"]
+        self.title_size: int = uisd.gui_elements["title_size"]
+        self.text_large: int = uisd.gui_elements["text_large"]
+        self.text_medium: int = uisd.gui_elements["text_medium"]
 
         # Check GUI objects size attribute and assign corresponding, updated size.
         for item in self.settings_gui_objects:

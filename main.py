@@ -1,12 +1,13 @@
 import pygame
 import core.state_manager as sm
 from core.settings import settings
+from gui.shared_data import ui_shared_data as uisd
 from gui.gui_elements import initialize_screen_elements
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
 It initializes the program and starts the main functionality."""
 
 
-def initialize_character_creator() -> tuple[pygame.Surface, pygame.time.Clock, dict]:
+def initialize_character_creator() -> tuple[pygame.Surface, pygame.time.Clock]:
     """Initialize Pygame, settings, screen, and GUI elements."""
     # Initialize pygame.
     pygame.init()
@@ -16,18 +17,18 @@ def initialize_character_creator() -> tuple[pygame.Surface, pygame.time.Clock, d
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode(settings.screen_size, pygame.DOUBLEBUF | pygame.HWSURFACE)
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
+    # Initialize dict with GUI elements within module 'gui/shared_data.py'. See class 'UISharedData' and package 'gui'
+    # for details.
+    uisd.gui_elements = initialize_screen_elements(screen)
 
-    # Initialize dict with GUI elements. See package 'gui' for details.
-    gui_elements: dict = initialize_screen_elements(screen, settings)
-
-    return screen, clock, gui_elements
+    return screen, clock
 
 
 def run_character_creator() -> None:
     """Start the character creator."""
 
     # Initialize Pygame, screen, clock and GUI elements.
-    screen, clock, gui_elements = initialize_character_creator()
+    screen, clock = initialize_character_creator()
 
     # Set initial state.
     state: str = "title_screen"
@@ -45,20 +46,20 @@ def run_character_creator() -> None:
         mouse_pos = pygame.mouse.get_pos()
 
         # Blit background image to screen.
-        screen.blit(gui_elements["background_image"], (0, 0))
+        screen.blit(uisd.gui_elements["background_image"], (0, 0))
 
         # Main states.
         if state in main_states:
-            state = sm.main_state_manager(screen, state, gui_elements, mouse_pos)
+            state = sm.main_state_manager(screen, state, mouse_pos)
         # Settings state.
         elif state == "settings_screen":
-            gui_elements, state = sm.settings_screen(screen, state, gui_elements, mouse_pos)
+            state = sm.settings_screen(screen, state, mouse_pos)
 
         # Character creation states.
         elif state in custom_character_states:
-            state = sm.custom_character(screen, state, gui_elements, mouse_pos)
+            state = sm.custom_character(screen, state, mouse_pos)
         elif state in random_character_states:
-            state = sm.random_character(screen, state, gui_elements, mouse_pos)
+            state = sm.random_character(screen, state, mouse_pos)
 
         pygame.display.flip()
         clock.tick(settings.frame_rate)

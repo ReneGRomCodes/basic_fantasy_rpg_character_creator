@@ -2,6 +2,7 @@ import gui.screen_objects as so
 from gui.screen_objects import TextField
 from gui.ui_helpers import draw_screen_title
 from core.settings import settings
+from gui.shared_data import ui_shared_data as uisd
 """
 Class for credits screen.
 """
@@ -10,16 +11,15 @@ Class for credits screen.
 class Credits:
     """Class to store, manage and show credits screen for pygame."""
 
-    def __init__(self, screen, gui_elements: dict) -> None:
+    def __init__(self, screen) -> None:
         """Initialize credits screen elements.
         ARGS:
             screen: PyGame window.
-            gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         """
         # Assign text sizes from 'gui_elements' to attributes.
-        title_size: int = gui_elements["title_size"]
-        text_large: int = gui_elements["text_large"]
-        text_medium: int = gui_elements["text_medium"]
+        title_size: int = uisd.gui_elements["title_size"]
+        text_large: int = uisd.gui_elements["text_large"]
+        text_medium: int = uisd.gui_elements["text_medium"]
         # Positioning variables.
         self.credits_pos_y_start: int = screen.get_rect().bottom + 5
         self.title_pos_x: int = screen.get_rect().centerx + screen.get_rect().width / 12
@@ -51,14 +51,13 @@ class Credits:
         # top of the screen.
         self.fading_speed: int = int(7 * (30 / settings.frame_rate))
 
-    def show_credits(self, screen, gui_elements) -> None:
+    def show_credits(self, screen) -> None:
         """Position and draw credits on screen.
         ARGS:
             screen: PyGame window.
-            gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         """
 
-        draw_screen_title(screen, self.credits_title, gui_elements)
+        draw_screen_title(screen, self.credits_title, uisd.gui_elements)
 
         # Iterate through 'credits_elements' array, set positioning and spacing, and draw objects on screen.
         for category in self.credits_elements:

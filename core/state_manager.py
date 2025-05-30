@@ -4,106 +4,103 @@ import gui.gui as gui
 import core.rules as rls
 import core.event_handlers as eh
 from core.shared_data import shared_data as sd
+from gui.shared_data import ui_shared_data as uisd
 from gui.settings_gui import SettingsGUI
 from gui.cs_model import CharacterSheet
 import random
 """Main functions/state managers used in 'main.py'."""
 
 
-def main_state_manager(screen, state: str, gui_elements: dict, mouse_pos) -> str:
+def main_state_manager(screen, state: str, mouse_pos) -> str:
     """State manager for main states, i.e. 'title_screen', 'main_menu', etc.
     ARGS:
         screen: PyGame window.
         state: program state.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
         state
     """
     # Call main event handler and get program state.
-    state = eh.main_events(screen, state, gui_elements, mouse_pos)
+    state = eh.main_events(screen, state, mouse_pos)
 
     if state == "title_screen":
         # Display title screen.
-        gui.show_title_screen(screen, gui_elements)
+        gui.show_title_screen(screen, uisd.gui_elements)
 
     elif state == "pre_main_menu":
         # Create/re-initialize instance of class 'Character' and reset shared data to start with a clean sheet when
         # accessing main menu or returning to it from a different screen.
         sd.character = Character()
-        sd.shared_data_janitor(gui_elements)
+        sd.shared_data_janitor(uisd.gui_elements)
 
         state = "main_menu"
 
     elif state == "main_menu":
         # Display main menu screen.
-        gui.show_main_menu(screen, gui_elements, mouse_pos)
+        gui.show_main_menu(screen, uisd.gui_elements, mouse_pos)
 
     elif state in {"init_credits", "credits"}:
         # Use of 'secondary' state manager for credits screen.
-        state = credits_state_manager(screen, state, gui_elements)
+        state = credits_state_manager(screen, state)
 
     elif state == "character_menu":
         # Display character menu screen
-        gui.show_character_menu(screen, gui_elements, mouse_pos)
+        gui.show_character_menu(screen, uisd.gui_elements, mouse_pos)
 
     elif state in {"init_character_sheet", "character_sheet"}:
         # Use of 'secondary' state manager for character sheet screen.
-        state = character_sheet_state_manager(screen, state, gui_elements, mouse_pos)
+        state = character_sheet_state_manager(screen, state, mouse_pos)
 
     return state
 
 
-def credits_state_manager(screen, state: str, gui_elements: dict) -> str:
+def credits_state_manager(screen, state: str) -> str:
     """'Secondary' state manager for use in 'main_state_manager' to handle credits screen object.
     ARGS:
         screen: PyGame window.
         state: program state.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
     RETURNS:
         state
     """
     if state == "init_credits":
         # Initialize 'Credits()' object every time before credits screen is displayed to reset starting positions of text
         # elements and to account for changes to 'gui_elements' if window size has been changed in settings screen.
-        sd.credits_screen = Credits(screen, gui_elements)
+        sd.credits_screen = Credits(screen)
         state = "credits"
     # Display credits screen.
     elif state == "credits":
-        sd.credits_screen.show_credits(screen, gui_elements)
+        sd.credits_screen.show_credits(screen)
 
     return state
 
 
-def settings_screen(screen, state: str, gui_elements: dict, mouse_pos) -> tuple[dict, str]:
+def settings_screen(screen, state: str, mouse_pos) -> str:
     """State manager for settings screen state 'settings_screen'.
     ARGS:
         screen: PyGame window.
         state: program state.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
-        gui_elements, state
+        state
     """
     # Initialize 'SettingsGUI() object the first time the settings screen is accessed.
     if not sd.settings_gui:
-        sd.settings_gui = SettingsGUI(screen, gui_elements)
+        sd.settings_gui = SettingsGUI(screen)
 
     # Call event handler and get program state.
-    state = eh.main_events(screen, state, gui_elements, mouse_pos)
+    state = eh.main_events(screen, state, mouse_pos)
 
     # Display settings screen.
-    gui_elements = sd.settings_gui.show_settings(screen, gui_elements, mouse_pos)
+    sd.settings_gui.show_settings(screen, mouse_pos)
 
-    return gui_elements, state
+    return state
 
 
-def custom_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
+def custom_character(screen, state: str, mouse_pos) -> str:
     """State manager for custom character creation based on user input.
     ARGS:
         screen: PyGame window.
         state: program state.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
         state
@@ -119,25 +116,25 @@ def custom_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
 
     elif state == "show_abilities":
         # Reset any shared data in case user returns to ability score screen from race/class selection screen.
-        sd.shared_data_janitor(gui_elements)
+        sd.shared_data_janitor(uisd.gui_elements)
         # Display ability score screen.
-        gui.show_ability_scores_screen(screen, gui_elements, mouse_pos)
-        state = eh.custom_character_events(screen, state, gui_elements, mouse_pos)
+        gui.show_ability_scores_screen(screen, uisd.gui_elements, mouse_pos)
+        state = eh.custom_character_events(screen, state, mouse_pos)
 
     elif state == "race_class_selection":
         # Display race/class selection screen.
-        gui.show_race_class_selection_screen(screen, gui_elements, mouse_pos)
-        state = eh.custom_character_events(screen, state, gui_elements, mouse_pos, sd.selected_race, sd.selected_class)
+        gui.show_race_class_selection_screen(screen, uisd.gui_elements, mouse_pos)
+        state = eh.custom_character_events(screen, state,  mouse_pos, sd.selected_race, sd.selected_class)
 
     elif state == "spell_selection":
         # Display spell selection screen for Magic-Users.
-        gui.show_spell_selection_screen(screen, gui_elements, mouse_pos)
-        state = eh.custom_character_events(screen, state, gui_elements, mouse_pos, sd.selected_spell)
+        gui.show_spell_selection_screen(screen, uisd.gui_elements, mouse_pos)
+        state = eh.custom_character_events(screen, state, mouse_pos, sd.selected_spell)
 
     elif state == "name_character":
         # Display character naming screen.
-        gui.show_naming_screen(screen, gui_elements, mouse_pos)
-        state = eh.naming_character_events(screen, state, gui_elements, mouse_pos)
+        gui.show_naming_screen(screen, uisd.gui_elements, mouse_pos)
+        state = eh.naming_character_events(screen, state, mouse_pos)
 
         # Unselect 'shared_data' money flags, set variables to 'False' if user returns to naming screen from starting
         # money screen.
@@ -146,29 +143,28 @@ def custom_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
 
     elif state == "select_starting_money":
         # Base state for starting money screen.
-        gui.show_starting_money_screen(screen, gui_elements, mouse_pos)
-        state = eh.custom_character_events(screen, state, gui_elements, mouse_pos, sd.random_money_flag,
-                                           sd.custom_money_flag, sd.starting_money)
+        gui.show_starting_money_screen(screen, uisd.gui_elements, mouse_pos)
+        state = eh.custom_character_events(screen, state, mouse_pos, sd.random_money_flag, sd.custom_money_flag,
+                                           sd.starting_money)
 
     elif state == "custom_input_money":
         # Special state for starting money screen to call 'custom_starting_money_events' for user input.
-        gui.show_starting_money_screen(screen, gui_elements, mouse_pos)
-        state = eh.custom_starting_money_events(screen, state, gui_elements, mouse_pos)
+        gui.show_starting_money_screen(screen, uisd.gui_elements, mouse_pos)
+        state = eh.custom_starting_money_events(screen, state, mouse_pos)
 
     elif state == "creation_complete":
         # Display message screen stating that basic character creation is completed.
-        gui.show_character_complete_screen(screen, gui_elements, mouse_pos)
-        state = eh.custom_character_events(screen, state, gui_elements, mouse_pos)
+        gui.show_character_complete_screen(screen, uisd.gui_elements, mouse_pos)
+        state = eh.custom_character_events(screen, state, mouse_pos)
 
     return state
 
 
-def random_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
+def random_character(screen, state: str, mouse_pos) -> str:
     """State manager for random character creation.
     ARGS:
         screen: PyGame window.
         state: program state.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
         state
@@ -190,7 +186,7 @@ def random_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
                 sd.character.set_character_values()
                 # Chose random starter spell for magic using characters.
                 if sd.character.class_name in sd.magic_classes:
-                    sd.character.spells.append(random.choice(gui_elements["spell_fields"][1:]).text)
+                    sd.character.spells.append(random.choice(uisd.gui_elements["spell_fields"][1:]).text)
                 state = "set_random_money"
 
             else:
@@ -204,13 +200,13 @@ def random_character(screen, state: str, gui_elements: dict, mouse_pos) -> str:
     elif state == "name_random_character":
         # Display character naming screen.
         # 'creation_complete' state that follows afterward is handled in 'custom_character()' to avoid duplicate code.
-        gui.show_naming_screen(screen, gui_elements, mouse_pos)
-        state = eh.naming_character_events(screen, state, gui_elements, mouse_pos)
+        gui.show_naming_screen(screen, uisd.gui_elements, mouse_pos)
+        state = eh.naming_character_events(screen, state, mouse_pos)
 
     return state
 
 
-def character_sheet_state_manager(screen, state: str, gui_elements: dict, mouse_pos) -> str:
+def character_sheet_state_manager(screen, state: str, mouse_pos) -> str:
     """'Secondary' state manager for use in 'main_state_manager' to create and return instance of class 'CharacterSheet'
     with screen elements for the character sheet, call position methods and set the state to 'character_sheet'.
     This function ensures that 'cs_sheet' is always created before the character sheet screen is displayed, reinitializing
@@ -219,14 +215,13 @@ def character_sheet_state_manager(screen, state: str, gui_elements: dict, mouse_
     ARGS:
         screen: PyGame window.
         state: program state.
-        gui_elements: dict of gui elements as created in module 'gui_elements.py'.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     RETURNS:
         state
     """
     if state == "init_character_sheet":
         # Create instance of class 'CharacterSheet'.
-        sd.cs_sheet = CharacterSheet(screen, gui_elements)
+        sd.cs_sheet = CharacterSheet(screen)
         # Set positions for character sheet elements on screen.
         sd.cs_sheet.position_cs_elements()
 
