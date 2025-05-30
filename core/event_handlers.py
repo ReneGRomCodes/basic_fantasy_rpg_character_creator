@@ -149,9 +149,9 @@ def custom_character_events(screen, state: str, mouse_pos, context1: any=None, c
                     state = "race_class_selection"
 
                 if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                    # Append spell to list 'character.spells' if one is selected and confirmed.
+                    # Add selected spell to character.
                     if context1:
-                        sd.character.spells.append(context1.text)
+                        sd.character.add_starting_spell(context1)
                     state = "name_character"
 
         elif state == "select_starting_money":
@@ -306,7 +306,6 @@ def handle_screen_switch_reset(screen, event, mouse_pos) -> None:
     # Check for any 'KEYUP' or 'MOUSEBUTTONUP' event. While this leads to the block being executed every time an event
     # occurs, it trades this redundancy for overall maintainability.
     if (event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP) and screen.get_rect().collidepoint(mouse_pos):
-        from gui.shared_data import ui_shared_data
-        ui_shared_data.reset_position_flag()
+        uisd.reset_position_flag()
         uisd.gui_elements["continue_button"].fade_alpha = 0
         uisd.gui_elements["back_button"].fade_alpha = 0

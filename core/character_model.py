@@ -87,11 +87,16 @@ class Character:
             self.class_specials = ("Turn the Undead", )
             self.class_saving_throws = (11, 12, 14, 16, 15)
             self.spells = ["No Spells"]
+            self.inventory = []
+            self.weight_carried = 0
         elif class_selection == "Fighter":
             self.class_hit_die = 8
             self.next_level_xp = 2000
             self.class_specials = ()
             self.class_saving_throws = (12, 13, 14, 15, 17)
+            self.spells = []
+            self.inventory = []
+            self.weight_carried = 0
         elif class_selection == "Magic-User":
             self.class_hit_die = 4
             self.next_level_xp = 2500
@@ -105,6 +110,9 @@ class Character:
             self.next_level_xp = 1250
             self.class_specials = ("Sneak Attack", "Thief Abilities")
             self.class_saving_throws = (13, 14, 13, 16, 15)
+            self.spells = []
+            self.inventory = []
+            self.weight_carried = 0
         # Elf-specific combination classes.
         elif class_selection == "Fighter/Magic-User":
             self.class_hit_die = 6
@@ -112,7 +120,7 @@ class Character:
             self.class_specials = ()
             self.class_saving_throws = (13, 14, 14, 16, 17)
             self.spells = ["Read Magic"]
-            self.inventory.append(item_inst.spellbook)
+            self.inventory = [item_inst.spellbook]
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Magic-User/Thief":
             self.class_hit_die = 4
@@ -120,14 +128,11 @@ class Character:
             self.class_specials = ("Sneak Attack", "Thief Abilities")
             self.class_saving_throws = (13, 14, 13, 16, 15)
             self.spells = ["Read Magic"]
-            self.inventory.append(item_inst.spellbook)
+            self.inventory = [item_inst.spellbook]
             self.weight_carried += item_inst.spellbook.weight
 
     def reset_character(self) -> None:
-        """Reset values that may not be overwritten when creating a new character."""
-        self.spells = []
-        self.inventory = []
-        self.weight_carried = 0
+        """Reset values that may not be overwritten otherwise when creating a new character."""
         self.specials = ()
 
     def set_name(self, char_name: str) -> None:
@@ -257,6 +262,15 @@ class Character:
             # Movement rate for armor heavier than leather armor.
             else:
                 self.movement: int = 10
+
+    def add_starting_spell(self, spell):
+        """Append spell to list 'character.spells' if one is selected on spell selection screen and ensure that
+        'character.spells' does not exceed two spells (default spell + selected spell) at the start.
+        Method is called from event handler in state 'spell_selection'."""
+        if len(self.spells) == 1:
+            self.spells.append(spell.text)
+        else:
+            self.spells[1] = spell.text
 
     # Inventory and trade related methods.
     def buy_item(self, item: object, amount: int) -> bool:
