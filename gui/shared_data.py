@@ -22,6 +22,8 @@ class UISharedData:
         # Create int variable 'dice_roll_start_time' to be used as timer for dice roll effect on screen (e.g. starting
         # money screen).
         self.dice_roll_start_time: int = 0
+        # Bool to check if dice roll is complete and active continue button should be displayed.
+        self.dice_roll_complete: bool = False
 
     def reset_position_flag(self) -> None:
         """Reset position flag to 'False'. Used in event handler."""

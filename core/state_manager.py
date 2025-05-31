@@ -137,9 +137,9 @@ def custom_character(screen, state: str, mouse_pos) -> str:
         state = eh.naming_character_events(screen, state, mouse_pos)
 
         # Unselect 'shared_data' money flags, set variables to 'False' if user returns to naming screen from starting
-        # money screen.
-        if sd.random_money_flag or sd.custom_money_flag:
-            sd.random_money_flag, sd.custom_money_flag = False, False
+        # money screen. Also ensures that flags are 'False' before switching to starting money screen.
+        if sd.random_money_flag or sd.custom_money_flag or uisd.dice_roll_complete:
+            sd.random_money_flag, sd.custom_money_flag, uisd.dice_roll_complete = False, False, False
 
     elif state == "select_starting_money":
         # Base state for starting money screen.

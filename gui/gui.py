@@ -230,7 +230,7 @@ def show_starting_money_screen(screen, mouse_pos) -> None:
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)
     # Show continue button only if a money option has been selected otherwise show inactive continue button.
-    ui.draw_continue_button_inactive(sd.random_money_flag, sd.custom_money_flag, mouse_pos)
+    ui.draw_continue_button_inactive(uisd.dice_roll_complete, sd.custom_money_flag, mouse_pos)
 
 
 def show_character_complete_screen(screen, mouse_pos) -> None:

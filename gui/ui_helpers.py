@@ -572,6 +572,7 @@ def draw_chosen_money_option(screen) -> None:
             starting_money_dice_roll(screen, random_money_field, text_large, rolling=False)
             # Reset global dice roll timer. Not strictly necessary, but better safe than sorry.
             uisd.dice_roll_start_time = 0
+            uisd.dice_roll_complete = True
     elif sd.custom_money_flag:
         money_input_prompt.draw_text()
         money_amount_field.draw_input_field()

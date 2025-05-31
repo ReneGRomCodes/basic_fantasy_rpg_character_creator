@@ -9,4 +9,3 @@ this point it has become mostly a dumping ground for 'todos'."""
 
 # PRIORITIES:
 # TODO add sections for languages and thief skills to character sheet.
-# TODO money dice roll allows for click on continue before final value is created.
