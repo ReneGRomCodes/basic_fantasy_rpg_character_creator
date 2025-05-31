@@ -124,12 +124,12 @@ def custom_character(screen, state: str, mouse_pos) -> str:
     elif state == "race_class_selection":
         # Display race/class selection screen.
         gui.show_race_class_selection_screen(screen, mouse_pos)
-        state = eh.custom_character_events(screen, state,  mouse_pos, sd.selected_race, sd.selected_class)
+        state = eh.custom_character_events(screen, state,  mouse_pos)
 
     elif state == "spell_selection":
         # Display spell selection screen for Magic-Users.
         gui.show_spell_selection_screen(screen, mouse_pos)
-        state = eh.custom_character_events(screen, state, mouse_pos, sd.selected_spell)
+        state = eh.custom_character_events(screen, state, mouse_pos)
 
     elif state == "name_character":
         # Display character naming screen.
@@ -144,8 +144,7 @@ def custom_character(screen, state: str, mouse_pos) -> str:
     elif state == "select_starting_money":
         # Base state for starting money screen.
         gui.show_starting_money_screen(screen, mouse_pos)
-        state = eh.custom_character_events(screen, state, mouse_pos, sd.random_money_flag, sd.custom_money_flag,
-                                           sd.starting_money)
+        state = eh.custom_character_events(screen, state, mouse_pos)
 
     elif state == "custom_input_money":
         # Special state for starting money screen to call 'custom_starting_money_events' for user input.

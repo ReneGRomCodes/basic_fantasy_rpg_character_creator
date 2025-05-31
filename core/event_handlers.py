@@ -75,18 +75,12 @@ def main_events(screen, state: str, mouse_pos) -> str:
     return state
 
 
-def custom_character_events(screen, state: str, mouse_pos, context1: any=None, context2: any=None, context3: any=None)\
-        -> str:
+def custom_character_events(screen, state: str, mouse_pos) -> str:
     """Check and handle events in function 'custom_character()' in 'state_manager.py' and return 'state'.
     ARGS:
         screen: PyGame window.
         state: program state.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-            NOTE: arg must always be passed in function 'custom_character()' in 'state_manager.py' from state
-            'race_class_selection' onwards to keep list stored and not have it reset to 'None'.
-        context1: context specific argument whose role depends on current state.
-        context2: context specific argument whose role depends on current state.
-        context3: context specific argument whose role depends on current state.
     RETURNS:
         state
     """
@@ -125,12 +119,12 @@ def custom_character_events(screen, state: str, mouse_pos, context1: any=None, c
                 if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     state = "show_abilities"
 
-                # Only continue if race AND class are selected (context1=selected_race, context2=selected_class).
-                if context1 and context2:
+                # Only continue if race AND class are selected.
+                if sd.selected_race and sd.selected_class:
                     if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                         # Set race, class and their specific values in character object after confirmation.
-                        sd.character.set_race(context1.text)
-                        sd.character.set_class(context2.text)
+                        sd.character.set_race(sd.selected_race.text)
+                        sd.character.set_class(sd.selected_class.text)
                         sd.character.set_character_values()
                         if sd.character.class_name in sd.magic_classes:
                             state = "spell_selection"
@@ -150,8 +144,8 @@ def custom_character_events(screen, state: str, mouse_pos, context1: any=None, c
 
                 if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                     # Add selected spell to character.
-                    if context1:
-                        sd.character.add_starting_spell(context1)
+                    if sd.selected_spell:
+                        sd.character.add_starting_spell(sd.selected_spell)
                     state = "name_character"
 
         elif state == "select_starting_money":
@@ -160,14 +154,14 @@ def custom_character_events(screen, state: str, mouse_pos, context1: any=None, c
                 if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     state = "name_character"
 
-                # Allow to continue to next state if 'context1' (random_money) is 'True' or switch state for user
-                # input if 'context2' (custom_money) is 'True'.
-                if context1:
+                # Allow to continue to next state if 'random_money' is 'True' or switch state for user input if
+                # 'custom_money' is 'True'.
+                if sd.random_money_flag:
                     if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                        # Set starting money to int 'context3' (starting_money) if 'random_money' is 'True'.
-                        sd.character.money = context3
+                        # Set starting money to 'sd.starting_money' if 'random_money' is 'True'.
+                        sd.character.money = sd.starting_money
                         state = "creation_complete"
-                if context2:
+                if sd.custom_money_flag:
                     # Special state to handle money input field functionality.
                     state = "custom_input_money"
 
