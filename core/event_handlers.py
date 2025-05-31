@@ -174,6 +174,9 @@ def custom_character_events(screen, state: str, mouse_pos, context1: any=None, c
         elif state == "creation_complete":
             if event.type == pygame.MOUSEBUTTONUP:
                 if uisd.gui_elements["show_character_sheet"].button_rect.collidepoint(mouse_pos):
+                    # Reset text input fields after character creation is finished to ensure next character creation
+                    # process starts with empty input fields.
+                    reset_input_fields()
                     state = "init_character_sheet"
 
     return state
@@ -309,3 +312,10 @@ def handle_screen_switch_reset(screen, event, mouse_pos) -> None:
         uisd.reset_position_flag()
         uisd.gui_elements["continue_button"].fade_alpha = 0
         uisd.gui_elements["back_button"].fade_alpha = 0
+
+
+def reset_input_fields() -> None:
+    """Reset text input fields to ensure each character creation process starts with empty input fields. Called in state
+    'creation_complete' before initializing character sheet screen."""
+    uisd.gui_elements["character_name_input"][0].manager.value = ""
+    uisd.gui_elements["money_amount_input"][0].manager.value = ""
