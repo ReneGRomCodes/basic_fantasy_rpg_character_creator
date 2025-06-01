@@ -117,13 +117,9 @@ Implement the new element in the relevant modules (e.g., gui.py).
 
 ## Work in Progress
 
-The final character sheet display is incomplete.
-
 Some obsolete or work-in-progress files remain in the main directory and will be removed in future updates.
 
 ## Future Plans
-
-Finalizing the character sheet screen for complete adaptability.
 
 Implementing an item shop UI based on existing logic.
 

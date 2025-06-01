@@ -302,6 +302,24 @@ def initialize_screen_elements(screen) -> dict:
         spell.interactive_rect.width = int(screen_width / 4)
 
 
+    # Language selection screen.
+    # Screen title.
+    language_selection_screen_title: TextField = so.TextField(screen, "- LANGUAGE SELECTION -", text_large)
+    # Selectable language fields.
+    language_01_field: InteractiveText = so.InteractiveText(screen, "Elvish", text_medium, select=False)
+    language_02_field: InteractiveText = so.InteractiveText(screen, "Dwarvish", text_medium, select=False)
+    language_03_field: InteractiveText = so.InteractiveText(screen, "Halfling", text_medium, select=False)
+    # Default language spoken by all races.
+    default_language_field: InteractiveText = so.InteractiveText(screen, "Common", text_medium)
+    default_language_field.selected = True
+    # Tuple of language fields for resizing in for-loop below.
+    lang_fields: tuple[InteractiveText, ...] = (default_language_field,
+                                                 language_01_field, language_02_field, language_03_field)
+    # Resizing language field rects.
+    for lang in lang_fields:
+        lang.interactive_rect.width = int(screen_width / 4)
+
+
     # Character naming screen.
     # NOTE: 'character_naming_prompt' has an empty string as text attribute. The final text will be assigned in function
     # 'ui_helpers.py/build_and_position_prompt()' for the naming screen to include character race/class. This allows the
@@ -387,6 +405,10 @@ def initialize_screen_elements(screen) -> dict:
         "spell_fields": (default_spell_field,
                          spell_01_field, spell_02_field, spell_03_field, spell_04_field, spell_05_field, spell_06_field,
                          spell_07_field, spell_08_field, spell_09_field, spell_10_field, spell_11_field, spell_12_field),
+        # Language selection screen.
+        "lang_title": language_selection_screen_title,
+        "lang_fields": (default_language_field,
+                        language_01_field, language_02_field, language_03_field),
         # Character naming screen.
         "naming_prompt": character_naming_prompt,
         "character_name_input": (character_name_input, character_name_field),

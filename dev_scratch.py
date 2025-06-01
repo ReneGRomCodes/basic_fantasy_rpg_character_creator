@@ -8,4 +8,5 @@ this point it has become mostly a dumping ground for 'todos'."""
 # Shit to keep in mind:
 
 # PRIORITIES:
-# TODO add sections for languages and thief skills to character sheet.
+# TODO add sections for languages and thief skills to character sheet
+# TODO add option to allow for minor customization of randomly generated characters

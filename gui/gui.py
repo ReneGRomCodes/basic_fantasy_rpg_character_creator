@@ -174,6 +174,10 @@ def show_spell_selection_screen(screen, mouse_pos) -> None:
     ui.show_info_panels(spells, mouse_pos)
 
 
+def show_language_selection_screen() -> None:
+    pass
+
+
 def show_naming_screen(screen, mouse_pos) -> None:
     """Display character naming screen and prompt user for input.
     ARGS:

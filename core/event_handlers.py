@@ -148,6 +148,9 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                         sd.character.add_starting_spell(sd.selected_spell)
                     state = "name_character"
 
+        elif state == "language_selection":
+            state = "name_character"
+
         elif state == "select_starting_money":
             # Base state for starting money screen.
             if event.type == pygame.MOUSEBUTTONUP:
