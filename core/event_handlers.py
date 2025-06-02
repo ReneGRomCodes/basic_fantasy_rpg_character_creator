@@ -5,6 +5,37 @@ from core.shared_data import shared_data as sd
 from gui.shared_data import ui_shared_data as uisd
 """Contains event handler functions."""
 
+"""
+                           SCREENS FLOW CHART:
+
+                             ABILITY SCORES
+                                    │
+                                    V
+                          RACE/CLASS SELECTION
+                                    │
+            ┌───────────────────────+────────────────────┐
+            │                       │                    │
+   if magic-using class             │                    │
+            │                       │                    │
+            V          if intelligence bonus > 0         │
+      SPELL SELECTION               │                    │
+            │                       │                    │
+            V                       │                    │
+    LANGUAGE SELECTION   <──────────┘                    │
+            │                                            │
+            V                                            │
+      NAMING SCREEN <────────────────────────────────────┘
+            │
+            V
+     MONEY SELECTION
+            │
+            V
+    CREATION COMPLETE
+            │
+            V
+     CHARACTER SHEET
+"""
+
 
 def main_events(screen, state: str, mouse_pos) -> str:
     """Check and handle main pygame events for 'run_character_creator()' in 'main.py'. Set and return 'state'.
