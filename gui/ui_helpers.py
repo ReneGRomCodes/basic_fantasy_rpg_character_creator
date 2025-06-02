@@ -486,7 +486,7 @@ def position_language_selection_screen_elements(screen, languages: tuple[Interac
     """
     # Position note at the screen bottom.
     screen_note.text_rect.centerx = screen.get_rect().centerx
-    screen_note.text_rect.centery = screen.get_rect().bottom - screen.get_rect().height / 10
+    screen_note.text_rect.centery = screen.get_rect().bottom - screen.get_rect().height / 12
 
     # Get dynamic y-positions for items in 'languages'.
     pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, languages)

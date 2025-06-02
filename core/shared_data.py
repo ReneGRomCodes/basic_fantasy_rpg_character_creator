@@ -22,6 +22,10 @@ class SharedData:
 
         # Class sets for category checks (example: spell selection screen shown only for magic using classes).
         self.spell_using_classes, self.magic_classes, self.no_armor_classes = get_class_categories()
+        # Flag to check if character can learn additional languages. Set in event handler in state "show_abilities"
+        # by calling function 'set_language_flag()' from 'rules.py' module after ability scores are set. Used to decide
+        # if language selection screen should be displayed.
+        self.language_flag: bool = False
 
         # All available races/classes in the game.
         # 'None' as starting value, dict is created in 'shared_data_janitor()' when method is called in from module

@@ -4,6 +4,22 @@ import random
 
 """General functions."""
 
+def dice_roll(n: int, m: int) -> int:
+    """Roll an n number of m-sided dice and return the result.
+    ARGS:
+        n: amount of dice to roll.
+        m: number of sides on the dice.
+    RETURNS:
+        result: int value for the dice roll.
+    """
+    result: int = 0
+
+    for i in range(n):
+        result += random.randint(1, m)
+
+    return result
+
+
 def get_class_categories() -> tuple[set[str], ...]:
     """Create and return class sets for category checks (example: spell selection screen shown only for magic using
     classes, etc.).
@@ -22,22 +38,6 @@ def get_class_categories() -> tuple[set[str], ...]:
     no_armor_classes: set[str] = {"Magic-User"}
 
     return spell_using_classes, magic_classes, no_armor_classes
-
-
-def dice_roll(n: int, m: int) -> int:
-    """Roll an n number of m-sided dice and return the result.
-    ARGS:
-        n: amount of dice to roll.
-        m: number of sides on the dice.
-    RETURNS:
-        result: int value for the dice roll.
-    """
-    result: int = 0
-
-    for i in range(n):
-        result += random.randint(1, m)
-
-    return result
 
 
 """Ability scores."""
@@ -200,6 +200,24 @@ def build_possible_characters_list(character: object) -> list[str]:
                 possible_characters.append(race_class)
 
     return possible_characters
+
+
+"""Language selection."""
+
+def set_language_flag(character) -> bool:
+    """Check minimum intelligence bonus required for character to learn additional languages and return 'True' if
+    requirements are met. Used in event handler to set 'language_flag' attribute in instance of class 'SharedData'.
+    RETURNS:
+        True: character meets minimum requirements for additional languages.
+        False: character does not meet minimum requirements for additional languages.
+    """
+    # Set minimum intelligence bonus.
+    minimum_int_bonus: int = 1
+
+    if character.abilities["int"][1] >= minimum_int_bonus:
+        return True
+    else:
+        return False
 
 
 """Starting Money functions."""

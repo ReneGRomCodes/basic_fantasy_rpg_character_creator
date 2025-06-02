@@ -105,6 +105,9 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                 if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                     # Set and return available races/classes and state after confirmation of ability scores.
                     sd.possible_characters = rls.build_possible_characters_list(sd.character)
+                    # Check intelligence bonus to set 'language_flag' attribute in instance 'shared_data' to decide if
+                    # switch to state 'language_selection' should happen at any point.
+                    sd.language_flag = rls.set_language_flag(sd.character)
                     state = "race_class_selection"
 
         elif state == "race_class_selection":
@@ -126,10 +129,13 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                         sd.character.set_race(sd.selected_race.text)
                         sd.character.set_class(sd.selected_class.text)
                         sd.character.set_character_values()
+                        # Check conditions to decide which screen to show.
                         if sd.character.class_name in sd.magic_classes:
                             state = "spell_selection"
-                        else:
+                        elif sd.language_flag:
                             state = "language_selection"
+                        else:
+                            state = "name_character"
 
         # Magic-User specific state for spell selection.
         elif state == "spell_selection":
@@ -146,7 +152,11 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                     # Add selected spell to character.
                     if sd.selected_spell:
                         sd.character.add_starting_spell(sd.selected_spell)
-                    state = "language_selection"
+                    # Check conditions to decide which screen to show.
+                    if sd.language_flag:
+                        state = "language_selection"
+                    else:
+                        state = "name_character"
 
         elif state == "language_selection":
             if event.type == pygame.MOUSEBUTTONUP:
@@ -222,7 +232,14 @@ def naming_character_events(screen, state: str, mouse_pos) -> str:
                 # Different state value is checked and set depending on whether custom or random character is created.
                 sd.character.reset_character()
                 if state == "name_character":
-                    state = "language_selection"
+                    # Check conditions to decide which screen to show.
+                    if sd.language_flag:
+                        state = "language_selection"
+                    elif sd.character.class_name in sd.magic_classes:
+                        state = "spell_selection"
+                    else:
+                        state = "race_class_selection"
+
                 elif state == "name_random_character":
                     # Call method to reset shared data before returning to previous menu.
                     # Not a pretty solution, but it resolves the freezing issue when coming back from the naming screen.
