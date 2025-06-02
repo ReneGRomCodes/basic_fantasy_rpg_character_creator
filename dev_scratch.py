@@ -11,3 +11,4 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO add sections for languages and thief skills to character sheet
 # TODO add reset option to language and spell selection screen
 # TODO add option to allow for minor customization of randomly generated characters
+# TODO fix bug that allows for inactive (but 'possible') races to be selected on race/class selection screen.

@@ -280,18 +280,18 @@ def initialize_screen_elements(screen) -> dict:
                                                               panel=(default_spell_info, ))
     default_spell_field.selected = True  # Default spell is always selected.
     # Selectable spell fields.
-    spell_01_field: InteractiveText = so.InteractiveText(screen, "Charm Person", text_medium, panel=(spell_01_info, ), select=False)
-    spell_02_field: InteractiveText = so.InteractiveText(screen, "Detect Magic", text_medium, panel=(spell_02_info, ), select=False)
-    spell_03_field: InteractiveText = so.InteractiveText(screen, "Floating Disc", text_medium, panel=(spell_03_info, ), select=False)
-    spell_04_field: InteractiveText = so.InteractiveText(screen, "Hold Portal", text_medium, panel=(spell_04_info, ), select=False)
-    spell_05_field: InteractiveText = so.InteractiveText(screen, "Light *", text_medium, panel=(spell_05_info, ), select=False)
-    spell_06_field: InteractiveText = so.InteractiveText(screen, "Magic Missile", text_medium, panel=(spell_06_info, ), select=False)
-    spell_07_field: InteractiveText = so.InteractiveText(screen, "Magic Mouth", text_medium, panel=(spell_07_info, ), select=False)
-    spell_08_field: InteractiveText = so.InteractiveText(screen, "Protection from Evil *", text_medium, panel=(spell_08_info, ), select=False)
-    spell_09_field: InteractiveText = so.InteractiveText(screen, "Read Languages", text_medium, panel=(spell_09_info, ), select=False)
-    spell_10_field: InteractiveText = so.InteractiveText(screen, "Shield", text_medium, panel=(spell_10_info, ), select=False)
-    spell_11_field: InteractiveText = so.InteractiveText(screen, "Sleep", text_medium, panel=(spell_11_info, ), select=False)
-    spell_12_field: InteractiveText = so.InteractiveText(screen, "Ventriloquism", text_medium, panel=(spell_12_info, ), select=False)
+    spell_01_field: InteractiveText = so.InteractiveText(screen, "Charm Person", text_medium, panel=(spell_01_info, ), select=True)
+    spell_02_field: InteractiveText = so.InteractiveText(screen, "Detect Magic", text_medium, panel=(spell_02_info, ), select=True)
+    spell_03_field: InteractiveText = so.InteractiveText(screen, "Floating Disc", text_medium, panel=(spell_03_info, ), select=True)
+    spell_04_field: InteractiveText = so.InteractiveText(screen, "Hold Portal", text_medium, panel=(spell_04_info, ), select=True)
+    spell_05_field: InteractiveText = so.InteractiveText(screen, "Light *", text_medium, panel=(spell_05_info, ), select=True)
+    spell_06_field: InteractiveText = so.InteractiveText(screen, "Magic Missile", text_medium, panel=(spell_06_info, ), select=True)
+    spell_07_field: InteractiveText = so.InteractiveText(screen, "Magic Mouth", text_medium, panel=(spell_07_info, ), select=True)
+    spell_08_field: InteractiveText = so.InteractiveText(screen, "Protection from Evil *", text_medium, panel=(spell_08_info, ), select=True)
+    spell_09_field: InteractiveText = so.InteractiveText(screen, "Read Languages", text_medium, panel=(spell_09_info, ), select=True)
+    spell_10_field: InteractiveText = so.InteractiveText(screen, "Shield", text_medium, panel=(spell_10_info, ), select=True)
+    spell_11_field: InteractiveText = so.InteractiveText(screen, "Sleep", text_medium, panel=(spell_11_info, ), select=True)
+    spell_12_field: InteractiveText = so.InteractiveText(screen, "Ventriloquism", text_medium, panel=(spell_12_info, ), select=True)
     # Tuple of spell fields for resizing in for-loop below.
     spell_fields: tuple[InteractiveText, ...] = (default_spell_field,
                                                  spell_01_field, spell_02_field, spell_03_field, spell_04_field,
@@ -307,9 +307,9 @@ def initialize_screen_elements(screen) -> dict:
     language_selection_screen_title: TextField = so.TextField(screen, "- LANGUAGES -", text_large)
     language_selection_note_01: TextField = so.TextField(screen, "All Characters begin knowing 'Common'", text_standard)
     # Selectable language fields.
-    language_01_field: InteractiveText = so.InteractiveText(screen, "Elvish", text_medium, select=False)
-    language_02_field: InteractiveText = so.InteractiveText(screen, "Dwarvish", text_medium, select=False)
-    language_03_field: InteractiveText = so.InteractiveText(screen, "Halfling", text_medium, select=False)
+    language_01_field: InteractiveText = so.InteractiveText(screen, "Elvish", text_medium, select=True)
+    language_02_field: InteractiveText = so.InteractiveText(screen, "Dwarvish", text_medium, select=True)
+    language_03_field: InteractiveText = so.InteractiveText(screen, "Halfling", text_medium, select=True)
     # Default language spoken by all races.
     default_language_field: InteractiveText = so.InteractiveText(screen, "Common", text_medium)
     default_language_field.selected = True

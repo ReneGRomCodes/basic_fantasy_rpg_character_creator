@@ -105,9 +105,9 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                 if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                     # Set and return available races/classes and state after confirmation of ability scores.
                     sd.possible_characters = rls.build_possible_characters_list(sd.character)
-                    # Check intelligence bonus to set 'language_flag' attribute in instance 'shared_data' to decide if
-                    # switch to state 'language_selection' should happen at any point.
-                    sd.language_flag = rls.set_language_flag(sd.character)
+                    # Check intelligence bonus to set 'language_flag' attribute in instance of 'shared_data' (GUI) to
+                    # decide if switch to state 'language_selection' should happen at any point.
+                    uisd.language_flag = rls.set_language_flag(sd.character)
                     state = "race_class_selection"
 
         elif state == "race_class_selection":
@@ -132,7 +132,7 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                         # Check conditions to decide which screen to show.
                         if sd.character.class_name in sd.magic_classes:
                             state = "spell_selection"
-                        elif sd.language_flag:
+                        elif uisd.language_flag:
                             state = "language_selection"
                         else:
                             state = "name_character"
@@ -153,13 +153,18 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                     if sd.selected_spell:
                         sd.character.add_starting_spell(sd.selected_spell)
                     # Check conditions to decide which screen to show.
-                    if sd.language_flag:
+                    if uisd.language_flag:
                         state = "language_selection"
                     else:
                         state = "name_character"
 
         elif state == "language_selection":
             if event.type == pygame.MOUSEBUTTONUP:
+                # Language selection logic.
+                for option in uisd.gui_elements["lang_fields"]:
+                    if option.interactive_rect.collidepoint(mouse_pos):
+                        sd.select_languages(uisd.gui_elements["lang_fields"], mouse_pos)
+
                 if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     if sd.character.class_name in sd.magic_classes:
                         state = "spell_selection"
@@ -233,7 +238,7 @@ def naming_character_events(screen, state: str, mouse_pos) -> str:
                 sd.character.reset_character()
                 if state == "name_character":
                     # Check conditions to decide which screen to show.
-                    if sd.language_flag:
+                    if uisd.language_flag:
                         state = "language_selection"
                     elif sd.character.class_name in sd.magic_classes:
                         state = "spell_selection"

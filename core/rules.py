@@ -204,7 +204,7 @@ def build_possible_characters_list(character: object) -> list[str]:
 
 """Language selection."""
 
-def set_language_flag(character) -> bool:
+def set_language_flag(character: object) -> bool:
     """Check minimum intelligence bonus required for character to learn additional languages and return 'True' if
     requirements are met. Used in event handler to set 'language_flag' attribute in instance of class 'SharedData'.
     RETURNS:

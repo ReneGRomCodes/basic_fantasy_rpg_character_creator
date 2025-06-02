@@ -22,10 +22,6 @@ class SharedData:
 
         # Class sets for category checks (example: spell selection screen shown only for magic using classes).
         self.spell_using_classes, self.magic_classes, self.no_armor_classes = get_class_categories()
-        # Flag to check if character can learn additional languages. Set in event handler in state "show_abilities"
-        # by calling function 'set_language_flag()' from 'rules.py' module after ability scores are set. Used to decide
-        # if language selection screen should be displayed.
-        self.language_flag: bool = False
 
         # All available races/classes in the game.
         # 'None' as starting value, dict is created in 'shared_data_janitor()' when method is called in from module
@@ -44,6 +40,9 @@ class SharedData:
         # 'InteractiveText' instances representing selected spell for spell casters.
         # 'None' as default values before actual values are assigned.
         self.selected_spell: InteractiveText | None = None
+
+        #
+        self.selected_languages: InteractiveText | None = None
 
         # Characters starting money.
         self.starting_money: int = 0
@@ -120,6 +119,32 @@ class SharedData:
                     spell.selected = False  # Set the selected attribute of the previously selected spell to False.
             # Select the new spell.
             self.selected_spell.selected = True
+
+    def select_languages(self, languages: tuple[InteractiveText, ...], mouse_pos) -> None:
+        """Selection logic for character's languages. Set class attribute 'selected_languages' to interactive text
+        instance.
+        ARGS:
+            languages: tuple with instances of interactive text fields for language selection.
+                NOTE: item at index '0' is not processed here as it represents the default spell for all magic-users.
+            mouse_pos: position of mouse on screen.
+        """
+        # Create new tuple that excludes the first element. That element represents the default language 'Common', known
+        # by all characters and cannot be selected/unselected.
+        selectable_languages: tuple[InteractiveText, ...] = languages[1:]
+
+        # Loop through each available language option to see if any were clicked.
+        for language in selectable_languages:
+            if language.interactive_rect.collidepoint(mouse_pos):
+                self.selected_languages = language
+                break
+
+        if self.selected_languages:
+            # Unselect the previous selected language, if any.
+            for language in selectable_languages:
+                if language.selected:
+                    language.selected = False  # Set the selected attribute of the previously selected language to False.
+            # Select the new language.
+            self.selected_languages.selected = True
 
     def shared_data_janitor(self) -> None:
         """Reset shared data not automatically overwritten elsewhere with default values in case of a switch to a

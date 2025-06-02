@@ -19,6 +19,11 @@ class UISharedData:
         # keep functions more maintainable.
         self.position_flag: bool = False
 
+        # Flag to check if character can learn additional languages. Set in event handler in state "show_abilities"
+        # by calling function 'set_language_flag()' from 'rules.py' module after ability scores are set. Used to decide
+        # if language selection screen should be displayed.
+        self.language_flag: bool = False
+
         # Create int variable 'dice_roll_start_time' to be used as timer for dice roll effect on screen (e.g. starting
         # money screen).
         self.dice_roll_start_time: int = 0
