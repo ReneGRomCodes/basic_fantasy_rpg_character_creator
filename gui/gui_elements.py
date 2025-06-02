@@ -154,7 +154,7 @@ def initialize_screen_elements(screen) -> dict:
 
     # Race/class selection screen.
     # Screen layout is designed to adapt and fit up to 16 races/classes.
-    race_class_selection_screen_title: TextField = so.TextField(screen, "- RACE / CLASS SELECTION -", text_large)
+    race_class_selection_screen_title: TextField = so.TextField(screen, "- RACE / CLASS -", text_large)
     reset_button: Button = so.Button(screen, "DESELECT ALL", text_medium)
     reset_button.button_rect.width = button_width
     # Race info Panels.
@@ -243,7 +243,7 @@ def initialize_screen_elements(screen) -> dict:
 
     # Spell selection screen.
     # Screen title.
-    spell_selection_screen_title: TextField = so.TextField(screen, "- SELECT   A   FIRST   LEVEL   SPELL -", text_large)
+    spell_selection_screen_title: TextField = so.TextField(screen, "- CHOOSE   A   FIRST   LEVEL   SPELL -", text_large)
     spell_selection_note_01: TextField = so.TextField(screen, "All Magic-Users begin knowing 'Read Magic'", text_standard)
     spell_selection_note_02: TextField = so.TextField(screen, "Spells with an '*' are reversible after casting", text_standard)
     # Initialize dictionary from 'descr' package for info panels.
@@ -304,7 +304,8 @@ def initialize_screen_elements(screen) -> dict:
 
     # Language selection screen.
     # Screen title.
-    language_selection_screen_title: TextField = so.TextField(screen, "- LANGUAGE SELECTION -", text_large)
+    language_selection_screen_title: TextField = so.TextField(screen, "- LANGUAGES -", text_large)
+    language_selection_note_01: TextField = so.TextField(screen, "All Characters begin knowing 'Common'", text_standard)
     # Selectable language fields.
     language_01_field: InteractiveText = so.InteractiveText(screen, "Elvish", text_medium, select=False)
     language_02_field: InteractiveText = so.InteractiveText(screen, "Dwarvish", text_medium, select=False)
@@ -407,6 +408,7 @@ def initialize_screen_elements(screen) -> dict:
                          spell_07_field, spell_08_field, spell_09_field, spell_10_field, spell_11_field, spell_12_field),
         # Language selection screen.
         "lang_title": language_selection_screen_title,
+        "lang_note": language_selection_note_01,
         "lang_fields": (default_language_field,
                         language_01_field, language_02_field, language_03_field),
         # Character naming screen.

@@ -154,7 +154,7 @@ def show_spell_selection_screen(screen, mouse_pos) -> None:
         ARGS:
             screen: PyGame window.
             mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-        """
+    """
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = uisd.gui_elements["spell_title"]
     screen_notes = uisd.gui_elements["spell_note"]
@@ -174,8 +174,26 @@ def show_spell_selection_screen(screen, mouse_pos) -> None:
     ui.show_info_panels(spells, mouse_pos)
 
 
-def show_language_selection_screen() -> None:
-    pass
+def show_language_selection_screen(screen, mouse_pos) -> None:
+    """Display language selection screen.
+            ARGS:
+                screen: PyGame window.
+                mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+        """
+    # Assign fields and buttons from 'gui_elements' to variables.
+    screen_title = uisd.gui_elements["lang_title"]
+    screen_note = uisd.gui_elements["lang_note"]
+    back_button = uisd.gui_elements["back_button"]
+    continue_button = uisd.gui_elements["continue_button"]
+    languages = uisd.gui_elements["lang_fields"]
+
+    # Draw screen title and buttons.
+    ui.draw_screen_title(screen, screen_title)
+    back_button.draw_button(mouse_pos)
+    continue_button.draw_button(mouse_pos)
+
+    # Position and draw language selection elements on screen.
+    ui.draw_language_selection_screen_elements(screen, languages, screen_note, mouse_pos)
 
 
 def show_naming_screen(screen, mouse_pos) -> None:

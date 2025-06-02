@@ -132,7 +132,7 @@ def custom_character(screen, state: str, mouse_pos) -> str:
         state = eh.custom_character_events(screen, state, mouse_pos)
 
     elif state == "language_selection":
-        gui.show_language_selection_screen()
+        gui.show_language_selection_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state, mouse_pos)
 
     elif state == "name_character":

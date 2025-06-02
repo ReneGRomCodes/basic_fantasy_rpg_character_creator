@@ -474,6 +474,54 @@ def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, 
         note.draw_text()
 
 
+"""Background functions for spell selection screen."""
+
+def position_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...], screen_note: TextField)\
+        -> None:
+    """Position elements for spell selection on screen.
+    ARGS:
+        screen: pygame window.
+        languages: tuple containing instances of class 'InteractiveText' representing available languages.
+        screen_note: 'TextField' instance showing notes for language selection.
+    """
+    # Position note at the screen bottom.
+    screen_note.text_rect.centerx = screen.get_rect().centerx
+    screen_note.text_rect.centery = screen.get_rect().bottom - screen.get_rect().height / 10
+
+    # Get dynamic y-positions for items in 'languages'.
+    pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, languages)
+
+    for index, language in enumerate(languages):
+        # Align element x-position at screen center.
+        language.interactive_rect.centerx = screen.get_rect().centerx
+        # Assign dynamic y-positions to elements.
+        if index == 0:
+            language.interactive_rect.centery = pos_y_start
+        else:
+            language.interactive_rect.centery = pos_y_start + pos_y_offset * index
+
+
+def draw_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...], screen_note: TextField,
+                                            mouse_pos) -> None:
+    """Call positioning method 'position_language_selection_screen_elements()' and draw item from tuple 'spells' on
+    screen.
+    ARGS:
+        screen: pygame window.
+        languages: tuple containing instances of class 'InteractiveText' representing available languages.
+        screen_note: 'TextField' instance showing notes for language selection.
+        mouse_pos: position of mouse on screen.
+    """
+    # Position elements on screen.
+    position_language_selection_screen_elements(screen, languages, screen_note)
+
+    # Draw elements from 'languages'.
+    for language in languages:
+        language.draw_interactive_text(mouse_pos)
+
+    # Draw further elements on screen.
+    screen_note.draw_text()
+
+
 """Background functions for character naming screen."""
 
 def build_and_position_prompt(screen, naming_prompt: TextField) -> None:

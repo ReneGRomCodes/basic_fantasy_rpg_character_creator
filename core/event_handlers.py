@@ -129,7 +129,7 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                         if sd.character.class_name in sd.magic_classes:
                             state = "spell_selection"
                         else:
-                            state = "name_character"
+                            state = "language_selection"
 
         # Magic-User specific state for spell selection.
         elif state == "spell_selection":
@@ -146,10 +146,18 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                     # Add selected spell to character.
                     if sd.selected_spell:
                         sd.character.add_starting_spell(sd.selected_spell)
-                    state = "name_character"
+                    state = "language_selection"
 
         elif state == "language_selection":
-            state = "name_character"
+            if event.type == pygame.MOUSEBUTTONUP:
+                if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                    if sd.character.class_name in sd.magic_classes:
+                        state = "spell_selection"
+                    else:
+                        state = "race_class_selection"
+
+                if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                    state = "name_character"
 
         elif state == "select_starting_money":
             # Base state for starting money screen.
@@ -214,10 +222,7 @@ def naming_character_events(screen, state: str, mouse_pos) -> str:
                 # Different state value is checked and set depending on whether custom or random character is created.
                 sd.character.reset_character()
                 if state == "name_character":
-                    if sd.character.class_name in sd.magic_classes:
-                        state = "spell_selection"
-                    else:
-                        state = "race_class_selection"
+                    state = "language_selection"
                 elif state == "name_random_character":
                     # Call method to reset shared data before returning to previous menu.
                     # Not a pretty solution, but it resolves the freezing issue when coming back from the naming screen.
