@@ -27,11 +27,9 @@ class SharedData:
         # 'None' as starting value, dict is created in 'shared_data_janitor()' when method is called in from module
         # 'state_manager.py' in state "pre_main_menu".
         self.rc_dict: dict[str, str] | None = None
-
         # Possible race-class combinations.
         # 'None' as starting value before actual value is assigned.
         self.possible_characters: list[str] | None = None
-
         # 'InteractiveText' instances representing selected race and class in custom creation, string in random creation.
         # 'None' as default values before actual values are assigned.
         self.selected_race: InteractiveText | str | None = None

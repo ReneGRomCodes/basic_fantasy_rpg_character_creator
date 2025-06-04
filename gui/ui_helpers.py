@@ -400,7 +400,15 @@ def draw_available_choices(screen, available_choices: dict[str, list[Interactive
     # Create list to check if inactive or selectable text field should be displayed.
     check_list: list[str] = [r.text for r in available_choices["races"]] + [c.text for c in available_choices["classes"]]
 
-    # Draw race selection.
+    # Position ALL selectable race/class text fields from 'gui_elements' at default position outside the screen to avoid
+    # persistent on-screen position of fields that become unavailable during selection (i.e. races that are incompatible
+    # with selected class or vice versa). Avoids said race/class fields still being selectable even when inactive.
+    for race in uisd.gui_elements["active_races"]:
+        race.interactive_rect.bottomright = screen.get_rect().topright
+    for cls in uisd.gui_elements["active_classes"]:
+        cls.interactive_rect.bottomright = screen.get_rect().topright
+
+    # Position/draw race selection.
     for race in inactive_races:
         # Check if race.text attribute is in 'check_list', proceed with active UI object if so, inactive object otherwise.
         if race.text in check_list:
@@ -412,7 +420,7 @@ def draw_available_choices(screen, available_choices: dict[str, list[Interactive
             race.text_rect.centerx, race.text_rect.centery = get_position_race_class_element(screen, race, inactive_races)
             race.draw_text()
 
-    # Draw class selection.
+    # Position/draw class selection.
     for cls in inactive_classes:
         # Check if class.text attribute is in 'check_list', proceed with active UI object if so, inactive object otherwise.
         if cls.text in check_list:

@@ -21,7 +21,7 @@ from gui.shared_data import ui_shared_data as uisd
       SPELL SELECTION               │                    │
             │                       │                    │
             V                       │                    │
-    LANGUAGE SELECTION   <──────────┘                    │
+    LANGUAGE SELECTION <────────────┘                    │
             │                                            │
             V                                            │
       NAMING SCREEN <────────────────────────────────────┘
