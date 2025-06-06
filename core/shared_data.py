@@ -1,5 +1,5 @@
 from gui.screen_objects import InteractiveText
-from core.rules import get_class_categories
+from core.rules import get_class_categories, get_race_class_defaults
 from gui.shared_data import ui_shared_data as uisd
 """
 Shared data class for character creation process.
@@ -22,6 +22,8 @@ class SharedData:
 
         # Class sets for category checks (example: spell selection screen shown only for magic using classes).
         self.spell_using_classes, self.magic_classes, self.no_armor_classes = get_class_categories()
+        # Dicts of default values for races and classes (spells, languages, etc.).
+        self.default_spells, self.default_languages = get_race_class_defaults()
 
         # All available races/classes in the game.
         # 'None' as starting value, dict is created in 'shared_data_janitor()' when method is called in from module
