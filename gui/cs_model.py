@@ -87,6 +87,10 @@ class CharacterSheet:
         health_points_char: TextField = so.TextField(screen, str(self.character.hp), self.text_standard)
         attack_bonus: TextField = so.TextField(screen, "Attack Bonus: +", self.text_standard)  # ANCHOR
         attack_bonus_char: TextField = so.TextField(screen, str(self.character.attack_bonus), self.text_standard)
+        # Language elements.
+        languages: TextField = so.TextField(screen, "Languages: ", self.text_standard)  # ANCHOR
+        lang_str: str = self.build_languages_string()
+        languages_char: TextField = so.TextField(screen, str(lang_str), self.text_standard)
         # Array of basic info and combat info groups for cleaner positioning/drawing in class methods.
         self.basic_info_groups: tuple[tuple[TextField, TextField], ...] = (
             (name, name_char),
@@ -100,6 +104,7 @@ class CharacterSheet:
             (armor_class, armor_class_char),
             (health_points, health_points_char),
             (attack_bonus, attack_bonus_char),
+            (languages, languages_char),
         )
 
         # Abilities info elements.
@@ -167,8 +172,8 @@ class CharacterSheet:
         # Spell elements for classes 'Magic-User', 'Cleric' or combination classes.
         self.spells: TextField = so.TextField(screen, "SPELLS", text_large)  # ANCHOR
         # 'spell' object has its text and position dynamically modified in method 'draw_format_dynamic_field()' to
-        # account for the fact that number of specials in 'character.spell' is unpredictable at the start of the
-        # character creation.
+        # account for the fact that number of items in 'character.spells' is unpredictable at the start of the character
+        # creation.
         self.spell: TextField = so.TextField(screen, str(self.character.spells), self.text_standard)
         # Create empty list to store y-position values for each state of 'self.spell'.
         self.spell_pos_y_list: list[int] = []
@@ -269,6 +274,7 @@ class CharacterSheet:
         arcls: TextField = armor_class
         hp: TextField = health_points
         atbns: TextField = attack_bonus
+        langs: TextField = languages
         ablts: TextField = self.abilities
         svgth: TextField = self.saving_throws
         spabl: TextField = self.special_abilities
@@ -286,9 +292,9 @@ class CharacterSheet:
             (False, name , False, False, level, False, False, False, arcls, False, atbns, False, hp   , False, mvmnt, False),
             (False, race , False, False, cls  , False, False, False, weapn, False, False, False, False, armor, False, False),
             (False, xp   , False, False, nxtxp, False, False, False, False, False, False, False, False, False, False, False),
+            (False, langs, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, ablts, False, False, False, svgth, False, False, False, False, spabl, False, False, False, False, False),
-            (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -679,6 +685,19 @@ class CharacterSheet:
             element.draw_text()
         # Draw armor elements.
         self.draw_grouped_fields(self.armor_group)
+
+    def build_languages_string(self) -> str:
+        """Build and return string 'languages_str' to be used as value for attribute 'self.lang_str'."""
+        languages_str: str = ""
+
+        for index, language in enumerate(self.character.languages, start=1):
+            # Format string with a ', ' for all elements except the last one.
+            if index != len(self.character.languages):
+                languages_str += f"{language}, "
+            else:
+                languages_str += language
+
+        return languages_str
 
     @staticmethod
     def position_first_group_element(index: int, group: tuple[TextField, ...],

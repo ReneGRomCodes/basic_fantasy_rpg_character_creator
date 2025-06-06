@@ -33,6 +33,7 @@ class Character:
         self.level: int = 1
         self.next_level_xp: int = 0
         self.saving_throws: dict[str, int] = {}
+        self.languages: list[str] = []
         self.spells: list[str] = []
         self.hp: int = 0
         self.movement: int | None = None

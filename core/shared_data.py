@@ -39,7 +39,8 @@ class SharedData:
         # 'None' as default values before actual values are assigned.
         self.selected_spell: InteractiveText | None = None
 
-        #
+        # 'InteractiveText' instances representing selected languages for character.
+        # 'None' as default values before actual values are assigned.
         self.selected_languages: InteractiveText | None = None
 
         # Characters starting money.
@@ -123,7 +124,7 @@ class SharedData:
         instance.
         ARGS:
             languages: tuple with instances of interactive text fields for language selection.
-                NOTE: item at index '0' is not processed here as it represents the default spell for all magic-users.
+                NOTE: item at index '0' is not processed here as it represents the default language for all races.
             mouse_pos: position of mouse on screen.
         """
         # Create new tuple that excludes the first element. That element represents the default language 'Common', known
