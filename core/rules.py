@@ -40,7 +40,7 @@ def get_class_categories() -> tuple[set[str], ...]:
     return spell_using_classes, magic_classes, no_armor_classes
 
 
-def get_race_class_defaults() -> tuple[dict[str, str], dict[str, tuple[str, ...]]]:
+def get_race_class_defaults() -> tuple[dict[str, str], dict[str, set[str]]]:
     """Create and return dicts with race and class specific default values.
     Function is called from within 'SharedData' class in module 'core/shared_data.py' from where the dicts are used
     throughout the program.
@@ -54,10 +54,10 @@ def get_race_class_defaults() -> tuple[dict[str, str], dict[str, tuple[str, ...]
     }
 
     default_languages = {
-        "human": ("Common", ),
-        "elf": ("Common", "Elvish"),
-        "dwarf": ("Common", "Dwarvish"),
-        "halfling": ("Common", "Halfling"),
+        "human": {"Common"},
+        "elf": {"Common", "Elvish"},
+        "dwarf": {"Common", "Dwarvish"},
+        "halfling": {"Common", "Halfling"},
     }
 
     return default_spells, default_languages

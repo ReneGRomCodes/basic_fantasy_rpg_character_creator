@@ -11,4 +11,4 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO add sections for thief skills to character sheet
 # TODO add reset option to language and spell selection screen
 # TODO add option to allow for minor customization of randomly generated characters
-# TODO rework the handling of default spells/languages via dict in 'rules.py'
+# TODO apply new selection logic used for languages to spells

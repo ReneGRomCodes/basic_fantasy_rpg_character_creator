@@ -305,17 +305,15 @@ def initialize_screen_elements(screen) -> dict:
     # Language selection screen.
     # Screen title.
     language_selection_screen_title: TextField = so.TextField(screen, "- LANGUAGES -", text_large)
-    language_selection_note_01: TextField = so.TextField(screen, "All Characters begin knowing 'Common'", text_standard)
+    language_selection_note_01_str = "All Characters begin knowing 'Common' and their race-specific language."
+    language_selection_note_01: TextField = so.TextField(screen, language_selection_note_01_str, text_standard)
     # Selectable language fields.
-    language_01_field: InteractiveText = so.InteractiveText(screen, "Elvish", text_medium, select=True)
-    language_02_field: InteractiveText = so.InteractiveText(screen, "Dwarvish", text_medium, select=True)
-    language_03_field: InteractiveText = so.InteractiveText(screen, "Halfling", text_medium, select=True)
-    # Default language spoken by all races.
-    default_language_field: InteractiveText = so.InteractiveText(screen, "Common", text_medium)
-    default_language_field.selected = True
+    language_01_field: InteractiveText = so.InteractiveText(screen, "Common", text_medium, select=True)
+    language_02_field: InteractiveText = so.InteractiveText(screen, "Elvish", text_medium, select=True)
+    language_03_field: InteractiveText = so.InteractiveText(screen, "Dwarvish", text_medium, select=True)
+    language_04_field: InteractiveText = so.InteractiveText(screen, "Halfling", text_medium, select=True)
     # Tuple of language fields for resizing in for-loop below.
-    lang_fields: tuple[InteractiveText, ...] = (default_language_field,
-                                                 language_01_field, language_02_field, language_03_field)
+    lang_fields: tuple[InteractiveText, ...] = (language_01_field, language_02_field, language_03_field, language_04_field)
     # Resizing language field rects.
     for lang in lang_fields:
         lang.interactive_rect.width = int(screen_width / 4)
@@ -409,8 +407,7 @@ def initialize_screen_elements(screen) -> dict:
         # Language selection screen.
         "lang_title": language_selection_screen_title,
         "lang_note": language_selection_note_01,
-        "lang_fields": (default_language_field,
-                        language_01_field, language_02_field, language_03_field),
+        "lang_fields": (language_01_field, language_02_field, language_03_field, language_04_field),
         # Character naming screen.
         "naming_prompt": character_naming_prompt,
         "character_name_input": (character_name_input, character_name_field),

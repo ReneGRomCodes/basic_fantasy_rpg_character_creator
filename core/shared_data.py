@@ -121,27 +121,34 @@ class SharedData:
             # Select the new spell.
             self.selected_spell.selected = True
 
+    def show_default_languages(self, languages: tuple[InteractiveText, ...]) -> None:
+        """Check the selected race for default languages and set 'selected' attribute of corresponding language
+        InteractiveText instances on screen to 'True'.
+        Method is called in every frame from state 'language_selection' in state manager to ensure default languages are
+        always displayed as selected.
+        ARGS:
+            languages: tuple with instances of interactive text fields for language selection.
+        """
+        for language in languages:
+            if language.text in self.default_languages[self.character.race_name.lower()]:
+                language.selected = True
+
     def select_languages(self, languages: tuple[InteractiveText, ...], mouse_pos) -> None:
         """Selection logic for character's languages. Set class attribute 'selected_languages' to interactive text
         instance.
         ARGS:
             languages: tuple with instances of interactive text fields for language selection.
-                NOTE: item at index '0' is not processed here as it represents the default language for all races.
             mouse_pos: position of mouse on screen.
         """
-        # Create new tuple that excludes the first element. That element represents the default language 'Common', known
-        # by all characters and cannot be selected/unselected.
-        selectable_languages: tuple[InteractiveText, ...] = languages[1:]
-
         # Loop through each available language option to see if any were clicked.
-        for language in selectable_languages:
+        for language in languages:
             if language.interactive_rect.collidepoint(mouse_pos):
                 self.selected_languages = language
                 break
 
         if self.selected_languages:
             # Unselect the previous selected language, if any.
-            for language in selectable_languages:
+            for language in languages:
                 if language.selected:
                     language.selected = False  # Set the selected attribute of the previously selected language to False.
             # Select the new language.

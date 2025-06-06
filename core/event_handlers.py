@@ -203,6 +203,8 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                         state = "race_class_selection"
 
                 if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                    # Set selected languages in character object after confirmation.
+                    sd.character.set_languages(uisd.gui_elements["lang_fields"])
                     state = "name_character"
 
         elif state == "select_starting_money":

@@ -1,5 +1,6 @@
 from core.rules import dice_roll, get_ability_score
 import item_instances as item_inst
+from gui.screen_objects import InteractiveText
 from item_model import Armor
 """Class for character."""
 
@@ -272,6 +273,19 @@ class Character:
             self.spells.append(spell.text)
         else:
             self.spells[1] = spell.text
+
+    def set_languages(self, language_list: tuple[InteractiveText, ...]):
+        """Append 'text' attributes from instances in 'language_list' to 'self.languages' if their 'selected' attribute
+        is set to 'True'.
+        ARGS:
+            language_list: tuple with instances of interactive text fields for language selection.
+        """
+        # Ensure that 'self.languages' list is empty before appending selected languages to it.
+        self.languages.clear()
+
+        for language in language_list:
+            if language.selected:
+                self.languages.append(language.text)
 
     # Inventory and trade related methods.
     def buy_item(self, item: object, amount: int) -> bool:
