@@ -179,7 +179,7 @@ def show_language_selection_screen(screen, mouse_pos) -> None:
             ARGS:
                 screen: PyGame window.
                 mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-        """
+    """
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = uisd.gui_elements["lang_title"]
     screen_note = uisd.gui_elements["lang_note"]

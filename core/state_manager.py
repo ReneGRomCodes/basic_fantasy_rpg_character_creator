@@ -128,6 +128,7 @@ def custom_character(screen, state: str, mouse_pos) -> str:
 
     elif state == "spell_selection":
         # Display spell selection screen for Magic-Users.
+        sd.show_default_spell(uisd.gui_elements["spell_fields"])
         gui.show_spell_selection_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state, mouse_pos)
 

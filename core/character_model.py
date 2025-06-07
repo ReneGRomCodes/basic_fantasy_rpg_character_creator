@@ -88,7 +88,6 @@ class Character:
             self.next_level_xp = 1500
             self.class_specials = ("Turn the Undead", )
             self.class_saving_throws = (11, 12, 14, 16, 15)
-            self.spells = ["No Spells"]
             self.inventory = []
             self.weight_carried = 0
         elif class_selection == "Fighter":
@@ -96,7 +95,6 @@ class Character:
             self.next_level_xp = 2000
             self.class_specials = ()
             self.class_saving_throws = (12, 13, 14, 15, 17)
-            self.spells = []
             self.inventory = []
             self.weight_carried = 0
         elif class_selection == "Magic-User":
@@ -104,7 +102,6 @@ class Character:
             self.next_level_xp = 2500
             self.class_specials = ()
             self.class_saving_throws = (13, 14, 13, 16, 15)
-            self.spells = ["Read Magic"]
             self.inventory.append(item_inst.spellbook)
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Thief":
@@ -112,7 +109,6 @@ class Character:
             self.next_level_xp = 1250
             self.class_specials = ("Sneak Attack", "Thief Abilities")
             self.class_saving_throws = (13, 14, 13, 16, 15)
-            self.spells = []
             self.inventory = []
             self.weight_carried = 0
         # Elf-specific combination classes.
@@ -121,7 +117,6 @@ class Character:
             self.next_level_xp = 4500
             self.class_specials = ()
             self.class_saving_throws = (13, 14, 14, 16, 17)
-            self.spells = ["Read Magic"]
             self.inventory = [item_inst.spellbook]
             self.weight_carried += item_inst.spellbook.weight
         elif class_selection == "Magic-User/Thief":
@@ -129,7 +124,6 @@ class Character:
             self.next_level_xp = 3750
             self.class_specials = ("Sneak Attack", "Thief Abilities")
             self.class_saving_throws = (13, 14, 13, 16, 15)
-            self.spells = ["Read Magic"]
             self.inventory = [item_inst.spellbook]
             self.weight_carried += item_inst.spellbook.weight
 
@@ -265,14 +259,18 @@ class Character:
             else:
                 self.movement: int = 10
 
-    def add_starting_spell(self, spell):
-        """Append spell to list 'character.spells' if one is selected on spell selection screen and ensure that
-        'character.spells' does not exceed two spells (default spell + selected spell) at the start.
-        Method is called from event handler in state 'spell_selection'."""
-        if len(self.spells) == 1:
-            self.spells.append(spell.text)
-        else:
-            self.spells[1] = spell.text
+    def set_starting_spell(self, spell_list: tuple[InteractiveText, ...]):
+        """Append 'text' attributes from instances in 'spell_list' to 'self.spells' if their 'selected' attribute is set
+        to 'True'.
+        ARGS:
+            spell_list: tuple with instances of interactive text fields for spell selection.
+        """
+        # Ensure that 'self.spells' list is empty before appending selected languages to it.
+        self.spells.clear()
+
+        for spell in spell_list:
+            if spell.selected:
+                self.spells.append(spell.text)
 
     def set_languages(self, language_list: tuple[InteractiveText, ...]):
         """Append 'text' attributes from instances in 'language_list' to 'self.languages' if their 'selected' attribute

@@ -180,9 +180,8 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                     state = "race_class_selection"
 
                 if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
-                    # Add selected spell to character.
-                    if sd.selected_spell:
-                        sd.character.add_starting_spell(sd.selected_spell)
+                    # Add selected spells to character.
+                    sd.character.set_starting_spell(uisd.gui_elements["spell_fields"])
                     # Check conditions to decide which screen to show.
                     if uisd.language_flag:
                         state = "language_selection"

@@ -50,6 +50,8 @@ def get_race_class_defaults() -> tuple[dict[str, str], dict[str, set[str]]]:
     """
     default_spells = {
         "magic-user": "Read Magic",
+        "fighter/magic-user": "Read Magic",
+        "magic-user/thief": "Read Magic",
         "cleric": "No Spell",
     }
 

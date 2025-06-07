@@ -96,26 +96,33 @@ class SharedData:
                 self.selected_class.selected = False
                 self.selected_class = None
 
+    def show_default_spell(self, spells: tuple[InteractiveText, ...]) -> None:
+        """Check the selected class for default spells and set 'selected' attribute of corresponding spell InteractiveText
+        instances on screen to 'True'.
+        Method is called in every frame from state 'spell_selection' in state manager to ensure default spells are
+        always displayed as selected.
+        ARGS:
+            spells: tuple with instances of interactive text fields for spell selection.
+        """
+        for spell in spells:
+            if spell.text in self.default_spells[self.character.class_name.lower()]:
+                spell.selected = True
+
     def select_spell(self, spells: tuple[InteractiveText, ...], mouse_pos) -> None:
         """Selection logic for character's spell. Set class attribute 'selected_spell' to interactive text instance.
         ARGS:
             spells: tuple with instances of interactive text fields for spell selection.
-                NOTE: item at index '0' is not processed here as it represents the default spell for all magic-users.
             mouse_pos: position of mouse on screen.
         """
-        # Create new tuple that excludes the first element. That element represents the default spell 'Read Magic', known
-        # by all Magic-Users and cannot be selected/unselected.
-        selectable_spells: tuple[InteractiveText, ...] = spells[1:]
-
         # Loop through each available spell option to see if any were clicked.
-        for spell in selectable_spells:
+        for spell in spells:
             if spell.interactive_rect.collidepoint(mouse_pos):
                 self.selected_spell = spell
                 break
 
         if self.selected_spell:
             # Unselect the previous selected spell, if any.
-            for spell in selectable_spells:
+            for spell in spells:
                 if spell.selected:
                     spell.selected = False  # Set the selected attribute of the previously selected spell to False.
             # Select the new spell.
@@ -173,12 +180,16 @@ class SharedData:
         # Unselect spell selection if user visited spell selection screen previously.
         if self.selected_spell:
             self.selected_spell.selected = False
+        # Unselect language selection if user visited language selection screen previously.
+        if self.selected_languages:
+            self.selected_languages.selected = False
 
         # Reset attributes to 'None'.
         self.possible_characters: None = None
         self.selected_race: None = None
         self.selected_class: None = None
         self.selected_spell: None = None
+        self.selected_languages: None = None
 
         # Initialize/reset dict for use in 'gui/ui_helpers.py' in function 'position_race_class_elements()' to calculate
         # UI positioning, and automatically populate dict 'rc_dict' once with all races/classes available in the game
