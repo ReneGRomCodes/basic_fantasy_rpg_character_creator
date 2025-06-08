@@ -96,7 +96,7 @@ class SharedData:
                 self.selected_class.selected = False
                 self.selected_class = None
 
-    def show_default_spell(self, spells: tuple[InteractiveText, ...]) -> None:
+    def set_default_spell(self, spells: tuple[InteractiveText, ...]) -> None:
         """Check the selected class for default spells and set 'selected' attribute of corresponding spell InteractiveText
         instances on screen to 'True'.
         Method is called in every frame from state 'spell_selection' in state manager to ensure default spells are
@@ -128,7 +128,7 @@ class SharedData:
             # Select the new spell.
             self.selected_spell.selected = True
 
-    def show_default_languages(self, languages: tuple[InteractiveText, ...]) -> None:
+    def set_default_languages(self, languages: tuple[InteractiveText, ...]) -> None:
         """Check the selected race for default languages and set 'selected' attribute of corresponding language
         InteractiveText instances on screen to 'True'.
         Method is called in every frame from state 'language_selection' in state manager to ensure default languages are

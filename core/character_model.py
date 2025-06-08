@@ -1,4 +1,5 @@
-from core.rules import dice_roll, get_ability_score
+import random
+from core.rules import dice_roll, get_ability_score, get_class_categories, get_race_class_defaults
 import item_instances as item_inst
 from gui.screen_objects import InteractiveText
 from item_model import Armor
@@ -260,7 +261,7 @@ class Character:
             else:
                 self.movement: int = 10
 
-    def set_starting_spell(self, spell_list: tuple[InteractiveText, ...]):
+    def set_starting_spell(self, spell_list: tuple[InteractiveText, ...]) -> None:
         """Append 'text' attributes from instances in 'spell_list' to 'self.spells' if their 'selected' attribute is set
         to 'True'.
         ARGS:
@@ -272,8 +273,10 @@ class Character:
         for spell in spell_list:
             if spell.selected:
                 self.spells.append(spell.text)
+                # Reset spell to default 'False'.
+                spell.selected = False
 
-    def set_languages(self, language_list: tuple[InteractiveText, ...]):
+    def set_languages(self, language_list: tuple[InteractiveText, ...]) -> None:
         """Append 'text' attributes from instances in 'language_list' to 'self.languages' if their 'selected' attribute
         is set to 'True'.
         ARGS:
@@ -285,6 +288,44 @@ class Character:
         for language in language_list:
             if language.selected:
                 self.languages.append(language.text)
+                # Reset language to default 'False'.
+                language.selected = False
+
+    def set_random_selections(self, spell_list: tuple[InteractiveText], language_flag: bool,
+                              language_list: tuple[InteractiveText, ...]) -> None:
+        """
+        ARGS:
+             spell_list: tuple with instances of interactive text fields for spell selection.
+             language_flag: bool to check if character meets minimum requirements for additional languages. Value
+                is set in function 'set_language_flag()' from module 'core.rules.py' (See docstring for details).
+             language_list: tuple with instances of interactive text fields for language selection.
+        """
+        # Dicts/sets for checks of default values for various races/classes.
+        magic_classes = get_class_categories()[1]
+        default_spells, default_languages = get_race_class_defaults()
+
+        # Choose default and random spell for magic using classes.
+        if self.class_name in magic_classes:
+            # Random spell selection.
+            random.choice(spell_list).selected = True
+            # Check for and retrieve default spell.
+            for spell in spell_list:
+                if spell.text in default_spells[self.class_name.lower()]:
+                    spell.selected = True
+            # Set selected spells.
+            self.set_starting_spell(spell_list)
+
+        # Set default language for character's race.
+        for language in default_languages[self.race_name.lower()]:
+            for lang in language_list:
+                if language == lang.text:
+                    lang.selected = True
+        # Choose additional language if requirements are met (See docstring for details).
+        if language_flag:
+            random.choice(language_list).selected = True
+        # Set selected languages.
+        self.set_languages(language_list)
+
 
     # Inventory and trade related methods.
     def buy_item(self, item: object, amount: int) -> bool:

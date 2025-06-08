@@ -128,13 +128,13 @@ def custom_character(screen, state: str, mouse_pos) -> str:
 
     elif state == "spell_selection":
         # Display spell selection screen for Magic-Users.
-        sd.show_default_spell(uisd.gui_elements["spell_fields"])
+        sd.set_default_spell(uisd.gui_elements["spell_fields"])
         gui.show_spell_selection_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state, mouse_pos)
 
     elif state == "language_selection":
         # Display language selection screen.
-        sd.show_default_languages(uisd.gui_elements["lang_fields"])
+        sd.set_default_languages(uisd.gui_elements["lang_fields"])
         gui.show_language_selection_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state, mouse_pos)
 
@@ -190,9 +190,10 @@ def random_character(screen, state: str, mouse_pos) -> str:
                 sd.character.set_race(sd.selected_race)
                 sd.character.set_class(sd.selected_class)
                 sd.character.set_character_values()
-                # Chose random starter spell for magic using characters.
-                if sd.character.class_name in sd.magic_classes:
-                    sd.character.spells.append(random.choice(uisd.gui_elements["spell_fields"][1:]).text)
+                # Select and set various additional character attributes like spells and languages.
+                sd.character.set_random_selections(uisd.gui_elements["spell_fields"], rls.set_language_flag(sd.character),
+                                                   uisd.gui_elements["lang_fields"])
+
                 state = "set_random_money"
 
             else:

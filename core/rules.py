@@ -24,7 +24,8 @@ def get_class_categories() -> tuple[set[str], ...]:
     """Create and return class sets for category checks (example: spell selection screen shown only for magic using
     classes, etc.).
     Function is called from within 'SharedData' class in module 'core/shared_data.py' from where the sets are used
-    throughout the program.
+    throughout the program, as well as from class 'Character' in 'core/character_model.py' when creating a random
+    character.
     RETURNS:
         spell_using_classes
         magic_classes
@@ -43,7 +44,8 @@ def get_class_categories() -> tuple[set[str], ...]:
 def get_race_class_defaults() -> tuple[dict[str, str], dict[str, set[str]]]:
     """Create and return dicts with race and class specific default values.
     Function is called from within 'SharedData' class in module 'core/shared_data.py' from where the dicts are used
-    throughout the program.
+    throughout the program, as well as from class 'Character' in 'core/character_model.py' when creating a random
+    character.
     RETURNS:
         default_spells
         default_languages
@@ -231,7 +233,7 @@ def build_possible_characters_list(character: object) -> list[str]:
 
 def set_language_flag(character: object) -> bool:
     """Check minimum intelligence bonus required for character to learn additional languages and return 'True' if
-    requirements are met. Used in event handler to set 'language_flag' attribute in instance of class 'SharedData'.
+    requirements are met.
     RETURNS:
         True: character meets minimum requirements for additional languages.
         False: character does not meet minimum requirements for additional languages.
