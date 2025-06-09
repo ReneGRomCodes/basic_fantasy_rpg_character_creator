@@ -11,4 +11,3 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO add sections for thief skills to character sheet
 # TODO add reset option to language and spell selection screen
 # TODO add option to allow for minor customization of randomly generated characters
-# TODO ensure that default language is set even if intelligence bonus <1

@@ -133,9 +133,11 @@ def custom_character(screen, state: str, mouse_pos) -> str:
         state = eh.custom_character_events(screen, state, mouse_pos)
 
     elif state == "language_selection":
-        # Display language selection screen.
+        # Set default languages for character's race.
         sd.set_default_languages(uisd.gui_elements["lang_fields"])
-        gui.show_language_selection_screen(screen, mouse_pos)
+        # Display language selection screen if conditions are met.
+        if uisd.language_flag:
+            gui.show_language_selection_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state, mouse_pos)
 
     elif state == "name_character":

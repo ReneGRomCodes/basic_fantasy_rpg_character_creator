@@ -13,27 +13,27 @@ from gui.shared_data import ui_shared_data as uisd
                                     V
                           RACE/CLASS SELECTION
                                     │
-            ┌───────────────────────+────────────────────┐
-            │                       │                    │
-   if magic-using class             │                    │
-            │                       │                    │
-            V          if intelligence bonus > 0         │
-      SPELL SELECTION               │                    │
-            │                       │                    │
-            V                       │                    │
-    LANGUAGE SELECTION <────────────┘                    │
-            │                                            │
-            V                                            │
-      NAMING SCREEN <────────────────────────────────────┘
-            │
-            V
-     MONEY SELECTION
-            │
-            V
-    CREATION COMPLETE
-            │
-            V
-     CHARACTER SHEET
+                                    +───────────────────────────┐
+                                    │                           │
+                         --if magic-using class--    --"language_selection"--
+                                    │                --is only displayed if--
+                                    V               --intelligence bonus > 0,--
+                              SPELL SELECTION    --but state still passed through--
+                                    │              --to set default languages--
+                                    V                           │
+                            LANGUAGE SELECTION <────────────────┘
+                                    │
+                                    V
+                              NAMING SCREEN
+                                    │
+                                    V
+                             MONEY SELECTION
+                                    │
+                                    V
+                            CREATION COMPLETE
+                                    │
+                                    V
+                             CHARACTER SHEET
 """
 
 
@@ -163,10 +163,8 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                         # Check conditions to decide which screen to show.
                         if sd.character.class_name in sd.magic_classes:
                             state = "spell_selection"
-                        elif uisd.language_flag:
-                            state = "language_selection"
                         else:
-                            state = "name_character"
+                            state = "language_selection"
 
         # Magic-User specific state for spell selection.
         elif state == "spell_selection":
@@ -182,13 +180,14 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                 if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                     # Add selected spells to character.
                     sd.character.set_starting_spell(uisd.gui_elements["spell_fields"])
-                    # Check conditions to decide which screen to show.
-                    if uisd.language_flag:
-                        state = "language_selection"
-                    else:
-                        state = "name_character"
+                    state = "language_selection"
 
         elif state == "language_selection":
+            # Set default languages and switch to next state if conditions to display language selection are not met.
+            if not uisd.language_flag:
+                sd.character.set_languages(uisd.gui_elements["lang_fields"])
+                state = "name_character"
+
             if event.type == pygame.MOUSEBUTTONUP:
                 # Language selection logic.
                 for option in uisd.gui_elements["lang_fields"]:
@@ -269,7 +268,7 @@ def naming_character_events(screen, state: str, mouse_pos) -> str:
                 # Different state value is checked and set depending on whether custom or random character is created.
                 sd.character.reset_character()
                 if state == "name_character":
-                    # Check conditions to decide which screen to show.
+                    # Check conditions to decide which state to set.
                     if uisd.language_flag:
                         state = "language_selection"
                     elif sd.character.class_name in sd.magic_classes:
