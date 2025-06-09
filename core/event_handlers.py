@@ -148,6 +148,7 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                     if option.interactive_rect.collidepoint(mouse_pos):
                         sd.select_race_class(mouse_pos)
                 if uisd.gui_elements["reset_button"].button_rect.collidepoint(mouse_pos):
+                    # Reset selection.
                     sd.select_race_class(mouse_pos, reset=True)
 
                 if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
@@ -174,6 +175,9 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                     if option.interactive_rect.collidepoint(mouse_pos):
                         sd.select_spell(uisd.gui_elements["spell_fields"], mouse_pos)
 
+                if uisd.gui_elements["reset_button"].button_rect.collidepoint(mouse_pos):
+                    # Reset selection.
+                    sd.select_spell(uisd.gui_elements["spell_fields"], mouse_pos, reset=True)
                 if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     state = "race_class_selection"
 
@@ -193,6 +197,9 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                 for option in uisd.gui_elements["lang_fields"]:
                     if option.interactive_rect.collidepoint(mouse_pos):
                         sd.select_languages(uisd.gui_elements["lang_fields"], mouse_pos)
+                if uisd.gui_elements["reset_button"].button_rect.collidepoint(mouse_pos):
+                    # Reset selection.
+                    sd.select_languages(uisd.gui_elements["lang_fields"], mouse_pos, reset=True)
 
                 if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     if sd.character.class_name in sd.magic_classes:

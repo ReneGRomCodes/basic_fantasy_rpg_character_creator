@@ -9,5 +9,5 @@ this point it has become mostly a dumping ground for 'todos'."""
 
 # PRIORITIES:
 # TODO add sections for thief skills to character sheet
-# TODO add reset option to language and spell selection screen
+# TODO implement possibility to select multiple additional languages based on intelligence bonus
 # TODO add option to allow for minor customization of randomly generated characters

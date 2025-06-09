@@ -58,6 +58,19 @@ def draw_continue_button_inactive(condition_1: object | bool, condition_2: objec
         inactive_continue_button.draw_button(mouse_pos)
 
 
+def draw_screen_note(screen, note) -> None:
+    """Position and draw screen-specific notes on screen.
+    ARGS:
+        screen: PyGame window.
+        note: 'TextField' instance for screen-specific notes.
+    """
+    # Position notes at the screens left.
+    note.text_rect.left = screen.get_rect().left + uisd.gui_elements["default_edge_spacing"]
+    note.text_rect.centery = screen.get_rect().bottom - screen.get_rect().height / 2
+    # Draw note on screen.
+    note.draw_text()
+
+
 def set_elements_pos_y_values(screen, elements: list | tuple) -> tuple[int, int]:
     """Dynamically set starting y-position for GUI elements on screen based on number of said elements.
     Screen layout is designed to adapt and fit up to 16 elements.
@@ -435,20 +448,12 @@ def draw_available_choices(screen, available_choices: dict[str, list[Interactive
 
 """Background functions for spell selection screen."""
 
-def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...],
-                                             screen_notes: tuple[TextField, ...]) -> None:
+def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...]) -> None:
     """Position elements for spell selection on screen.
     ARGS:
         screen: pygame window.
         spells: tuple containing instances of class 'InteractiveText' representing available spells.
-        screen_notes: tuple of 'TextField' instances showing notes for spell selection.
     """
-    # Position notes at the screen bottom.
-    for note in screen_notes:
-        note.text_rect.centerx = screen.get_rect().centerx
-    screen_notes[0].text_rect.bottom = screen.get_rect().bottom - screen.get_rect().height / 10
-    screen_notes[1].text_rect.top = screen_notes[0].text_rect.bottom
-
     # Get dynamic y-positions for items in 'spells'.
     pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, spells)
 
@@ -462,40 +467,34 @@ def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveTe
             spell.interactive_rect.centery = pos_y_start + pos_y_offset * index
 
 
-def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...], screen_notes: tuple[TextField, ...],
+def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...], screen_note: TextField,
                                          mouse_pos) -> None:
     """Call positioning method 'position_spell_selection_screen_elements()' and draw item from tuple 'spells' on screen.
     ARGS:
         screen: pygame window.
         spells: tuple containing instances of class 'InteractiveText' representing available spells.
-        screen_notes: tuple of 'TextField' instances showing notes for spell selection.
+        screen_note: 'TextField' instance showing notes for spell selection.
         mouse_pos: position of mouse on screen.
     """
     # Position elements on screen.
-    position_spell_selection_screen_elements(screen, spells, screen_notes)
+    position_spell_selection_screen_elements(screen, spells)
+
     # Draw elements from 'spells'.
     for spell in spells:
         spell.draw_interactive_text(mouse_pos)
 
     # Draw further elements on screen.
-    for note in screen_notes:
-        note.draw_text()
+    draw_screen_note(screen, screen_note)
 
 
 """Background functions for spell selection screen."""
 
-def position_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...], screen_note: TextField)\
-        -> None:
+def position_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...]) -> None:
     """Position elements for spell selection on screen.
     ARGS:
         screen: pygame window.
         languages: tuple containing instances of class 'InteractiveText' representing available languages.
-        screen_note: 'TextField' instance showing notes for language selection.
     """
-    # Position note at the screen bottom.
-    screen_note.text_rect.centerx = screen.get_rect().centerx
-    screen_note.text_rect.centery = screen.get_rect().bottom - screen.get_rect().height / 12
-
     # Get dynamic y-positions for items in 'languages'.
     pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, languages)
 
@@ -520,14 +519,14 @@ def draw_language_selection_screen_elements(screen, languages: tuple[Interactive
         mouse_pos: position of mouse on screen.
     """
     # Position elements on screen.
-    position_language_selection_screen_elements(screen, languages, screen_note)
+    position_language_selection_screen_elements(screen, languages)
 
     # Draw elements from 'languages'.
     for language in languages:
         language.draw_interactive_text(mouse_pos)
 
     # Draw further elements on screen.
-    screen_note.draw_text()
+    draw_screen_note(screen, screen_note)
 
 
 """Background functions for character naming screen."""

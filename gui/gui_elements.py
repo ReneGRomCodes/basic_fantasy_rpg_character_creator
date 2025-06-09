@@ -89,6 +89,8 @@ def initialize_screen_elements(screen) -> dict:
     back_button.button_rect.width = button_width
     back_button.button_rect.bottomleft = (screen.get_rect().left + default_edge_spacing,
                                           screen.get_rect().bottom - default_edge_spacing)
+    reset_button: Button = so.Button(screen, "DESELECT ALL", text_medium)
+    reset_button.button_rect.width = button_width
 
     # Art assets.
     background_image: pygame.transform.scale = pygame.transform.scale(pygame.image.load(settings.bg_image).convert(),
@@ -155,8 +157,6 @@ def initialize_screen_elements(screen) -> dict:
     # Race/class selection screen.
     # Screen layout is designed to adapt and fit up to 16 races/classes.
     race_class_selection_screen_title: TextField = so.TextField(screen, "- RACE / CLASS -", text_large)
-    reset_button: Button = so.Button(screen, "DESELECT ALL", text_medium)
-    reset_button.button_rect.width = button_width
     # Race info Panels.
     race_01_info: InfoPanel = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True,
                                            surface_width=info_panel_width)
@@ -242,10 +242,12 @@ def initialize_screen_elements(screen) -> dict:
 
 
     # Spell selection screen.
-    # Screen title.
+    # Screen layout is designed to adapt and fit up to 16 spells.
     spell_selection_screen_title: TextField = so.TextField(screen, "- CHOOSE   A   FIRST   LEVEL   SPELL -", text_large)
-    spell_selection_note_01: TextField = so.TextField(screen, "All Magic-Users begin knowing 'Read Magic'", text_standard)
-    spell_selection_note_02: TextField = so.TextField(screen, "Spells with an '*' are reversible after casting", text_standard)
+    language_selection_note_01_str: str = ("All Magic-Users begin knowing 'Read Magic'\n"
+                                           "Spells with an '*' are reversible after casting")
+    spell_selection_note_01: TextField = so.TextField(screen, language_selection_note_01_str, text_standard,
+                                                      multi_line=True, surface_width=info_panel_width)
     # Initialize dictionary from 'descr' package for info panels.
     spell_descr = spells.get_spell_descr()
     # Spell info panels.
@@ -300,10 +302,11 @@ def initialize_screen_elements(screen) -> dict:
 
 
     # Language selection screen.
-    # Screen title.
+    # Screen layout is designed to adapt and fit up to 16 languages.
     language_selection_screen_title: TextField = so.TextField(screen, "- LANGUAGES -", text_large)
-    language_selection_note_01_str = "All Characters begin knowing 'Common' and their race-specific language."
-    language_selection_note_01: TextField = so.TextField(screen, language_selection_note_01_str, text_standard)
+    language_selection_note_01_str: str = "All Characters begin knowing 'Common' and their race-specific language."
+    language_selection_note_01: TextField = so.TextField(screen, language_selection_note_01_str, text_standard,
+                                                         multi_line=True, surface_width=info_panel_width)
     # Selectable language fields.
     language_01_field: InteractiveText = so.InteractiveText(screen, "Common", text_medium, select=True)
     language_02_field: InteractiveText = so.InteractiveText(screen, "Elvish", text_medium, select=True)
@@ -368,6 +371,7 @@ def initialize_screen_elements(screen) -> dict:
         "continue_button": continue_button,
         "inactive_continue_button": inactive_continue_button,
         "back_button": back_button,
+        "reset_button": reset_button,
         # Art assets.
         "background_image": background_image,
 
@@ -389,7 +393,6 @@ def initialize_screen_elements(screen) -> dict:
         "reroll_button": reroll_button,
         # Race/class selection screen.
         "race_class_title": race_class_selection_screen_title,
-        "reset_button": reset_button,
         "active_races": (race_01_field, race_02_field, race_03_field, race_04_field),
         "active_classes": (class_01_field, class_02_field, class_03_field, class_04_field, class_05_field, class_06_field),
         "inactive_races": (race_01_inactive_field, race_02_inactive_field, race_03_inactive_field, race_04_inactive_field),
@@ -397,7 +400,7 @@ def initialize_screen_elements(screen) -> dict:
                              class_05_inactive_field, class_06_inactive_field),
         # Spell selection screen.
         "spell_title": spell_selection_screen_title,
-        "spell_note": (spell_selection_note_01, spell_selection_note_02),
+        "spell_note": spell_selection_note_01,
         "spell_fields": (spell_01_field, spell_02_field, spell_03_field, spell_04_field, spell_05_field, spell_06_field,
                          spell_07_field, spell_08_field, spell_09_field, spell_10_field, spell_11_field, spell_12_field,
                          spell_13_field),

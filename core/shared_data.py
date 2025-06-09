@@ -108,11 +108,12 @@ class SharedData:
             if spell.text in self.default_spells[self.character.class_name.lower()]:
                 spell.selected = True
 
-    def select_spell(self, spells: tuple[InteractiveText, ...], mouse_pos) -> None:
+    def select_spell(self, spells: tuple[InteractiveText, ...], mouse_pos, reset: bool = False) -> None:
         """Selection logic for character's spell. Set class attribute 'selected_spell' to interactive text instance.
         ARGS:
             spells: tuple with instances of interactive text fields for spell selection.
             mouse_pos: position of mouse on screen.
+            reset: bool to reset spell selection. Default is 'False'.
         """
         # Loop through each available spell option to see if any were clicked.
         for spell in spells:
@@ -128,6 +129,12 @@ class SharedData:
             # Select the new spell.
             self.selected_spell.selected = True
 
+        # Reset spell selection if 'reset button' is clicked (when method is called from event handler with 'reset=True').
+        if reset:
+            if self.selected_spell:
+                self.selected_spell.selected = False
+                self.selected_spell = None
+
     def set_default_languages(self, languages: tuple[InteractiveText, ...]) -> None:
         """Check the selected race for default languages and set 'selected' attribute of corresponding language
         InteractiveText instances on screen to 'True'.
@@ -140,12 +147,13 @@ class SharedData:
             if language.text in self.default_languages[self.character.race_name.lower()]:
                 language.selected = True
 
-    def select_languages(self, languages: tuple[InteractiveText, ...], mouse_pos) -> None:
+    def select_languages(self, languages: tuple[InteractiveText, ...], mouse_pos, reset: bool = False) -> None:
         """Selection logic for character's languages. Set class attribute 'selected_languages' to interactive text
         instance.
         ARGS:
             languages: tuple with instances of interactive text fields for language selection.
             mouse_pos: position of mouse on screen.
+            reset: bool to reset language selection. Default is 'False'.
         """
         # Loop through each available language option to see if any were clicked.
         for language in languages:
@@ -160,6 +168,13 @@ class SharedData:
                     language.selected = False  # Set the selected attribute of the previously selected language to False.
             # Select the new language.
             self.selected_languages.selected = True
+
+        # Reset language selection if 'reset button' is clicked (when method is called from event handler with
+        # 'reset=True').
+        if reset:
+            if self.selected_languages:
+                self.selected_languages.selected = False
+                self.selected_languages = None
 
     def shared_data_janitor(self) -> None:
         """Reset shared data not automatically overwritten elsewhere with default values in case of a switch to a
