@@ -89,7 +89,7 @@ class TextField:
         """Draw the text field on the screen."""
         # Draw background rect if 'bg_color' is specified.
         if self.bg_color:
-            self.text_rect.center = self.background_rect.center
+            self.background_rect.center = self.text_rect.center
             pygame.draw.rect(self.screen, self.bg_color, self.background_rect)
 
         # Draw the text on top of the rect.

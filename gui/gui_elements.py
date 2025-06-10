@@ -247,7 +247,8 @@ def initialize_screen_elements(screen) -> dict:
     language_selection_note_01_str: str = ("All Magic-Users begin knowing 'Read Magic'\n"
                                            "Spells with an '*' are reversible after casting")
     spell_selection_note_01: TextField = so.TextField(screen, language_selection_note_01_str, text_standard,
-                                                      multi_line=True, surface_width=info_panel_width)
+                                                      bg_color=settings.info_panel_bg_color, multi_line=True,
+                                                      surface_width=info_panel_width)
     # Initialize dictionary from 'descr' package for info panels.
     spell_descr = spells.get_spell_descr()
     # Spell info panels.
@@ -306,7 +307,8 @@ def initialize_screen_elements(screen) -> dict:
     language_selection_screen_title: TextField = so.TextField(screen, "- LANGUAGES -", text_large)
     language_selection_note_01_str: str = "All Characters begin knowing 'Common' and their race-specific language."
     language_selection_note_01: TextField = so.TextField(screen, language_selection_note_01_str, text_standard,
-                                                         multi_line=True, surface_width=info_panel_width)
+                                                         bg_color=settings.info_panel_bg_color, multi_line=True,
+                                                         surface_width=info_panel_width)
     # Selectable language fields.
     language_01_field: InteractiveText = so.InteractiveText(screen, "Common", text_medium, select=True)
     language_02_field: InteractiveText = so.InteractiveText(screen, "Elvish", text_medium, select=True)
