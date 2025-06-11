@@ -348,6 +348,10 @@ class CharacterSheet:
         if self.character.class_name not in self.shared_data.no_armor_classes:
             self.draw_armor()
 
+        # TODO TEST FOR SAVE/LOAD FUNCTIONALITY:
+        for button in  uisd.gui_elements["save_load_buttons"]:
+            button.draw_button(mouse_pos)
+
 
     """Main positioning method for use in 'character_sheet_state_manager()' function in 'core/state_manager.py' when the
     final character sheet is initialized."""

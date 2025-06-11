@@ -244,8 +244,8 @@ def initialize_screen_elements(screen) -> dict:
     # Spell selection screen.
     # Screen layout is designed to adapt and fit up to 16 spells.
     spell_selection_screen_title: TextField = so.TextField(screen, "- CHOOSE   A   FIRST   LEVEL   SPELL -", text_large)
-    language_selection_note_01_str: str = ("All Magic-Users begin knowing 'Read Magic'\n"
-                                           "Spells with an '*' are reversible after casting")
+    language_selection_note_01_str: str = ("All Magic-Users begin knowing 'Read Magic'.\n"
+                                           "Spells with an '*' are reversible after casting.")
     spell_selection_note_01: TextField = so.TextField(screen, language_selection_note_01_str, text_standard,
                                                       bg_color=settings.info_panel_bg_color, multi_line=True,
                                                       surface_width=info_panel_width)
@@ -354,6 +354,15 @@ def initialize_screen_elements(screen) -> dict:
     completion_message_field: TextField = so.TextField(screen, "CHARACTER CREATION COMPLETE", text_large)
     show_character_sheet_button: Button = so.Button(screen, "Show Character Sheet", text_medium)
 
+    # TODO TEST FOR SAVE/LOAD FUNCTIONALITY:
+    save_button: Button = so.Button(screen, "Save (WIP!!!)", text_medium)
+    save_button.button_rect.width = button_width
+    load_button: Button = so.Button(screen, "Load (WIP!!!)", text_medium)
+    load_button.button_rect.width = button_width
+    save_button.button_rect.bottomleft = (screen.get_rect().left + default_edge_spacing,
+                                          screen.get_rect().bottom - default_edge_spacing)
+    load_button.button_rect.topleft = save_button.button_rect.topright
+
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
     gui_elements = {
@@ -421,6 +430,8 @@ def initialize_screen_elements(screen) -> dict:
         # Character completion screen.
         "completion_message": completion_message_field,
         "show_character_sheet": show_character_sheet_button,
+        # TODO TEST FOR SAVE/LOAD FUNCTIONALITY:
+        "save_load_buttons": (save_button, load_button)
     }
 
     return gui_elements
