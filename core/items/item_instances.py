@@ -155,3 +155,11 @@ armors = {
     "no_shield": no_shield,
     "armors": (leather_armor, chain_mail, plate_mail, shield),
 }
+
+# Flat dict with each item having its own key-value pair (key = item name, value = item instance) for quick lookups.
+all_items_by_name = {
+    item.name: item
+    for category in (general_items, weapons, projectiles, armors)
+    for group in category.values()
+    for item in (group if isinstance(group, (list, tuple)) else [group])
+}
