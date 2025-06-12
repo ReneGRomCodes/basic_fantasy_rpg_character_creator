@@ -1,6 +1,6 @@
-import item_model as item
+import core.items.item_model as item
 """Initialize instances of classes from 'item_model.py'.
-Instances are sorted into lists/dicts at the end of this file for use in other modules."""
+Instances are sorted into dicts at the end of this file for use in other modules."""
 
 
 # General Equipment (args = "name, cost, weight").
@@ -51,8 +51,7 @@ winter_blanket = item.Item("Winter blanket", 1, 3)
 
 
 # Weapons (args = "name, cost, weight, size, damage").
-# Default instance for no weapon. 'no_weapon' is not part of dict 'weapons' below as it cannot be bought but is default
-# setting.
+# Default instance for no weapon.
 no_weapon = item.Weapon("No Weapon", 0, 0, None, 0)
 
 # Axes.
@@ -114,8 +113,8 @@ warhammer = item.RangedWeapon("Warhammer", 4, 6, "S", 6, (10, 20, 30), throw=Tru
 hand_axe = item.RangedWeapon("Hand Axe", 4, 5, "S", 6, (10, 20, 30), throw=True)
 
 
-# Armor (args = "name, cost, weight, armor_class, shield=False"). 'no_armor' and 'no_shield' are not part of list
-# 'armors' below as they cannot be bought but are default settings.
+# Armor (args = "name, cost, weight, armor_class, shield=False"). 'no_armor' and 'no_shield' cannot be bought but are
+# default settings.
 no_armor = item.Armor("No Armor", 0, 0, 11)
 leather_armor = item.Armor("Leather Armor", 20, 15, 13)
 chain_mail = item.Armor("Chain Mail", 60, 40, 15)
@@ -124,28 +123,35 @@ no_shield = item.Armor("No Shield", 0, 0, 0, shield = True)
 shield = item.Armor("Shield", 7, 5, 1, shield = True)
 
 
-# Tuples/dicts of instances.
-general_items = (
-    backpack, belt_pouch, bit_and_bridle, candles_12, chalk, cloak, clothing_common, glass_bottle_vial, grappling_hook,
-    holy_symbol, holy_water, horseshoes, ink_jar, iron_spikes_12, ladder_10ft, lantern, lantern_bullseye,
-    lantern_hooded, manacles, map_scroll_case, mirror_small, oil_flask, padlock, paper_sheet, pole_wood, quill,
-    quill_knife, quiver_bolt_case, dry_rations_week, rope_hemp, rope_silk, sack_large, sack_small, saddle_pack,
-    saddle_riding, saddlebags_pair, spellbook, tent_large, tent_small, thieves_tools, tinderbox, torches_6, whetstone,
-    whistle, skin_wine_water, winter_blanket
-)
-
-weapons = {
-    "Axes": (hand_axe, battle_axe, great_axe),
-    "Swords": (shortsword, longsword, scimitar, two_handed_sword),
-    "Daggers": (dagger, dagger_silver),
-    "Hammers and Maces": (warhammer, mace, maul),
-    "Ranged Weapons": (shortbow, longbow, crossbow_light, crossbow_heavy, sling),
-    "Other Weapons": (club, cudgel, walking_staff, quarterstaff, pole_arm),
+# Dicts of instances.
+general_items = {
+    "general_items": (backpack, belt_pouch, bit_and_bridle, candles_12, chalk, cloak, clothing_common, glass_bottle_vial,
+                      grappling_hook, holy_symbol, holy_water, horseshoes, ink_jar, iron_spikes_12, ladder_10ft, lantern,
+                      lantern_bullseye, lantern_hooded, manacles, map_scroll_case, mirror_small, oil_flask, padlock,
+                      paper_sheet, pole_wood, quill, quill_knife, quiver_bolt_case, dry_rations_week, rope_hemp, rope_silk,
+                      sack_large, sack_small, saddle_pack, saddle_riding, saddlebags_pair, spellbook, tent_large,
+                      tent_small, thieves_tools, tinderbox, torches_6, whetstone, whistle, skin_wine_water, winter_blanket),
 }
 
-projectiles = (
-    arrow_shortbow, arrow_shortbow_silver, arrow_longbow, arrow_longbow_silver, quarrel_light, quarrel_light_silver,
-    quarrel_heavy, quarrel_heavy_silver, bullet_sling, stone_sling
-)
+weapons = {
+    "no_weapon": no_weapon,
+    "axes": (hand_axe, battle_axe, great_axe),
+    "swords": (shortsword, longsword, scimitar, two_handed_sword),
+    "daggers": (dagger, dagger_silver),
+    "hammers_maces": (warhammer, mace, maul),
+    "ranged_weapons": (shortbow, longbow, crossbow_light, crossbow_heavy, sling),
+    "other_weapons": (club, cudgel, walking_staff, quarterstaff, pole_arm),
+}
 
-armors = (leather_armor, chain_mail, plate_mail, shield)
+projectiles = {
+    "shortbow": (arrow_shortbow, arrow_shortbow_silver),
+    "longbow": (arrow_longbow, arrow_longbow_silver),
+    "crossbow": (quarrel_light, quarrel_light_silver, quarrel_heavy, quarrel_heavy_silver),
+    "sling": (bullet_sling, stone_sling),
+}
+
+armors = {
+    "no_armor": no_armor,
+    "no_shield": no_shield,
+    "armors": (leather_armor, chain_mail, plate_mail, shield),
+}

@@ -44,9 +44,9 @@ class Character:
         self.weight_carried: int | float = 0
         self.money: int | float = 0
         self.inventory: list[object] = []
-        self.armor: object = item_inst.no_armor
-        self.shield: object = item_inst.no_shield
-        self.weapon: object = item_inst.no_weapon
+        self.armor: object = item_inst.armors["no_armor"]
+        self.shield: object = item_inst.armors["no_shield"]
+        self.weapon: object = item_inst.weapons["no_weapon"]
 
     def set_race(self, race_selection: str) -> None:
         """Set race-specific values based on chosen race.
