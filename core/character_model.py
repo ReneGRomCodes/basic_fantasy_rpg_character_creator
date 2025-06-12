@@ -1,8 +1,8 @@
 import random
 from core.rules import dice_roll, get_ability_score, get_class_categories, get_race_class_defaults
-import item_instances as item_inst
+import core.items.item_instances as item_inst
 from gui.screen_objects import InteractiveText
-from item_model import Armor
+from core.items.item_model import Armor
 """Class for character."""
 
 
@@ -434,3 +434,20 @@ class Character:
                 self.weight_carried -= modified_halfling_armor_weight * amount
             else:
                 self.weight_carried -= item.weight * amount
+
+    # Save/load character related methods.
+    def serialize(self) -> dict:
+        data = self.__dict__.copy()
+        data["armor"] = self.armor.name
+        data["shield"] = self.shield.name
+        data["weapon"] = self.weapon.name
+        return data
+
+    def deserialize(self, data: dict) -> None:
+        self.__dict__.update(data)
+        self.armor = self.get_item_by_name(data["armor"])
+        self.shield = self.get_item_by_name(data["shield"])
+        self.weapon = self.get_item_by_name(data["weapon"])
+
+    def get_item_by_name(self, data: dict) -> object:
+        pass

@@ -51,7 +51,7 @@ winter_blanket = item.Item("Winter blanket", 1, 3)
 
 
 # Weapons (args = "name, cost, weight, size, damage").
-# Default instance for no weapon. 'no_weapon' is not part of dict 'weapons' below as it can not be bought but is default
+# Default instance for no weapon. 'no_weapon' is not part of dict 'weapons' below as it cannot be bought but is default
 # setting.
 no_weapon = item.Weapon("No Weapon", 0, 0, None, 0)
 
@@ -115,7 +115,7 @@ hand_axe = item.RangedWeapon("Hand Axe", 4, 5, "S", 6, (10, 20, 30), throw=True)
 
 
 # Armor (args = "name, cost, weight, armor_class, shield=False"). 'no_armor' and 'no_shield' are not part of list
-# 'armors' below as they can not be bought but are default settings.
+# 'armors' below as they cannot be bought but are default settings.
 no_armor = item.Armor("No Armor", 0, 0, 11)
 leather_armor = item.Armor("Leather Armor", 20, 15, 13)
 chain_mail = item.Armor("Chain Mail", 60, 40, 15)

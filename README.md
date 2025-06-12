@@ -10,8 +10,8 @@ coding adjustments.
 
 The program is built with Python and Pygame, featuring a UI that dynamically adjusts itself based on added UI element
 instances. However, modifying the core rule set (races, classes, abilities, etc.) requires manual changes in rules.py and
-character_model.py. If a new system requires additional screens (e.g., spell selection), they need to be implemented
-separately but can reuse existing UI functions for consistency.
+character_model.py. If a new system requires additional screens, they need to be implemented separately but can reuse
+existing UI functions for consistency.
 
 ## Features
 
@@ -57,27 +57,30 @@ Run:
 ## Project Structure
 ```
 project_root/
-│── main.py                # Main entry point, initializes Pygame and runs the main loop
-│── core/                  # Handles game logic (settings, state management, character models, etc.)
-│   ├── settings.py        # Stores configuration values (screen size, etc.)
-│   ├── event_handlers.py  # Handles input events
-│   ├── state_manager.py   # Manages application states
-│   ├── rules.py           # Defines game mechanics and rules
-│   └── character_model.py # Manages character attributes and interactions
+│── main.py                   # Main entry point, initializes Pygame and runs the main loop
+│── core/                     # Handles game logic (settings, state management, character models, etc.)
+│   ├── items/                # Contains modules for item classes and instances (Weapons, equipment, etc.)
+│   ├───── item_instances.py  # Contains item instances.
+│   ├───── item_model.py      # Stores item classes.
+│   ├── settings.py           # Stores configuration values (screen size, etc.)
+│   ├── event_handlers.py     # Handles input events
+│   ├── state_manager.py      # Manages application states
+│   ├── rules.py              # Defines game mechanics and rules
+│   └── character_model.py    # Manages character attributes and interactions
 │
-│── descr/                 # Stores string-based descriptions (races, classes, etc.)
+│── descr/                    # Stores string-based descriptions (races, classes, etc.)
 │
-│── gui/                   # Manages UI components and rendering.
-│   ├── screen_objects.py  # GUI element classes (buttons, text fields, etc.)
-│   ├── cs_model.py        # Character sheet class and GUI logic
-│   ├── gui_elements.py    # Creates and stores references to UI elements for rendering
-│   ├── gui.py             # Handles UI logic and rendering functions
-│   ├── ui_helpers.py      # Helper functions for positioning elements
-│   ├── credits.py         # Credits screen logic
-│   ├── settings_gui.py    # Settings screen logic
-│   └── art/               # Contains graphic assets
+│── gui/                      # Manages UI components and rendering.
+│   ├── screen_objects.py     # GUI element classes (buttons, text fields, etc.)
+│   ├── cs_model.py           # Character sheet class and GUI logic
+│   ├── gui_elements.py       # Creates and stores references to UI elements for rendering
+│   ├── gui.py                # Handles UI logic and rendering functions
+│   ├── ui_helpers.py         # Helper functions for positioning elements
+│   ├── credits.py            # Credits screen logic
+│   ├── settings_gui.py       # Settings screen logic
+│   └── art/                  # Contains graphic assets
 │
-└── README.md              # You are here
+└── README.md                 # You are here
 ```
 ## Adding New Features
 
@@ -105,7 +108,8 @@ Example: Adding a "Luck" Ability Score
         Since the UI adapts dynamically, the new element will be positioned automatically. However, if needed,
         tweak ui_helpers.py to fine-tune spacing.
 
-By following this process, new attributes, mechanics, or even entirely new selection screens can be integrated with minimal effort while keeping the UI flexible and consistent.
+By following this process, new attributes, mechanics, or even entirely new selection screens can be integrated with
+minimal effort while keeping the UI flexible and consistent.
 
 ### Adding a New GUI Element
 
@@ -115,11 +119,9 @@ Instantiate the new element in gui_elements.py according to documentation within
 
 Implement the new element in the relevant modules (e.g., gui.py).
 
-## Work in Progress
-
-Some obsolete or work-in-progress files remain in the main directory and will be removed in future updates.
-
 ## Future Plans
+
+Adding export functionality for character sheets.
 
 Implementing an item shop UI based on existing logic.
 
