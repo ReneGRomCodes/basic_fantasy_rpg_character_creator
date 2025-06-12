@@ -327,14 +327,14 @@ class Character:
         self.set_languages(language_list)
 
 
-    # Inventory and trade related methods.
+    """Inventory and trade related methods."""
     def buy_item(self, item: object, amount: int) -> bool:
         """Buy 'amount' number of instance 'item' of a class from 'item_model' module.
         ARGS:
             item: instance of a class from 'item_model' module, instances are listed in module 'item_instances'.
             amount: number of items to buy.
         RETURN:
-            False: not enough money to buy given amount of items.
+            False: not enough money to buy given number of items.
             True: trade successful. Items added to list 'self.items', item weight added to 'self.weight_carried' and
             money subtracted from 'self.money'.
         """
@@ -366,7 +366,8 @@ class Character:
         for i in range(amount):
             self.inventory.remove(item)
 
-    # Equip/unequip methods. TODO works only for armor right now.
+
+    """Equip/unequip methods.""" # TODO works only for armor right now.
     def equip_item(self, item: object) -> None:
         """Equip instance 'item' from inventory and move previously equipped item to inventory.
         ARGS:
@@ -435,7 +436,8 @@ class Character:
             else:
                 self.weight_carried -= item.weight * amount
 
-    # Save/load character related methods.
+
+    """Save/load character related methods."""
     def serialize(self) -> dict:
         data = self.__dict__.copy()
         data["armor"] = self.armor.name
