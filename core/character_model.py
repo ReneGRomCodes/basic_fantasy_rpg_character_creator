@@ -436,20 +436,45 @@ class Character:
             else:
                 self.weight_carried -= item.weight * amount
 
-
+    # TODO TEST FOR SAVE/LOAD FUNCTIONALITY:
     """Save/load character related methods."""
-    def serialize(self) -> dict:
-        data = self.__dict__.copy()
+    def serialize(self) -> dict[str, str]:
+        """Convert the character object into a serializable dictionary.
+        RETURNS:
+            dict: dictionary representation of the character, with item instances (armor, shield, weapon) replaced by
+                their name attributes.
+        """
+        # Copy '__dict__' as dict to 'data'.
+        data: dict[str, str] = self.__dict__.copy()
+        # Add 'name' attributes of item instances as strings to 'data'.
         data["armor"] = self.armor.name
         data["shield"] = self.shield.name
         data["weapon"] = self.weapon.name
+
         return data
 
-    def deserialize(self, data: dict) -> None:
+    def deserialize(self, data: dict[str, str]) -> None:
+        """Reconstruct the character object from a dictionary.
+        ARGS:
+            data (dict): dictionary with character attributes, including item name attributes as strings.
+        """
+        # Update '__dict__' by retrieving values from dict 'data'.
         self.__dict__.update(data)
+        # Retrieve item instances via 'name' attribute.
         self.armor = self.get_item_by_name(data["armor"])
         self.shield = self.get_item_by_name(data["shield"])
         self.weapon = self.get_item_by_name(data["weapon"])
 
-    def get_item_by_name(self, data: dict) -> object:
-        pass
+    @staticmethod
+    def get_item_by_name(item: str) -> object:
+        """
+        Retrieve an item instance by its name.
+        ARGS:
+            item: The name of the item to retrieve as string.
+        RETURNS:
+            object: The matching item instance, or a string error message if not found.
+        """
+        if item in item_inst.all_items_by_name:
+            return item_inst.all_items_by_name[item]
+        else:
+            return f"{item} not found!"
