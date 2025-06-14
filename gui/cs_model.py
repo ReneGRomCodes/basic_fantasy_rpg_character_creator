@@ -348,7 +348,7 @@ class CharacterSheet:
         if self.character.class_name not in self.shared_data.no_armor_classes:
             self.draw_armor()
 
-        # TODO TEST FOR SAVE/LOAD FUNCTIONALITY:
+        # Draw save/load buttons.
         for button in  uisd.gui_elements["save_load_buttons"]:
             button.draw_button(mouse_pos)
 

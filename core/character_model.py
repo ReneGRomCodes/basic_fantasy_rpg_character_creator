@@ -3,6 +3,7 @@ from core.rules import dice_roll, get_ability_score, get_class_categories, get_r
 import core.items.item_instances as item_inst
 from gui.screen_objects import InteractiveText
 from core.items.item_model import Armor
+from typing import Any
 """Class for character."""
 
 
@@ -436,39 +437,48 @@ class Character:
             else:
                 self.weight_carried -= item.weight * amount
 
-    # TODO TEST FOR SAVE/LOAD FUNCTIONALITY:
+
     """Save/load character related methods."""
-    def serialize(self) -> dict[str, str]:
+    def serialize(self) -> dict[str, Any]:
         """Convert the character object into a serializable dictionary.
         RETURNS:
-            dict: dictionary representation of the character, with item instances (armor, shield, weapon) replaced by
-                their name attributes.
+            dict: dictionary representation of the character, with item instances (armor, shield, weapon, etc.) replaced
+                by their name attributes.
         """
         # Copy '__dict__' as dict to 'data'.
-        data: dict[str, str] = self.__dict__.copy()
+        data: dict[str, Any] = self.__dict__.copy()
+
         # Add 'name' attributes of item instances as strings to 'data'.
         data["armor"] = self.armor.name
         data["shield"] = self.shield.name
         data["weapon"] = self.weapon.name
 
+        # Add inventory items as strings to 'data'.
+        if self.inventory:
+            data["inventory"] = [item.name for item in self.inventory]
+
         return data
 
-    def deserialize(self, data: dict[str, str]) -> None:
+    def deserialize(self, data: dict[str, Any]) -> None:
         """Reconstruct the character object from a dictionary.
         ARGS:
             data (dict): dictionary with character attributes, including item name attributes as strings.
         """
         # Update '__dict__' by retrieving values from dict 'data'.
         self.__dict__.update(data)
+
         # Retrieve item instances via 'name' attribute.
         self.armor = self.get_item_by_name(data["armor"])
         self.shield = self.get_item_by_name(data["shield"])
         self.weapon = self.get_item_by_name(data["weapon"])
 
+        # Retrieve inventory list with instances via 'name' attribute.
+        if data["inventory"]:
+            self.inventory = [self.get_item_by_name(item) for item in data["inventory"]]
+
     @staticmethod
     def get_item_by_name(item: str) -> object:
-        """
-        Retrieve an item instance by its name.
+        """Retrieve an item instance by its name.
         ARGS:
             item: The name of the item to retrieve as string.
         RETURNS:

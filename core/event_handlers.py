@@ -1,6 +1,8 @@
 import pygame
 import sys
 import core.rules as rls
+import json
+from core.settings import settings
 from core.shared_data import shared_data as sd
 from gui.shared_data import ui_shared_data as uisd
 """Contains event handler functions."""
@@ -102,6 +104,16 @@ def main_events(screen, state: str, mouse_pos) -> str:
             if event.type == pygame.MOUSEBUTTONUP:
                 if sd.cs_sheet.main_menu_button.button_rect.collidepoint(mouse_pos):
                     state = "pre_main_menu"
+
+                if uisd.gui_elements["save_load_buttons"][0].button_rect.collidepoint(mouse_pos):
+                    with open(settings.save_file, "w") as f:
+                        json.dump(sd.character.serialize(), f)
+
+                if uisd.gui_elements["save_load_buttons"][1].button_rect.collidepoint(mouse_pos):
+                    with open(settings.save_file) as f:
+                        data = json.load(f)
+                        sd.character.deserialize(data)
+                        state = "init_character_sheet"
 
     return state
 

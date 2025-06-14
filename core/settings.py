@@ -50,6 +50,9 @@ class Settings:
         # is handled by 'set_default()' method.
         self.screen_size: tuple[int, int] | None = None
 
+        # JSON save file for characters.
+        self.save_file = "save/characters.json"
+
     def set_default(self) -> None:
         """Set all settings variables to default values as defined in 'self.default_settings'."""
         self.screen_size: tuple[tuple] = self.default_settings[0]

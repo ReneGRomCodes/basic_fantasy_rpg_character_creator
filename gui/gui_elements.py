@@ -353,8 +353,7 @@ def initialize_screen_elements(screen) -> dict:
     # Character creation complete screen.
     completion_message_field: TextField = so.TextField(screen, "CHARACTER CREATION COMPLETE", text_large)
     show_character_sheet_button: Button = so.Button(screen, "Show Character Sheet", text_medium)
-
-    # TODO TEST FOR SAVE/LOAD FUNCTIONALITY:
+    # Save/load buttons.
     save_button: Button = so.Button(screen, "Save (WIP!!!)", text_medium)
     save_button.button_rect.width = button_width
     load_button: Button = so.Button(screen, "Load (WIP!!!)", text_medium)
@@ -430,7 +429,6 @@ def initialize_screen_elements(screen) -> dict:
         # Character completion screen.
         "completion_message": completion_message_field,
         "show_character_sheet": show_character_sheet_button,
-        # TODO TEST FOR SAVE/LOAD FUNCTIONALITY:
         "save_load_buttons": (save_button, load_button)
     }
 
