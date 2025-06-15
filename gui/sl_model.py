@@ -1,7 +1,7 @@
 import pygame
 import gui.screen_objects as so
-from gui.ui_helpers import draw_screen_title
-from gui.screen_objects import TextField, Button
+from gui.ui_helpers import draw_screen_title, set_elements_pos_y_values
+from gui.screen_objects import TextField, Button, InteractiveText
 from gui.shared_data import ui_shared_data as uisd
 
 """Helper class to organize and access save/load screen objects as attributes."""
@@ -42,10 +42,24 @@ class SaveLoadScreen:
         self.save_button: Button = so.Button(screen, "Save", text_medium)
         self.load_button: Button = so.Button(screen, "Load", text_medium)
         # Tuple with 'Button' instances for use in for-loops when accessing instances.
-        self.buttons: tuple[Button, ...] = (self.exit_button, self.save_button, self.load_button)
+        self.button_group: tuple[Button, ...] = (self.exit_button, self.save_button, self.load_button)
         # Set default button width.
-        for button in self.buttons:
+        for button in self.button_group:
             button.button_rect.width = gui_elements["default_button_width"]
+
+        # Character slots representing entries in file 'save/characters.json'.
+        slot_00: InteractiveText = so.InteractiveText(screen, "Slot 00: EMPTY", text_medium, select=True)
+        slot_01: InteractiveText = so.InteractiveText(screen, "Slot 01: EMPTY", text_medium, select=True)
+        slot_02: InteractiveText = so.InteractiveText(screen, "Slot 02: EMPTY", text_medium, select=True)
+        slot_03: InteractiveText = so.InteractiveText(screen, "Slot 03: EMPTY", text_medium, select=True)
+        slot_04: InteractiveText = so.InteractiveText(screen, "Slot 04: EMPTY", text_medium, select=True)
+        slot_05: InteractiveText = so.InteractiveText(screen, "Slot 05: EMPTY", text_medium, select=True)
+        slot_06: InteractiveText = so.InteractiveText(screen, "Slot 06: EMPTY", text_medium, select=True)
+        slot_07: InteractiveText = so.InteractiveText(screen, "Slot 07: EMPTY", text_medium, select=True)
+        slot_08: InteractiveText = so.InteractiveText(screen, "Slot 08: EMPTY", text_medium, select=True)
+        # Tuple with 'InteractiveText' instances for use in for-loops when accessing instances.
+        self.slots_group: tuple[InteractiveText, ...] = (slot_00, slot_01, slot_02, slot_03, slot_04,
+                                                         slot_05, slot_06, slot_07, slot_08)
 
     def show_sl_screen(self, mouse_pos):
         """Draw save/load screen elements.
@@ -55,8 +69,12 @@ class SaveLoadScreen:
         # Draw general screen objects.
         draw_screen_title(self.screen, self.title)
         # Draw buttons.
-        for button in self.buttons:
+        for button in self.button_group:
             button.draw_button(mouse_pos)
+
+        # Draw character slots.
+        for slot in self.slots_group:
+            slot.draw_interactive_text(mouse_pos)
 
     def position_sl_elements(self):
         """Position save/load screen elements."""
@@ -74,3 +92,16 @@ class SaveLoadScreen:
             self.save_button.button_rect.bottomleft = (self.screen_rect.left + self.edge_spacing,
                                                        self.screen_rect.bottom - self.edge_spacing)
             self.load_button.button_rect.bottomleft = self.save_button.button_rect.bottomright
+
+        # Position character slots.
+        # Get dynamic y-positions for items in 'spells'.
+        pos_y_start, pos_y_offset = set_elements_pos_y_values(self.screen, self.slots_group)
+
+        for index, slot in enumerate(self.slots_group):
+            # Align element x-position at screen center.
+            slot.interactive_rect.centerx = self.screen_rect.centerx
+            # Assign dynamic y-positions to elements.
+            if index == 0:
+                slot.interactive_rect.top = pos_y_start
+            else:
+                slot.interactive_rect.top = pos_y_start + pos_y_offset * index

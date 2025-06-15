@@ -47,9 +47,9 @@ class CharacterSheet:
         self.main_menu_button: Button = so.Button(screen, "Main Menu", text_medium)
         self.save_load_button: Button = so.Button(screen, "Save/Load", text_medium)
         # Tuple with 'Button' instances for use in for-loops when accessing instances.
-        self.buttons: tuple[Button, ...] = (self.main_menu_button, self.save_load_button)
+        self.button_group: tuple[Button, ...] = (self.main_menu_button, self.save_load_button)
         # Set default button width.
-        for button in self.buttons:
+        for button in self.button_group:
             button.button_rect.width = uisd.gui_elements["default_button_width"]
 
         """
@@ -334,7 +334,7 @@ class CharacterSheet:
         # Draw general screen objects.
         draw_screen_title(self.screen, self.title)
         # Draw buttons.
-        for button in self.buttons:
+        for button in self.button_group:
             button.draw_button(mouse_pos)
 
         # Draw character sheet elements.

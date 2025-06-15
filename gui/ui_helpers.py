@@ -388,9 +388,10 @@ def get_race_class_y_position(screen, race_class: InteractiveText | TextField, r
     RETURNS:
         y: y position on screen for 'race_class' object.
     """
+    # Get dynamic y-positions for items in 'spells'.
+    pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, inactive_elements)
 
     for index, item in enumerate(rc_dict_list):
-        pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, inactive_elements)
         if race_class.text == item:
             if index == 0:
                 y = pos_y_start
