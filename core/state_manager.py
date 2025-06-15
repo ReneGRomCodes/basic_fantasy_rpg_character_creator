@@ -7,6 +7,7 @@ from core.shared_data import shared_data as sd
 from gui.shared_data import ui_shared_data as uisd
 from gui.settings_gui import SettingsGUI
 from gui.cs_model import CharacterSheet
+from gui.sl_model import SaveLoadScreen
 import random
 """Main functions/state managers used in 'main.py'."""
 
@@ -39,6 +40,9 @@ def main_state_manager(screen, state: str, mouse_pos) -> str:
         # Display main menu screen.
         gui.show_main_menu(screen, mouse_pos)
 
+    elif state in {"init_save_load_screen", "save_load_screen"}:
+        state = save_load_screen_state_manager(screen, state, mouse_pos)
+
     elif state in {"init_credits", "credits"}:
         # Use of 'secondary' state manager for credits screen.
         state = credits_state_manager(screen, state)
@@ -50,6 +54,41 @@ def main_state_manager(screen, state: str, mouse_pos) -> str:
     elif state in {"init_character_sheet", "character_sheet"}:
         # Use of 'secondary' state manager for character sheet screen.
         state = character_sheet_state_manager(screen, state, mouse_pos)
+
+    return state
+
+
+def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
+    if state == "init_save_load_screen":
+        sd.save_load_screen = SaveLoadScreen(screen)
+        sd.save_load_screen.position_sl_elements()
+        state = "save_load_screen"
+
+    elif state == "save_load_screen":
+        sd.save_load_screen.show_sl_screen(screen, mouse_pos)
+        state = eh.main_events(screen, state, mouse_pos)
+
+    return state
+
+
+def settings_screen_state_manager(screen, state: str, mouse_pos) -> str:
+    """State manager for settings screen state 'settings_screen'.
+    ARGS:
+        screen: PyGame window.
+        state: program state.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        state
+    """
+    # Initialize 'SettingsGUI() object the first time the settings screen is accessed.
+    if not sd.settings_gui:
+        sd.settings_gui = SettingsGUI(screen)
+
+    # Call event handler and get program state.
+    state = eh.main_events(screen, state, mouse_pos)
+
+    # Display settings screen.
+    sd.settings_gui.show_settings(screen, mouse_pos)
 
     return state
 
@@ -74,29 +113,7 @@ def credits_state_manager(screen, state: str) -> str:
     return state
 
 
-def settings_screen(screen, state: str, mouse_pos) -> str:
-    """State manager for settings screen state 'settings_screen'.
-    ARGS:
-        screen: PyGame window.
-        state: program state.
-        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-    RETURNS:
-        state
-    """
-    # Initialize 'SettingsGUI() object the first time the settings screen is accessed.
-    if not sd.settings_gui:
-        sd.settings_gui = SettingsGUI(screen)
-
-    # Call event handler and get program state.
-    state = eh.main_events(screen, state, mouse_pos)
-
-    # Display settings screen.
-    sd.settings_gui.show_settings(screen, mouse_pos)
-
-    return state
-
-
-def custom_character(screen, state: str, mouse_pos) -> str:
+def custom_character_state_manager(screen, state: str, mouse_pos) -> str:
     """State manager for custom character creation based on user input.
     ARGS:
         screen: PyGame window.
@@ -168,7 +185,7 @@ def custom_character(screen, state: str, mouse_pos) -> str:
     return state
 
 
-def random_character(screen, state: str, mouse_pos) -> str:
+def random_character_state_manager(screen, state: str, mouse_pos) -> str:
     """State manager for random character creation.
     ARGS:
         screen: PyGame window.

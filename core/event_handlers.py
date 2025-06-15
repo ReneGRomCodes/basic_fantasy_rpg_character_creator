@@ -70,16 +70,26 @@ def main_events(screen, state: str, mouse_pos) -> str:
                     state = "character_menu"
 
                 if uisd.gui_elements["menu_buttons"][0].button_rect.collidepoint(mouse_pos):
-                    state = "settings_screen"
+                    # Event switches to state 'init_save_load_screen', which creates 'SaveLoadScreen' object before
+                    # proceeding to final 'save_load_screen' state from within main state manager.
+                    state = "init_save_load_screen"
 
                 if uisd.gui_elements["menu_buttons"][1].button_rect.collidepoint(mouse_pos):
+                    state = "settings_screen"
+
+                if uisd.gui_elements["menu_buttons"][2].button_rect.collidepoint(mouse_pos):
                     # Event switches to state 'init_credits', which creates 'Credits' object before proceeding to final
                     # 'credits' state from within main state manager.
                     state = "init_credits"
 
-                if uisd.gui_elements["menu_buttons"][2].button_rect.collidepoint(mouse_pos):
+                if uisd.gui_elements["menu_buttons"][3].button_rect.collidepoint(mouse_pos):
                     pygame.quit()
                     sys.exit()
+
+        elif state == "save_load_screen":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if sd.save_load_screen.main_menu_button.button_rect.collidepoint(mouse_pos):
+                    state = "pre_main_menu"
 
         elif state == "settings_screen":
             if event.type == pygame.MOUSEBUTTONUP:

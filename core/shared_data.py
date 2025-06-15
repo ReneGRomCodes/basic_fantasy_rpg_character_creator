@@ -16,6 +16,7 @@ class SharedData:
         """Initialize shared data attributes."""
         # Variable for later instances of class objects.
         self.character: object | None = None  # Instance 'Character()'.
+        self.save_load_screen: object | None # Instance 'SaveLoadScreen()'.
         self.credits_screen: object | None = None  # Instance 'Credits()'.
         self.settings_gui: object = None  # Instance 'SettingsGUI()'
         self.cs_sheet: object | None = None  # Instance of 'CharacterSheet'.

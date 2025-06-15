@@ -109,6 +109,7 @@ def initialize_screen_elements(screen) -> dict:
     # Main Menu.
     main_menu_screen_title: TextField = so.TextField(screen, "- MAIN MENU -", title_size)
     start_button: Button = so.Button(screen, "Create a Character", text_medium)
+    load_char: Button = so.Button(screen, "Load Character", text_medium)
     settings_button: Button = so.Button(screen, "Settings", text_medium)
     credits_button: Button = so.Button(screen, "Credits", text_medium)
     quit_button: Button = so.Button(screen, "Quit", text_medium)
@@ -391,7 +392,7 @@ def initialize_screen_elements(screen) -> dict:
         # Main menu.
         "main_menu_title": main_menu_screen_title,
         "start_button": start_button,
-        "menu_buttons": (settings_button, credits_button, quit_button),
+        "menu_buttons": (load_char, settings_button, credits_button, quit_button),
 
         # Character menu.
         "custom": custom,
