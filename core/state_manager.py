@@ -41,6 +41,7 @@ def main_state_manager(screen, state: str, mouse_pos) -> str:
         gui.show_main_menu(screen, mouse_pos)
 
     elif state in {"init_save_load_screen", "save_load_screen"}:
+        # Use of 'secondary' state manager for save/load screen.
         state = save_load_screen_state_manager(screen, state, mouse_pos)
 
     elif state in {"init_credits", "credits"}:
@@ -59,13 +60,29 @@ def main_state_manager(screen, state: str, mouse_pos) -> str:
 
 
 def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
+    """'Secondary state manager for use in 'main_state_manager' to create and return instance of class 'SaveLoadScreen'
+        with screen elements for the save/load screen, call position methods and set the state to 'save_load_screen'.
+        This function ensures that 'save_load_screen' object is always created before the save/load screen is displayed,
+        reinitializing it each time the screen is accessed.
+    ARGS:
+        screen: PyGame window.
+        state: program state.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        state
+    """
     if state == "init_save_load_screen":
+        # Create instance of class 'SaveLoadScreen'.
         sd.save_load_screen = SaveLoadScreen(screen)
+        # Set positions for save/load screen elements.
         sd.save_load_screen.position_sl_elements()
+
         state = "save_load_screen"
 
     elif state == "save_load_screen":
-        sd.save_load_screen.show_sl_screen(screen, mouse_pos)
+        # Display save/load screen.
+        sd.save_load_screen.show_sl_screen(mouse_pos)
+
         state = eh.main_events(screen, state, mouse_pos)
 
     return state

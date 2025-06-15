@@ -354,14 +354,6 @@ def initialize_screen_elements(screen) -> dict:
     # Character creation complete screen.
     completion_message_field: TextField = so.TextField(screen, "CHARACTER CREATION COMPLETE", text_large)
     show_character_sheet_button: Button = so.Button(screen, "Show Character Sheet", text_medium)
-    # Save/load buttons.
-    save_button: Button = so.Button(screen, "Save (WIP!!!)", text_medium)
-    save_button.button_rect.width = button_width
-    load_button: Button = so.Button(screen, "Load (WIP!!!)", text_medium)
-    load_button.button_rect.width = button_width
-    save_button.button_rect.bottomleft = (screen.get_rect().left + default_edge_spacing,
-                                          screen.get_rect().bottom - default_edge_spacing)
-    load_button.button_rect.topleft = save_button.button_rect.topright
 
 
     # Dict to be returned containing instances and size/spacing values (for positioning) for GUI objects.
@@ -430,7 +422,6 @@ def initialize_screen_elements(screen) -> dict:
         # Character completion screen.
         "completion_message": completion_message_field,
         "show_character_sheet": show_character_sheet_button,
-        "save_load_buttons": (save_button, load_button)
     }
 
     return gui_elements

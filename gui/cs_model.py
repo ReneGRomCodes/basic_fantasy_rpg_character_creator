@@ -45,6 +45,12 @@ class CharacterSheet:
         # General screen objects.
         self.title: TextField = so.TextField(screen, "- CHARACTER SHEET -", title_size)
         self.main_menu_button: Button = so.Button(screen, "Main Menu", text_medium)
+        self.save_load_button: Button = so.Button(screen, "Save/Load", text_medium)
+        # Tuple with 'Button' instances for use in for-loops when accessing instances.
+        self.buttons: tuple[Button, ...] = (self.main_menu_button, self.save_load_button)
+        # Set default button width.
+        for button in self.buttons:
+            button.button_rect.width = uisd.gui_elements["default_button_width"]
 
         """
         INITIALIZE CHARACTER SHEET ELEMENTS.
@@ -327,7 +333,9 @@ class CharacterSheet:
 
         # Draw general screen objects.
         draw_screen_title(self.screen, self.title)
-        self.main_menu_button.draw_button(mouse_pos)
+        # Draw buttons.
+        for button in self.buttons:
+            button.draw_button(mouse_pos)
 
         # Draw character sheet elements.
         self.draw_basic_info()
@@ -348,22 +356,20 @@ class CharacterSheet:
         if self.character.class_name not in self.shared_data.no_armor_classes:
             self.draw_armor()
 
-        # Draw save/load buttons.
-        for button in  uisd.gui_elements["save_load_buttons"]:
-            button.draw_button(mouse_pos)
-
 
     """Main positioning method for use in 'character_sheet_state_manager()' function in 'core/state_manager.py' when the
     final character sheet is initialized."""
 
     def position_cs_elements(self) -> None:
-        """Position instances of class 'TextField' on screen."""
+        """Position character sheet elements on screen."""
         # Position anchor objects based on entry in 'self.screen_grid_array'.
         self.position_anchors()
 
         # Position basic screen elements.
         self.main_menu_button.button_rect.bottomright = (self.screen_rect.right - self.edge_spacing,
                                                          self.screen_rect.bottom - self.edge_spacing)
+        self.save_load_button.button_rect.bottomleft = (self.screen_rect.left + self.edge_spacing,
+                                                        self.screen_rect.bottom - self.edge_spacing)
 
         # Position further elements.
         self.position_basic_info()

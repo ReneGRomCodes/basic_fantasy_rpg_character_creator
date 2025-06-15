@@ -20,6 +20,9 @@ systems.
 
 Adaptive UI – GUI elements reposition and resize automatically based on added UI instances, ensuring a clean layout.
 
+Context-Sensitive UI Management – UI screens adapt their available options based on how they’re accessed (e.g., save/load
+behaves differently when entered from the main menu vs. in-session). This keeps interactions intuitive and avoids clutter.
+
 Modular Design – Clear separation between game logic, descriptions, and UI elements for easier expansion.
 
 Pygame-Based UI – Fully interactive graphical interface with text fields, buttons, and adaptive layout handling.

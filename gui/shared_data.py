@@ -14,6 +14,10 @@ class UISharedData:
         # from 'run_character_creator()' in 'main.py' when program is initialized.
         self.gui_elements: dict = {}
 
+        # Flag to set mode in which save/load screen is displayed. 'False' allows for save and load, 'True' for load only.
+        # See class 'SaveLoadScreen' in 'sl_model.py' for details.
+        self.load_only_flag: bool = False
+
         # Flag to ensure screen-specific elements are positioned only once per appearance.
         # Used in non-adaptable screens to minimize unnecessary repositioning, but not applied to adaptable screens to
         # keep functions more maintainable.

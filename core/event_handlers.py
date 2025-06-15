@@ -70,6 +70,8 @@ def main_events(screen, state: str, mouse_pos) -> str:
                     state = "character_menu"
 
                 if uisd.gui_elements["menu_buttons"][0].button_rect.collidepoint(mouse_pos):
+                    # Set load-only mode for save/load screen when accessing it from main menu.
+                    uisd.load_only_flag = True
                     # Event switches to state 'init_save_load_screen', which creates 'SaveLoadScreen' object before
                     # proceeding to final 'save_load_screen' state from within main state manager.
                     state = "init_save_load_screen"
@@ -88,8 +90,12 @@ def main_events(screen, state: str, mouse_pos) -> str:
 
         elif state == "save_load_screen":
             if event.type == pygame.MOUSEBUTTONUP:
-                if sd.save_load_screen.main_menu_button.button_rect.collidepoint(mouse_pos):
-                    state = "pre_main_menu"
+                if sd.save_load_screen.exit_button.button_rect.collidepoint(mouse_pos):
+                    # Select state based on previously set screen mode flag.
+                    if uisd.load_only_flag:
+                        state = "pre_main_menu"
+                    else:
+                        state = "init_character_sheet"
 
         elif state == "settings_screen":
             if event.type == pygame.MOUSEBUTTONUP:
@@ -113,21 +119,29 @@ def main_events(screen, state: str, mouse_pos) -> str:
 
         elif state == "character_sheet":
             if event.type == pygame.MOUSEBUTTONUP:
+                if sd.cs_sheet.save_load_button.button_rect.collidepoint(mouse_pos):
+                    # Set save/load mode for save/load screen when accessing it from character sheet.
+                    uisd.load_only_flag = False
+                    # Event switches to state 'init_save_load_screen', which creates 'SaveLoadScreen' object before
+                    # proceeding to final 'save_load_screen' state from within main state manager.
+                    state = "init_save_load_screen"
+
                 if sd.cs_sheet.main_menu_button.button_rect.collidepoint(mouse_pos):
                     state = "pre_main_menu"
 
-                if uisd.gui_elements["save_load_buttons"][0].button_rect.collidepoint(mouse_pos):
-                    # Save character to JSON file.
-                    with open(settings.save_file, "w") as f:
-                        json.dump(sd.character.serialize(), f)
+                # TODO Implement into save/load screen.
+                #if uisd.gui_elements["save_load_buttons"][0].button_rect.collidepoint(mouse_pos):
+                #    # Save character to JSON file.
+                #    with open(settings.save_file, "w") as f:
+                #        json.dump(sd.character.serialize(), f)
 
-                if uisd.gui_elements["save_load_buttons"][1].button_rect.collidepoint(mouse_pos):
-                    if os.path.getsize(settings.save_file) > 0:
-                        # Load character from JSON file and re-initialize character sheet.
-                        with open(settings.save_file) as f:
-                            data = json.load(f)
-                            sd.character.deserialize(data)
-                            state = "init_character_sheet"
+                #if uisd.gui_elements["save_load_buttons"][1].button_rect.collidepoint(mouse_pos):
+                #    if os.path.getsize(settings.save_file) > 0:
+                #        # Load character from JSON file and re-initialize character sheet.
+                #        with open(settings.save_file) as f:
+                #            data = json.load(f)
+                #            sd.character.deserialize(data)
+                #            state = "init_character_sheet"
 
     return state
 
@@ -244,9 +258,9 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                 if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     state = "name_character"
 
-                # Allow to continue to next state if 'random_money' is 'True' or switch state for user input if
-                # 'custom_money' is 'True'.
-                if sd.random_money_flag:
+                # Allow to continue to next state if 'random_money' is 'True' and the dice roll is complete or switch
+                # state for user input if 'custom_money' is 'True'.
+                if sd.random_money_flag and uisd.dice_roll_complete:
                     if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
                         # Set starting money to 'sd.starting_money' if 'random_money' is 'True'.
                         sd.character.money = sd.starting_money
