@@ -1,9 +1,6 @@
 import pygame
 import sys
 import core.rules as rls
-import json
-import os
-from core.settings import settings
 from core.shared_data import shared_data as sd
 from gui.shared_data import ui_shared_data as uisd
 """Contains event handler functions."""
@@ -91,18 +88,12 @@ def main_events(screen, state: str, mouse_pos) -> str:
         elif state == "save_load_screen":
             if event.type == pygame.MOUSEBUTTONUP:
                 if sd.save_load_screen.save_button.button_rect.collidepoint(mouse_pos):
-                    # Save character to JSON file.
-                    with open(settings.save_file, "w") as f:
-                        json.dump(sd.character.serialize(), f)
-                        state = "init_character_sheet"
+                    # Save character and return to character sheet.
+                    state = sd.save_load_screen.save_character()
 
                 if sd.save_load_screen.load_button.button_rect.collidepoint(mouse_pos):
-                    if os.path.getsize(settings.save_file) > 0:
-                        # Load character from JSON file and initialize character sheet.
-                        with open(settings.save_file) as f:
-                            data = json.load(f)
-                            sd.character.deserialize(data)
-                            state = "init_character_sheet"
+                    # Load character and return to character sheet.
+                    state = sd.save_load_screen.load_character()
 
                 if sd.save_load_screen.exit_button.button_rect.collidepoint(mouse_pos):
                     # Select state based on previously set screen mode flag.

@@ -1,8 +1,12 @@
 import pygame
+import os
+import json
 import gui.screen_objects as so
 from gui.ui_helpers import draw_screen_title, set_elements_pos_y_values
 from gui.screen_objects import TextField, Button, InteractiveText
 from gui.shared_data import ui_shared_data as uisd
+from core.shared_data import shared_data as sd
+from core.settings import settings
 
 """Helper class to organize and access save/load screen objects as attributes."""
 
@@ -105,3 +109,23 @@ class SaveLoadScreen:
                 slot.interactive_rect.top = pos_y_start
             else:
                 slot.interactive_rect.top = pos_y_start + pos_y_offset * index
+
+    @staticmethod
+    def save_character():
+        # Save character to JSON file and return to character sheet.
+        with open(settings.save_file, "w") as f:
+            json.dump(sd.character.serialize(), f)
+            return "init_character_sheet"
+
+    @staticmethod
+    def load_character():
+        if os.path.getsize(settings.save_file) > 0:
+            # Load character from JSON file and initialize character sheet.
+            with open(settings.save_file) as f:
+                data = json.load(f)
+                sd.character.deserialize(data)
+                return "init_character_sheet"
+
+        else:
+            # Return current state if save file is empty.
+            return "save_load_screen"
