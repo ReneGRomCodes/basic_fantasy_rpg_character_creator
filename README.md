@@ -79,6 +79,7 @@ project_root/
 │   ├── gui_elements.py       # Creates and stores references to UI elements for rendering
 │   ├── gui.py                # Handles UI logic and rendering functions
 │   ├── ui_helpers.py         # Helper functions for positioning elements
+│   ├── sl_model.py           # Save/load screen logic
 │   ├── credits.py            # Credits screen logic
 │   ├── settings_gui.py       # Settings screen logic
 │   └── art/                  # Contains graphic assets

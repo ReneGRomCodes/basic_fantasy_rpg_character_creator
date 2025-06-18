@@ -65,6 +65,15 @@ class SaveLoadScreen:
         self.slots_group: tuple[InteractiveText, ...] = (slot_00, slot_01, slot_02, slot_03, slot_04,
                                                          slot_05, slot_06, slot_07, slot_08)
 
+        # TODO data structure template idea for JSON.
+        #saved_data = {
+        #    "slot_00": {"slot_used": False,},
+        #    "slot_01": {"slot_used": False,},
+        #    "slot_02": {"slot_used": False,},
+        #}
+        # When resetting.
+        #saved_data["slot00"] = {"slot_used": False,}
+
     def show_sl_screen(self, mouse_pos):
         """Draw save/load screen elements.
         ARGS:
