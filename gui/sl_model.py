@@ -61,18 +61,18 @@ class SaveLoadScreen:
         slot_06: InteractiveText = so.InteractiveText(screen, "Slot 06: EMPTY", text_medium, select=True)
         slot_07: InteractiveText = so.InteractiveText(screen, "Slot 07: EMPTY", text_medium, select=True)
         slot_08: InteractiveText = so.InteractiveText(screen, "Slot 08: EMPTY", text_medium, select=True)
-        # Tuple with 'InteractiveText' instances for use in for-loops when accessing instances.
-        self.slots_group: tuple[InteractiveText, ...] = (slot_00, slot_01, slot_02, slot_03, slot_04,
-                                                         slot_05, slot_06, slot_07, slot_08)
-
-        # TODO data structure template idea for JSON.
-        #saved_data = {
-        #    "slot_00": {"slot_used": False,},
-        #    "slot_01": {"slot_used": False,},
-        #    "slot_02": {"slot_used": False,},
-        #}
-        # When resetting.
-        #saved_data["slot00"] = {"slot_used": False,}
+        # Dict with slot elements assigned as values to keys which correspond to keys in 'save/characters.json'.
+        self.slots: dict[str, InteractiveText] = {
+            "slot_00": slot_00,
+            "slot_01": slot_01,
+            "slot_02": slot_02,
+            "slot_03": slot_03,
+            "slot_04": slot_04,
+            "slot_05": slot_05,
+            "slot_06": slot_06,
+            "slot_07": slot_07,
+            "slot_08": slot_08,
+        }
 
     def show_sl_screen(self, mouse_pos):
         """Draw save/load screen elements.
@@ -86,7 +86,7 @@ class SaveLoadScreen:
             button.draw_button(mouse_pos)
 
         # Draw character slots.
-        for slot in self.slots_group:
+        for slot in self.slots.values():
             slot.draw_interactive_text(mouse_pos)
 
     def position_sl_elements(self):
@@ -108,9 +108,9 @@ class SaveLoadScreen:
 
         # Position character slots.
         # Get dynamic y-positions for items in 'spells'.
-        pos_y_start, pos_y_offset = set_elements_pos_y_values(self.screen, self.slots_group)
+        pos_y_start, pos_y_offset = set_elements_pos_y_values(self.screen, [slot for slot in self.slots.values()])
 
-        for index, slot in enumerate(self.slots_group):
+        for index, slot in enumerate([slot for slot in self.slots.values()]):
             # Align element x-position at screen center.
             slot.interactive_rect.centerx = self.screen_rect.centerx
             # Assign dynamic y-positions to elements.
@@ -119,12 +119,23 @@ class SaveLoadScreen:
             else:
                 slot.interactive_rect.top = pos_y_start + pos_y_offset * index
 
-    @staticmethod
-    def save_character():
+    def save_character(self, state):
+        save_slot_selected = False
         # Save character to JSON file and return to character sheet.
-        with open(settings.save_file, "w") as f:
-            json.dump(sd.character.serialize(), f)
-            return "init_character_sheet"
+        with open(settings.save_file) as f:
+            data = json.load(f)
+            for key, slot in self.slots.items():
+                if slot.selected:
+                    save_slot_selected = True
+                    data[key] = sd.character.serialize()
+                    break
+
+        if save_slot_selected:
+            with open(settings.save_file, "w") as f:
+                json.dump(data, f)
+                state = "init_character_sheet"
+
+        return state
 
     @staticmethod
     def load_character():

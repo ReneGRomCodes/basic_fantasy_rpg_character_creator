@@ -89,7 +89,7 @@ def main_events(screen, state: str, mouse_pos) -> str:
             if event.type == pygame.MOUSEBUTTONUP:
                 if sd.save_load_screen.save_button.button_rect.collidepoint(mouse_pos):
                     # Save character and return to character sheet.
-                    state = sd.save_load_screen.save_character()
+                    state = sd.save_load_screen.save_character(state)
 
                 if sd.save_load_screen.load_button.button_rect.collidepoint(mouse_pos):
                     # Load character and return to character sheet.

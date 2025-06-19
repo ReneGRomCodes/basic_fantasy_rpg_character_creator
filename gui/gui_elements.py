@@ -89,7 +89,7 @@ def initialize_screen_elements(screen) -> dict:
     back_button.button_rect.width = button_width
     back_button.button_rect.bottomleft = (screen.get_rect().left + default_edge_spacing,
                                           screen.get_rect().bottom - default_edge_spacing)
-    reset_button: Button = so.Button(screen, "DESELECT ALL", text_medium)
+    reset_button: Button = so.Button(screen, "CLEAR SELECTION", text_medium)
     reset_button.button_rect.width = button_width
 
     # Art assets.
