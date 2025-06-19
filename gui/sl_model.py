@@ -52,15 +52,15 @@ class SaveLoadScreen:
             button.button_rect.width = gui_elements["default_button_width"]
 
         # Character slots representing entries in file 'save/characters.json'.
-        slot_00: InteractiveText = so.InteractiveText(screen, "Slot 00: EMPTY", text_medium, select=True)
-        slot_01: InteractiveText = so.InteractiveText(screen, "Slot 01: EMPTY", text_medium, select=True)
-        slot_02: InteractiveText = so.InteractiveText(screen, "Slot 02: EMPTY", text_medium, select=True)
-        slot_03: InteractiveText = so.InteractiveText(screen, "Slot 03: EMPTY", text_medium, select=True)
-        slot_04: InteractiveText = so.InteractiveText(screen, "Slot 04: EMPTY", text_medium, select=True)
-        slot_05: InteractiveText = so.InteractiveText(screen, "Slot 05: EMPTY", text_medium, select=True)
-        slot_06: InteractiveText = so.InteractiveText(screen, "Slot 06: EMPTY", text_medium, select=True)
-        slot_07: InteractiveText = so.InteractiveText(screen, "Slot 07: EMPTY", text_medium, select=True)
-        slot_08: InteractiveText = so.InteractiveText(screen, "Slot 08: EMPTY", text_medium, select=True)
+        slot_00: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
+        slot_01: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
+        slot_02: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
+        slot_03: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
+        slot_04: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
+        slot_05: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
+        slot_06: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
+        slot_07: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
+        slot_08: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
         # Dict with slot elements assigned as values to keys which correspond to keys in 'save/characters.json'.
         self.slots: dict[str, InteractiveText] = {
             "slot_00": slot_00,
@@ -73,6 +73,8 @@ class SaveLoadScreen:
             "slot_07": slot_07,
             "slot_08": slot_08,
         }
+        # Configure field width and text attributes for each slot element based on stored data in 'characters.json'.
+        self.configure_character_slots()
 
     def show_sl_screen(self, mouse_pos):
         """Draw save/load screen elements.
@@ -119,15 +121,27 @@ class SaveLoadScreen:
             else:
                 slot.interactive_rect.top = pos_y_start + pos_y_offset * index
 
-    def save_character(self, state):
-        save_slot_selected = False
-        # Save character to JSON file and return to character sheet.
+    def configure_character_slots(self):
+        for k, v in self.slots.items():
+            with open(settings.save_file) as f:
+                data = json.load(f)
+                if data[k]:
+                    v.text = f"{data[k]["name"] if data[k]["name"] else "UNNAMED"}: {data[k]["race_name"]} {data[k]["class_name"]}"
+                else:
+                    slot_text: list[str] = k.split("_")
+                    v.text = f"{slot_text[0].capitalize()} {slot_text[1]}: EMPTY"
+            v.interactive_rect.width = int(self.screen_width / 2)
+            v.render_new_text_surface()
+
+    def save_character(self, state: str) -> str:
+        save_slot_selected: bool = False
         with open(settings.save_file) as f:
             data = json.load(f)
             for key, slot in self.slots.items():
                 if slot.selected:
                     save_slot_selected = True
                     data[key] = sd.character.serialize()
+                    slot.text = f"{sd.character.name} {sd.character.race_name} {sd.character.class_name}"
                     break
 
         if save_slot_selected:
@@ -138,14 +152,12 @@ class SaveLoadScreen:
         return state
 
     @staticmethod
-    def load_character():
+    def load_character() -> str:
         if os.path.getsize(settings.save_file) > 0:
-            # Load character from JSON file and initialize character sheet.
             with open(settings.save_file) as f:
                 data = json.load(f)
                 sd.character.deserialize(data)
                 return "init_character_sheet"
 
         else:
-            # Return current state if save file is empty.
             return "save_load_screen"

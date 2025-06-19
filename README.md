@@ -84,6 +84,8 @@ project_root/
 │   ├── settings_gui.py       # Settings screen logic
 │   └── art/                  # Contains graphic assets
 │
+│── save/                     # Stores JSON file for saving/loading created characters.
+│
 └── README.md                 # You are here
 ```
 ## Adding New Features
