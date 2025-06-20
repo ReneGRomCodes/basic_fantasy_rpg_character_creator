@@ -93,7 +93,7 @@ def main_events(screen, state: str, mouse_pos) -> str:
 
                 if sd.save_load_screen.load_button.button_rect.collidepoint(mouse_pos):
                     # Load character and return to character sheet.
-                    state = sd.save_load_screen.load_character()
+                    state = sd.save_load_screen.load_character(state)
 
                 if sd.save_load_screen.exit_button.button_rect.collidepoint(mouse_pos):
                     # Select state based on previously set screen mode flag.

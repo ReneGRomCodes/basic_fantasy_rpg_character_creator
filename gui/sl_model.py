@@ -13,7 +13,7 @@ from core.settings import settings
 class SaveLoadScreen:
     """A class to store and manage save/load screen elements."""
 
-    def __init__(self, screen):
+    def __init__(self, screen) -> None:
         """Initialize the SaveLoadScreen object with elements."""
         # Assign screen rect attributes.
         self.screen = screen
@@ -76,7 +76,7 @@ class SaveLoadScreen:
         # Configure field width and text attributes for each slot element based on stored data in 'characters.json'.
         self.configure_character_slots()
 
-    def show_sl_screen(self, mouse_pos):
+    def show_sl_screen(self, mouse_pos) -> None:
         """Draw save/load screen elements.
         ARGS:
             mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
@@ -91,7 +91,7 @@ class SaveLoadScreen:
         for slot in self.slots.values():
             slot.draw_interactive_text(mouse_pos)
 
-    def position_sl_elements(self):
+    def position_sl_elements(self) -> None:
         """Position save/load screen elements."""
         # Position exit button at the bottom right of the screen.
         self.exit_button.button_rect.bottomright = (self.screen_rect.right - self.edge_spacing,
@@ -121,7 +121,7 @@ class SaveLoadScreen:
             else:
                 slot.interactive_rect.top = pos_y_start + pos_y_offset * index
 
-    def configure_character_slots(self):
+    def configure_character_slots(self) -> None:
         for k, v in self.slots.items():
             with open(settings.save_file) as f:
                 data = json.load(f)
@@ -151,13 +151,15 @@ class SaveLoadScreen:
 
         return state
 
-    @staticmethod
-    def load_character() -> str:
-        if os.path.getsize(settings.save_file) > 0:
-            with open(settings.save_file) as f:
-                data = json.load(f)
-                sd.character.deserialize(data)
-                return "init_character_sheet"
+    def load_character(self, state) -> str:
+        with open(settings.save_file) as f:
+            data = json.load(f)
+            for key, slot in self.slots.items():
+                if slot.selected and data[key]:
+                    sd.character.deserialize(data[key])
+                    state = "init_character_sheet"
+                    break
+                else:
+                    state = "init_save_load_screen"
 
-        else:
-            return "save_load_screen"
+        return state

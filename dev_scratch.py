@@ -11,10 +11,10 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO add sections for thief skills to character sheet
 # TODO implement possibility to select multiple additional languages based on intelligence bonus
 # TODO add option to allow for minor customization of randomly generated characters
-# TODO tweak the selection on some screen during character creation. not really happy with how they work
+# TODO tweak the selection on some screens during character creation. not really happy with how they work
 
 
-"""Data structure for JSON file to save/load characters. Also resets JSON file when this module is executed directly."""
+"""Data structure for JSON file to save/load characters. Also resets JSON file if this module is executed directly."""
 import json
 from core.settings import settings
 
