@@ -294,7 +294,8 @@ class Character:
 
     def set_random_selections(self, spell_list: tuple[InteractiveText], language_flag: bool,
                               language_list: tuple[InteractiveText, ...]) -> None:
-        """
+        """Select and set various additional character attributes like spells and languages for random character creation
+        process.
         ARGS:
              spell_list: tuple with instances of interactive text fields for spell selection.
              language_flag: bool to check if character meets minimum requirements for additional languages. Value

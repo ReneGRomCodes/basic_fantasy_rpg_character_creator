@@ -245,9 +245,9 @@ def initialize_screen_elements(screen) -> dict:
     # Spell selection screen.
     # Screen layout is designed to adapt and fit up to 16 spells.
     spell_selection_screen_title: TextField = so.TextField(screen, "- CHOOSE   A   FIRST   LEVEL   SPELL -", text_large)
-    language_selection_note_01_str: str = ("All Magic-Users begin knowing 'Read Magic'.\n"
+    spell_selection_note_01_str: str = ("All Magic-Users begin knowing 'Read Magic'.\n"
                                            "Spells with an '*' are reversible after casting.")
-    spell_selection_note_01: TextField = so.TextField(screen, language_selection_note_01_str, text_standard,
+    spell_selection_note_01: TextField = so.TextField(screen, spell_selection_note_01_str, text_standard,
                                                       bg_color=settings.info_panel_bg_color, multi_line=True,
                                                       surface_width=info_panel_width)
     # Initialize dictionary from 'descr' package for info panels.

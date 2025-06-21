@@ -130,7 +130,7 @@ class SharedData:
             # Select the new spell.
             self.selected_spell.selected = True
 
-        # Reset spell selection if 'reset button' is clicked (when method is called from event handler with 'reset=True').
+        # Reset spell selection if 'clear selection' is clicked (when method is called from event handler with 'reset=True').
         if reset:
             if self.selected_spell:
                 self.selected_spell.selected = False
@@ -156,9 +156,10 @@ class SharedData:
             mouse_pos: position of mouse on screen.
             reset: bool to reset language selection. Default is 'False'.
         """
-        # Loop through each available language option to see if any were clicked.
+        # Loop through each available language option to see if any were clicked (excluding race default languages).
         for language in languages:
-            if language.interactive_rect.collidepoint(mouse_pos):
+            if (language.interactive_rect.collidepoint(mouse_pos)
+                    and language.text not in self.default_languages[self.character.race_name.lower()]):
                 self.selected_languages = language
                 break
 
@@ -170,7 +171,7 @@ class SharedData:
             # Select the new language.
             self.selected_languages.selected = True
 
-        # Reset language selection if 'reset button' is clicked (when method is called from event handler with
+        # Reset language selection if 'clear selection' is clicked (when method is called from event handler with
         # 'reset=True').
         if reset:
             if self.selected_languages:
