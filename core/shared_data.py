@@ -118,7 +118,8 @@ class SharedData:
         """
         # Loop through each available spell option to see if any were clicked.
         for spell in spells:
-            if spell.interactive_rect.collidepoint(mouse_pos):
+            if (spell.interactive_rect.collidepoint(mouse_pos)
+                    and spell.text not in self.default_spells[self.character.class_name.lower()]):
                 self.selected_spell = spell
                 break
 
