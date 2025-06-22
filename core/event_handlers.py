@@ -87,6 +87,11 @@ def main_events(screen, state: str, mouse_pos) -> str:
 
         elif state == "save_load_screen":
             if event.type == pygame.MOUSEBUTTONUP:
+                # Save/load slot selection logic.
+                for slot_id, slot in sd.save_load_screen.slots.items():
+                    if slot.interactive_rect.collidepoint(mouse_pos):
+                        sd.save_load_screen.select_character_slot(slot_id, slot)
+
                 if sd.save_load_screen.save_button.button_rect.collidepoint(mouse_pos):
                     # Save character and return to character sheet.
                     state = sd.save_load_screen.save_character(state)

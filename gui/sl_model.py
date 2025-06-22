@@ -76,6 +76,9 @@ class SaveLoadScreen:
         # Configure field width and text attributes for each slot element based on stored data in 'characters.json'.
         self.configure_character_slots()
 
+        # TODO
+        self.selected_slot: bool | tuple[str, InteractiveText] = False
+
     def show_sl_screen(self, mouse_pos) -> None:
         """Draw save/load screen elements.
         ARGS:
@@ -122,29 +125,39 @@ class SaveLoadScreen:
                 slot.interactive_rect.top = pos_y_start + pos_y_offset * index
 
     def configure_character_slots(self) -> None:
-        for k, v in self.slots.items():
+        for slot_id, slot in self.slots.items():
             with open(settings.save_file) as f:
                 data = json.load(f)
-                if data[k]:
-                    v.text = f"{data[k]["name"] if data[k]["name"] else "UNNAMED"}: {data[k]["race_name"]} {data[k]["class_name"]}"
+                if data[slot_id]:
+                    slot.text = (f"{data[slot_id]["name"] if data[slot_id]["name"] else "UNNAMED"}: "
+                              f"{data[slot_id]["race_name"]} {data[slot_id]["class_name"]}")
                 else:
-                    slot_text: list[str] = k.split("_")
-                    v.text = f"{slot_text[0].capitalize()} {slot_text[1]}: EMPTY"
-            v.interactive_rect.width = int(self.screen_width / 2)
-            v.render_new_text_surface()
+                    slot_text: list[str] = slot_id.split("_")
+                    slot.text = f"{slot_text[0].capitalize()} {slot_text[1]}: EMPTY"
+            slot.interactive_rect.width = int(self.screen_width / 2)
+            slot.render_new_text_surface()
+
+    def select_character_slot(self, slot_id, slot) -> None:
+        if self.selected_slot:
+            if self.selected_slot[0] == slot_id:
+                slot.selected = False
+                self.selected_slot = False
+            else:
+                self.selected_slot[1].selected = False
+                slot.selected = True
+                self.selected_slot = (slot_id, slot)
+        else:
+            slot.selected = True
+            self.selected_slot = (slot_id, slot)
 
     def save_character(self, state: str) -> str:
-        save_slot_selected: bool = False
         with open(settings.save_file) as f:
             data = json.load(f)
-            for key, slot in self.slots.items():
-                if slot.selected:
-                    save_slot_selected = True
-                    data[key] = sd.character.serialize()
-                    slot.text = f"{sd.character.name} {sd.character.race_name} {sd.character.class_name}"
-                    break
+            if self.selected_slot:
+                data[self.selected_slot[0]] = sd.character.serialize()
+                self.selected_slot[1].text = f"{sd.character.name} {sd.character.race_name} {sd.character.class_name}"
 
-        if save_slot_selected:
+        if self.selected_slot:
             with open(settings.save_file, "w") as f:
                 json.dump(data, f)
                 state = "init_character_sheet"
@@ -154,9 +167,9 @@ class SaveLoadScreen:
     def load_character(self, state) -> str:
         with open(settings.save_file) as f:
             data = json.load(f)
-            for key, slot in self.slots.items():
-                if slot.selected and data[key]:
-                    sd.character.deserialize(data[key])
+            for k, v in self.slots.items():
+                if v.selected and data[k]:
+                    sd.character.deserialize(data[k])
                     state = "init_character_sheet"
                     break
                 else:
