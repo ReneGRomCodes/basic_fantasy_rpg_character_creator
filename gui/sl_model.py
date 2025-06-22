@@ -1,5 +1,4 @@
 import pygame
-import os
 import json
 import gui.screen_objects as so
 from gui.ui_helpers import draw_screen_title, set_elements_pos_y_values
@@ -76,7 +75,7 @@ class SaveLoadScreen:
         # Configure field width and text attributes for each slot element based on stored data in 'characters.json'.
         self.configure_character_slots()
 
-        # TODO
+        # Tuple storing string 'slot_id' and object 'slot' if one is selected.
         self.selected_slot: bool | tuple[str, InteractiveText] = False
 
     def show_sl_screen(self, mouse_pos) -> None:
@@ -125,54 +124,85 @@ class SaveLoadScreen:
                 slot.interactive_rect.top = pos_y_start + pos_y_offset * index
 
     def configure_character_slots(self) -> None:
+        """Set rect size and assign text attribute to character slots."""
+        # Iterate through each entry in the 'self.slots' dict to check if a slot is used or empty.
         for slot_id, slot in self.slots.items():
+            # Read the save file to compare each slot against the corresponding entry.
             with open(settings.save_file) as f:
                 data = json.load(f)
-                if data[slot_id]:
-                    slot.text = (f"{data[slot_id]["name"] if data[slot_id]["name"] else "UNNAMED"}: "
-                              f"{data[slot_id]["race_name"]} {data[slot_id]["class_name"]}")
-                else:
-                    slot_text: list[str] = slot_id.split("_")
-                    slot.text = f"{slot_text[0].capitalize()} {slot_text[1]}: EMPTY"
+
+            if data[slot_id]:
+                # Set slot's text attribute if a character is saved at 'slot_id'.
+                slot.text = (f"{data[slot_id]["name"] if data[slot_id]["name"] else "UNNAMED"}: "
+                             f"{data[slot_id]["race_name"]} {data[slot_id]["class_name"]}")
+            else:
+                # Set default string ('Slot XX: EMPTY') if no character is saved at 'slot_id'.
+                slot_text: list[str] = slot_id.split("_")
+                slot.text = f"{slot_text[0].capitalize()} {slot_text[1]}: EMPTY"
+
+            # Adjust the slot's interactive rect width and render updated text surface.
             slot.interactive_rect.width = int(self.screen_width / 2)
             slot.render_new_text_surface()
 
-    def select_character_slot(self, slot_id, slot) -> None:
+    def select_character_slot(self, slot_id: str, slot: InteractiveText) -> None:
+        """Selection logic for character slots. Updates 'self.selected_slot' to store the selected slot ID and instance.
+        ARGS:
+            slot_id: string corresponding to selected slot as stored in 'self.slots'.
+            slot: selected 'InteractiveText' instance.
+        """
+        # If a slot is already selected, determine whether to deselect it or switch selection.
         if self.selected_slot:
+            # If the selected slot is clicked again, deselect it and clear 'self.selected_slot'.
             if self.selected_slot[0] == slot_id:
                 slot.selected = False
                 self.selected_slot = False
+            # Otherwise, switch selection to the newly clicked slot.
             else:
                 self.selected_slot[1].selected = False
                 slot.selected = True
                 self.selected_slot = (slot_id, slot)
         else:
+            # If no slot was selected, activate the clicked slot.
             slot.selected = True
             self.selected_slot = (slot_id, slot)
 
     def save_character(self, state: str) -> str:
-        with open(settings.save_file) as f:
-            data = json.load(f)
-            if self.selected_slot:
+        """Check if slot is selected and save created character in JSON file, assign descriptive text to slot's text
+        attribute, and re-initialize screen to display updated slot.
+        ARGS:
+            state: program state.
+        RETURNS:
+            state
+        """
+        if self.selected_slot:
+            # Load existing save data.
+            with open(settings.save_file) as f:
+                data = json.load(f)
+
+                # Save character data to the selected slot and update the slot's label.
                 data[self.selected_slot[0]] = sd.character.serialize()
                 self.selected_slot[1].text = f"{sd.character.name} {sd.character.race_name} {sd.character.class_name}"
 
-        if self.selected_slot:
+            # Write updated data back to file and return to the save/load screen.
             with open(settings.save_file, "w") as f:
                 json.dump(data, f)
-                state = "init_character_sheet"
+                state = "init_save_load_screen"
 
         return state
 
-    def load_character(self, state) -> str:
-        with open(settings.save_file) as f:
-            data = json.load(f)
-            for k, v in self.slots.items():
-                if v.selected and data[k]:
-                    sd.character.deserialize(data[k])
-                    state = "init_character_sheet"
-                    break
-                else:
-                    state = "init_save_load_screen"
+    def load_character(self) -> str:
+        """Load stored character from JSON file if valid slot is selected.
+        RETURNS:
+            program state as string
+        """
+        # Default text used to identify empty slots. ": EMPTY" is unique to the default text attribute for empty slots.
+        empty_slot_check_str: str = ": EMPTY"
 
-        return state
+        if self.selected_slot and empty_slot_check_str not in self.selected_slot[1].text:
+            with open(settings.save_file) as f:
+                data = json.load(f)
+                sd.character.deserialize(data[self.selected_slot[0]])
+                return "init_character_sheet"
+
+        # If no valid slot is selected, return to the save/load screen.
+        return "init_save_load_screen"
