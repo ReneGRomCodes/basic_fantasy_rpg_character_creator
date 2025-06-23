@@ -118,8 +118,10 @@ class SharedData:
         ARGS:
             option: selected instance of 'InteractiveText' representing selected spell.
         """
-        # Spell selection logic.
-        self.selected_spell = self.handle_selection_logic(option, self.selected_spell)
+        # Ignore selection if clicked spell is the class-specific default. Prevents it from overriding other selections.
+        if option.text not in self.default_spells.values():
+            # Spell selection logic.
+            self.selected_spell = self.handle_selection_logic(option, self.selected_spell)
 
     def set_default_languages(self, languages: tuple[InteractiveText, ...]) -> None:
         """Check the selected race for default languages and set 'selected' attribute of corresponding language
@@ -133,14 +135,16 @@ class SharedData:
             if language.text in self.default_languages[self.character.race_name.lower()]:
                 language.selected = True
 
-    def select_languages(self, option) -> None:
+    def select_languages(self, option: InteractiveText) -> None:
         """Selection logic for character's languages. Set class attribute 'selected_languages' to interactive text
         instance.
         ARGS:
             option: selected instance of 'InteractiveText' representing selected language.
         """
-        # language selection logic.
-        self.selected_languages = self.handle_selection_logic(option, self.selected_languages)
+        # Ignore selection if clicked language is a race-specific default. Prevents it from overriding other selections.
+        if option.text not in self.default_languages[self.character.race_name.lower()]:
+            # language selection logic.
+            self.selected_languages = self.handle_selection_logic(option, self.selected_languages)
 
     def shared_data_janitor(self) -> None:
         """Reset shared data not automatically overwritten elsewhere with default values in case of a switch to a
