@@ -51,51 +51,60 @@ class SharedData:
         self.random_money_flag: bool = False  # Flag to check money selection.
         self.custom_money_flag: bool = False  # Flag to check money selection.
 
-    def select_race_class(self, mouse_pos, reset: bool = False) -> None:
+    def select_race_class(self, option) -> None:
         """Selection logic for race/class selection screen. Set class attributes 'selected_race' and 'selected_class'
         to interactive text field instances.
         ARGS:
-            mouse_pos: position of mouse on screen.
-            reset: bool to reset race/class selection. Default is 'False'.
+            option: selected instance of 'InteractiveText'.
         """
         # Assign entries from 'gui_elements' to variables.
         races: tuple[InteractiveText, ...] = uisd.gui_elements["active_races"]
         classes: tuple[InteractiveText, ...] = uisd.gui_elements["active_classes"]
 
-        # Loop through each available race and class option to see if any were clicked.
-        for race in races:
-            if race.interactive_rect.collidepoint(mouse_pos):
-                self.selected_race = race
-                break
-        for cls in classes:
-            if cls.interactive_rect.collidepoint(mouse_pos):
-                self.selected_class = cls
-                break
-
-        if self.selected_race:
-            # Unselect the previous selected race, if any.
-            for race in races:
-                if race.selected:
-                    race.selected = False  # Set the selected attribute of the previously selected race to False.
-            # Select the new race.
-            self.selected_race.selected = True
-        if self.selected_class:
-            # Unselect the previous selected class, if any.
-            for cls in classes:
-                if cls.selected:
-                    cls.selected = False  # Set the selected attribute of the previously selected class to False.
-            # Select the new class.
-            self.selected_class.selected = True
-
-        # Reset entire race/class selection if 'reset button' is clicked (when method is called from event handler with
-        # 'reset=True').
-        if reset:
+        # Race selection logic.
+        if option in races:
+            # Check if race is already selected.
             if self.selected_race:
-                self.selected_race.selected = False
-                self.selected_race = None
+                # Deselect race if the same option is clicked again.
+                if self.selected_race == option:
+                    option.selected = False
+                    self.selected_race = None
+                # Switch selection if different race is chosen.
+                else:
+                    self.selected_race.selected = False
+                    option.selected = True
+                    self.selected_race = option
+            # Set selected race option if none has been previously chosen.
+            else:
+                option.selected = True
+                self.selected_race = option
+
+        # Class selection logic.
+        elif option in classes:
+            # Check if class is already selected.
             if self.selected_class:
-                self.selected_class.selected = False
-                self.selected_class = None
+                # Deselect class if the same option is clicked again.
+                if self.selected_class == option:
+                    option.selected = False
+                    self.selected_class = None
+                    # Switch selection if different class is chosen.
+                else:
+                    self.selected_class.selected = False
+                    option.selected = True
+                    self.selected_class = option
+            # Set selected class option if none has been previously chosen.
+            else:
+                option.selected = True
+                self.selected_class = option
+
+    def clear_race_class_selection(self):
+        """Reset entire race/class selection."""
+        if self.selected_race:
+            self.selected_race.selected = False
+            self.selected_race = None
+        if self.selected_class:
+            self.selected_class.selected = False
+            self.selected_class = None
 
     def set_default_spell(self, spells: tuple[InteractiveText, ...]) -> None:
         """Check the selected class for default spells and set 'selected' attribute of corresponding spell InteractiveText

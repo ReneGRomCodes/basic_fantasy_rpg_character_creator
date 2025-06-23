@@ -186,10 +186,10 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                 # Race/class selection logic.
                 for option in uisd.gui_elements["active_races"] + uisd.gui_elements["active_classes"]:
                     if option.interactive_rect.collidepoint(mouse_pos):
-                        sd.select_race_class(mouse_pos)
+                        sd.select_race_class(option)
                 if uisd.gui_elements["reset_button"].button_rect.collidepoint(mouse_pos):
                     # Reset selection.
-                    sd.select_race_class(mouse_pos, reset=True)
+                    sd.clear_race_class_selection()
 
                 if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     state = "show_abilities"

@@ -10,7 +10,7 @@ from core.settings import settings
 """Class to organize and access save/load screen objects as attributes."""
 
 """
-# Data structure for JSON file 'save/characters.json'.
+# Data structure for empty JSON file 'save/characters.json'.
 
 data = {
     "slot_00": None,
@@ -24,7 +24,7 @@ data = {
     "slot_08": None,
 }
 
-JSON file is stored in 'Settings' instance attribute 'settings.save_file'.
+'Settings' instance attribute 'settings.save_file' is used to reference save file.
 """
 
 class SaveLoadScreen:
@@ -62,7 +62,7 @@ class SaveLoadScreen:
         self.exit_button: Button = so.Button(screen, self.exit_button_text, text_medium)
         self.save_button: Button = so.Button(screen, "Save", text_medium)
         self.load_button: Button = so.Button(screen, "Load", text_medium)
-        self.delete_button: Button = so.Button(screen, "Delete", text_medium)
+        self.delete_button: Button = so.Button(screen, "Delete Character", text_medium)
         # Tuple with 'Button' instances for use in for-loops when accessing instances.
         self.button_group: tuple[Button, ...] = (self.exit_button, self.save_button, self.load_button, self.delete_button)
         # Set default button width.
