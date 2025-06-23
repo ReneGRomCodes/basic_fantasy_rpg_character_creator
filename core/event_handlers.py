@@ -93,12 +93,16 @@ def main_events(screen, state: str, mouse_pos) -> str:
                         sd.save_load_screen.select_character_slot(slot_id, slot)
 
                 if sd.save_load_screen.save_button.button_rect.collidepoint(mouse_pos):
-                    # Save character and return to character sheet.
+                    # Save character and update save/load screen.
                     state = sd.save_load_screen.save_character(state)
 
                 if sd.save_load_screen.load_button.button_rect.collidepoint(mouse_pos):
                     # Load character and return to character sheet.
                     state = sd.save_load_screen.load_character()
+
+                if sd.save_load_screen.delete_button.button_rect.collidepoint(mouse_pos):
+                    # Delete character and update save/load screen.
+                    state = sd.save_load_screen.delete_character()
 
                 if sd.save_load_screen.exit_button.button_rect.collidepoint(mouse_pos):
                     # Select state based on previously set screen mode flag.

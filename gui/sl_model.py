@@ -7,7 +7,25 @@ from gui.shared_data import ui_shared_data as uisd
 from core.shared_data import shared_data as sd
 from core.settings import settings
 
-"""Helper class to organize and access save/load screen objects as attributes."""
+"""Class to organize and access save/load screen objects as attributes."""
+
+"""
+# Data structure for JSON file 'save/characters.json'.
+
+data = {
+    "slot_00": None,
+    "slot_01": None,
+    "slot_02": None,
+    "slot_03": None,
+    "slot_04": None,
+    "slot_05": None,
+    "slot_06": None,
+    "slot_07": None,
+    "slot_08": None,
+}
+
+JSON file is stored in 'Settings' instance attribute 'settings.save_file'.
+"""
 
 class SaveLoadScreen:
     """A class to store and manage save/load screen elements."""
@@ -44,8 +62,9 @@ class SaveLoadScreen:
         self.exit_button: Button = so.Button(screen, self.exit_button_text, text_medium)
         self.save_button: Button = so.Button(screen, "Save", text_medium)
         self.load_button: Button = so.Button(screen, "Load", text_medium)
+        self.delete_button: Button = so.Button(screen, "Delete", text_medium)
         # Tuple with 'Button' instances for use in for-loops when accessing instances.
-        self.button_group: tuple[Button, ...] = (self.exit_button, self.save_button, self.load_button)
+        self.button_group: tuple[Button, ...] = (self.exit_button, self.save_button, self.load_button, self.delete_button)
         # Set default button width.
         for button in self.button_group:
             button.button_rect.width = gui_elements["default_button_width"]
@@ -98,6 +117,8 @@ class SaveLoadScreen:
         # Position exit button at the bottom right of the screen.
         self.exit_button.button_rect.bottomright = (self.screen_rect.right - self.edge_spacing,
                                                     self.screen_rect.bottom - self.edge_spacing)
+        # Position delete button.
+        self.delete_button.button_rect.bottom = self.screen_rect.bottom - self.edge_spacing
 
         # Position save and load buttons based on screen mode flag 'self.load_only'.
         if self.load_only:
@@ -205,4 +226,25 @@ class SaveLoadScreen:
                 return "init_character_sheet"
 
         # If no valid slot is selected, return to the save/load screen.
+        return "init_save_load_screen"
+
+    def delete_character(self) -> str:
+        """Delete selected character from JSON file and reset file entry to default 'None'.
+        RETURN:
+            program state as string
+        """
+        if self.selected_slot:
+            # Load existing save data.
+            with open(settings.save_file) as f:
+                data = json.load(f)
+                # Reset selected entry to default 'None'.
+                data[self.selected_slot[0]] = None
+
+            # Write updated data back to file and return to the save/load screen.
+            with open(settings.save_file, "w") as f:
+                json.dump(data, f)
+
+            # Set 'self.selected_slot' back to 'False'.
+            self.selected_slot: bool = False
+
         return "init_save_load_screen"

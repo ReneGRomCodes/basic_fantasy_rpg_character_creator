@@ -12,24 +12,3 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO implement possibility to select multiple additional languages based on intelligence bonus
 # TODO add option to allow for minor customization of randomly generated characters
 # TODO tweak the selection on some screens during character creation. not really happy with how they work
-
-
-"""Data structure for JSON file to save/load characters. Also resets JSON file if this module is executed directly."""
-import json
-from core.settings import settings
-
-# Data structure template for JSON.
-data = {
-    "slot_00": None,
-    "slot_01": None,
-    "slot_02": None,
-    "slot_03": None,
-    "slot_04": None,
-    "slot_05": None,
-    "slot_06": None,
-    "slot_07": None,
-    "slot_08": None,
-}
-
-with open(settings.save_file, "w") as f:
-    json.dump(data, f)
