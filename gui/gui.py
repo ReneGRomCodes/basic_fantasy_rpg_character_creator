@@ -167,7 +167,6 @@ def show_spell_selection_screen(screen, mouse_pos) -> None:
     ui.draw_screen_title(screen, screen_title)
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
-    ui.draw_special_button(screen, reset_button, mouse_pos)
 
     # Position and draw spell selection elements on screen.
     ui.draw_spell_selection_screen_elements(screen, spells, screen_note, mouse_pos)
@@ -194,7 +193,6 @@ def show_language_selection_screen(screen, mouse_pos) -> None:
     ui.draw_screen_title(screen, screen_title)
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
-    ui.draw_special_button(screen, reset_button, mouse_pos)
 
     # Position and draw language selection elements on screen.
     ui.draw_language_selection_screen_elements(screen, languages, screen_note, mouse_pos)
