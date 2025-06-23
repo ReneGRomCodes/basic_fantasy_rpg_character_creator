@@ -51,51 +51,46 @@ class SharedData:
         self.random_money_flag: bool = False  # Flag to check money selection.
         self.custom_money_flag: bool = False  # Flag to check money selection.
 
+    @staticmethod
+    def handle_selection_logic(option: InteractiveText, selected_attr: InteractiveText | None) -> InteractiveText | None:
+        """General method to handle selection logic for race/class, spell and language selection screens.
+        ARGS:
+            option: selected instance of 'InteractiveText'.
+            selected_attr: instance attribute relevant to selection screen (i.e. 'self.selected_race' for race selection).
+                Value is 'None' if no selection has been made.
+        RETURNS:
+            selected_attr
+        """
+        # Check if option is already selected.
+        if selected_attr:
+            # Deselect option if the same option is clicked again.
+            if selected_attr == option:
+                option.selected = False
+                selected_attr = None
+            # Switch selection if different option is chosen.
+            else:
+                selected_attr.selected = False
+                option.selected = True
+                selected_attr = option
+        # Set selected option if none has been previously chosen.
+        else:
+            option.selected = True
+            selected_attr = option
+
+        return selected_attr
+
     def select_race_class(self, option) -> None:
         """Selection logic for race/class selection screen. Set class attributes 'selected_race' and 'selected_class'
         to interactive text field instances.
         ARGS:
             option: selected instance of 'InteractiveText'.
         """
-        # Assign entries from 'gui_elements' to variables.
-        races: tuple[InteractiveText, ...] = uisd.gui_elements["active_races"]
-        classes: tuple[InteractiveText, ...] = uisd.gui_elements["active_classes"]
-
         # Race selection logic.
-        if option in races:
-            # Check if race is already selected.
-            if self.selected_race:
-                # Deselect race if the same option is clicked again.
-                if self.selected_race == option:
-                    option.selected = False
-                    self.selected_race = None
-                # Switch selection if different race is chosen.
-                else:
-                    self.selected_race.selected = False
-                    option.selected = True
-                    self.selected_race = option
-            # Set selected race option if none has been previously chosen.
-            else:
-                option.selected = True
-                self.selected_race = option
-
+        if option in uisd.gui_elements["active_races"]:
+            self.selected_race = self.handle_selection_logic(option, self.selected_race)
         # Class selection logic.
-        elif option in classes:
-            # Check if class is already selected.
-            if self.selected_class:
-                # Deselect class if the same option is clicked again.
-                if self.selected_class == option:
-                    option.selected = False
-                    self.selected_class = None
-                    # Switch selection if different class is chosen.
-                else:
-                    self.selected_class.selected = False
-                    option.selected = True
-                    self.selected_class = option
-            # Set selected class option if none has been previously chosen.
-            else:
-                option.selected = True
-                self.selected_class = option
+        elif option in uisd.gui_elements["active_classes"]:
+            self.selected_class = self.handle_selection_logic(option, self.selected_class)
 
     def clear_race_class_selection(self):
         """Reset entire race/class selection."""
