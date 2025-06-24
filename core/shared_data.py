@@ -43,8 +43,7 @@ class SharedData:
         self.selected_spell: InteractiveText | None = None
 
         # 'InteractiveText' instances representing selected languages for character.
-        # 'None' as default values before actual values are assigned.
-        self.selected_languages: InteractiveText | None = None
+        self.selected_languages: list[InteractiveText] = []
 
         # Characters starting money.
         self.starting_money: int = 0
@@ -52,30 +51,54 @@ class SharedData:
         self.custom_money_flag: bool = False  # Flag to check money selection.
 
     @staticmethod
-    def handle_selection_logic(option: InteractiveText, selected_attr: InteractiveText | None) -> InteractiveText | None:
+    def handle_selection_logic(option: InteractiveText, selected_attr: InteractiveText | None | list[InteractiveText],
+                               multi_selection: bool = False, limit: bool | int = False)\
+            -> InteractiveText | None | list[InteractiveText]:
         """General method to handle detailed selection logic for race/class, spell and language selection screens.
+        NOTE: Method handles selection logic where a single option can be selected by default. See ARGS 'mult_selection'
+            and 'limit' for details on how to handle multiple selections.
+            Race- or class-specific default selections do NOT count towards additional selections and don't use
+            'multi_use' and 'limit' arguments.
         ARGS:
             option: selected instance of 'InteractiveText'.
             selected_attr: instance attribute relevant to selection screen (i.e. 'self.selected_race' for race selection).
-                Value is 'None' if no selection has been made.
+                Value is 'None' or empty list if no selection has been made.
+            multi_selection: triggers permission for selection of multiple element. Default is 'False'.
+            limit: int value for number of elements that can be selected if 'multi_selection=True'. Default is 'False'.
         RETURNS:
             selected_attr
         """
-        # Check if option is already selected.
-        if selected_attr:
-            # Deselect option if the same option is clicked again.
-            if selected_attr == option:
-                option.selected = False
-                selected_attr = None
-            # Switch selection if different option is chosen.
+        if not multi_selection:
+            # Check if option is already selected.
+            if selected_attr:
+                # Deselect option if the same option is clicked again.
+                if selected_attr == option:
+                    selected_attr = None
+                # Switch selection if different option is chosen.
+                else:
+                    selected_attr.selected = False
+                    selected_attr = option
+            # Set selected option if none has been previously chosen.
             else:
-                selected_attr.selected = False
-                option.selected = True
                 selected_attr = option
-        # Set selected option if none has been previously chosen.
+
         else:
-            option.selected = True
-            selected_attr = option
+            if selected_attr:
+                # Deselect option if the same option is clicked again.
+                if option in selected_attr:
+                    selected_attr.remove(option)
+                # Add selection to list.
+                else:
+                    # Check if language limit is reached and add option to 'selected_attr' if permitted.
+                    if len(selected_attr) < limit:
+                        selected_attr.append(option)
+                    else:
+                        # Set 'selected' attribute to 'False' to avoid 'handle_mouse_interaction()' method of class
+                        # 'InteractiveText' setting it to 'True'. See class method docstring for details.
+                        option.selected = False
+            # Add selection if list is empty.
+            else:
+                selected_attr = [option]
 
         return selected_attr
 
@@ -136,15 +159,20 @@ class SharedData:
                 language.selected = True
 
     def select_languages(self, option: InteractiveText) -> None:
-        """Selection logic for character's languages. Set class attribute 'selected_languages' to interactive text
+        """Selection logic for character's languages. Populate list 'self.selected_languages' storing interactive text
         instance.
         ARGS:
             option: selected instance of 'InteractiveText' representing selected language.
         """
+        # Number of languages a character can learn in addition to race-specific languages. Value equals character's
+        # intelligence bonus.
+        max_additional_languages: int = self.character.abilities["int"][1]
+
         # Ignore selection if clicked language is a race-specific default. Prevents it from overriding other selections.
         if option.text not in self.default_languages[self.character.race_name.lower()]:
             # language selection logic.
-            self.selected_languages = self.handle_selection_logic(option, self.selected_languages)
+            self.selected_languages = self.handle_selection_logic(option, self.selected_languages, multi_selection=True,
+                                                                  limit=max_additional_languages)
 
     def shared_data_janitor(self) -> None:
         """Reset shared data not automatically overwritten elsewhere with default values in case of a switch to a
@@ -167,14 +195,15 @@ class SharedData:
             self.selected_spell.selected = False
         # Unselect language selection if user visited language selection screen previously.
         if self.selected_languages:
-            self.selected_languages.selected = False
+            for language in self.selected_languages:
+                language.selected = False
 
         # Reset attributes to 'None'.
         self.possible_characters: None = None
         self.selected_race: None = None
         self.selected_class: None = None
         self.selected_spell: None = None
-        self.selected_languages: None = None
+        self.selected_languages: list[InteractiveText] = []
 
         # Initialize/reset dict for use in 'gui/ui_helpers.py' in function 'position_race_class_elements()' to calculate
         # UI positioning, and automatically populate dict 'rc_dict' once with all races/classes available in the game
