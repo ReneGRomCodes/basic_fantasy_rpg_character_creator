@@ -224,11 +224,6 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                     state = "language_selection"
 
         elif state == "language_selection":
-            # Set default languages and switch to next state if conditions to display language selection are not met.
-            if not uisd.language_flag:
-                sd.character.set_languages(uisd.gui_elements["lang_fields"])
-                state = "name_character"
-
             if event.type == pygame.MOUSEBUTTONUP:
                 # Language selection logic.
                 for option in uisd.gui_elements["lang_fields"]:

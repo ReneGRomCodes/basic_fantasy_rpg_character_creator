@@ -9,7 +9,7 @@ this point it has become mostly a dumping ground for 'todos'."""
 
 # PRIORITIES:
 # TODO add sections for thief skills to character sheet
-# TODO implement possibility to select multiple additional languages based on intelligence bonus
 # TODO add option to allow for minor customization of randomly generated characters
-# TODO modify language selection so that the number of languages to be selected equals intelligence bonus
-# TODO confirmation messages for save/load screen.
+# TODO add counter for 'remaining language selections allowed' in language selection screen and grey out selections when limit is reached
+# TODO replace 'CONTINUE' button with 'SKIP' to spell and language selection if no selection is made
+# TODO confirmation messages for save/load screen
