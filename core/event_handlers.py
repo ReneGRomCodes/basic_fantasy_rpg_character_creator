@@ -218,7 +218,8 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                 if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
                     state = "race_class_selection"
 
-                if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                if (uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos)
+                        or uisd.gui_elements["skip_button"].button_rect.collidepoubt(mouse_pos)):
                     # Add selected spells to character.
                     sd.character.set_starting_spell(uisd.gui_elements["spell_fields"])
                     state = "language_selection"
@@ -402,6 +403,7 @@ def handle_screen_switch_reset(screen, event, mouse_pos) -> None:
     if (event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP) and screen.get_rect().collidepoint(mouse_pos):
         uisd.reset_position_flag()
         uisd.gui_elements["continue_button"].fade_alpha = 0
+        uisd.gui_elements["skip_button"].fade_alpha = 0
         uisd.gui_elements["back_button"].fade_alpha = 0
 
 

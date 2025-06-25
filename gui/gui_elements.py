@@ -74,21 +74,32 @@ def initialize_screen_elements(screen) -> dict:
     menu_title_spacing: int = int(screen_height / 45)  # Default spacing between menu title and GUI objects.
     default_edge_spacing: int = int(screen_width / 37)  # Default value for distance to between most GUI objects edges.
     button_spacing: int = int(screen_height / 200)  # Default spacing between buttons. Works best for 'grouped' buttons.
-    # Standard buttons, size.
-    button_width: int = int(screen_width / 6)
-    continue_button: Button = so.Button(screen, "Continue", text_medium)
-    continue_button.button_rect.width = button_width
-    continue_button.button_rect.bottomright = (screen.get_rect().right - default_edge_spacing,
+    button_width: int = int(screen_width / 6)  # Width for buttons like 'Continue', 'Back', etc. .
+    # Default coordinates for buttons that are positioned at the screen's bottom corners.
+    # Assign 'button_bottomright_pos' to button's rect '.bottomright' or 'button_bottomleft_pos' to '.bottomleft'
+    # respectively for proper positioning.
+    button_bottomright_pos: tuple[int, int] = (screen.get_rect().right - default_edge_spacing,
                                                screen.get_rect().bottom - default_edge_spacing)
+    button_bottomleft_pos: tuple[int, int] = (screen.get_rect().left + default_edge_spacing,
+                                              screen.get_rect().bottom - default_edge_spacing)
+
+    # Standard buttons.
+    continue_button: Button = so.Button(screen, "Continue", text_medium)
     inactive_continue_button = so.Button(screen, "Continue", text_medium, text_color="inactive")
-    inactive_continue_button.button_rect.width = button_width
-    inactive_continue_button.button_rect.bottomright = continue_button.button_rect.bottomright
     inactive_continue_button.rect_hover_color = settings.inactive_continue_button_hover_color
     inactive_continue_button.rect_clicked_color = settings.inactive_continue_button_click_color
+    skip_button: Button = so.Button(screen, "Skip Selection", text_medium)
     back_button: Button = so.Button(screen, "Back", text_medium)
-    back_button.button_rect.width = button_width
-    back_button.button_rect.bottomleft = (screen.get_rect().left + default_edge_spacing,
-                                          screen.get_rect().bottom - default_edge_spacing)
+    # Tuple of 'Button' instances for resizing in for-loop below.
+    button_fields: tuple[Button, ...] = (continue_button, inactive_continue_button, skip_button, back_button)
+    # Resize button rects.
+    for button in button_fields:
+        button.button_rect.width = button_width
+    # Button positions.
+    continue_button.button_rect.bottomright = button_bottomright_pos
+    inactive_continue_button.button_rect.bottomright = button_bottomright_pos
+    skip_button.button_rect.bottomright = button_bottomright_pos
+    back_button.button_rect.bottomleft = button_bottomleft_pos
 
     # Art assets.
     background_image: pygame.transform.scale = pygame.transform.scale(pygame.image.load(settings.bg_image).convert(),
@@ -373,7 +384,11 @@ def initialize_screen_elements(screen) -> dict:
         # Standard buttons.
         "continue_button": continue_button,
         "inactive_continue_button": inactive_continue_button,
+        "skip_button": skip_button,
         "back_button": back_button,
+        # Standard button positions.
+        "bottom_right_pos": button_bottomright_pos,
+        "bottom_left_pos": button_bottomleft_pos,
         # Art assets.
         "background_image": background_image,
 

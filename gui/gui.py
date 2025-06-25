@@ -158,15 +158,16 @@ def show_spell_selection_screen(screen, mouse_pos) -> None:
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = uisd.gui_elements["spell_title"]
     screen_note = uisd.gui_elements["spell_note"]
-    reset_button = uisd.gui_elements["reset_button"]
     back_button = uisd.gui_elements["back_button"]
     continue_button = uisd.gui_elements["continue_button"]
+    skip_button = uisd.gui_elements["skip_button"]
     spells = uisd.gui_elements["spell_fields"]
 
     # Draw screen title and buttons.
     ui.draw_screen_title(screen, screen_title)
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
+    skip_button.draw_button(mouse_pos)
 
     # Position and draw spell selection elements on screen.
     ui.draw_spell_selection_screen_elements(screen, spells, screen_note, mouse_pos)
@@ -184,7 +185,6 @@ def show_language_selection_screen(screen, mouse_pos) -> None:
     # Assign fields and buttons from 'gui_elements' to variables.
     screen_title = uisd.gui_elements["lang_title"]
     screen_note = uisd.gui_elements["lang_note"]
-    reset_button = uisd.gui_elements["reset_button"]
     back_button = uisd.gui_elements["back_button"]
     continue_button = uisd.gui_elements["continue_button"]
     languages = uisd.gui_elements["lang_fields"]

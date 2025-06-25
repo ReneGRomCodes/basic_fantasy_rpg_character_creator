@@ -467,6 +467,13 @@ def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveTe
         else:
             spell.interactive_rect.centery = pos_y_start + pos_y_offset * index
 
+    if sd.selected_spell:
+        uisd.gui_elements["continue_button"].button_rect.bottomright = uisd.gui_elements["bottom_right_pos"]
+        uisd.gui_elements["skip_button"].button_rect.bottomright = screen.get_rect().topleft
+    else:
+        uisd.gui_elements["continue_button"].button_rect.bottomright = screen.get_rect().topleft
+        uisd.gui_elements["skip_button"].button_rect.bottomright = uisd.gui_elements["bottom_right_pos"]
+
 
 def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...], screen_note: TextField,
                                          mouse_pos) -> None:
