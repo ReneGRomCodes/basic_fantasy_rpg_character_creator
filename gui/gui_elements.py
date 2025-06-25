@@ -83,6 +83,11 @@ def initialize_screen_elements(screen) -> dict:
     button_bottomleft_pos: tuple[int, int] = (screen.get_rect().left + default_edge_spacing,
                                               screen.get_rect().bottom - default_edge_spacing)
 
+    # Off-Screen position for screen objects.
+    # Assign 'off_screen_position' to screen object's rect '.bottomright' if object has to be positioned outside the
+    # screen... for whatever reason.
+    off_screen_position: tuple[int, int] = screen.get_rect().topleft
+
     # Standard buttons.
     continue_button: Button = so.Button(screen, "Continue", text_medium)
     inactive_continue_button = so.Button(screen, "Continue", text_medium, text_color="inactive")
@@ -389,6 +394,8 @@ def initialize_screen_elements(screen) -> dict:
         # Standard button positions.
         "bottom_right_pos": button_bottomright_pos,
         "bottom_left_pos": button_bottomleft_pos,
+        # Off-Screen position for special uses.
+        "off_screen_pos": off_screen_position,
         # Art assets.
         "background_image": background_image,
 

@@ -187,12 +187,14 @@ def show_language_selection_screen(screen, mouse_pos) -> None:
     screen_note = uisd.gui_elements["lang_note"]
     back_button = uisd.gui_elements["back_button"]
     continue_button = uisd.gui_elements["continue_button"]
+    skip_button = uisd.gui_elements["skip_button"]
     languages = uisd.gui_elements["lang_fields"]
 
     # Draw screen title and buttons.
     ui.draw_screen_title(screen, screen_title)
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
+    skip_button.draw_button(mouse_pos)
 
     # Position and draw language selection elements on screen.
     ui.draw_language_selection_screen_elements(screen, languages, screen_note, mouse_pos)
@@ -208,6 +210,7 @@ def show_naming_screen(screen, mouse_pos) -> None:
     naming_prompt = uisd.gui_elements["naming_prompt"]
     back_button = uisd.gui_elements["back_button"]
     continue_button = uisd.gui_elements["continue_button"]
+    skip_button = uisd.gui_elements["skip_button"]
     character_name_field = uisd.gui_elements["character_name_input"][1]
 
     # Create text attribute for naming prompt object to include chosen race and class, and position it on screen.
@@ -221,6 +224,7 @@ def show_naming_screen(screen, mouse_pos) -> None:
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
+    skip_button.draw_button(mouse_pos)
 
 
 def show_starting_money_screen(screen, mouse_pos) -> None:

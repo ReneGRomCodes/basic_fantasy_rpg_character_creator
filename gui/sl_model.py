@@ -123,7 +123,7 @@ class SaveLoadScreen:
         if self.load_only:
             self.load_button.button_rect.bottomleft = uisd.gui_elements["bottom_left_pos"]
             # Position save button outside the screen to avoid accidental collision detection.
-            self.save_button.button_rect.bottomright = self.screen_rect.topleft
+            self.save_button.button_rect.bottomright = uisd.gui_elements["off_screen_pos"]
         else:
             self.save_button.button_rect.bottomleft = uisd.gui_elements["bottom_left_pos"]
             self.load_button.button_rect.bottomleft = self.save_button.button_rect.bottomright

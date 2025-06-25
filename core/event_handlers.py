@@ -259,7 +259,7 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                     else:
                         state = "race_class_selection"
 
-                if continue_button.collidepoint(mouse_pos):
+                if continue_button.collidepoint(mouse_pos) or skip_button.collidepoint(mouse_pos):
                     # Set selected languages in character object after confirmation.
                     sd.character.set_languages(uisd.gui_elements["lang_fields"])
                     state = "name_character"
@@ -347,7 +347,7 @@ def naming_character_events(screen, state: str, mouse_pos) -> str:
                     sd.shared_data_janitor()
                     state = "character_menu"
 
-            if continue_button.collidepoint(mouse_pos):
+            if continue_button.collidepoint(mouse_pos) or skip_button.collidepoint(mouse_pos):
                 sd.character.set_name(character_name_input.manager.value)
                 # Different state value is checked and set depending on whether custom or random character is created.
                 if state == "name_character":
@@ -440,7 +440,6 @@ def handle_screen_switch_reset(screen, event, mouse_pos) -> None:
         uisd.gui_elements["continue_button"].fade_alpha = 0
         uisd.gui_elements["skip_button"].fade_alpha = 0
         uisd.gui_elements["back_button"].fade_alpha = 0
-
 
 def reset_input_fields() -> None:
     """Reset text input fields to ensure each character creation process starts with empty input fields. Called in state
