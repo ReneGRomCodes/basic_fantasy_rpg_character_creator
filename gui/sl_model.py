@@ -115,20 +115,17 @@ class SaveLoadScreen:
     def position_sl_elements(self) -> None:
         """Position save/load screen elements."""
         # Position exit button at the bottom right of the screen.
-        self.exit_button.button_rect.bottomright = (self.screen_rect.right - self.edge_spacing,
-                                                    self.screen_rect.bottom - self.edge_spacing)
+        self.exit_button.button_rect.bottomright = uisd.gui_elements["bottom_right_pos"]
         # Position delete button.
         self.delete_button.button_rect.bottom = self.screen_rect.bottom - self.edge_spacing
 
         # Position save and load buttons based on screen mode flag 'self.load_only'.
         if self.load_only:
-            self.load_button.button_rect.bottomleft = (self.screen_rect.left + self.edge_spacing,
-                                                       self.screen_rect.bottom - self.edge_spacing)
+            self.load_button.button_rect.bottomleft = uisd.gui_elements["bottom_left_pos"]
             # Position save button outside the screen to avoid accidental collision detection.
             self.save_button.button_rect.bottomright = self.screen_rect.topleft
         else:
-            self.save_button.button_rect.bottomleft = (self.screen_rect.left + self.edge_spacing,
-                                                       self.screen_rect.bottom - self.edge_spacing)
+            self.save_button.button_rect.bottomleft = uisd.gui_elements["bottom_left_pos"]
             self.load_button.button_rect.bottomleft = self.save_button.button_rect.bottomright
 
         # Position character slots.

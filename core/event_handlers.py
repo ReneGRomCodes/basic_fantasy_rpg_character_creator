@@ -46,13 +46,25 @@ def main_events(screen, state: str, mouse_pos) -> str:
     RETURNS:
         state
     """
+    # Assign button rects for cleaner code and better readability at collide point detection.
+    # Standard buttons.
+    back_button = uisd.gui_elements["back_button"].button_rect
+    # Main menu.
+    start_button = uisd.gui_elements["start_button"].button_rect
+    load_button = uisd.gui_elements["menu_buttons"][0].button_rect
+    settings_button = uisd.gui_elements["menu_buttons"][1].button_rect
+    credits_button = uisd.gui_elements["menu_buttons"][2].button_rect
+    quit_button = uisd.gui_elements["menu_buttons"][3].button_rect
+    # Character creation menu.
+    custom_creation_button = uisd.gui_elements["custom"].button_rect
+    random_creation_button = uisd.gui_elements["random"].button_rect
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
-        # Ensures screen specific UI elements are positioned only once per screen appearance and reset alpha transparency
+        # Ensures screen-specific UI elements are positioned only once per screen appearance and reset alpha transparency
         # for 'continue' and 'back' buttons.
         handle_screen_switch_reset(screen, event, mouse_pos)
 
@@ -63,25 +75,25 @@ def main_events(screen, state: str, mouse_pos) -> str:
 
         elif state == "main_menu":
             if event.type == pygame.MOUSEBUTTONUP:
-                if uisd.gui_elements["start_button"].button_rect.collidepoint(mouse_pos):
+                if start_button.collidepoint(mouse_pos):
                     state = "character_menu"
 
-                if uisd.gui_elements["menu_buttons"][0].button_rect.collidepoint(mouse_pos):
+                if load_button.collidepoint(mouse_pos):
                     # Set load-only mode for save/load screen when accessing it from main menu.
                     uisd.load_only_flag = True
                     # Event switches to state 'init_save_load_screen', which creates 'SaveLoadScreen' object before
                     # proceeding to final 'save_load_screen' state from within main state manager.
                     state = "init_save_load_screen"
 
-                if uisd.gui_elements["menu_buttons"][1].button_rect.collidepoint(mouse_pos):
+                if settings_button.collidepoint(mouse_pos):
                     state = "settings_screen"
 
-                if uisd.gui_elements["menu_buttons"][2].button_rect.collidepoint(mouse_pos):
+                if credits_button.collidepoint(mouse_pos):
                     # Event switches to state 'init_credits', which creates 'Credits' object before proceeding to final
                     # 'credits' state from within main state manager.
                     state = "init_credits"
 
-                if uisd.gui_elements["menu_buttons"][3].button_rect.collidepoint(mouse_pos):
+                if quit_button.collidepoint(mouse_pos):
                     pygame.quit()
                     sys.exit()
 
@@ -113,7 +125,7 @@ def main_events(screen, state: str, mouse_pos) -> str:
 
         elif state == "settings_screen":
             if event.type == pygame.MOUSEBUTTONUP:
-                if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                if back_button.collidepoint(mouse_pos):
                     state = "main_menu"
 
         elif state == "credits":
@@ -122,13 +134,13 @@ def main_events(screen, state: str, mouse_pos) -> str:
 
         elif state == "character_menu":
             if event.type == pygame.MOUSEBUTTONUP:
-                if uisd.gui_elements["custom"].button_rect.collidepoint(mouse_pos):
+                if custom_creation_button.collidepoint(mouse_pos):
                     state = "set_abilities"
 
-                if uisd.gui_elements["random"].button_rect.collidepoint(mouse_pos):
+                if random_creation_button.collidepoint(mouse_pos):
                     state = "random_character"
 
-                if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                if back_button.collidepoint(mouse_pos):
                     state = "main_menu"
 
         elif state == "character_sheet":
@@ -155,6 +167,17 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
     RETURNS:
         state
     """
+    # Assign button rects for cleaner code and better readability at collide point detection.
+    # Standard buttons.
+    continue_button = uisd.gui_elements["continue_button"].button_rect
+    skip_button = uisd.gui_elements["skip_button"].button_rect
+    back_button = uisd.gui_elements["back_button"].button_rect
+    # Ability screen.
+    reroll_button = uisd.gui_elements["reroll_button"].button_rect
+    # Race/class selection.
+    reset_button = uisd.gui_elements["reset_button"].button_rect
+    # Creation complete.
+    show_sheet_button = uisd.gui_elements["show_character_sheet"].button_rect
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -167,13 +190,13 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
 
         if state == "show_abilities":
             if event.type == pygame.MOUSEBUTTONUP:
-                if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                if back_button.collidepoint(mouse_pos):
                     state = "character_menu"
 
-                if uisd.gui_elements["reroll_button"].button_rect.collidepoint(mouse_pos):
+                if reroll_button.collidepoint(mouse_pos):
                     state = "set_abilities"
 
-                if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                if continue_button.collidepoint(mouse_pos):
                     # Set and return available races/classes and state after confirmation of ability scores.
                     sd.possible_characters = rls.build_possible_characters_list(sd.character)
                     # Check intelligence bonus to set 'language_flag' attribute in instance of 'shared_data' (GUI) to
@@ -187,16 +210,16 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                 for option in uisd.gui_elements["active_races"] + uisd.gui_elements["active_classes"]:
                     if option.interactive_rect.collidepoint(mouse_pos):
                         sd.select_race_class(option)
-                if uisd.gui_elements["reset_button"].button_rect.collidepoint(mouse_pos):
+                if reset_button.collidepoint(mouse_pos):
                     # Reset selection.
                     sd.clear_race_class_selection()
 
-                if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                if back_button.collidepoint(mouse_pos):
                     state = "show_abilities"
 
                 # Only continue if race AND class are selected.
                 if sd.selected_race and sd.selected_class:
-                    if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                    if continue_button.collidepoint(mouse_pos):
                         # Set race, class and their specific values in character object after confirmation.
                         sd.character.set_race(sd.selected_race.text)
                         sd.character.set_class(sd.selected_class.text)
@@ -215,11 +238,10 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                     if option.interactive_rect.collidepoint(mouse_pos):
                         sd.select_spell(option)
 
-                if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                if back_button.collidepoint(mouse_pos):
                     state = "race_class_selection"
 
-                if (uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos)
-                        or uisd.gui_elements["skip_button"].button_rect.collidepoubt(mouse_pos)):
+                if continue_button.collidepoint(mouse_pos) or skip_button.collidepoint(mouse_pos):
                     # Add selected spells to character.
                     sd.character.set_starting_spell(uisd.gui_elements["spell_fields"])
                     state = "language_selection"
@@ -231,13 +253,13 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                     if option.interactive_rect.collidepoint(mouse_pos):
                         sd.select_languages(option)
 
-                if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                if back_button.collidepoint(mouse_pos):
                     if sd.character.class_name in sd.magic_classes:
                         state = "spell_selection"
                     else:
                         state = "race_class_selection"
 
-                if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                if continue_button.collidepoint(mouse_pos):
                     # Set selected languages in character object after confirmation.
                     sd.character.set_languages(uisd.gui_elements["lang_fields"])
                     state = "name_character"
@@ -245,13 +267,13 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
         elif state == "select_starting_money":
             # Base state for starting money screen.
             if event.type == pygame.MOUSEBUTTONUP:
-                if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+                if back_button.collidepoint(mouse_pos):
                     state = "name_character"
 
                 # Allow to continue to next state if 'random_money' is 'True' and the dice roll is complete or switch
                 # state for user input if 'custom_money' is 'True'.
                 if sd.random_money_flag and uisd.dice_roll_complete:
-                    if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+                    if continue_button.collidepoint(mouse_pos):
                         # Set starting money to 'sd.starting_money' if 'random_money' is 'True'.
                         sd.character.money = sd.starting_money
                         state = "creation_complete"
@@ -261,7 +283,7 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
 
         elif state == "creation_complete":
             if event.type == pygame.MOUSEBUTTONUP:
-                if uisd.gui_elements["show_character_sheet"].button_rect.collidepoint(mouse_pos):
+                if show_sheet_button.collidepoint(mouse_pos):
                     # Reset text input fields after character creation is finished to ensure next character creation
                     # process starts with empty input fields.
                     reset_input_fields()
@@ -283,6 +305,12 @@ def naming_character_events(screen, state: str, mouse_pos) -> str:
     RETURNS:
         state
     """
+    # Assign button rects for cleaner code and better readability at collide point detection.
+    # Standard buttons.
+    continue_button = uisd.gui_elements["continue_button"].button_rect
+    skip_button = uisd.gui_elements["skip_button"].button_rect
+    back_button = uisd.gui_elements["back_button"].button_rect
+
     # Assign 'pygame_textinput' instance stored in dict 'gui_elements' to variable.
     character_name_input = uisd.gui_elements["character_name_input"][0]
     # Get pygame events and assign it to variable to be shared between 'pygame_textinput' instance and the for-loop.
@@ -301,7 +329,7 @@ def naming_character_events(screen, state: str, mouse_pos) -> str:
         handle_screen_switch_reset(screen, event, mouse_pos)
 
         if event.type == pygame.MOUSEBUTTONUP:
-            if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+            if back_button.collidepoint(mouse_pos):
                 # Different state value is checked and set depending on whether custom or random character is created.
                 sd.character.reset_character()
                 if state == "name_character":
@@ -319,7 +347,7 @@ def naming_character_events(screen, state: str, mouse_pos) -> str:
                     sd.shared_data_janitor()
                     state = "character_menu"
 
-            if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+            if continue_button.collidepoint(mouse_pos):
                 sd.character.set_name(character_name_input.manager.value)
                 # Different state value is checked and set depending on whether custom or random character is created.
                 if state == "name_character":
@@ -340,6 +368,13 @@ def custom_starting_money_events(screen, state: str, mouse_pos) -> str:
     RETURNS:
         state
     """
+    # Assign button rects for cleaner code and better readability at collide point detection.
+    # Standard buttons.
+    continue_button = uisd.gui_elements["continue_button"].button_rect
+    back_button = uisd.gui_elements["back_button"].button_rect
+    # Money selection.
+    random_money_button = uisd.gui_elements["starting_money_choices"][0].button_rect
+
     # Assign 'pygame_textinput' instance stored in dict 'gui_elements' to variable.
     starting_money_input = uisd.gui_elements["money_amount_input"][0]
 
@@ -366,10 +401,10 @@ def custom_starting_money_events(screen, state: str, mouse_pos) -> str:
             filtered_keys.append(event)
 
         if event.type == pygame.MOUSEBUTTONUP:
-            if uisd.gui_elements["back_button"].button_rect.collidepoint(mouse_pos):
+            if back_button.collidepoint(mouse_pos):
                 state = "name_character"
 
-            if uisd.gui_elements["continue_button"].button_rect.collidepoint(mouse_pos):
+            if continue_button.collidepoint(mouse_pos):
                 # Set characters starting money to '0' if input field is left empty.
                 if starting_money_input.manager.value:
                     sd.character.money = int(starting_money_input.manager.value)
@@ -377,7 +412,7 @@ def custom_starting_money_events(screen, state: str, mouse_pos) -> str:
                     sd.character.money = 0
                 state = "creation_complete"
 
-            if uisd.gui_elements["starting_money_choices"][0].button_rect.collidepoint(mouse_pos):
+            if random_money_button.collidepoint(mouse_pos):
                 # Reset input field to empty value when switching from 'custom amount' to 'random amount', and set state
                 # to basic "select_starting_money" for money selection screen.
                 starting_money_input.manager.value = ""

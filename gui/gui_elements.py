@@ -88,7 +88,7 @@ def initialize_screen_elements(screen) -> dict:
     inactive_continue_button = so.Button(screen, "Continue", text_medium, text_color="inactive")
     inactive_continue_button.rect_hover_color = settings.inactive_continue_button_hover_color
     inactive_continue_button.rect_clicked_color = settings.inactive_continue_button_click_color
-    skip_button: Button = so.Button(screen, "Skip Selection", text_medium)
+    skip_button: Button = so.Button(screen, "Skip", text_medium)
     back_button: Button = so.Button(screen, "Back", text_medium)
     # Tuple of 'Button' instances for resizing in for-loop below.
     button_fields: tuple[Button, ...] = (continue_button, inactive_continue_button, skip_button, back_button)
