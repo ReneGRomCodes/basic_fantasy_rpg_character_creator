@@ -185,7 +185,17 @@ class CharacterSheet:
         self.spell_pos_y_list: list[int] = []
 
         # Class specials elements.
-        self.class_specials: TextField = so.TextField(screen, self.character.class_name.upper() + " SPECIALS",
+        # Check if string 'thief' is in 'self.character.class_name' and set 'class_text' to 'thief'.
+        # Class special's section title will otherwise show entire class name, even though current Thief-combination
+        # classes have no additional specials other than standard thief-abilities.
+        # AND combi-class names are too long for this section and continue off-screen otherwise... but that's totally
+        # not the main reason I added this ;)
+        if "thief" in self.character.class_name.lower():
+            class_text = "thief"
+        else:
+            class_text = self.character.class_name
+        # Class special section title.
+        self.class_specials: TextField = so.TextField(screen, class_text.upper() + " SPECIALS",
                                                             text_large)  # ANCHOR
         # 'class_special' object has its text and position dynamically modified in method 'draw_format_dynamic_field()'
         # to account for the fact that number of specials in 'character.class_specials' is unpredictable at the start of
