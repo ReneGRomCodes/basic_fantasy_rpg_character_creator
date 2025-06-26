@@ -11,5 +11,4 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO add sections for thief skills to character sheet
 # TODO add option to allow for minor customization of randomly generated characters
 # TODO add counter for 'remaining language selections allowed' in language selection screen and grey out selections when limit is reached
-# TODO replace 'CONTINUE' button with 'SKIP' to spell and language selection if no selection is made
 # TODO confirmation messages for save/load screen

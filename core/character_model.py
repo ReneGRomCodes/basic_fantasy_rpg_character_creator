@@ -4,6 +4,8 @@ import core.items.item_instances as item_inst
 from gui.screen_objects import InteractiveText
 from core.items.item_model import Armor
 from typing import Any
+from core.shared_data import shared_data as sd
+from gui.shared_data import ui_shared_data as uisd
 """Class for character."""
 
 
@@ -137,6 +139,9 @@ class Character:
     def set_name(self, char_name: str) -> None:
         """Set name for character."""
         self.name = char_name
+
+        # Reset value for name input field to empty string.
+        uisd.gui_elements["character_name_input"][0].manager.value = ""
 
     def set_ability_dict(self) -> None:
         """Build attribute dictionary 'self.abilities' for character abilities. Values are lists with base score at
@@ -277,6 +282,9 @@ class Character:
                 # Reset spell to default 'False'.
                 spell.selected = False
 
+        # Reset 'selected_spell' attribute in 'shared_data'.
+        sd.selected_spell = None
+
     def set_languages(self, language_list: tuple[InteractiveText, ...]) -> None:
         """Append 'text' attributes from instances in 'language_list' to 'self.languages' if their 'selected' attribute
         is set to 'True'.
@@ -291,6 +299,9 @@ class Character:
                 self.languages.append(language.text)
                 # Reset language to default 'False'.
                 language.selected = False
+
+        # Reset 'selected_languages' attribute in 'shared_data'.
+        sd.selected_languages = []
 
     def set_random_selections(self, spell_list: tuple[InteractiveText], language_flag: bool,
                               language_list: tuple[InteractiveText, ...]) -> None:
