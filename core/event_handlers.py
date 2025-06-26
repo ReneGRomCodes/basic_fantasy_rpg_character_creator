@@ -170,7 +170,6 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
     # Assign button rects for cleaner code and better readability at collide point detection.
     # Standard buttons.
     continue_button = uisd.gui_elements["continue_button"].button_rect
-    skip_button = uisd.gui_elements["skip_button"].button_rect
     back_button = uisd.gui_elements["back_button"].button_rect
     # Ability screen.
     reroll_button = uisd.gui_elements["reroll_button"].button_rect
@@ -241,7 +240,7 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                 if back_button.collidepoint(mouse_pos):
                     state = "race_class_selection"
 
-                if continue_button.collidepoint(mouse_pos) or skip_button.collidepoint(mouse_pos):
+                if continue_button.collidepoint(mouse_pos):
                     # Add selected spells to character.
                     sd.character.set_starting_spell(uisd.gui_elements["spell_fields"])
                     state = "language_selection"
@@ -259,7 +258,7 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                     else:
                         state = "race_class_selection"
 
-                if continue_button.collidepoint(mouse_pos) or skip_button.collidepoint(mouse_pos):
+                if continue_button.collidepoint(mouse_pos):
                     # Set selected languages in character object after confirmation.
                     sd.character.set_languages(uisd.gui_elements["lang_fields"])
                     state = "name_character"
@@ -308,7 +307,6 @@ def naming_character_events(screen, state: str, mouse_pos) -> str:
     # Assign button rects for cleaner code and better readability at collide point detection.
     # Standard buttons.
     continue_button = uisd.gui_elements["continue_button"].button_rect
-    skip_button = uisd.gui_elements["skip_button"].button_rect
     back_button = uisd.gui_elements["back_button"].button_rect
 
     # Assign 'pygame_textinput' instance stored in dict 'gui_elements' to variable.
@@ -347,7 +345,7 @@ def naming_character_events(screen, state: str, mouse_pos) -> str:
                     sd.shared_data_janitor()
                     state = "character_menu"
 
-            if continue_button.collidepoint(mouse_pos) or skip_button.collidepoint(mouse_pos):
+            if continue_button.collidepoint(mouse_pos):
                 sd.character.set_name(character_name_input.manager.value)
                 # Different state value is checked and set depending on whether custom or random character is created.
                 if state == "name_character":

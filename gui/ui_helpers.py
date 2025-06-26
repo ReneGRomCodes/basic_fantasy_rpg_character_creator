@@ -36,7 +36,10 @@ def draw_special_button(screen, button: Button, mouse_pos) -> None:
 
 def draw_conditional_continue_button(mouse_pos, condition_1: object | bool = False, condition_2: object | bool = False,
                                      check_mode: str = "any", alt_button: str = "inactive") -> None:
-    """Draw either active or inactive instance of continue button or skip button from module 'gui_elements'.
+    """Draw either active or inactive instance of continue button or skip button from module 'gui_elements' based on
+    conditional parameters.
+    NOTE: 'skip' button rect does not need a dedicated '.collidepoint' detection in event handler as it's position is
+    identical to the standard 'continue' button rect. Just use that one for event detection and Bob's your uncle.
     ARGS:
         mouse_pos: mouse position on screen.
         condition_1: first condition to be checked. Default is "False".
