@@ -142,7 +142,7 @@ def show_race_class_selection_screen(screen, mouse_pos) -> None:
     ui.draw_special_button(screen, reset_button, mouse_pos)
     back_button.draw_button(mouse_pos)
     # Show continue button only if race AND class have been selected otherwise show inactive continue button.
-    ui.draw_continue_button_inactive(sd.selected_race, sd.selected_class, mouse_pos, check_mode="all")
+    ui.draw_conditional_continue_button(mouse_pos, sd.selected_race, sd.selected_class, check_mode="all")
 
     # Call helper function to properly handle info panels (see function and class docstrings for details).
     ui.show_info_panels(active_races, mouse_pos)
@@ -159,15 +159,13 @@ def show_spell_selection_screen(screen, mouse_pos) -> None:
     screen_title = uisd.gui_elements["spell_title"]
     screen_note = uisd.gui_elements["spell_note"]
     back_button = uisd.gui_elements["back_button"]
-    continue_button = uisd.gui_elements["continue_button"]
-    skip_button = uisd.gui_elements["skip_button"]
     spells = uisd.gui_elements["spell_fields"]
 
     # Draw screen title and buttons.
     ui.draw_screen_title(screen, screen_title)
     back_button.draw_button(mouse_pos)
-    continue_button.draw_button(mouse_pos)
-    skip_button.draw_button(mouse_pos)
+    # Show continue button only if spell selection has been made, display skip button otherwise.
+    ui.draw_conditional_continue_button(mouse_pos, sd.selected_spell, alt_button="skip")
 
     # Position and draw spell selection elements on screen.
     ui.draw_spell_selection_screen_elements(screen, spells, screen_note, mouse_pos)
@@ -186,15 +184,13 @@ def show_language_selection_screen(screen, mouse_pos) -> None:
     screen_title = uisd.gui_elements["lang_title"]
     screen_note = uisd.gui_elements["lang_note"]
     back_button = uisd.gui_elements["back_button"]
-    continue_button = uisd.gui_elements["continue_button"]
-    skip_button = uisd.gui_elements["skip_button"]
     languages = uisd.gui_elements["lang_fields"]
 
     # Draw screen title and buttons.
     ui.draw_screen_title(screen, screen_title)
     back_button.draw_button(mouse_pos)
-    continue_button.draw_button(mouse_pos)
-    skip_button.draw_button(mouse_pos)
+    # Show continue button only if language selection has been made, display skip button otherwise.
+    ui.draw_conditional_continue_button(mouse_pos, sd.selected_languages, alt_button="skip")
 
     # Position and draw language selection elements on screen.
     ui.draw_language_selection_screen_elements(screen, languages, screen_note, mouse_pos)
@@ -209,8 +205,7 @@ def show_naming_screen(screen, mouse_pos) -> None:
     # Assign fields and buttons from 'gui_elements' to variables.
     naming_prompt = uisd.gui_elements["naming_prompt"]
     back_button = uisd.gui_elements["back_button"]
-    continue_button = uisd.gui_elements["continue_button"]
-    skip_button = uisd.gui_elements["skip_button"]
+    character_name = uisd.gui_elements["character_name_input"][0].manager.value
     character_name_field = uisd.gui_elements["character_name_input"][1]
 
     # Create text attribute for naming prompt object to include chosen race and class, and position it on screen.
@@ -223,8 +218,8 @@ def show_naming_screen(screen, mouse_pos) -> None:
 
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)
-    continue_button.draw_button(mouse_pos)
-    skip_button.draw_button(mouse_pos)
+    # Show continue button only if language selection has been made, display skip button otherwise.
+    ui.draw_conditional_continue_button(mouse_pos, character_name, alt_button="skip")
 
 
 def show_starting_money_screen(screen, mouse_pos) -> None:
@@ -258,7 +253,7 @@ def show_starting_money_screen(screen, mouse_pos) -> None:
     # Draw buttons on screen.
     back_button.draw_button(mouse_pos)
     # Show continue button only if a money option has been selected otherwise show inactive continue button.
-    ui.draw_continue_button_inactive(uisd.dice_roll_complete, sd.custom_money_flag, mouse_pos)
+    ui.draw_conditional_continue_button(mouse_pos, uisd.dice_roll_complete, sd.custom_money_flag)
 
 
 def show_character_complete_screen(screen, mouse_pos) -> None:

@@ -34,45 +34,35 @@ def draw_special_button(screen, button: Button, mouse_pos) -> None:
     button.draw_button(mouse_pos)
 
 
-def continue_skip_button_switch(continue_check: object = True):
-    """Toggle visibility between 'Continue' and 'Skip' buttons based on selection/input status.
-    Displays the 'Continue' button if a selection/input has been made (i.e., continue_check is truthy), otherwise shows
-    the 'Skip' button. The unused button is moved off-screen to prevent accidental event detection in the event handler.
+def draw_conditional_continue_button(mouse_pos, condition_1: object | bool = False, condition_2: object | bool = False,
+                                     check_mode: str = "any", alt_button: str = "inactive") -> None:
+    """Draw either active or inactive instance of continue button or skip button from module 'gui_elements'.
     ARGS:
-        continue_check: Value checked to determine if user input/selection has occurred.
-    """
-    if continue_check:
-        # Show 'Continue', hide 'Skip'.
-        uisd.gui_elements["continue_button"].button_rect.bottomright = uisd.gui_elements["bottom_right_pos"]
-        uisd.gui_elements["skip_button"].button_rect.bottomright = uisd.gui_elements["off_screen_pos"]
-    else:
-        # Show 'Skip', hide 'Continue'.
-        uisd.gui_elements["continue_button"].button_rect.bottomright = uisd.gui_elements["off_screen_pos"]
-        uisd.gui_elements["skip_button"].button_rect.bottomright = uisd.gui_elements["bottom_right_pos"]
-
-
-def draw_continue_button_inactive(condition_1: object | bool, condition_2: object | bool, mouse_pos, check_mode: str = "any")\
-        -> None:
-    """Draw either active or inactive instance of continue button from module 'gui_elements'.
-    ARGS:
-        condition_1: first condition to be checked.
-        condition_2: second condition to be checked.
         mouse_pos: mouse position on screen.
+        condition_1: first condition to be checked. Default is "False".
+        condition_2: second condition to be checked. Default is "False".
         check_mode: String to determine whether one or both conditions must be met. Use "any" to require at least one condition,
                     or "all" to require both. Default is "any".
+        alt_button: String to determine which conditional button alternative should be displayed. "inactive" for an
+                    inactive continue button, "skip" for a skip button. Default is "inactive".
     """
     # Assign buttons from dict 'gui_elements' to variables.
-    continue_button, inactive_continue_button = (uisd.gui_elements["continue_button"],
-                                                 uisd.gui_elements["inactive_continue_button"])
+    continue_button, inactive_continue_button, skip_button = (uisd.gui_elements["continue_button"],
+                                                              uisd.gui_elements["inactive_continue_button"],
+                                                              uisd.gui_elements["skip_button"])
 
-    # Check if condition_1 and/or condition_2 have valid values and draw appropriate (active/inactive) continue button on
-    # screen.
+    # Check if condition_1 and/or condition_2 have valid values and draw appropriate (active/inactive) continue or skip
+    # button on screen.
     if check_mode == "any" and (condition_1 or condition_2):
         continue_button.draw_button(mouse_pos)
     elif check_mode == "all" and (condition_1 and condition_2):
         continue_button.draw_button(mouse_pos)
     else:
-        inactive_continue_button.draw_button(mouse_pos)
+        # Check which alternative button should be displayed if no previous conditions are met.
+        if alt_button == "inactive":
+            inactive_continue_button.draw_button(mouse_pos)
+        elif alt_button == "skip":
+            skip_button.draw_button(mouse_pos)
 
 
 def draw_screen_note(screen, note: TextField) -> None:
@@ -463,9 +453,6 @@ def draw_available_choices(screen, available_choices: dict[str, list[Interactive
             cls.text_rect.centerx, cls.text_rect.centery = get_position_race_class_element(screen, cls, inactive_classes)
             cls.draw_text()
 
-    # TODO
-    continue_skip_button_switch()
-
 
 """Background functions for spell selection screen."""
 
@@ -486,9 +473,6 @@ def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveTe
             spell.interactive_rect.centery = pos_y_start
         else:
             spell.interactive_rect.centery = pos_y_start + pos_y_offset * index
-
-    # Select if 'Continue' or 'Skip' button should be displayed.
-    continue_skip_button_switch(sd.selected_spell)
 
 
 def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...], screen_note: TextField,
@@ -530,9 +514,6 @@ def position_language_selection_screen_elements(screen, languages: tuple[Interac
             language.interactive_rect.centery = pos_y_start
         else:
             language.interactive_rect.centery = pos_y_start + pos_y_offset * index
-
-    # Select if 'Continue' or 'Skip' button should be displayed.
-    continue_skip_button_switch(sd.selected_languages)
 
 
 def draw_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...], screen_note: TextField,
@@ -576,9 +557,6 @@ def build_and_position_prompt(screen, naming_prompt: TextField) -> None:
 
         uisd.position_flag = True
 
-        # Select if 'Continue' or 'Skip' button should be displayed.
-        continue_skip_button_switch(uisd.gui_elements["character_name_input"][0].manager.value)
-
 
 """Background functions for starting money screen."""
 
@@ -608,9 +586,6 @@ def position_money_screen_elements(screen) -> None:
         money_amount_field.input_bg_field.top = screen.get_rect().centery * 1.15
 
         uisd.position_flag = True
-
-        # TODO
-        continue_skip_button_switch()
 
 
 def choose_money_option(choices: list[Button], mouse_pos) -> None:
