@@ -284,7 +284,7 @@ class Button(TextField):
 
     def blit_button_surface(self, surface, rect: pygame.Rect, color: str | tuple[int, int, int]) -> None:
         """Fill 'surface' with 'color' and blit it onto the screen at 'rect', ensuring the button's background fits
-        inside the buttons borders with rounded corners."""
+        inside the button's borders with rounded corners."""
         # Clear the surface to ensure the button background and border render without unwanted artifacts.
         surface.fill((0, 0, 0, 0))
 

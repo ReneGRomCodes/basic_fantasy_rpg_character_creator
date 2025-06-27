@@ -69,14 +69,14 @@ def draw_conditional_continue_button(mouse_pos, condition_1: object | bool = Fal
 
 
 def draw_screen_note(screen, note: TextField) -> None:
-    """Position and draw screen-specific notes on screen.
+    """Position and draw screen-specific notes on default position (centered at left edge) on screen.
     ARGS:
         screen: PyGame window.
         note: 'TextField' instance for screen-specific notes.
     """
     # Position notes at the screens left.
     note.text_rect.left = screen.get_rect().left + uisd.gui_elements["default_edge_spacing"]
-    note.text_rect.centery = screen.get_rect().bottom - screen.get_rect().height / 2
+    note.text_rect.centery = screen.get_rect().centery
     # Draw note on screen.
     note.draw_text()
 
@@ -428,9 +428,9 @@ def draw_available_choices(screen, available_choices: dict[str, list[Interactive
     # persistent on-screen position of fields that become unavailable during selection (i.e. races that are incompatible
     # with selected class or vice versa). Avoids said race/class fields still being selectable even when inactive.
     for race in uisd.gui_elements["active_races"]:
-        race.interactive_rect.bottomright = screen.get_rect().topright
+        race.interactive_rect.bottomright = uisd.gui_elements["off_screen_pos"]
     for cls in uisd.gui_elements["active_classes"]:
-        cls.interactive_rect.bottomright = screen.get_rect().topright
+        cls.interactive_rect.bottomright = uisd.gui_elements["off_screen_pos"]
 
     # Position/draw race selection.
     for race in inactive_races:

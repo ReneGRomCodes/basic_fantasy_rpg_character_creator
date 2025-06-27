@@ -336,6 +336,12 @@ def initialize_screen_elements(screen) -> dict:
     # Resizing language field rects.
     for lang in lang_fields:
         lang.interactive_rect.width = int(screen_width / 4)
+    # Inactive language text fields. Used when maximum of additional languages has been reached in language selection.
+    # NOTE: every instance has to have the same 'text' attribute as their active counterpart.
+    language_01_field_inactive: TextField = so.TextField(screen, "Common", text_medium, text_color="inactive")
+    language_02_field_inactive: TextField = so.TextField(screen, "Elvish", text_medium, text_color="inactive")
+    language_03_field_inactive: TextField = so.TextField(screen, "Dwarvish", text_medium, text_color="inactive")
+    language_04_field_inactive: TextField = so.TextField(screen, "Halfling", text_medium, text_color="inactive")
 
 
     # Character naming screen.
@@ -433,6 +439,8 @@ def initialize_screen_elements(screen) -> dict:
         "lang_title": language_selection_screen_title,
         "lang_note": language_selection_note_01,
         "lang_fields": (language_01_field, language_02_field, language_03_field, language_04_field),
+        "inactive_language_fields": (language_01_field_inactive, language_02_field_inactive, language_03_field_inactive,
+                                     language_04_field_inactive),
         # Character naming screen.
         "naming_prompt": character_naming_prompt,
         "character_name_input": (character_name_input, character_name_field),

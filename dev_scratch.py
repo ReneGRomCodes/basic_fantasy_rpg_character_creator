@@ -12,3 +12,4 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO add option to allow for minor customization of randomly generated characters
 # TODO add counter for 'remaining language selections allowed' in language selection screen and grey out selections when limit is reached
 # TODO confirmation messages for save/load screen
+# TODO give instances of 'InteractiveText' rounded corners
