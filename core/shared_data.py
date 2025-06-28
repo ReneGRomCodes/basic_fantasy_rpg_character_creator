@@ -89,11 +89,11 @@ class SharedData:
                     selected_attr.remove(option)
                 # Add selection to list.
                 else:
-                    # Check if language limit is reached and add option to 'selected_attr' if permitted.
+                    # Check if selection limit is reached and add option to 'selected_attr' if permitted.
                     if len(selected_attr) < limit:
                         selected_attr.append(option)
                     else:
-                        # Set 'selected' attribute to 'False' to avoid 'handle_mouse_interaction()' method of class
+                        # Set 'selected' attribute to 'False' to override 'handle_mouse_interaction()' method of class
                         # 'InteractiveText' setting it to 'True'. See class method docstring for details.
                         option.selected = False
             # Add selection if list is empty.
@@ -173,6 +173,13 @@ class SharedData:
             # language selection logic.
             self.selected_languages = self.handle_selection_logic(option, self.selected_languages, multi_selection=True,
                                                                   limit=max_additional_languages)
+
+        # Check if maximum number of additional languages have been selected and deactivate further selection by setting
+        # corresponding flag in 'ui_shared_data'.
+        if max_additional_languages == len(self.selected_languages):
+            uisd.lang_selection_active = False
+        else:
+            uisd.lang_selection_active = True
 
     def shared_data_janitor(self) -> None:
         """Reset shared data not automatically overwritten elsewhere with default values in case of a switch to a

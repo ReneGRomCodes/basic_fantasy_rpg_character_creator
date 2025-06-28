@@ -10,6 +10,8 @@ this point it has become mostly a dumping ground for 'todos'."""
 # PRIORITIES:
 # TODO add sections for thief skills to character sheet
 # TODO add option to allow for minor customization of randomly generated characters
-# TODO add counter for 'remaining language selections allowed' in language selection screen and grey out selections when limit is reached
+# TODO add counter for 'remaining language selections allowed' in language selection screen
 # TODO confirmation messages for save/load screen
 # TODO give instances of 'InteractiveText' rounded corners
+# TODO overhaul race/class selection!!! that thing is way more complex than it needs to be! See language selection
+#  structure with dict usage for comparison.

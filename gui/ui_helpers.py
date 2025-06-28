@@ -480,7 +480,7 @@ def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveTe
 
 def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...], screen_note: TextField,
                                          mouse_pos) -> None:
-    """Call positioning method 'position_spell_selection_screen_elements()' and draw item from tuple 'spells' on screen.
+    """Position and draw spell selection screen elements.
     ARGS:
         screen: pygame window.
         spells: tuple containing instances of class 'InteractiveText' representing available spells.
@@ -500,8 +500,10 @@ def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, 
 
 """Background functions for spell selection screen."""
 
-def position_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...]) -> None:
-    """Position elements for spell selection on screen.
+def get_lang_pos_y_dict(screen, languages: tuple[InteractiveText, ...]) -> None:
+    """Populate dict for language elements 'uisd.lang_pos_y_dict' with y-positions in 'ui_shared_data'. Dict keys are
+    the language names and the dict is used for the positioning of both, active (InteractiveText) and inactive (TextField)
+    elements.
     ARGS:
         screen: pygame window.
         languages: tuple containing instances of class 'InteractiveText' representing available languages.
@@ -509,32 +511,60 @@ def position_language_selection_screen_elements(screen, languages: tuple[Interac
     # Get dynamic y-positions for items in 'languages'.
     pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, languages)
 
+    # Build dict with y-position values for each language with 'language.text' attribute as keys.
     for index, language in enumerate(languages):
-        # Align element x-position at screen center.
-        language.interactive_rect.centerx = screen.get_rect().centerx
-        # Assign dynamic y-positions to elements.
         if index == 0:
-            language.interactive_rect.centery = pos_y_start
+            uisd.lang_pos_y_dict[language.text] = pos_y_start
         else:
-            language.interactive_rect.centery = pos_y_start + pos_y_offset * index
+            uisd.lang_pos_y_dict[language.text] = pos_y_start + pos_y_offset * index
 
 
-def draw_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...], screen_note: TextField,
-                                            mouse_pos) -> None:
-    """Call positioning method 'position_language_selection_screen_elements()' and draw item from tuple 'spells' on
-    screen.
+def position_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...],
+                                                    inactive_languages: tuple[TextField]) -> None:
+    if not uisd.position_flag:
+        # Populate dict with y-positions in 'ui_shared_data'.
+        get_lang_pos_y_dict(screen, languages)
+
+        for language in languages:
+            if uisd.lang_selection_active:
+                language.interactive_rect.centerx = screen.get_rect().centerx
+                language.interactive_rect.centery = uisd.lang_pos_y_dict[language.text]
+            else:
+                if language.selected:
+                    language.interactive_rect.centerx = screen.get_rect().centerx
+                    language.interactive_rect.centery = uisd.lang_pos_y_dict[language.text]
+                else:
+                    language.interactive_rect.bottomright = uisd.gui_elements["off_screen_pos"]
+
+        for index, inactive_language in enumerate(inactive_languages):
+            if languages[index].selected or uisd.lang_selection_active:
+                inactive_language.text_rect.bottomright = uisd.gui_elements["off_screen_pos"]
+            else:
+                inactive_language.text_rect.centerx = screen.get_rect().centerx
+                inactive_language.text_rect.centery = uisd.lang_pos_y_dict[inactive_language.text]
+
+        uisd.position_flag = True
+
+
+def draw_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...], inactive_languages: tuple[TextField],
+                                            screen_note: TextField, mouse_pos) -> None:
+    """Position and draw language selection screen elements.
     ARGS:
         screen: pygame window.
         languages: tuple containing instances of class 'InteractiveText' representing available languages.
+        inactive_languages: tuple containing instances of class 'TextField' representing non-selectable languages.
         screen_note: 'TextField' instance showing notes for language selection.
         mouse_pos: position of mouse on screen.
     """
     # Position elements on screen.
-    position_language_selection_screen_elements(screen, languages)
+    position_language_selection_screen_elements(screen, languages, inactive_languages)
 
-    # Draw elements from 'languages'.
-    for language in languages:
-        language.draw_interactive_text(mouse_pos)
+    # Draw elements for selectable and non-selectable languages.
+    for language in languages + inactive_languages:
+        if isinstance(language, InteractiveText):
+            language.draw_interactive_text(mouse_pos)
+        elif isinstance(language, TextField):
+            language.draw_text()
 
     # Draw further elements on screen.
     draw_screen_note(screen, screen_note)

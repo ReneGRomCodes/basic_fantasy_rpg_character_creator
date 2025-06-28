@@ -185,6 +185,7 @@ def show_language_selection_screen(screen, mouse_pos) -> None:
     screen_note = uisd.gui_elements["lang_note"]
     back_button = uisd.gui_elements["back_button"]
     languages = uisd.gui_elements["lang_fields"]
+    inactive_languages = uisd.gui_elements["inactive_language_fields"]
 
     # Draw screen title and buttons.
     ui.draw_screen_title(screen, screen_title)
@@ -193,7 +194,7 @@ def show_language_selection_screen(screen, mouse_pos) -> None:
     ui.draw_conditional_continue_button(mouse_pos, sd.selected_languages, alt_button="skip")
 
     # Position and draw language selection elements on screen.
-    ui.draw_language_selection_screen_elements(screen, languages, screen_note, mouse_pos)
+    ui.draw_language_selection_screen_elements(screen, languages, inactive_languages, screen_note, mouse_pos)
 
 
 def show_naming_screen(screen, mouse_pos) -> None:

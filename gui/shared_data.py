@@ -19,14 +19,19 @@ class UISharedData:
         self.load_only_flag: bool = False
 
         # Flag to ensure screen-specific elements are positioned only once per appearance.
-        # Used in non-adaptable screens to minimize unnecessary repositioning, but not applied to adaptable screens to
-        # keep functions more maintainable.
+        # Used in non-adaptable screens to minimize unnecessary repositioning, but not applied to some adaptable screens
+        # to keep functions more maintainable.
         self.position_flag: bool = False
 
         # Flag to check if character can learn additional languages. Set in event handler in state "show_abilities"
         # by calling function 'set_language_flag()' from 'rules.py' module after ability scores are set. Used to decide
         # if language selection screen should be displayed.
         self.language_flag: bool = False
+        # Dict with y-positions for language elements.
+        self.lang_pos_y_dict: dict[str, int] = {}
+        # Flag to check if language selection is still active (True). Set to 'False' in 'shared_data' (core) when
+        # maximum number of additional languages have been selected.
+        self.lang_selection_active: bool = True
 
         # Create int variable 'dice_roll_start_time' to be used as timer for dice roll effect on screen (e.g. starting
         # money screen).
