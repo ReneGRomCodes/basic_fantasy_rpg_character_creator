@@ -521,25 +521,41 @@ def get_lang_pos_y_dict(screen, languages: tuple[InteractiveText, ...]) -> None:
 
 def position_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...],
                                                     inactive_languages: tuple[TextField]) -> None:
+    """Position active or inactive elements for language selection on- or off-screen based on 'selected' status and
+    flag 'uisd.lang_selection_active'.
+    ARGS:
+        screen: pygame window.
+        languages: tuple containing instances of class 'InteractiveText' representing available languages.
+        inactive_languages: tuple containing instances of class 'TextField' representing non-selectable languages.
+    """
     if not uisd.position_flag:
         # Populate dict with y-positions in 'ui_shared_data'.
         get_lang_pos_y_dict(screen, languages)
 
+        # Position selectable 'InteractiveText' instances from 'languages'.
         for language in languages:
             if uisd.lang_selection_active:
+                # Position all selectable languages on screen if selection is still permitted (maximum number of
+                # additional languages is higher than number of selected languages).
                 language.interactive_rect.centerx = screen.get_rect().centerx
                 language.interactive_rect.centery = uisd.lang_pos_y_dict[language.text]
             else:
                 if language.selected:
+                    # Position selected languages always on screen regardless of 'uisd.lang_selection_active' to
+                    # ensure that they can still be deselected.
                     language.interactive_rect.centerx = screen.get_rect().centerx
                     language.interactive_rect.centery = uisd.lang_pos_y_dict[language.text]
                 else:
                     language.interactive_rect.bottomright = uisd.gui_elements["off_screen_pos"]
 
+        # Position greyed-out 'TextField' instances from 'inactive_languages'.
         for index, inactive_language in enumerate(inactive_languages):
             if languages[index].selected or uisd.lang_selection_active:
+                # Move elements off-screen when corresponding selectable element has been selected or selection is still
+                # permitted.
                 inactive_language.text_rect.bottomright = uisd.gui_elements["off_screen_pos"]
             else:
+                # Position inactive elements on screen if previous conditions do not apply.
                 inactive_language.text_rect.centerx = screen.get_rect().centerx
                 inactive_language.text_rect.centery = uisd.lang_pos_y_dict[inactive_language.text]
 

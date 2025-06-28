@@ -14,4 +14,5 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO confirmation messages for save/load screen
 # TODO give instances of 'InteractiveText' rounded corners
 # TODO overhaul race/class selection!!! that thing is way more complex than it needs to be! See language selection
-#  structure with dict usage for comparison.
+#  structure with dict usage for comparison
+# TODO Implement position_flag throughout gui.py similar to it's application in language selection
