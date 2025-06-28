@@ -95,8 +95,9 @@ def initialize_screen_elements(screen) -> dict:
     inactive_continue_button.rect_clicked_color = settings.inactive_continue_button_click_color
     skip_button: Button = so.Button(screen, "Skip", text_medium)
     back_button: Button = so.Button(screen, "Back", text_medium)
+    reset_button: Button = so.Button(screen, "CLEAR SELECTION", text_medium)
     # Tuple of 'Button' instances for resizing in for-loop below.
-    button_fields: tuple[Button, ...] = (continue_button, inactive_continue_button, skip_button, back_button)
+    button_fields: tuple[Button, ...] = (continue_button, inactive_continue_button, skip_button, back_button, reset_button)
     # Resize button rects.
     for button in button_fields:
         button.button_rect.width = button_width
@@ -172,8 +173,6 @@ def initialize_screen_elements(screen) -> dict:
     # Race/class selection screen.
     # Screen layout is designed to adapt and fit up to 16 races/classes.
     race_class_selection_screen_title: TextField = so.TextField(screen, "- RACE / CLASS -", text_large)
-    reset_button: Button = so.Button(screen, "CLEAR SELECTION", text_medium)
-    reset_button.button_rect.width = button_width
     # Race info Panels.
     race_01_info: InfoPanel = so.InfoPanel(screen, race_descr["humans"][0], text_small, multi_line=True,
                                            surface_width=info_panel_width)
@@ -397,6 +396,7 @@ def initialize_screen_elements(screen) -> dict:
         "inactive_continue_button": inactive_continue_button,
         "skip_button": skip_button,
         "back_button": back_button,
+        "reset_button": reset_button,
         # Standard button positions.
         "bottom_right_pos": button_bottomright_pos,
         "bottom_left_pos": button_bottomleft_pos,
@@ -423,7 +423,6 @@ def initialize_screen_elements(screen) -> dict:
         "reroll_button": reroll_button,
         # Race/class selection screen.
         "race_class_title": race_class_selection_screen_title,
-        "reset_button": reset_button,
         "active_races": (race_01_field, race_02_field, race_03_field, race_04_field),
         "active_classes": (class_01_field, class_02_field, class_03_field, class_04_field, class_05_field, class_06_field),
         "inactive_races": (race_01_inactive_field, race_02_inactive_field, race_03_inactive_field, race_04_inactive_field),

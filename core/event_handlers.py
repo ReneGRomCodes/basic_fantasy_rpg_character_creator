@@ -251,8 +251,13 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                 for option in uisd.gui_elements["lang_fields"]:
                     if option.interactive_rect.collidepoint(mouse_pos):
                         sd.select_languages(option)
+                if reset_button.collidepoint(mouse_pos):
+                    # Reset selection.
+                    sd.clear_language_selection()
 
                 if back_button.collidepoint(mouse_pos):
+                    # Reset all language related attributes when returning to previous screen.
+                    sd.clear_language_selection()
                     if sd.character.class_name in sd.magic_classes:
                         state = "spell_selection"
                     else:

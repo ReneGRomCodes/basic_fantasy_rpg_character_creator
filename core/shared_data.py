@@ -181,6 +181,17 @@ class SharedData:
         else:
             uisd.lang_selection_active = True
 
+    def clear_language_selection(self) -> None:
+        """Reset entire language selection."""
+        # Reset all languages to unselected state.
+        for language in uisd.gui_elements["lang_fields"]:
+            language.selected = False
+        # Set 'self.selected_languages' to default value.
+        self.selected_languages: list = []
+        # Set flag 'uisd.lang_selection_active' to default value in case selection permission has been denied previously,
+        # because maximum number of additional languages have been chosen before reset.
+        uisd.lang_selection_active = True
+
     def shared_data_janitor(self) -> None:
         """Reset shared data not automatically overwritten elsewhere with default values in case of a switch to a
         previous screen or the main menu.
