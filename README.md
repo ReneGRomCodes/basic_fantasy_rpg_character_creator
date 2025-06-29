@@ -1,35 +1,31 @@
-# "Basic Fantasy RPG" Character Creator
+# "Basic Fantasy RPG" Character Creator 
+### *"Character creation engine-lite" built for easy system swapping*
 
 ## Overview
 
-This is a fully functional character creator for the "Basic Fantasy RPG" game system, designed in Python using Pygame. It
-serves as both a standalone application and a portfolio piece, demonstrating dynamic adaptability and modular structure.
+Being more than just a character creator, this application serves as a lightweight, modular engine for building RPG
+character creators.
+Originally developed for the Basic Fantasy RPG system, its flexible structure makes it easy to adapt to other tabletop
+RPGs with minimal code changes.
 
-While it is not a "character creator creator", it can be easily modified to accommodate other RPG rule systems with some
-coding adjustments.
+Built in Python with Pygame, the application features a dynamic GUI that resizes and repositions elements based on
+layout context and screen resolution. Rule systems (races, classes, attributes, etc.) can be customized via `rules.py`
+and `character_model.py`, and new screens can be added while reusing existing UI logic for a consistent look and feel.
 
-The program is built with Python and Pygame, featuring a UI that dynamically adjusts itself based on added UI element
-instances. However, modifying the core rule set (races, classes, abilities, etc.) requires manual changes in rules.py and
-character_model.py. If a new system requires additional screens, they need to be implemented separately but can reuse
-existing UI functions for consistency.
+It works out of the box for Basic Fantasy RPG, but under the hood, it’s designed like a character creation engine.
 
-## Features
+## Key Features
 
-Easily Modifiable Rule System – Modify rules.py and character_model.py to adapt the character creator for other RPG
-systems.
+* **Modular Rule System** – Easily adapt to other RPG systems by editing `rules.py` and `character_model.py`.
 
-Adaptive UI – GUI elements reposition and resize automatically based on added UI instances, ensuring a clean layout.
+* **Adaptive, Scalable UI** – GUI elements automatically reposition and resize based on screen size and number of
+elements.
 
-Context-Sensitive UI Management – UI screens adapt their available options based on how they’re accessed (e.g., save/load
-behaves differently when entered from the main menu vs. in-session). This keeps interactions intuitive and avoids clutter.
+* **Reusable UI Components** – Build new screens or features using shared, customizable widgets and layout tools.
 
-Modular Design – Clear separation between game logic, descriptions, and UI elements for easier expansion.
-
-Pygame-Based UI – Fully interactive graphical interface with text fields, buttons, and adaptive layout handling.
-
-Reusable UI Functions – New screens can be built while leveraging existing helper functions for consistency.
-
-State Management System – Tracks application flow and interactions to ensure a smooth experience.
+* **Smart Context Handling** – UI options change based on state and context (e.g. load screen behaves differently
+depending on entry point).
+* **State-Driven Architecture** – Clear separation of application states ensures smooth navigation and interaction.
 
 ## Installation
 
@@ -64,7 +60,7 @@ project_root/
 │── core/                     # Handles game logic (settings, state management, character models, etc.)
 │   ├── items/                # Contains modules for item classes and instances (Weapons, equipment, etc.)
 │   ├───── item_instances.py  # Contains item instances.
-│   ├───── item_model.py      # Stores item classes.
+│   ├───── item_objects.py    # Stores item classes.
 │   ├── settings.py           # Stores configuration values (screen size, etc.)
 │   ├── event_handlers.py     # Handles input events
 │   ├── state_manager.py      # Manages application states
@@ -127,11 +123,11 @@ Implement the new element in the relevant modules (e.g., gui.py).
 
 ## Future Plans
 
-Adding export functionality for character sheets.
+* Adding export functionality for character sheets.
 
-Implementing an item shop UI based on existing logic.
+* Implementing an item shop UI based on existing logic.
 
-Refining documentation for easier customization.
+* Refining documentation for easier customization.
 
 ## License
 

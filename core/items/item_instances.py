@@ -1,5 +1,5 @@
-from core.items.item_model import Item, Weapon, Projectile, RangedWeapon, Armor
-"""Initialize instances of classes from 'item_model.py'.
+from core.items.item_objects import Item, Weapon, Projectile, RangedWeapon, Armor
+"""Initialize instances of classes from 'item_objects.py'.
 Instances are sorted into dicts at the end of this file for use in other modules."""
 
 

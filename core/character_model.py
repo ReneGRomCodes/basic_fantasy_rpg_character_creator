@@ -2,7 +2,7 @@ import random
 from core.rules import dice_roll, get_ability_score, get_class_categories, get_race_class_defaults
 import core.items.item_instances as item_inst
 from gui.screen_objects import InteractiveText
-from core.items.item_model import Armor
+from core.items.item_objects import Armor
 from typing import Any
 from core.shared_data import shared_data as sd
 from gui.shared_data import ui_shared_data as uisd

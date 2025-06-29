@@ -5,9 +5,7 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO figure out how to implement different attacks with spear in 'item_instance.py'
 # TODO Equip/unequip methods work only for armor right now in 'character_model.py'
 
-# Shit to keep in mind:
-
-# PRIORITIES:
+# TODOS:
 # TODO add sections for thief skills to character sheet
 # TODO add option to allow for minor customization of randomly generated characters
 # TODO add counter for 'remaining language selections allowed' in language selection screen
@@ -16,3 +14,4 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO overhaul race/class selection!!! that thing is way more complex than it needs to be! See language selection
 #  structure with dict usage for comparison
 # TODO Implement position_flag throughout gui.py similar to it's application in language selection
+# TODO perhaps rename 'gui_elements' stuff to 'ui_registry'
