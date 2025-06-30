@@ -10,8 +10,8 @@ Instances for GUI objects are created in module 'gui/gui_elements.py', scaled if
 Functions for the use of screen objects are located in 'gui/gui.py' with helper functions for positioning located in
 'gui/ui_helpers.py'.
 
-Exceptions are 'Credits Screen', 'Settings Screen' and 'Character Sheet Screen' which separately handle their own
-instances/logic in modules 'gui/credits.py' and 'gui/settings_gui' respectively.
+Exceptions are 'Credits Screen', 'Settings Screen', Save/Load Screen' and 'Character Sheet Screen' which separately
+handle their own instances/logic in modules 'gui/credits.py' and 'gui/settings_gui' respectively.
 
 See documentation in relevant modules for details.
 """
@@ -189,7 +189,7 @@ class TextField:
             surface.set_alpha(self.fade_alpha)
 
     def alpha_fade_out(self, surface: pygame.Surface, rect: pygame.Rect, color: str | tuple[int, int, int], mouse_pos,
-                       button: bool = False):
+                       button: bool = False, interactive: bool = False) -> None:
         """Check and set alpha transparency for 'surface', and limit 'self.fade_alpha' value to min of 0. Then apply to
         'surface' for fade-out effect.
         ARGS:
@@ -197,9 +197,12 @@ class TextField:
             rect: rect to hold surface position to be blit onto.
             color: color for surface for fade-out effect to be applied to.
             mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-            button: argument to ensure that the correct class method for blit is called when fade-out is applied from
-                    'Button' class method 'draw_button()', as 'Button' class instances have to handle borders and rounded
-                    corners. Set to 'True' if 'Button' instance is used, default is 'False' for all other classes.
+            button: Set to 'True' if called from a 'Button' instance to use its specialized blit method (handles borders
+                    and rounded corners).
+            interactive: Set to 'True' if called from an 'InteractiveText' instance to use its specialized blit method
+                         (handles rounded corners).
+
+        NOTE: Defaults values for 'button' and 'interactive' are 'False', representing other classes.
         """
         if not rect.collidepoint(mouse_pos) and self.fade_alpha != 0:
             if self.fade_alpha >= 0:
@@ -207,9 +210,12 @@ class TextField:
                 surface.set_alpha(self.fade_alpha)
                 # Check if fade-out effect is used for instance of 'Button' class (button=True).
                 if button:
-                    # Ignore 'Unresolved attribute reference' warning. It's just the IDE pissing its pants over a method
-                    # call from 'Button' class. See docstring 'ARGS: button' for details.
+                    # Ignore 'Unresolved attribute reference' warning. It's just the IDE pissing its pants over the
+                    # method calls from 'Button' and 'InteractiveText' classes. See docstring 'ARGS: button/interactive'
+                    # for details.
                     self.blit_button_surface(surface, rect, color)
+                elif interactive:
+                    self.blit_interactive_surface(surface, rect, color)
                 else:
                     self.blit_surface(surface, rect, color)
             elif self.fade_alpha != 0:
@@ -322,6 +328,8 @@ class InteractiveText(TextField):
         self.rect_hover_color: str | tuple[int, int, int] = settings.rect_hover_color
         self.rect_clicked_color: str | tuple[int, int, int] = settings.rect_clicked_color
         self.rect_selected_color: str | tuple[int, int, int] = settings.rect_selected_color
+
+        self.corner_radius: int = int(self.screen_rect.height / 100)
         # Create rect for field to allow for easier positioning of the 'text_rect' if field size is changed later.
         self.interactive_rect: pygame.Rect = self.text_surface.get_rect()
         # 'None' attribute to store the interactive text surface, created in 'draw_interactive_text()', to represent the
@@ -331,7 +339,7 @@ class InteractiveText(TextField):
 
     def draw_interactive_text(self, mouse_pos) -> None:
         """Draw interactive text field on the screen."""
-        # Create 'button_surface' surface.
+        # Create 'interactive_text' surface.
         if not self.interactive_text_surface:
             self.interactive_text_surface = pygame.Surface((self.interactive_rect.width, self.interactive_rect.height), pygame.SRCALPHA)
 
@@ -339,21 +347,30 @@ class InteractiveText(TextField):
         if self.selected or self.bg_color:
             self.interactive_text_surface.set_alpha(self.background_alpha)
             if self.selected:
-                self.blit_surface(self.interactive_text_surface, self.interactive_rect, self.rect_selected_color)
+                self.blit_interactive_surface(self.interactive_text_surface, self.interactive_rect, self.rect_selected_color)
             elif self.bg_color:
-                self.blit_surface(self.interactive_text_surface, self.interactive_rect, self.bg_color)
+                self.blit_interactive_surface(self.interactive_text_surface, self.interactive_rect, self.bg_color)
 
         # Change field color based on mouse hover.
         if self.interactive_rect.collidepoint(mouse_pos):
             self.handle_mouse_interaction()
 
-        # Start fade-out effect (if mouse is not hovering over button anymore and 'self.alpha_fade_in()' has been
+        # Start fade-out effect (if mouse is not hovering over field  anymore and 'self.alpha_fade_in()' has been
         # triggered previously from within 'self.handle_mouse_interaction').
-        self.alpha_fade_out(self.interactive_text_surface, self.interactive_rect, self.rect_hover_color, mouse_pos)
+        self.alpha_fade_out(self.interactive_text_surface, self.interactive_rect, self.rect_hover_color, mouse_pos,
+                            interactive=True)
 
         # Draw the text on top of the interactive text field.
         self.text_rect.center = self.interactive_rect.center
         self.screen.blit(self.text_surface, self.text_rect)
+
+    def blit_interactive_surface(self, surface, rect: pygame.Rect, color: str | tuple[int, int, int]) -> None:
+        """Fill 'surface' with 'color' and blit it onto the screen at 'rect' with rounded corners."""
+        # Clear the surface to ensure the field's background renders without unwanted artifacts.
+        surface.fill((0, 0, 0, 0))
+
+        pygame.draw.rect(surface, color, surface.get_rect(), border_radius=self.corner_radius)
+        self.screen.blit(surface, rect)
 
     def handle_mouse_interaction(self) -> None:
         """Handle interactive functions for the class object.
@@ -363,10 +380,10 @@ class InteractiveText(TextField):
 
         # Color change when mouse is pressed (only if 'self.select' is True).
         if self.select and pygame.mouse.get_pressed()[0]:
-            self.blit_surface(self.interactive_text_surface, self.interactive_rect, self.rect_clicked_color)
+            self.blit_interactive_surface(self.interactive_text_surface, self.interactive_rect, self.rect_clicked_color)
         # Normal hover color when mouse is hovering but not pressed.
         else:
-            self.blit_surface(self.interactive_text_surface, self.interactive_rect, self.rect_hover_color)
+            self.blit_interactive_surface(self.interactive_text_surface, self.interactive_rect, self.rect_hover_color)
 
         # Change selected state of field by mouse click if 'select' is True.
         if self.select:
