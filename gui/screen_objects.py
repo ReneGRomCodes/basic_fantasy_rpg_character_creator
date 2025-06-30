@@ -97,6 +97,8 @@ class TextField:
 
     def render_multiline_surface(self) -> pygame.Surface:
         """Render and return multi line text surface.
+        The method splits the text into lines and words, renders each word using the specified font, and dynamically
+        expands the surface height if a word doesn't fit the current line.
         RETURNS:
             text_surface
         """
@@ -110,12 +112,15 @@ class TextField:
 
         for line_index, line in enumerate(words, start=1):
             for word in line:
+                # Render each word and check if it fits the current line.
                 word_surface = self.font.render(word, True, self.text_color)
                 word_width = word_surface.get_width()
 
                 if x + word_width >= text_surface.get_width():
+                    # If the word doesn't fit, create more space and move to next line.
                     text_surface, x, y = self.expand_multiline_surface(text_surface, y)
 
+                # Draw the word and advance horizontal position.
                 text_surface.blit(word_surface, (x, y))
                 x += word_width + space
 
@@ -126,8 +131,14 @@ class TextField:
         return text_surface
 
     def expand_multiline_surface(self, text_surface: pygame.surface, y: int) -> tuple[pygame.surface, int, int]:
-        """Helper function for use in 'render_multiline_surface()' to expand 'text_surface' for accommodation of new lines
-        of text automatically through use of a temporary surface."""
+        """Helper function for use in 'render_multiline_surface()' to expand 'text_surface' to accommodate new lines of
+        text automatically through use of a temporary surface.
+        ARGS:
+            text_surface: pygame surface to be expanded for multi-line texts.
+            y: current Y-position of text line.
+        RETURNS:
+            text_surface, x, y: new text surface and coordinates for next line.
+        """
         x = self.text_pos[0]  # Reset 'x' for next line.
         y += self.font.get_height()  # Set 'y' for next line.
 
@@ -166,8 +177,13 @@ class TextField:
 
         self.text_rect: pygame.Rect = self.text_surface.get_rect()
 
-    def blit_surface(self, surface, rect, color) -> None:
-        """Fill 'surface' with 'color' attribute and blit it onto the screen at 'rect'."""
+    def blit_surface(self, surface: pygame.Surface, rect: pygame.Rect, color: str | tuple[int, int, int]) -> None:
+        """Fill 'surface' with 'color' attribute and blit it onto the screen at 'rect'.
+        ARGS:
+            surface: pygame surface.
+            rect: pygame rect.
+            color: color attribute.
+        """
         surface.fill(color)
         self.screen.blit(surface, rect)
 
@@ -179,7 +195,10 @@ class TextField:
         """Check and set alpha transparency for 'surface', and limit 'self.fade_alpha' value to max of 255. Then apply to
         'surface' for fade-in effect.
         For use as effect on mouse hover, method should be called from within an 'if self.rect.collidepoint(mouse_pos)'
-        statement."""
+        statement.
+        ARGS:
+            surface: pygame surface.
+        """
         # Check and set alpha transparency and limit 'self.fade_alpha' value to max of 255.
         if self.fade_alpha < 255:
             self.fade_alpha += self.fade_speed
@@ -259,7 +278,10 @@ class Button(TextField):
 
     def draw_button(self, mouse_pos) -> None:
         """Draw the button on the screen, changing color based on hover or click using 'mouse_pos' as initialized in
-        main loop in 'main.py'."""
+        main loop in 'main.py'.
+        ARGS:
+            mouse_pos: position of mouse on screen.
+        """
         if not self.button_surface:
             self.button_surface = pygame.Surface((self.button_rect.width - self.border_width,
                                                   self.button_rect.height - self.border_width), pygame.SRCALPHA)
@@ -288,9 +310,14 @@ class Button(TextField):
         pygame.draw.rect(self.screen, self.border_color, self.button_rect,
                          border_radius=self.border_radius, width=self.border_width)
 
-    def blit_button_surface(self, surface, rect: pygame.Rect, color: str | tuple[int, int, int]) -> None:
+    def blit_button_surface(self, surface: pygame.Surface, rect: pygame.Rect, color: str | tuple[int, int, int]) -> None:
         """Fill 'surface' with 'color' and blit it onto the screen at 'rect', ensuring the button's background fits
-        inside the button's borders with rounded corners."""
+        inside the button's borders with rounded corners.
+        ARGS:
+            surface: pygame surface.
+            rect: pygame rect.
+            color: color attribute.
+        """
         # Clear the surface to ensure the button background and border render without unwanted artifacts.
         surface.fill((0, 0, 0, 0))
 
@@ -338,7 +365,10 @@ class InteractiveText(TextField):
         self.interactive_text_surface: None | pygame.Surface = None
 
     def draw_interactive_text(self, mouse_pos) -> None:
-        """Draw interactive text field on the screen."""
+        """Draw interactive text field on the screen.
+        ARGS:
+            mouse_pos: position of mouse on screen.
+        """
         # Create 'interactive_text' surface.
         if not self.interactive_text_surface:
             self.interactive_text_surface = pygame.Surface((self.interactive_rect.width, self.interactive_rect.height), pygame.SRCALPHA)
@@ -365,7 +395,12 @@ class InteractiveText(TextField):
         self.screen.blit(self.text_surface, self.text_rect)
 
     def blit_interactive_surface(self, surface, rect: pygame.Rect, color: str | tuple[int, int, int]) -> None:
-        """Fill 'surface' with 'color' and blit it onto the screen at 'rect' with rounded corners."""
+        """Fill 'surface' with 'color' and blit it onto the screen at 'rect' with rounded corners.
+        ARGS:
+            surface: pygame surface.
+            rect: pygame rect.
+            color: color attribute.
+        """
         # Clear the surface to ensure the field's background renders without unwanted artifacts.
         surface.fill((0, 0, 0, 0))
 
@@ -612,7 +647,12 @@ class InfoPanel(TextField):
     def set_y_pos(self, anchor_y: int) -> None:
         """Set starting y-positions for all panels with occurrences of "top" or "bottom" in 'self.pos' based on
         'self.slide' attribute.
-        Used in method 'get_bg_rect_positions()'."""
+        Used in method 'get_bg_rect_positions()'.
+        ARGS:
+            anchor_y: Y-coordinate from the screen anchor used to position the panel vertically, depending on its 'pos'
+            and 'slide' settings.
+        """
+
         if "top" in self.pos:
             if self.slide:
                 self.bg_rect.bottom = anchor_y
@@ -627,7 +667,12 @@ class InfoPanel(TextField):
     def set_x_pos(self, anchor_x: int) -> None:
         """Set starting x-positions for all panels with occurrences of "left" or "right" in 'self.pos' based on
         'self.slide' attribute.
-        Used in method 'get_bg_rect_positions()'."""
+        Used in method 'get_bg_rect_positions()'.
+        ARGS:
+            anchor_x: X-coordinate from the screen anchor used to position the panel horizontally, depending on its 'pos'
+            and 'slide' settings.
+        """
+
         if "left" in self.pos:
             if self.slide:
                 self.bg_rect.right = anchor_x
