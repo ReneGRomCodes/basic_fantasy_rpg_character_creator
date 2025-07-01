@@ -181,6 +181,10 @@ def custom_character_state_manager(screen, state: str, mouse_pos) -> str:
         state = eh.custom_character_events(screen, state, mouse_pos)
 
     elif state == "name_character":
+        # Reset language data if the language selection screen ran in the previous state.
+        if uisd.language_flag:
+            sd.clear_language_selection()
+
         # Display character naming screen.
         gui.show_naming_screen(screen, mouse_pos)
         state = eh.naming_character_events(screen, state, mouse_pos)

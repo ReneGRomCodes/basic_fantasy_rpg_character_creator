@@ -297,11 +297,9 @@ class Character:
         for language in language_list:
             if language.selected:
                 self.languages.append(language.text)
-                # Reset language to default 'False'.
-                language.selected = False
 
-        # Reset 'selected_languages' attribute in 'shared_data'.
-        sd.selected_languages = []
+        # Reset all language selection related data.
+        sd.clear_language_selection()
 
     def set_random_selections(self, spell_list: tuple[InteractiveText], language_flag: bool,
                               language_list: tuple[InteractiveText, ...]) -> None:
