@@ -33,9 +33,9 @@ depending on entry point).
 
 Python 3.12
 
-pip 24.2
+pip 25.1.1
 
-pygame 2.6.0
+pygame 2.6.1
 
 pygame-textinput 1.0.1
 
