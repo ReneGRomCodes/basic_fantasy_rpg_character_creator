@@ -43,14 +43,9 @@ class SettingsGUI:
                                                                               window_size_button_small, window_size_button_medium,
                                                                               window_size_button_large, window_size_button_full)
 
-        # Tuple to store window size UI objects and corresponding 'settings' attributes. Last item represents full screen,
-        # and has no settings attribute assigned, instead using 'pygame.FULLSCREEN' when setting window size.
-        self.object_attribute_pairs: tuple[tuple[InteractiveText, tuple[int, int] | bool], ...] = (
-            (self.window_size_buttons[0], settings.small_screen),
-            (self.window_size_buttons[1], settings.medium_screen),
-            (self.window_size_buttons[2], settings.large_screen),
-            (self.window_size_buttons[3], False)
-        )
+        # Tuple to store window size UI objects and corresponding 'settings' attributes.
+        # Populated when calling 'self.init_settings_screen()'.
+        self.object_attribute_pairs: tuple[tuple[InteractiveText, tuple[int, int] | bool], ...] = ()
 
         # Set attributes when instance is created.
         self.init_settings_screen()
@@ -82,6 +77,15 @@ class SettingsGUI:
 
     def init_settings_screen(self) -> None:
         """Set several attributes when a class instance is created."""
+        # Tuple to store window size UI objects and corresponding 'settings' attributes. Last item represents full screen,
+        # and has no settings attribute assigned, instead using 'pygame.FULLSCREEN' when setting window size.
+        self.object_attribute_pairs: tuple[tuple[InteractiveText, tuple[int, int] | bool], ...] = (
+            (self.window_size_buttons[0], settings.small_screen),
+            (self.window_size_buttons[1], settings.medium_screen),
+            (self.window_size_buttons[2], settings.large_screen),
+            (self.window_size_buttons[3], False)
+        )
+
         # Set 'window_sizes[0].selected' to 'True' to show default selection in settings menu when screen is first shown.
         if settings.screen_size == settings.default_settings[0]:
             self.window_size_buttons[0].selected = True
