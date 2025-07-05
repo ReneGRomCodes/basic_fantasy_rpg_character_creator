@@ -14,4 +14,3 @@ this point it has become mostly a dumping ground for 'todos'."""
 #  structure with dict usage for comparison
 # TODO Implement position_flag throughout gui.py similar to it's application in language selection
 # TODO perhaps rename 'gui_elements' stuff to 'ui_registry'
-# TODO find out what happened to the settings screen after migrating to new system.

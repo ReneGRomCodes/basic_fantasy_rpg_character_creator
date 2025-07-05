@@ -43,6 +43,18 @@ class SettingsGUI:
                                                                               window_size_button_small, window_size_button_medium,
                                                                               window_size_button_large, window_size_button_full)
 
+        # Tuple to store window size UI objects and corresponding 'settings' attributes. Last item represents full screen,
+        # and has no settings attribute assigned, instead using 'pygame.FULLSCREEN' when setting window size.
+        self.object_attribute_pairs: tuple[tuple[InteractiveText, tuple[int, int] | bool], ...] = (
+            (self.window_size_buttons[0], settings.small_screen),
+            (self.window_size_buttons[1], settings.medium_screen),
+            (self.window_size_buttons[2], settings.large_screen),
+            (self.window_size_buttons[3], False)
+        )
+
+        # Set attributes when instance is created.
+        self.init_settings_screen()
+
     def show_settings(self, screen, mouse_pos) -> None:
         """Display settings screen.
             ARGS:
@@ -54,9 +66,6 @@ class SettingsGUI:
 
         # Format elements on screen.
         self.format_settings_screen_elements(screen)
-
-        # Select window size and re-initialize 'gui_elements'.
-        self.select_window_size(screen, mouse_pos)
 
         # Draw basic elements on screen.
         draw_screen_title(screen, self.title)
@@ -70,6 +79,17 @@ class SettingsGUI:
                 button.interactive_text_surface = None
 
             button.draw_interactive_text(mouse_pos)
+
+    def init_settings_screen(self) -> None:
+        """Set several attributes when a class instance is created."""
+        # Set 'window_sizes[0].selected' to 'True' to show default selection in settings menu when screen is first shown.
+        if settings.screen_size == settings.default_settings[0]:
+            self.window_size_buttons[0].selected = True
+
+        # Assign default object (small window) to 'selected_window_size' if it is 'None' in case of first access to the
+        # settings screen.
+        if not self.selected_window_size:
+            self.selected_window_size = self.object_attribute_pairs[0][0]
 
     def format_settings_screen_elements(self, screen) -> None:
         """Format and position objects from 'gui_elements' for settings screen."""
@@ -105,43 +125,23 @@ class SettingsGUI:
             screen: PyGame window.
             mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
         """
-        # Tuple to store window size UI objects and corresponding 'settings' attributes. Last item represents full screen,
-        # and has no settings attribute assigned, instead using 'pygame.FULLSCREEN' when setting window size.
-        object_attribute_pairs: tuple[tuple[InteractiveText, tuple[int, int] | bool], ...] = (
-            (self.window_size_buttons[0], settings.small_screen),
-            (self.window_size_buttons[1], settings.medium_screen),
-            (self.window_size_buttons[2], settings.large_screen),
-            (self.window_size_buttons[3], False)
-        )
+        # Loop through each available window size option to see which one is selected.
+        for size in self.window_size_buttons:
+            if size.interactive_rect.collidepoint(mouse_pos):
+                if self.selected_window_size != size:
+                    self.selected_window_size.selected = False  # Unselect previous window size.
+                    self.selected_window_size = size
+                    self.selected_window_size.selected = True  # Select new window size.
+                break
 
-        # Set 'window_sizes[0].selected' to 'True' to show default selection in settings menu when screen is first shown.
-        if settings.screen_size == settings.default_settings[0]:
-            self.window_size_buttons[0].selected = True
-
-        # Assign default object (small window) to 'selected_window_size' if it is 'None' in case of first access to the
-        # settings screen.
-        if not self.selected_window_size:
-            self.selected_window_size = object_attribute_pairs[0][0]
-
-        # Check if the left mouse button is pressed before proceeding with selection logic.
-        if pygame.mouse.get_pressed()[0]:
-            # Loop through each available window size option to see which one is selected.
-            for size in self.window_size_buttons:
-                if size.interactive_rect.collidepoint(mouse_pos):
-                    if self.selected_window_size != size:
-                        self.selected_window_size.selected = False  # Unselect previous window size.
-                        self.selected_window_size = size
-                        self.selected_window_size.selected = True  # Select new window size.
-                    break
-
-            # Ensure that only one button is selected at a time.
-            for button in self.window_size_buttons:
-                button.selected = (button == self.selected_window_size)
+        # Ensure that only one button is selected at a time.
+        for button in self.window_size_buttons:
+            button.selected = (button == self.selected_window_size)
 
         # Iterate through 'object_attribute_pairs' and check if currently selected UI object corresponds with window size set
         # in 'Settings' object. Change 'settings.screen_size' and change 'pygame.display' to selected value if pairs don't
         # correspond.
-        for pair in object_attribute_pairs:
+        for pair in self.object_attribute_pairs:
 
             if pair[0].selected == True and pair[1] != settings.screen_size:
                 settings.screen_size = pair[1]
