@@ -84,6 +84,9 @@ def draw_screen_note(screen, note: TextField) -> None:
 def set_elements_pos_y_values(screen, elements: list | tuple) -> tuple[int, int]:
     """Dynamically set starting y-position for GUI elements on screen based on number of said elements.
     Screen layout is designed to adapt and fit up to 16 elements.
+    NOTE: It is advised to make use of function 'get_pos_dict()' when handling screens which make use of selectable
+    instances of 'InteractiveText' and non-selectable counterparts. See function docstring for details, and it's
+    implementation in language selection as an example.
     ARGS:
         screen: PyGame window.
         elements: List/tuple or array to store GUI elements.
@@ -119,6 +122,27 @@ def set_elements_pos_y_values(screen, elements: list | tuple) -> tuple[int, int]
     element_pos_y = ref_element.text_rect.top - (int(n_elements / 2) * pos_y_offset)
 
     return element_pos_y, pos_y_offset
+
+# TODO
+def get_pos_y_dict(screen, active_fields: tuple[InteractiveText, ...], pos_dict: dict[str, int]) -> None:
+    """Populate dict for selectable elements 'dict' with y-positions in 'ui_shared_data' for screens which use both,
+    available/selectable fields and their inactive/non-selectable counterparts.
+    Dict keys are the fields names. The dict can then be used for the positioning of both, active (InteractiveText)
+    elements and their inactive (TextField) counterparts, if both are meant to have the same position.
+    ARGS:
+        screen: pygame window.
+        active_fields: tuple containing instances of class 'InteractiveText' representing available fields.
+        pos_dict: dict stored as attribute in 'ui_shared_data', containing y-positions for each available field.
+    """
+    # Get dynamic y-positions for items in 'active_fields'.
+    pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, active_fields)
+
+    # Build dict with y-position values for each active field with 'field.text' attribute as keys.
+    for index, field in enumerate(active_fields):
+        if index == 0:
+            pos_dict[field.text] = pos_y_start
+        else:
+            pos_dict[field.text] = pos_y_start + pos_y_offset * index
 
 
 def show_info_panels(elements: list | tuple, mouse_pos) -> None:
@@ -389,7 +413,7 @@ def get_position_race_class_element(screen, race_class: InteractiveText | TextFi
     race_x_pos: int = int(screen.get_rect().width / 4)
     class_x_pos: int = race_x_pos * 3
     # Lists of races and classes from dict 'rc_dict' for checks and calculation of y-positions.
-    races_list: list[str] = sd.rc_dict["races"]
+    races_list: list[str] = sd.rc_dict["races"]  # TODO remove sd.rc_dict when new positioning system is in place!!!
     classes_list: list[str] = sd.rc_dict["classes"]
 
     # Check if 'race_class' represents a race or a class and retrieve correct x- and y-positions.
@@ -474,6 +498,63 @@ def draw_available_choices(screen, available_choices: dict[str, list[Interactive
             cls.draw_text()
 
 
+# TODO new race class selection logic
+def position_race_class_elements(screen, active_races: tuple[InteractiveText, ...], inactive_races: tuple[TextField],
+                                 active_classes: tuple[InteractiveText, ...], inactive_classes: tuple[TextField]) -> None:
+    """
+    ARGS:
+        screen:
+        active_races:
+        inactive_races:
+        active_classes:
+        inactive_classes:
+    """
+    # Race and class specific variables for x-positioning.
+    race_x_pos: int = int(screen.get_rect().width / 4)
+    class_x_pos: int = race_x_pos * 3
+
+    # Populate dicts with y-positions in 'ui_shared_data'.
+    get_pos_y_dict(screen, active_races, uisd.race_pos_y_dict)
+    get_pos_y_dict(screen, active_classes, uisd.class_pos_y_dict)
+
+    for race in active_races:
+        race.interactive_rect.centerx = race_x_pos
+    for race in inactive_races:
+        race.text_rect.centerx = race_x_pos
+
+    for cls in active_classes:
+        cls.interactive_rect. centerx = class_x_pos
+    for cls in inactive_classes:
+        cls.text_rect.centerx = class_x_pos
+
+
+def draw_race_class_selection_elements(screen, active_races: tuple[InteractiveText, ...], inactive_races: tuple[TextField],
+                                       active_classes: tuple[InteractiveText, ...], inactive_classes: tuple[TextField],
+                                       mouse_pos) -> None:
+    """
+    ARGS:
+        screen:
+        active_races:
+        inactive_races:
+        active_classes:
+        inactive_classes:
+        mouse_pos:
+    """
+    position_race_class_elements(screen, active_races, inactive_races, active_classes, inactive_classes)
+
+    for race in active_races + inactive_races:
+        if isinstance(race, InteractiveText):
+            race.draw_interactive_text(mouse_pos)
+        elif isinstance(race, TextField):
+            race.draw_text()
+
+    for cls in active_classes + inactive_classes:
+        if isinstance(cls, InteractiveText):
+            cls.draw_interactive_text(mouse_pos)
+        elif isinstance(cls, TextField):
+            cls.draw_text()
+
+
 """Background functions for spell selection screen."""
 
 def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...]) -> None:
@@ -519,26 +600,7 @@ def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, 
 
 
 """Background functions for spell selection screen."""
-
-def get_lang_pos_y_dict(screen, languages: tuple[InteractiveText, ...]) -> None:
-    """Populate dict for language elements 'uisd.lang_pos_y_dict' with y-positions in 'ui_shared_data'. Dict keys are
-    the language names and the dict is used for the positioning of both, active (InteractiveText) and inactive (TextField)
-    elements.
-    ARGS:
-        screen: pygame window.
-        languages: tuple containing instances of class 'InteractiveText' representing available languages.
-    """
-    # Get dynamic y-positions for items in 'languages'.
-    pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, languages)
-
-    # Build dict with y-position values for each language with 'language.text' attribute as keys.
-    for index, language in enumerate(languages):
-        if index == 0:
-            uisd.lang_pos_y_dict[language.text] = pos_y_start
-        else:
-            uisd.lang_pos_y_dict[language.text] = pos_y_start + pos_y_offset * index
-
-
+# TODO reference for new race/class selection logic
 def position_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...],
                                                     inactive_languages: tuple[TextField]) -> None:
     """Position active or inactive elements for language selection on- or off-screen based on 'selected' status and
@@ -550,7 +612,7 @@ def position_language_selection_screen_elements(screen, languages: tuple[Interac
     """
     if not uisd.position_flag:
         # Populate dict with y-positions in 'ui_shared_data'.
-        get_lang_pos_y_dict(screen, languages)
+        get_pos_y_dict(screen, languages, uisd.lang_pos_y_dict)
 
         # Position selectable 'InteractiveText' instances from 'languages'.
         for language in languages:
