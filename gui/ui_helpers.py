@@ -258,36 +258,53 @@ def position_ability_scores_screen_elements(screen, abilities_array: tuple[tuple
     # Loop through each ability and corresponding stats to format, position and display the ability name, score and
     # bonus/penalty as they are grouped in 'abilities_array'.
     for ability_name, ability_score in abilities_array:
-        # 'Pre-formatting' bonus/penalty to string for easier formatting and better code-readability further down.
-        bonus_penalty: str = f"{ability_score[1]}"
-        # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
-        # string if bonus_penalty is 0.
-        if ability_score[1] > 0:
-            bonus_penalty: str = f"+{bonus_penalty}"
-        elif ability_score[1] == 0:
-            bonus_penalty: str = ""
-
-        # Position and draw ability name on screen.
+        # Position ability name on screen.
         ability_name.interactive_rect.top = element_pos_y
         ability_name.interactive_rect.left = ability_name_x
-        ability_name.draw_interactive_text(mouse_pos)
 
-        # Change contents and re-render 'TextField' instances for each ability score stat.
-        ability_score_field.text = str(ability_score[0])
-        ability_score_field.render_new_text_surface()
-        bonus_penalty_field.text = bonus_penalty
-        bonus_penalty_field.render_new_text_surface()
+        # Format text attributes for ability score- and bonus/penalty fields.
+        format_ability_fields(ability_score, ability_score_field, bonus_penalty_field)
 
-        # Position and draw ability score and bonus/penalty on screen.
+        # Position ability score and bonus/penalty on screen.
         ability_score_field.text_rect.top = ability_name.interactive_rect.top
         ability_score_field.text_rect.right = ability_score_x
         bonus_penalty_field.text_rect.top = ability_score_field.text_rect.top
         bonus_penalty_field.text_rect.right = bonus_penalty_x
+
+        # Draw ability fields on screen.
+        ability_name.draw_interactive_text(mouse_pos)
         ability_score_field.draw_text()
         bonus_penalty_field.draw_text()
 
         # Set new y-position for next element.
         element_pos_y += pos_y_offset
+
+
+def format_ability_fields(ability_score: list[int], ability_score_field: TextField, bonus_penalty_field: TextField)\
+        -> None:
+    """Format text attributes for ability score- and bonus/penalty fields text attribute, and add correct prefix or set
+    empty string for bonus/penalty.
+    ARGS:
+        ability_score: list of ability score values with base score at index '0', and bonus/penalty at index '1'.
+        ability_score_field: instance of class 'TextField' to display ability scores.
+        bonus_penalty_field: instance of class 'TextField' to display bonus/penalty scores.
+    """
+    # Change contents and re-render 'ability_score_field' instance for each ability score stat.
+    ability_score_field.text = str(ability_score[0])
+    ability_score_field.render_new_text_surface()
+
+    # 'Pre-formatting' bonus/penalty to string for easier formatting and better code-readability further down.
+    bonus_penalty: str = f"{ability_score[1]}"
+    # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
+    # string if bonus_penalty is 0.
+    if ability_score[1] > 0:
+        bonus_penalty: str = f"+{bonus_penalty}"
+    elif ability_score[1] == 0:
+        bonus_penalty: str = ""
+
+    # Change contents and re-render 'bonus_penalty_field' instance for each ability score stat.
+    bonus_penalty_field.text = bonus_penalty
+    bonus_penalty_field.render_new_text_surface()
 
 
 """Background functions for race/class selection screen."""
@@ -465,17 +482,20 @@ def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveTe
         screen: pygame window.
         spells: tuple containing instances of class 'InteractiveText' representing available spells.
     """
-    # Get dynamic y-positions for items in 'spells'.
-    pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, spells)
+    if not uisd.position_flag:
+        # Get dynamic y-positions for items in 'spells'.
+        pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, spells)
 
-    for index, spell in enumerate(spells):
-        # Align element x-position at screen center.
-        spell.interactive_rect.centerx = screen.get_rect().centerx
-        # Assign dynamic y-positions to elements.
-        if index == 0:
-            spell.interactive_rect.centery = pos_y_start
-        else:
-            spell.interactive_rect.centery = pos_y_start + pos_y_offset * index
+        for index, spell in enumerate(spells):
+            # Align element x-position at screen center.
+            spell.interactive_rect.centerx = screen.get_rect().centerx
+            # Assign dynamic y-positions to elements.
+            if index == 0:
+                spell.interactive_rect.centery = pos_y_start
+            else:
+                spell.interactive_rect.centery = pos_y_start + pos_y_offset * index
+
+        uisd.position_flag = True
 
 
 def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, ...], screen_note: TextField,

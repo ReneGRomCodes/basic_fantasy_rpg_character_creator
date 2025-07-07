@@ -19,8 +19,9 @@ class UISharedData:
         self.load_only_flag: bool = False
 
         # Flag to ensure screen-specific elements are positioned only once per appearance.
-        # Used in non-adaptable screens to minimize unnecessary repositioning, but not applied to some adaptable screens
-        # to keep functions more maintainable.
+        # Used to minimize unnecessary repositioning in most screens. Exceptions are screens which use single screen
+        # objects with changing attributes to display different values (See ability score screen functions in 'gui/gui.py'
+        # as an example).
         self.position_flag: bool = False
 
         # Flag to check if character can learn additional languages. Set in event handler in state "show_abilities"
