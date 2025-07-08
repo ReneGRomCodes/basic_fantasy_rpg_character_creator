@@ -26,10 +26,6 @@ class SharedData:
         # Dicts of default values for races and classes (spells, languages, etc.).
         self.default_spells, self.default_languages = get_race_class_defaults()
 
-        # All available races/classes in the game.
-        # 'None' as starting value, dict is created in 'shared_data_janitor()' when method is called in from module
-        # 'state_manager.py' in state "pre_main_menu".
-        self.rc_dict: dict[str, str] | None = None
         # Possible race-class combinations.
         # 'None' as starting value before actual value is assigned.
         self.possible_characters: list[str] | None = None
@@ -222,14 +218,6 @@ class SharedData:
         self.selected_class: None = None
         self.selected_spell: None = None
         self.selected_languages: list[InteractiveText] = []
-
-        # Initialize/reset dict for use in 'gui/ui_helpers.py' in function 'position_race_class_elements()' to calculate
-        # UI positioning, and automatically populate dict 'rc_dict' once with all races/classes available in the game
-        # for later use in race/class selection.
-        self.rc_dict = {
-            "races": [race.text for race in uisd.gui_elements["active_races"]],
-            "classes": [cls.text for cls in uisd.gui_elements["active_classes"]],
-        }
 
 
 shared_data = SharedData()

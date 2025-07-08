@@ -27,8 +27,8 @@ class UISharedData:
         # Dicts with y-positions for race and class elements.
         self.race_pos_y_dict: dict[str, int] = {}
         self.class_pos_y_dict: dict[str, int] = {}
-        # Dict for sets of available race/class options.
-        self.available_rc_options: dict[str, set] = {}
+        # Dict for lists of available race/class options.
+        self.rc_options: dict[str, list] = {}
 
         # Flag to check if character can learn additional languages. Set in event handler in state "show_abilities"
         # by calling function 'set_language_flag()' from 'rules.py' module after ability scores are set. Used to decide

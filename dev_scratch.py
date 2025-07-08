@@ -10,6 +10,4 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO add option to allow for minor customization of randomly generated characters
 # TODO add counter for 'remaining language selections allowed' in language selection screen
 # TODO confirmation messages for save/load screen
-# TODO overhaul race/class selection!!! that thing is way more complex than it needs to be! See language selection
-#  structure with dict usage for comparison
 # TODO perhaps rename 'gui_elements' stuff to 'ui_registry'

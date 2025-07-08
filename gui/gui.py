@@ -131,12 +131,8 @@ def show_race_class_selection_screen(screen, mouse_pos) -> None:
     # Draw screen title.
     ui.draw_screen_title(screen, screen_title)
 
-    # Get dict of race and class interactive text field instances 'available_choices', which are then ready to be drawn
-    # on screen.
-    available_choices = ui.get_available_choices(active_races, active_classes)
-
-    # Position and draw instances from dict 'available_choices' on screen.
-    ui.draw_available_choices(screen, available_choices, inactive_races, inactive_classes, mouse_pos)
+    # Position and draw race/class selection elements on screen.
+    ui.draw_race_class_selection_elements(screen, active_races, active_classes, inactive_races, inactive_classes, mouse_pos)
 
     # Draw buttons.
     ui.draw_special_button(screen, reset_button, mouse_pos)

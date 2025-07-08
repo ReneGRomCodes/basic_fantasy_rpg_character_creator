@@ -86,7 +86,7 @@ def set_elements_pos_y_values(screen, elements: list | tuple) -> tuple[int, int]
     Screen layout is designed to adapt and fit up to 16 elements.
     NOTE: It is advised to make use of function 'get_pos_dict()' when handling screens which make use of selectable
     instances of 'InteractiveText' and non-selectable counterparts. See function docstring for details, and it's
-    implementation in language selection as an example.
+    implementation in language selection (simple) or race/class selection (complex) as an example.
     ARGS:
         screen: PyGame window.
         elements: List/tuple or array to store GUI elements.
@@ -123,7 +123,7 @@ def set_elements_pos_y_values(screen, elements: list | tuple) -> tuple[int, int]
 
     return element_pos_y, pos_y_offset
 
-# TODO
+
 def get_pos_y_dict(screen, active_fields: tuple[InteractiveText, ...], pos_dict: dict[str, int]) -> None:
     """Populate dict for selectable elements 'dict' with y-positions in 'ui_shared_data' for screens which use both,
     available/selectable fields and their inactive/non-selectable counterparts.
@@ -333,48 +333,49 @@ def format_ability_fields(ability_score: list[int], ability_score_field: TextFie
 
 """Background functions for race/class selection screen."""
 
-def race_class_check(available_choices: dict[str, list[InteractiveText]], active_races: tuple[InteractiveText],
-                     active_classes: tuple[InteractiveText], race_name: str, class_name: str) -> dict[str, list[InteractiveText]]:
-    """Check 'active_races' and 'active_classes' and populate/return dict 'available_choices' with allowed race/class
-    combinations for use in function 'get_available_choices()'.
+def race_class_check(rc_options: dict[str, list[InteractiveText]], active_races: tuple[InteractiveText, ...],
+                     active_classes: tuple[InteractiveText, ...], race_name: str, class_name: str)\
+        -> dict[str, list[InteractiveText]]:
+    """Check 'active_races' and 'active_classes' and populate/return dict 'rc_options' with allowed race/class
+    combinations for use in function 'get_rc_options()'.
     ARGS:
-        available_choices: dict for instances of 'InteractiveText' for allowed race/class combinations.
+        rc_options: dict for instances of 'InteractiveText' for allowed race/class combinations.
         active_races: tuple containing 'InteractiveText' instances for all available races in game.
         active_classes: tuple containing 'InteractiveText' instances for all available classes in game.
         race_name: name of allowed race as string for check.
         class_name: name of allowed class as string for check.
     RETURNS:
-        available_choices
+        rc_options
     """
     # Check if the race matches.
     for race in active_races:
         if race.text == race_name:
             # Assuring only one instance of each object is added to dict.
-            if race not in available_choices["races"]:
-                available_choices["races"].append(race)
+            if race not in rc_options["races"]:
+                rc_options["races"].append(race)
     # Check if the class matches.
     for cls in active_classes:
         if cls.text == class_name:
             # Assuring only one instance of each object is added to dict.
-            if cls not in available_choices["classes"]:
-                available_choices["classes"].append(cls)
+            if cls not in rc_options["classes"]:
+                rc_options["classes"].append(cls)
 
-    return available_choices
+    return rc_options
 
 
-def get_available_choices(active_races: tuple[InteractiveText], active_classes: tuple[InteractiveText])\
+def get_rc_options(active_races: tuple[InteractiveText, ...], active_classes: tuple[InteractiveText, ...])\
         -> dict[str, list[InteractiveText]]:
     """Create dict and populate it with instances from 'active_races' and 'active_classes' using function
-        'race_class_check()' if their 'text' attributes match entries in 'possible_characters' (first word for race,
-        second for class) and return it in 'available_choices'.
+    'race_class_check()' if their 'text' attributes match entries in 'sd.possible_characters' (first word for race,
+    second for class) and return it in 'rc_options'.
     ARGS:
         active_races: entry from gui element dict 'gui_elements["active_races"]'.
         active_classes: entry from gui element dict 'gui_elements["active_classes"]'.
     RETURNS:
-        available_choices: dict for instances of 'InteractiveText' for allowed race/class combinations.
+        rc_options: dict for instances of 'InteractiveText' for allowed race/class combinations.
     """
     # Dictionary for available race and class choices to be returned.
-    available_choices: dict[str, list] = {
+    rc_options: dict[str, list] = {
         "races": [],
         "classes": [],
     }
@@ -385,169 +386,95 @@ def get_available_choices(active_races: tuple[InteractiveText], active_classes: 
 
         # Add all available races and classes to dict if none are selected.
         if not sd.selected_race and not sd.selected_class:
-            available_choices = race_class_check(available_choices, active_races, active_classes, race_name, class_name)
+            rc_options = race_class_check(rc_options, active_races, active_classes, race_name, class_name)
 
         # Add only classes that are compatible with selected race to dict.
         elif sd.selected_race and sd.selected_race.text == race_name:
-            available_choices = race_class_check(available_choices, active_races, active_classes, race_name, class_name)
+            rc_options = race_class_check(rc_options, active_races, active_classes, race_name, class_name)
 
         # Add only races that are compatible with selected class to dict.
         elif sd.selected_class and sd.selected_class.text == class_name:
-            available_choices = race_class_check(available_choices, active_races, active_classes, race_name, class_name)
+            rc_options = race_class_check(rc_options, active_races, active_classes, race_name, class_name)
 
-    return available_choices
+    return rc_options
 
 
-def get_position_race_class_element(screen, race_class: InteractiveText | TextField, inactive_elements: list[TextField])\
-        -> tuple[int, int]:
-    """Get and return x and y values for GUI elements in function 'draw_available_choices()'.
+def position_race_class_elements_new(screen, active_races: tuple[InteractiveText, ...], inactive_races: tuple[TextField, ...],
+                                     active_classes: tuple[InteractiveText, ...], inactive_classes: tuple[TextField, ...])\
+        -> None:
+    """Position screen elements for race/class selection screen.
     ARGS:
-        screen: PyGame window.
-        race_class: GUI element to be positioned.
-        inactive_elements: list of text field instances for non-choose able races/classes. Used here only to be passed
-            to function 'get_race_class_y_position()' for further y-coordinates calculations.
-    RETURNS:
-        x, y: x and y position on screen for 'race_class' object.
+        screen: pygame window.
+        active_races: entry from gui element dict 'gui_elements["active_races"]'.
+        inactive_races: entry from gui element dict 'gui_elements["inactive_races"]'.
+        active_classes: entry from gui element dict 'gui_elements["active_classes"]'.
+        inactive_classes: entry from gui element dict 'gui_elements["inactive_classes"]'.
     """
     # Race and class specific variables for x-positioning.
     race_x_pos: int = int(screen.get_rect().width / 4)
     class_x_pos: int = race_x_pos * 3
-    # Lists of races and classes from dict 'rc_dict' for checks and calculation of y-positions.
-    races_list: list[str] = sd.rc_dict["races"]  # TODO remove sd.rc_dict when new positioning system is in place!!!
-    classes_list: list[str] = sd.rc_dict["classes"]
 
-    # Check if 'race_class' represents a race or a class and retrieve correct x- and y-positions.
-    if race_class.text in races_list:
-        x = race_x_pos
-        y = get_race_class_y_position(screen, race_class, races_list, inactive_elements)
-    elif race_class.text in classes_list:
-        x = class_x_pos
-        y = get_race_class_y_position(screen, race_class, classes_list, inactive_elements)
+    if not uisd.position_flag:
+        # Populate dicts 'uisd.race_pos_y_dict' and 'uisd.class_pos_y_dict' with y-positions.
+        get_pos_y_dict(screen, active_races, uisd.race_pos_y_dict)
+        get_pos_y_dict(screen, active_classes, uisd.class_pos_y_dict)
 
-    return x, y
+        # Populate dict with instances of InteractiveText representing available race/class options.
+        uisd.rc_options = get_rc_options(active_races, active_classes)
+        # Create set of strings to check if inactive or selectable text field should be displayed.
+        check_set: set[str] = set([r.text for r in uisd.rc_options["races"]] + [c.text for c in uisd.rc_options["classes"]])
 
+        # Position ALL race/class elements from 'gui_elements' at default position outside the screen to avoid persistent
+        # on-screen position of screen objects.
+        for rc in active_races + active_classes + inactive_races + inactive_classes:
+            if isinstance(rc, InteractiveText):
+                rc.interactive_rect.bottomright = uisd.gui_elements["off_screen_pos"]
+            elif isinstance(rc, TextField):
+                rc.text_rect.bottomright = uisd.gui_elements["off_screen_pos"]
 
-def get_race_class_y_position(screen, race_class: InteractiveText | TextField, rc_dict_list: list[str],
-                              inactive_elements: list[TextField]) -> int:
-    """Helper function to get and return y value for GUI element in function 'get_position_race_class_element()'.
-    ARGS:
-        screen: pygame window.
-        race_class: GUI element to be positioned.
-        rc_dict_list: value of type 'list' from 'rc_dict' as assigned to variable in 'get_position_race_class_element()'.
-        inactive_elements: list of text field instances for non-choose able races/classes. Used here only to be passed
-            to function 'set_elements_pos_y_values()' for further y-coordinates calculations.
-    RETURNS:
-        y: y position on screen for 'race_class' object.
-    """
-    # Get dynamic y-positions for items in 'spells'.
-    pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, inactive_elements)
-
-    for index, item in enumerate(rc_dict_list):
-        if race_class.text == item:
-            if index == 0:
-                y = pos_y_start
+        # Position/draw race selection.
+        for race in inactive_races:
+            # Check if race.text attribute is in 'check_set', proceed with active UI object if so, inactive object otherwise.
+            if race.text in check_set:
+                for r in uisd.rc_options["races"]:
+                    r.interactive_rect.centerx, r.interactive_rect.centery = race_x_pos, uisd.race_pos_y_dict[r.text]
             else:
-                y = pos_y_start + pos_y_offset * index
+                race.text_rect.centerx, race.text_rect.centery = race_x_pos, uisd.race_pos_y_dict[race.text]
 
-    return y
+        # Position/draw class selection.
+        for cls in inactive_classes:
+            # Check if class.text attribute is in 'check_set', proceed with active UI object if so, inactive object otherwise.
+            if cls.text in check_set:
+                for c in uisd.rc_options["classes"]:
+                    c.interactive_rect.centerx, c.interactive_rect.centery = class_x_pos, uisd.class_pos_y_dict[c.text]
+            else:
+                cls.text_rect.centerx, cls.text_rect.centery = class_x_pos, uisd.class_pos_y_dict[cls.text]
+
+        uisd.position_flag = True
 
 
-def draw_available_choices(screen, available_choices: dict[str, list[InteractiveText]],
-                           inactive_races: list[TextField], inactive_classes: list[TextField], mouse_pos) -> None:
-    """Get position of text field items in dict 'available_choices' and draw them on screen.
+def draw_race_class_selection_elements(screen, active_races: tuple[InteractiveText, ...],
+                                       active_classes: tuple[InteractiveText, ...], inactive_races: tuple[TextField, ...],
+                                       inactive_classes: tuple[TextField, ...], mouse_pos) -> None:
+    """Call positioning function and draw screen elements for race/class selection.
     ARGS:
         screen: pygame window.
-        available_choices: dict with instances of interactive text fields for race and class selection.
-        inactive_races: list of text field instances for non-choose able races.
-        inactive_classes: list of text field instances for non-choose able classes.
+        active_races: entry from gui element dict 'gui_elements["active_races"]'.
+        inactive_races: entry from gui element dict 'gui_elements["inactive_races"]'.
+        active_classes: entry from gui element dict 'gui_elements["active_classes"]'.
+        inactive_classes: entry from gui element dict 'gui_elements["inactive_classes"]'.
         mouse_pos: position of mouse on screen.
     """
-    # Create list to check if inactive or selectable text field should be displayed.
-    check_list: list[str] = [r.text for r in available_choices["races"]] + [c.text for c in available_choices["classes"]]
+    # Position race/class selection elements on screen.
+    position_race_class_elements_new(screen, active_races, inactive_races, active_classes, inactive_classes)
 
-    # Position ALL selectable race/class text fields from 'gui_elements' at default position outside the screen to avoid
-    # persistent on-screen position of fields that become unavailable during selection (i.e. races that are incompatible
-    # with selected class or vice versa). Avoids said race/class fields still being selectable even when inactive.
-    for race in uisd.gui_elements["active_races"]:
-        race.interactive_rect.bottomright = uisd.gui_elements["off_screen_pos"]
-    for cls in uisd.gui_elements["active_classes"]:
-        cls.interactive_rect.bottomright = uisd.gui_elements["off_screen_pos"]
-
-    # Position/draw race selection.
-    for race in inactive_races:
-        # Check if race.text attribute is in 'check_list', proceed with active UI object if so, inactive object otherwise.
-        if race.text in check_list:
-            for r in available_choices["races"]:
-                r.interactive_rect.centerx, r.interactive_rect.centery = get_position_race_class_element(screen, r,
-                                                                                                      inactive_races)
-                r.draw_interactive_text(mouse_pos)
-        else:
-            race.text_rect.centerx, race.text_rect.centery = get_position_race_class_element(screen, race, inactive_races)
-            race.draw_text()
-
-    # Position/draw class selection.
-    for cls in inactive_classes:
-        # Check if class.text attribute is in 'check_list', proceed with active UI object if so, inactive object otherwise.
-        if cls.text in check_list:
-            for c in available_choices["classes"]:
-                c.interactive_rect.centerx, c.interactive_rect.centery = get_position_race_class_element(screen, c,
-                                                                                                      inactive_classes)
-                c.draw_interactive_text(mouse_pos)
-        else:
-            cls.text_rect.centerx, cls.text_rect.centery = get_position_race_class_element(screen, cls, inactive_classes)
-            cls.draw_text()
-
-
-# TODO new race class selection logic
-def position_race_class_elements(screen, active_races: tuple[InteractiveText, ...], inactive_races: tuple[TextField],
-                                 active_classes: tuple[InteractiveText, ...], inactive_classes: tuple[TextField]) -> None:
-    """
-    ARGS:
-        screen:
-        active_races:
-        inactive_races:
-        active_classes:
-        inactive_classes:
-    """
-    # Race and class specific variables for x-positioning.
-    race_x_pos: int = int(screen.get_rect().width / 4)
-    class_x_pos: int = race_x_pos * 3
-
-    # Populate dicts with y-positions in 'ui_shared_data'.
-    get_pos_y_dict(screen, active_races, uisd.race_pos_y_dict)
-    get_pos_y_dict(screen, active_classes, uisd.class_pos_y_dict)
-
-    for race in active_races:
-        race.interactive_rect.centerx = race_x_pos
-    for race in inactive_races:
-        race.text_rect.centerx = race_x_pos
-
-    for cls in active_classes:
-        cls.interactive_rect. centerx = class_x_pos
-    for cls in inactive_classes:
-        cls.text_rect.centerx = class_x_pos
-
-
-def draw_race_class_selection_elements(screen, active_races: tuple[InteractiveText, ...], inactive_races: tuple[TextField],
-                                       active_classes: tuple[InteractiveText, ...], inactive_classes: tuple[TextField],
-                                       mouse_pos) -> None:
-    """
-    ARGS:
-        screen:
-        active_races:
-        inactive_races:
-        active_classes:
-        inactive_classes:
-        mouse_pos:
-    """
-    position_race_class_elements(screen, active_races, inactive_races, active_classes, inactive_classes)
-
+    # Draw race selection elements.
     for race in active_races + inactive_races:
         if isinstance(race, InteractiveText):
             race.draw_interactive_text(mouse_pos)
         elif isinstance(race, TextField):
             race.draw_text()
-
+    # Draw class selection elements.
     for cls in active_classes + inactive_classes:
         if isinstance(cls, InteractiveText):
             cls.draw_interactive_text(mouse_pos)
@@ -600,7 +527,6 @@ def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, 
 
 
 """Background functions for spell selection screen."""
-# TODO reference for new race/class selection logic
 def position_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...],
                                                     inactive_languages: tuple[TextField]) -> None:
     """Position active or inactive elements for language selection on- or off-screen based on 'selected' status and
