@@ -44,6 +44,10 @@ def main_state_manager(screen, state: str, mouse_pos) -> str:
         # Use of 'secondary' state manager for save/load screen.
         state = save_load_screen_state_manager(screen, state, mouse_pos)
 
+    elif state == "settings_screen":
+        # Use of 'secondary' state manager for settings screen.
+        state = settings_screen_state_manager(screen, state, mouse_pos)
+
     elif state in {"init_credits", "credits"}:
         # Use of 'secondary' state manager for credits screen.
         state = credits_state_manager(screen, state)
