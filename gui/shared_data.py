@@ -17,6 +17,8 @@ class UISharedData:
         # Flag to set mode in which save/load screen is displayed. 'False' allows for save and load, 'True' for load only.
         # See class 'SaveLoadScreen' in 'sl_model.py' for details.
         self.load_only_flag: bool = False
+        # Flag to check if character has been loaded in from 'characters.json'.
+        self.is_loaded_flag: bool = False
 
         # Flag to ensure screen-specific elements are positioned only once per appearance.
         # Used to minimize unnecessary repositioning in most screens. Exceptions are screens which use single screen

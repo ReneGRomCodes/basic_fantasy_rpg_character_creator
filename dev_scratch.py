@@ -11,5 +11,5 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODO confirmation messages for save/load screen
 # TODO perhaps rename 'gui_elements' stuff to 'ui_registry'
 # TODO clean up imports via '__init__.py' files
-# TODO 'is_saved' bool in 'cs_model.py' has to be set to 'True' when loading a character, but AFTER the character sheet
-#   has been initialized.
+# TODO set 'is_saved' attribute to 'False' when currently active and saved character has been deleted, so confirmation
+#   message will be triggered when leaving character sheet screen.

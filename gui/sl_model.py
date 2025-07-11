@@ -222,6 +222,7 @@ class SaveLoadScreen:
             with open(settings.save_file) as f:
                 data = json.load(f)
                 sd.character.deserialize(data[self.selected_slot[0]])
+                uisd.is_loaded_flag = True
                 return "init_character_sheet"
 
         # If no valid slot is selected, return to the save/load screen.
