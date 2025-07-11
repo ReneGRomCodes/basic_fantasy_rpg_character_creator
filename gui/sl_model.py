@@ -206,6 +206,8 @@ class SaveLoadScreen:
                 json.dump(data, f)
                 state = "init_save_load_screen"
 
+            sd.cs_sheet.is_saved = True
+
         return state
 
     def load_character(self) -> str:

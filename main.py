@@ -34,13 +34,13 @@ def run_character_creator() -> None:
     state: str = "title_screen"
     # Set of states for character creation.
     main_states: set[str] = {"title_screen", "pre_main_menu", "main_menu", "init_save_load_screen", "save_load_screen",
-                             "settings_screen", "init_credits", "credits", "character_menu", "init_character_sheet",
-                             "character_sheet"}
+                             "settings_screen", "init_credits", "credits", "character_menu"}
     custom_character_states: set[str] = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
                                          "spell_selection", "language_selection", "select_starting_money",
                                          "custom_input_money",
                                          "creation_complete"}
     random_character_states: set[str] = {"random_character", "set_random_money", "name_random_character"}
+    character_sheet_states: set[str] = {"init_character_sheet", "character_sheet", "sheet_confirmation"}
 
     # Start main loop.
     while True:
@@ -59,6 +59,8 @@ def run_character_creator() -> None:
             state = sm.custom_character_state_manager(screen, state, mouse_pos)
         elif state in random_character_states:
             state = sm.random_character_state_manager(screen, state, mouse_pos)
+        elif state in character_sheet_states:
+            state = sm.character_sheet_state_manager(screen, state, mouse_pos)
 
         pygame.display.flip()
         clock.tick(settings.frame_rate)

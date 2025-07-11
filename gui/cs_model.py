@@ -5,6 +5,7 @@ from core.shared_data import SharedData, shared_data
 from gui.screen_objects import TextField, Button
 from gui.ui_helpers import draw_screen_title
 from gui.shared_data import ui_shared_data as uisd
+from core.settings import settings
 
 """Helper class to organize and access character sheet objects as attributes."""
 
@@ -51,6 +52,22 @@ class CharacterSheet:
         # Set default button width.
         for button in self.button_group:
             button.button_rect.width = uisd.gui_elements["default_button_width"]
+
+        # Bool indicating if character has been saved to 'save/characters.json'.
+        self.is_saved: bool = False
+        # Confirmation message objects.
+        self.confirmation_message: TextField = so.TextField(screen, "Exit without saving?", title_size,
+                                                            settings.info_panel_bg_color)
+        self.exit_button: Button = so.Button(screen, "CONTINUE WITHOUT SAVING", self.text_standard)
+        self.cancel_button: Button = so.Button(screen, "CANCEL", self.text_standard)
+        self.save_button: Button = so.Button(screen, "SAVE CHARACTER", self.text_standard)
+        # Tuple with 'Button' instances for use in for-loops when accessing instances.
+        self.confirmation_button_group: tuple[Button, ...] = (self.exit_button, self.cancel_button, self.save_button)
+        # Set button width.
+        for button in self.confirmation_button_group:
+            button.button_rect.width = uisd.gui_elements["default_button_width"]
+        # Call position method for message objects.
+        self.position_exit_confirm_message()
 
         """
         INITIALIZE CHARACTER SHEET ELEMENTS.
@@ -832,3 +849,23 @@ class CharacterSheet:
             # Reset x-position to '0' and set new y-position for next row.
             grid_pos[0] = 0
             grid_pos[1] += int(grid_cell_height)
+
+    def show_exit_confirm_message(self, mouse_pos) -> None:
+        """Draw confirmation message when exiting character sheet screen.
+        ARGS:
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+        """
+        # Draw confirmation message.
+        self.confirmation_message.draw_text()
+        # Draw buttons.
+        for button in self.confirmation_button_group:
+            button.draw_button(mouse_pos)
+
+    def position_exit_confirm_message(self) -> None:
+        """Position confirmation message objects."""
+        # Position confirmation message.
+        self.confirmation_message.text_rect.bottom = self.screen_rect.centery
+        # Position button instances.
+        self.cancel_button.button_rect.top, self.cancel_button.button_rect.centerx = self.screen_rect.centery, self.screen_rect.centerx
+        self.exit_button.button_rect.topleft = self.cancel_button.button_rect.topright
+        self.save_button.button_rect.topright = self.cancel_button.button_rect.topleft

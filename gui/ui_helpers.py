@@ -527,6 +527,7 @@ def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, 
 
 
 """Background functions for spell selection screen."""
+
 def position_language_selection_screen_elements(screen, languages: tuple[InteractiveText, ...],
                                                     inactive_languages: tuple[TextField]) -> None:
     """Position active or inactive elements for language selection on- or off-screen based on 'selected' status and

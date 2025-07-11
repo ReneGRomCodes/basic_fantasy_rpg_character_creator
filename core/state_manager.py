@@ -56,10 +56,6 @@ def main_state_manager(screen, state: str, mouse_pos) -> str:
         # Display character menu screen
         gui.show_character_menu(screen, mouse_pos)
 
-    elif state in {"init_character_sheet", "character_sheet"}:
-        # Use of 'secondary' state manager for character sheet screen.
-        state = character_sheet_state_manager(screen, state, mouse_pos)
-
     return state
 
 
@@ -264,11 +260,7 @@ def random_character_state_manager(screen, state: str, mouse_pos) -> str:
 
 
 def character_sheet_state_manager(screen, state: str, mouse_pos) -> str:
-    """'Secondary' state manager for use in 'main_state_manager' to create and return instance of class 'CharacterSheet'
-    with screen elements for the character sheet, call position methods and set the state to 'character_sheet'.
-    This function ensures that 'cs_sheet' is always created before the character sheet screen is displayed, reinitializing
-    it each time the screen is accessed. This prevents issues such as uninitialized values or incorrect text scaling after
-    a window size change.
+    """State manager character sheet screen.
     ARGS:
         screen: PyGame window.
         state: program state.
@@ -285,6 +277,15 @@ def character_sheet_state_manager(screen, state: str, mouse_pos) -> str:
         state = "character_sheet"
 
     elif state == "character_sheet":
+        # Display character sheet.
         sd.cs_sheet.show_character_sheet_screen(mouse_pos)
+
+        state = eh.cs_sheet_confirmation_events(screen, state, mouse_pos)
+
+    elif state == "sheet_confirmation":
+        # Show confirmation message if character has not been saved.
+        sd.cs_sheet.show_exit_confirm_message(mouse_pos)
+
+        state = eh.cs_sheet_confirmation_events(screen, state, mouse_pos)
 
     return state

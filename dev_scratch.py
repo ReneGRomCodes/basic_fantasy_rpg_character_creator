@@ -8,6 +8,8 @@ this point it has become mostly a dumping ground for 'todos'."""
 # TODOS:
 # TODO add sections for thief skills to character sheet
 # TODO add option to allow for minor customization of randomly generated characters
-# TODO add counter for 'remaining language selections allowed' in language selection screen
 # TODO confirmation messages for save/load screen
 # TODO perhaps rename 'gui_elements' stuff to 'ui_registry'
+# TODO clean up imports via '__init__.py' files
+# TODO 'is_saved' bool in 'cs_model.py' has to be set to 'True' when loading a character, but AFTER the character sheet
+#   has been initialized.

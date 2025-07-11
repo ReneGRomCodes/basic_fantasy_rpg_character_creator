@@ -121,7 +121,7 @@ def main_events(screen, state: str, mouse_pos) -> str:
                     if uisd.load_only_flag:
                         state = "pre_main_menu"
                     else:
-                        state = "init_character_sheet"
+                        state = "character_sheet"
 
         elif state == "settings_screen":
             if event.type == pygame.MOUSEBUTTONUP:
@@ -147,18 +147,6 @@ def main_events(screen, state: str, mouse_pos) -> str:
 
                 if back_button.collidepoint(mouse_pos):
                     state = "main_menu"
-
-        elif state == "character_sheet":
-            if event.type == pygame.MOUSEBUTTONUP:
-                if sd.cs_sheet.save_load_button.button_rect.collidepoint(mouse_pos):
-                    # Set save/load mode for save/load screen when accessing it from character sheet.
-                    uisd.load_only_flag = False
-                    # Event switches to state 'init_save_load_screen', which creates 'SaveLoadScreen' object before
-                    # proceeding to final 'save_load_screen' state from within main state manager.
-                    state = "init_save_load_screen"
-
-                if sd.cs_sheet.main_menu_button.button_rect.collidepoint(mouse_pos):
-                    state = "pre_main_menu"
 
     return state
 
@@ -428,6 +416,64 @@ def custom_starting_money_events(screen, state: str, mouse_pos) -> str:
 
     # Check and update events for 'pygame_textinput' instance 'starting_money_input'
     starting_money_input.update(filtered_keys)
+
+    return state
+
+
+def cs_sheet_confirmation_events(screen, state: str, mouse_pos) -> str:
+    """Check and handle events in function 'character_sheet_state_manager()' in 'state_manager.py' and return 'state'.
+    ARGS:
+        screen: PyGame window.
+        state: program state.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        state
+    """
+    # Assign button rects for cleaner code and better readability at collide point detection.
+    save_load_button = sd.cs_sheet.save_load_button.button_rect
+    main_menu_button = sd.cs_sheet.main_menu_button.button_rect
+    # Confirmation message buttons.
+    exit_button = sd.cs_sheet.exit_button.button_rect
+    cancel_button = sd.cs_sheet.cancel_button.button_rect
+    save_button = sd.cs_sheet.save_button.button_rect
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        # Ensures screen-specific UI elements are positioned only once per screen appearance and reset alpha transparency
+        # for 'continue' and 'back' buttons.
+        handle_screen_switch_reset(screen, event, mouse_pos)
+
+        if state == "character_sheet":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if save_load_button.collidepoint(mouse_pos):
+                    # Set save/load mode for save/load screen when accessing it from character sheet.
+                    uisd.load_only_flag = False
+                    # Event switches to state 'init_save_load_screen', which creates 'SaveLoadScreen' object before
+                    # proceeding to final 'save_load_screen' state from within main state manager.
+                    state = "init_save_load_screen"
+
+                if main_menu_button.collidepoint(mouse_pos):
+                    # Check if character is saved before leaving character sheet screen.
+                    if sd.cs_sheet.is_saved:
+                        state = "pre_main_menu"
+                    else:
+                        state = "sheet_confirmation"
+
+        if state == "sheet_confirmation":
+            if event.type == pygame.MOUSEBUTTONUP:
+                # Options to proceed if character has not been saved.
+                if exit_button.collidepoint(mouse_pos):
+                    state = "pre_main_menu"
+
+                if cancel_button.collidepoint(mouse_pos):
+                    state = "character_sheet"
+
+                if save_button.collidepoint(mouse_pos):
+                    uisd.load_only_flag = False
+                    state = "init_save_load_screen"
 
     return state
 
