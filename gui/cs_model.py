@@ -56,8 +56,7 @@ class CharacterSheet:
         # Attribute indicating if character has been saved to 'save/characters.json'. Contains 'slot_id' string if so.
         self.is_saved: str | False = False
         # Confirmation message objects.
-        self.confirmation_message: TextField = so.TextField(screen, "Exit without saving?", title_size,
-                                                            settings.info_panel_bg_color)
+        self.confirmation_message: TextField = so.TextField(screen, "Exit without saving?", title_size)
         self.exit_button: Button = so.Button(screen, "CONTINUE WITHOUT SAVING", self.text_standard)
         self.cancel_button: Button = so.Button(screen, "CANCEL", self.text_standard)
         self.save_button: Button = so.Button(screen, "SAVE CHARACTER", self.text_standard)
@@ -65,7 +64,7 @@ class CharacterSheet:
         self.confirmation_button_group: tuple[Button, ...] = (self.exit_button, self.cancel_button, self.save_button)
         # Set default button width.
         for button in self.confirmation_button_group:
-            button.button_rect.width = uisd.gui_elements["default_button_width"]
+            button.button_rect.width = int(screen.get_rect().width / 5)
         # Call position method for message objects.
         self.position_exit_confirm_message()
 
@@ -863,9 +862,16 @@ class CharacterSheet:
 
     def position_exit_confirm_message(self) -> None:
         """Position confirmation message objects."""
+        # Spacing variables.
+        edge_spacing = uisd.gui_elements["default_edge_spacing"]
+        button_spacing = uisd.gui_elements["button_spacing"]
+
         # Position confirmation message.
-        self.confirmation_message.text_rect.bottom = self.screen_rect.centery
+        self.confirmation_message.text_rect.bottom = self.screen_rect.centery - edge_spacing
+
         # Position button instances.
-        self.cancel_button.button_rect.top, self.cancel_button.button_rect.centerx = self.screen_rect.centery, self.screen_rect.centerx
-        self.exit_button.button_rect.topleft = self.cancel_button.button_rect.topright
-        self.save_button.button_rect.topright = self.cancel_button.button_rect.topleft
+        self.cancel_button.button_rect.centerx = self.screen_rect.centerx  # Position cancel button first as reference.
+        for button in self.confirmation_button_group:
+            button.button_rect.top = self.screen_rect.centery + edge_spacing
+        self.exit_button.button_rect.left = self.cancel_button.button_rect.right + button_spacing
+        self.save_button.button_rect.right = self.cancel_button.button_rect.left - button_spacing
