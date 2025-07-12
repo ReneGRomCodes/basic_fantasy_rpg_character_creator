@@ -97,32 +97,6 @@ def main_events(screen, state: str, mouse_pos) -> str:
                     pygame.quit()
                     sys.exit()
 
-        elif state == "save_load_screen":
-            if event.type == pygame.MOUSEBUTTONUP:
-                # Save/load slot selection logic.
-                for slot_id, slot in sd.save_load_screen.slots.items():
-                    if slot.interactive_rect.collidepoint(mouse_pos):
-                        sd.save_load_screen.select_character_slot(slot_id, slot)
-
-                if sd.save_load_screen.save_button.button_rect.collidepoint(mouse_pos):
-                    # Save character and update save/load screen.
-                    state = sd.save_load_screen.save_character(state)
-
-                if sd.save_load_screen.load_button.button_rect.collidepoint(mouse_pos):
-                    # Load character and return to character sheet.
-                    state = sd.save_load_screen.load_character()
-
-                if sd.save_load_screen.delete_button.button_rect.collidepoint(mouse_pos):
-                    # Delete character and update save/load screen.
-                    state = sd.save_load_screen.delete_character()
-
-                if sd.save_load_screen.exit_button.button_rect.collidepoint(mouse_pos):
-                    # Select state based on previously set screen mode flag.
-                    if uisd.load_only_flag:
-                        state = "pre_main_menu"
-                    else:
-                        state = "character_sheet"
-
         elif state == "settings_screen":
             if event.type == pygame.MOUSEBUTTONUP:
                 if back_button.collidepoint(mouse_pos):
@@ -147,6 +121,59 @@ def main_events(screen, state: str, mouse_pos) -> str:
 
                 if back_button.collidepoint(mouse_pos):
                     state = "main_menu"
+
+    return state
+
+
+def save_load_events(screen, state: str, mouse_pos) -> str:
+    """Check and handle events in function 'save_load_screen_state_manager()' in 'state_manager.py' and return 'state'.
+    ARGS:
+        screen: PyGame window.
+        state: program state.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    RETURNS:
+        state
+    """
+    # Assign button rects for cleaner code and better readability at collide point detection.
+    save_button = sd.save_load_screen.save_button.button_rect
+    load_button = sd.save_load_screen.load_button.button_rect
+    delete_button = sd.save_load_screen.delete_button.button_rect
+    exit_button = sd.save_load_screen.exit_button.button_rect
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        # Ensures screen-specific UI elements are positioned only once per screen appearance and reset alpha transparency
+        # for 'continue' and 'back' buttons.
+        handle_screen_switch_reset(screen, event, mouse_pos)
+
+        if state == "save_load_screen":
+            if event.type == pygame.MOUSEBUTTONUP:
+                # Save/load slot selection logic.
+                for slot_id, slot in sd.save_load_screen.slots.items():
+                    if slot.interactive_rect.collidepoint(mouse_pos):
+                        sd.save_load_screen.select_character_slot(slot_id, slot)
+
+                if save_button.collidepoint(mouse_pos):
+                    # Save character and update save/load screen.
+                    state = sd.save_load_screen.save_character(state)
+
+                if load_button.collidepoint(mouse_pos):
+                    # Load character and return to character sheet.
+                    state = sd.save_load_screen.load_character()
+
+                if delete_button.collidepoint(mouse_pos):
+                    # Delete character and update save/load screen.
+                    state = sd.save_load_screen.delete_character()
+
+                if exit_button.collidepoint(mouse_pos):
+                    # Select state based on previously set screen mode flag.
+                    if uisd.load_only_flag:
+                        state = "pre_main_menu"
+                    else:
+                        state = "character_sheet"
 
     return state
 
@@ -420,7 +447,7 @@ def custom_starting_money_events(screen, state: str, mouse_pos) -> str:
     return state
 
 
-def cs_sheet_confirmation_events(screen, state: str, mouse_pos) -> str:
+def cs_sheet_events(screen, state: str, mouse_pos) -> str:
     """Check and handle events in function 'character_sheet_state_manager()' in 'state_manager.py' and return 'state'.
     ARGS:
         screen: PyGame window.

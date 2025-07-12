@@ -40,10 +40,6 @@ def main_state_manager(screen, state: str, mouse_pos) -> str:
         # Display main menu screen.
         gui.show_main_menu(screen, mouse_pos)
 
-    elif state in {"init_save_load_screen", "save_load_screen"}:
-        # Use of 'secondary' state manager for save/load screen.
-        state = save_load_screen_state_manager(screen, state, mouse_pos)
-
     elif state == "settings_screen":
         # Use of 'secondary' state manager for settings screen.
         state = settings_screen_state_manager(screen, state, mouse_pos)
@@ -60,10 +56,7 @@ def main_state_manager(screen, state: str, mouse_pos) -> str:
 
 
 def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
-    """'Secondary state manager for use in 'main_state_manager' to create and return instance of class 'SaveLoadScreen'
-        with screen elements for the save/load screen, call position methods and set the state to 'save_load_screen'.
-        This function ensures that 'save_load_screen' object is always created before the save/load screen is displayed,
-        reinitializing it each time the screen is accessed.
+    """State manager for 'save/load screen'.
     ARGS:
         screen: PyGame window.
         state: program state.
@@ -83,7 +76,7 @@ def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
         # Display save/load screen.
         sd.save_load_screen.show_sl_screen(mouse_pos)
 
-        state = eh.main_events(screen, state, mouse_pos)
+        state = eh.save_load_events(screen, state, mouse_pos)
 
     return state
 
@@ -286,12 +279,12 @@ def character_sheet_state_manager(screen, state: str, mouse_pos) -> str:
         # Display character sheet.
         sd.cs_sheet.show_character_sheet_screen(mouse_pos)
 
-        state = eh.cs_sheet_confirmation_events(screen, state, mouse_pos)
+        state = eh.cs_sheet_events(screen, state, mouse_pos)
 
     elif state == "sheet_confirmation":
         # Show confirmation message if character has not been saved.
         sd.cs_sheet.show_exit_confirm_message(mouse_pos)
 
-        state = eh.cs_sheet_confirmation_events(screen, state, mouse_pos)
+        state = eh.cs_sheet_events(screen, state, mouse_pos)
 
     return state

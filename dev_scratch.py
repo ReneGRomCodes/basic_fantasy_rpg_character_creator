@@ -7,7 +7,10 @@ this point it has become mostly a dumping ground for 'todos'."""
 
 # TODOS:
 # TODO add sections for thief skills to character sheet
-# TODO add option to allow for minor customization of randomly generated characters
-# TODO confirmation messages for save/load screen
+# TODO add option to allow for minor customization of randomly generated characters?
+# TODO confirmation messages for save/load screen:
+#   - load when current character isn't saved (if not load_only)
+#   - delete character
+#   - overwrite saved character
 # TODO perhaps rename 'gui_elements' stuff to 'ui_registry'
 # TODO clean up imports via '__init__.py' files

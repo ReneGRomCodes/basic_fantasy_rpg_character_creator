@@ -33,8 +33,9 @@ def run_character_creator() -> None:
     # Set initial state.
     state: str = "title_screen"
     # Set of states for character creation.
-    main_states: set[str] = {"title_screen", "pre_main_menu", "main_menu", "init_save_load_screen", "save_load_screen",
-                             "settings_screen", "init_credits", "credits", "character_menu"}
+    main_states: set[str] = {"title_screen", "pre_main_menu", "main_menu", "settings_screen", "init_credits", "credits",
+                             "character_menu"}
+    save_load_states: set[str] = {"init_save_load_screen", "save_load_screen"}
     custom_character_states: set[str] = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
                                          "spell_selection", "language_selection", "select_starting_money",
                                          "custom_input_money",
@@ -53,6 +54,8 @@ def run_character_creator() -> None:
         # Main states.
         if state in main_states:
             state = sm.main_state_manager(screen, state, mouse_pos)
+        elif state in save_load_states:
+            state = sm.save_load_screen_state_manager(screen, state, mouse_pos)
 
         # Character creation states.
         elif state in custom_character_states:
