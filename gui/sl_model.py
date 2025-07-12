@@ -206,7 +206,7 @@ class SaveLoadScreen:
                 json.dump(data, f)
                 state = "init_save_load_screen"
 
-            sd.cs_sheet.is_saved = True
+            sd.cs_sheet.is_saved = self.selected_slot[0]
 
         return state
 
@@ -222,7 +222,7 @@ class SaveLoadScreen:
             with open(settings.save_file) as f:
                 data = json.load(f)
                 sd.character.deserialize(data[self.selected_slot[0]])
-                uisd.is_loaded_flag = True
+                uisd.is_loaded = self.selected_slot[0]
                 return "init_character_sheet"
 
         # If no valid slot is selected, return to the save/load screen.
@@ -234,6 +234,12 @@ class SaveLoadScreen:
             program state as string
         """
         if self.selected_slot:
+
+            # Check if deleted character is the currently active character and set its 'is_saved' attribute to 'False' if so.
+            if sd.cs_sheet:
+                if self.selected_slot[0] == sd.cs_sheet.is_saved:
+                    sd.cs_sheet.is_saved = False
+
             # Load existing save data.
             with open(settings.save_file) as f:
                 data = json.load(f)

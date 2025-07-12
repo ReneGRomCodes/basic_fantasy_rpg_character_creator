@@ -275,10 +275,10 @@ def character_sheet_state_manager(screen, state: str, mouse_pos) -> str:
         sd.cs_sheet.position_cs_elements()
 
         # Check if character sheet has been loaded in from 'characters.json', so that 'cs_sheet.is_saved' attribute can
-        # be set to 'True' after character sheet has been initialized.
-        if uisd.is_loaded_flag:
-            sd.cs_sheet.is_saved = True
-            uisd.is_loaded_flag = False
+        # be assigned corresponding 'slot_id' after character sheet has been initialized.
+        if uisd.is_loaded:
+            sd.cs_sheet.is_saved = uisd.is_loaded
+            uisd.is_loaded = False
 
         state = "character_sheet"
 

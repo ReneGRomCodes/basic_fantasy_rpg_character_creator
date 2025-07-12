@@ -53,8 +53,8 @@ class CharacterSheet:
         for button in self.button_group:
             button.button_rect.width = uisd.gui_elements["default_button_width"]
 
-        # Bool indicating if character has been saved to 'save/characters.json'.
-        self.is_saved: bool = False
+        # Attribute indicating if character has been saved to 'save/characters.json'. Contains 'slot_id' string if so.
+        self.is_saved: str | False = False
         # Confirmation message objects.
         self.confirmation_message: TextField = so.TextField(screen, "Exit without saving?", title_size,
                                                             settings.info_panel_bg_color)
@@ -63,7 +63,7 @@ class CharacterSheet:
         self.save_button: Button = so.Button(screen, "SAVE CHARACTER", self.text_standard)
         # Tuple with 'Button' instances for use in for-loops when accessing instances.
         self.confirmation_button_group: tuple[Button, ...] = (self.exit_button, self.cancel_button, self.save_button)
-        # Set button width.
+        # Set default button width.
         for button in self.confirmation_button_group:
             button.button_rect.width = uisd.gui_elements["default_button_width"]
         # Call position method for message objects.
