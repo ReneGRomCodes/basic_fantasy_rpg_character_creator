@@ -64,6 +64,9 @@ def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
     RETURNS:
         state
     """
+    # Set of states when confirmation message is displayed.
+    confirm_states: set[str] = {"char_not_saved", "char_delete", "char_overwrite"}
+
     if state == "init_save_load_screen":
         # Create instance of class 'SaveLoadScreen'.
         sd.save_load_screen = SaveLoadScreen(screen)
@@ -78,14 +81,11 @@ def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
 
         state = eh.save_load_events(screen, state, mouse_pos)
 
-    elif state == "char_not_saved":
-        pass
+    elif state in confirm_states:
+        # Display confirmation message.
+        sd.save_load_screen.show_confirm_message(state, mouse_pos)
 
-    elif state == "char_delete":
-        pass
-
-    elif state == "char_overwrite":
-        pass
+        state = eh.save_load_events(screen, state, mouse_pos)
 
     return state
 

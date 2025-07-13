@@ -139,6 +139,11 @@ def save_load_events(screen, state: str, mouse_pos) -> str:
     load_button = sd.save_load_screen.load_button.button_rect
     delete_button = sd.save_load_screen.delete_button.button_rect
     exit_button = sd.save_load_screen.exit_button.button_rect
+    confirm_proceed_button = sd.save_load_screen.confirm_proceed_button.button_rect
+    confirm_delete_button = sd.save_load_screen.confirm_delete_button.button_rect
+    confirm_overwrite_button = sd.save_load_screen.confirm_overwrite_button.button_rect
+    # Set of states when confirmation message is displayed.
+    confirm_states: set[str] = {"char_not_saved", "char_delete", "char_overwrite"}
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -175,13 +180,7 @@ def save_load_events(screen, state: str, mouse_pos) -> str:
                     else:
                         state = "character_sheet"
 
-        elif state == "char_not_saved":
-            pass
-
-        elif state == "char_delete":
-            pass
-
-        elif state == "char_overwrite":
+        elif state in confirm_states:
             pass
 
     return state

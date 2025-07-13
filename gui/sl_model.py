@@ -99,17 +99,17 @@ class SaveLoadScreen:
         self.selected_slot: bool | tuple[str, InteractiveText] = False
         # TODO marker
         # Confirmation message objects.
-        self.not_saved_message: str = "Current character not saved. Load anyway?"
+        self.not_saved_message: str = "Current character is not saved. Proceed anyway?"
         self.delete_message: str = "Delete selected character?"
         self.overwrite_message: str = "Overwrite selected character?"
         self.confirmation_message: TextField = so.TextField(screen, "", uisd.gui_elements["text_large"])
-        self.confirm_load_button: Button = so.Button(screen, "LOAD", text_standard)
+        self.confirm_proceed_button: Button = so.Button(screen, "PROCEED", text_standard)
         self.confirm_delete_button: Button = so.Button(screen, "DELETE", text_standard)
-        self.confirm_save_button: Button = so.Button(screen, "OVERWRITE", text_standard)
+        self.confirm_overwrite_button: Button = so.Button(screen, "OVERWRITE", text_standard)
         self.cancel_button: Button = so.Button(screen, "CANCEL", text_standard)
         # Tuple with 'Button' instances for use in for-loops when accessing instances.
-        self.confirm_buttons_group: tuple[Button, ...] = (self.confirm_load_button, self.confirm_delete_button,
-                                                          self.confirm_save_button, self.cancel_button)
+        self.confirm_buttons_group: tuple[Button, ...] = (self.confirm_proceed_button, self.confirm_delete_button,
+                                                          self.confirm_overwrite_button, self.cancel_button)
         # Set confirmation buttons width.
         for button in self.confirm_buttons_group:
             button.button_rect.width = int(screen.get_rect().width / 5)
@@ -274,16 +274,24 @@ class SaveLoadScreen:
 
         return "init_save_load_screen"
     # TODO marker
-    def show_confirm_message(self, mouse_pos) -> None:
-        """Draw confirmation message for save/load operations.
+    def show_confirm_message(self, state, mouse_pos) -> None:
+        """Draw confirmation message for save/load operations. Buttons are chosen based on program state
         ARGS:
+        state: program state.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
         """
         # Draw confirmation message.
         self.confirmation_message.draw_text()
-        # Draw buttons.
-        for button in self.confirm_buttons_group:
-            button.draw_button(mouse_pos)
+
+        # Draw cancel button.
+        self.cancel_button.draw_button(mouse_pos)
+        # Draw buttons corresponding to program state.
+        if state == "char_not_saved":
+            self.confirm_proceed_button.draw_button(mouse_pos)
+        elif state == "char_delete":
+            self.confirm_delete_button.draw_button(mouse_pos)
+        elif state == "char_overwrite":
+            self.confirm_overwrite_button.draw_button(mouse_pos)
 
     def position_confirm_message(self) -> None:
         """Position confirmation message objects."""
