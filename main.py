@@ -35,7 +35,8 @@ def run_character_creator() -> None:
     # Set of states for character creation.
     main_states: set[str] = {"title_screen", "pre_main_menu", "main_menu", "settings_screen", "init_credits", "credits",
                              "character_menu"}
-    save_load_states: set[str] = {"init_save_load_screen", "save_load_screen"}
+    save_load_states: set[str] = {"init_save_load_screen", "save_load_screen", "char_not_saved", "char_delete",
+                                  "char_overwrite"}
     custom_character_states: set[str] = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
                                          "spell_selection", "language_selection", "select_starting_money",
                                          "custom_input_money",

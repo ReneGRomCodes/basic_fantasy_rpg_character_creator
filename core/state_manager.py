@@ -54,7 +54,7 @@ def main_state_manager(screen, state: str, mouse_pos) -> str:
 
     return state
 
-
+# TODO marker
 def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
     """State manager for 'save/load screen'.
     ARGS:
@@ -77,6 +77,15 @@ def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
         sd.save_load_screen.show_sl_screen(mouse_pos)
 
         state = eh.save_load_events(screen, state, mouse_pos)
+
+    elif state == "char_not_saved":
+        pass
+
+    elif state == "char_delete":
+        pass
+
+    elif state == "char_overwrite":
+        pass
 
     return state
 

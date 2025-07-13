@@ -124,7 +124,7 @@ def main_events(screen, state: str, mouse_pos) -> str:
 
     return state
 
-
+# TODO marker
 def save_load_events(screen, state: str, mouse_pos) -> str:
     """Check and handle events in function 'save_load_screen_state_manager()' in 'state_manager.py' and return 'state'.
     ARGS:
@@ -174,6 +174,15 @@ def save_load_events(screen, state: str, mouse_pos) -> str:
                         state = "pre_main_menu"
                     else:
                         state = "character_sheet"
+
+        elif state == "char_not_saved":
+            pass
+
+        elif state == "char_delete":
+            pass
+
+        elif state == "char_overwrite":
+            pass
 
     return state
 

@@ -5,7 +5,6 @@ from core.shared_data import SharedData, shared_data
 from gui.screen_objects import TextField, Button
 from gui.ui_helpers import draw_screen_title
 from gui.shared_data import ui_shared_data as uisd
-from core.settings import settings
 
 """Helper class to organize and access character sheet objects as attributes."""
 
@@ -29,7 +28,6 @@ class CharacterSheet:
         self.screen_width: int = self.screen_rect.width
 
         # Size variables and elements from dict 'gui_elements'.
-        self.gui_elements: dict = uisd.gui_elements
         self.edge_spacing: int = uisd.gui_elements["default_edge_spacing"]
         text_medium: int = uisd.gui_elements["text_medium"]
 
@@ -56,7 +54,7 @@ class CharacterSheet:
         # Attribute indicating if character has been saved to 'save/characters.json'. Contains 'slot_id' string if so.
         self.is_saved: str | False = False
         # Confirmation message objects.
-        self.confirmation_message: TextField = so.TextField(screen, "Exit without saving?", title_size)
+        self.confirmation_message: TextField = so.TextField(screen, "Exit without saving?", uisd.gui_elements["text_large"])
         self.exit_button: Button = so.Button(screen, "CONTINUE WITHOUT SAVING", self.text_standard)
         self.cancel_button: Button = so.Button(screen, "CANCEL", self.text_standard)
         self.save_button: Button = so.Button(screen, "SAVE CHARACTER", self.text_standard)
