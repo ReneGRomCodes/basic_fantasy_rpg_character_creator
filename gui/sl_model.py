@@ -100,7 +100,7 @@ class SaveLoadScreen:
 
         # Tuple storing string 'slot_id' and object 'slot' if one is selected.
         self.selected_slot: bool | tuple[str, InteractiveText] = False
-        # TODO marker
+
         # Confirmation message objects.
         self.not_saved_message: str = "Current character is not saved. Proceed anyway?"
         self.delete_message: str = "Delete selected character?"
@@ -213,20 +213,23 @@ class SaveLoadScreen:
             state
         """
         if self.selected_slot:
-            # Load existing save data.
-            with open(settings.save_file) as f:
-                data = json.load(f)
+            if self.empty_slot in self.selected_slot[1].text or state == "char_overwrite":
+                # Load existing save data.
+                with open(settings.save_file) as f:
+                    data = json.load(f)
 
-                # Save character data to the selected slot and update the slot's label.
-                data[self.selected_slot[0]] = sd.character.serialize()
-                self.selected_slot[1].text = f"{sd.character.name} {sd.character.race_name} {sd.character.class_name}"
+                    # Save character data to the selected slot and update the slot's label.
+                    data[self.selected_slot[0]] = sd.character.serialize()
+                    self.selected_slot[1].text = f"{sd.character.name} {sd.character.race_name} {sd.character.class_name}"
 
-            # Write updated data back to file and return to the save/load screen.
-            with open(settings.save_file, "w") as f:
-                json.dump(data, f)
-                state = "init_save_load_screen"
+                # Write updated data back to file and return to the save/load screen.
+                with open(settings.save_file, "w") as f:
+                    json.dump(data, f)
+                    state = "init_save_load_screen"
 
-            sd.cs_sheet.is_saved = self.selected_slot[0]
+                sd.cs_sheet.is_saved = self.selected_slot[0]
+            else:
+                state = "char_overwrite"
 
         return state
 
@@ -283,9 +286,9 @@ class SaveLoadScreen:
                 state = "char_delete"
 
         return state
-    # TODO marker
+
     def show_confirm_message(self, state, mouse_pos) -> None:
-        """Draw confirmation message for save/load operations. Buttons are chosen based on program state
+        """Draw confirmation message for save/load operations.
         ARGS:
         state: program state.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
@@ -295,13 +298,9 @@ class SaveLoadScreen:
 
         # Draw cancel button.
         self.cancel_button.draw_button(mouse_pos)
-        # Draw buttons corresponding to program state.
-        if state == "char_not_saved":
-            self.confirm_proceed_button.draw_button(mouse_pos)
-        elif state == "char_delete":
-            self.confirm_delete_button.draw_button(mouse_pos)
-        elif state == "char_overwrite":
-            self.confirm_overwrite_button.draw_button(mouse_pos)
+        # Draw remaining buttons.
+        for button in self.confirm_buttons_group:
+            button.draw_button(mouse_pos)
 
     def position_confirm_message_elements(self, state) -> None:
         """Position confirmation message objects."""
@@ -309,6 +308,9 @@ class SaveLoadScreen:
         edge_spacing = uisd.gui_elements["default_edge_spacing"]
         button_spacing = uisd.gui_elements["button_spacing"]
         confirm: TextField = self.confirmation_message
+        # Position variables for buttons.
+        button_top, button_right = self.screen_rect.centery + edge_spacing, self.screen_rect.centerx - button_spacing
+        cancel_button_left = self.screen_rect.centerx + button_spacing
 
         # Position confirmation message.
         confirm.text_rect.bottom, confirm.text_rect.centerx = self.screen_rect.centery - edge_spacing, self.screen_rect.centerx
@@ -319,17 +321,18 @@ class SaveLoadScreen:
             button.button_rect.bottomright = uisd.gui_elements["off_screen_pos"]
 
         if state == "char_not_saved":
-            self.confirm_proceed_button.button_rect.top = self.screen_rect.centery + edge_spacing
-            self.confirm_proceed_button.button_rect.right = self.screen_rect.centerx - button_spacing
+            self.confirm_proceed_button.button_rect.top = button_top
+            self.confirm_proceed_button.button_rect.right = button_right
         elif state == "char_delete":
-            self.confirm_delete_button.button_rect.top = self.screen_rect.centery + edge_spacing
-            self.confirm_delete_button.button_rect.right = self.screen_rect.centerx - button_spacing
+            self.confirm_delete_button.button_rect.top = button_top
+            self.confirm_delete_button.button_rect.right = button_right
         elif state == "char_overwrite":
-            pass
+            self.confirm_overwrite_button.button_rect.top = button_top
+            self.confirm_overwrite_button.button_rect.right = button_right
 
         # Position cancel button again to mirror other buttons position along screens centerx axis.
-        self.cancel_button.button_rect.top = self.screen_rect.centery + edge_spacing
-        self.cancel_button.button_rect.left = self.screen_rect.centerx + button_spacing
+        self.cancel_button.button_rect.top = button_top
+        self.cancel_button.button_rect.left = cancel_button_left
 
     def format_confirm_message(self, state: str) -> None:
         """Format confirmation message based on program state.

@@ -124,7 +124,7 @@ def main_events(screen, state: str, mouse_pos) -> str:
 
     return state
 
-# TODO marker
+
 def save_load_events(screen, state: str, mouse_pos) -> str:
     """Check and handle events in function 'save_load_screen_state_manager()' in 'state_manager.py' and return 'state'.
     ARGS:
@@ -195,6 +195,9 @@ def save_load_events(screen, state: str, mouse_pos) -> str:
 
                 if confirm_delete_button.collidepoint(mouse_pos):
                     state = sd.save_load_screen.delete_character(state)
+
+                if confirm_overwrite_button.collidepoint(mouse_pos):
+                    state = sd.save_load_screen.save_character(state)
 
     return state
 

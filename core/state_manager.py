@@ -54,7 +54,6 @@ def main_state_manager(screen, state: str, mouse_pos) -> str:
 
     return state
 
-# TODO marker
 def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
     """State manager for 'save/load screen'.
     ARGS:
