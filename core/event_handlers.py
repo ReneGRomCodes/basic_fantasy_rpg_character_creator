@@ -172,7 +172,7 @@ def save_load_events(screen, state: str, mouse_pos) -> str:
 
                 if delete_button.collidepoint(mouse_pos):
                     # Delete character and update save/load screen.
-                    state = sd.save_load_screen.delete_character()
+                    state = sd.save_load_screen.delete_character(state)
 
                 if exit_button.collidepoint(mouse_pos):
                     # Select state based on previously set screen mode flag.
@@ -192,6 +192,9 @@ def save_load_events(screen, state: str, mouse_pos) -> str:
                     sd.cs_sheet.is_saved = True
                     # Load character and go to character sheet.
                     state = sd.save_load_screen.load_character()
+
+                if confirm_delete_button.collidepoint(mouse_pos):
+                    state = sd.save_load_screen.delete_character(state)
 
     return state
 

@@ -116,8 +116,6 @@ class SaveLoadScreen:
         # Set confirmation buttons width.
         for button in self.confirm_buttons_group:
             button.button_rect.width = int(screen.get_rect().width / 5)
-        # Call position method for message objects.
-        self.position_confirm_message()
 
     def show_sl_screen(self, mouse_pos) -> None:
         """Draw save/load screen elements.
@@ -250,13 +248,14 @@ class SaveLoadScreen:
         # If no valid slot is selected, return to the save/load screen.
         return "init_save_load_screen"
 
-    def delete_character(self) -> str:
+    def delete_character(self, state: str) -> str:
         """Delete selected character from JSON file and reset file entry to default 'None'.
+        ARGS:
+            state: program state.
         RETURN:
-            program state as string
+            state
         """
-        if self.selected_slot:
-
+        if state == "char_delete":
             # Check if deleted character is the currently active character and set its 'is_saved' attribute to 'False' if so.
             if sd.cs_sheet:
                 if self.selected_slot[0] == sd.cs_sheet.is_saved:
@@ -275,7 +274,15 @@ class SaveLoadScreen:
             # Set 'self.selected_slot' back to 'False'.
             self.selected_slot: bool = False
 
-        return "init_save_load_screen"
+            state = "init_save_load_screen"
+
+        elif self.selected_slot:
+            if self.empty_slot in self.selected_slot[1].text:  #type: ignore  # calm down pycharm, I checked it!
+                state = "init_save_load_screen"
+            else:
+                state = "char_delete"
+
+        return state
     # TODO marker
     def show_confirm_message(self, state, mouse_pos) -> None:
         """Draw confirmation message for save/load operations. Buttons are chosen based on program state
@@ -296,17 +303,32 @@ class SaveLoadScreen:
         elif state == "char_overwrite":
             self.confirm_overwrite_button.draw_button(mouse_pos)
 
-    def position_confirm_message(self) -> None:
+    def position_confirm_message_elements(self, state) -> None:
         """Position confirmation message objects."""
-        # Spacing variables.
+        # Spacing and instance variables.
         edge_spacing = uisd.gui_elements["default_edge_spacing"]
         button_spacing = uisd.gui_elements["button_spacing"]
+        confirm: TextField = self.confirmation_message
 
-        # Position button instances.
+        # Position confirmation message.
+        confirm.text_rect.bottom, confirm.text_rect.centerx = self.screen_rect.centery - edge_spacing, self.screen_rect.centerx
+
+        # Position button instances outside of screen before positioning relevant buttons on screen based on program
+        # state.
         for button in self.confirm_buttons_group:
-            button.button_rect.top = self.screen_rect.centery + edge_spacing
-            button.button_rect.right = self.screen_rect.centerx - button_spacing
+            button.button_rect.bottomright = uisd.gui_elements["off_screen_pos"]
+
+        if state == "char_not_saved":
+            self.confirm_proceed_button.button_rect.top = self.screen_rect.centery + edge_spacing
+            self.confirm_proceed_button.button_rect.right = self.screen_rect.centerx - button_spacing
+        elif state == "char_delete":
+            self.confirm_delete_button.button_rect.top = self.screen_rect.centery + edge_spacing
+            self.confirm_delete_button.button_rect.right = self.screen_rect.centerx - button_spacing
+        elif state == "char_overwrite":
+            pass
+
         # Position cancel button again to mirror other buttons position along screens centerx axis.
+        self.cancel_button.button_rect.top = self.screen_rect.centery + edge_spacing
         self.cancel_button.button_rect.left = self.screen_rect.centerx + button_spacing
 
     def format_confirm_message(self, state: str) -> None:
@@ -314,8 +336,6 @@ class SaveLoadScreen:
         ARGS:
             state: program state.
         """
-        # Spacing and instance variable.
-        edge_spacing = uisd.gui_elements["default_edge_spacing"]
         confirm: TextField = self.confirmation_message
 
         if state == "char_not_saved":
@@ -326,4 +346,4 @@ class SaveLoadScreen:
             confirm.text = self.overwrite_message
 
         confirm.render_new_text_surface()
-        confirm.text_rect.bottom, confirm.text_rect.centerx = self.screen_rect.centery - edge_spacing, self.screen_rect.centerx
+        self.position_confirm_message_elements(state)
