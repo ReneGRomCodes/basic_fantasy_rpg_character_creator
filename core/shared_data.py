@@ -218,6 +218,7 @@ class SharedData:
         self.selected_class: None = None
         self.selected_spell: None = None
         self.selected_languages: list[InteractiveText] = []
+        self.cs_sheet: None = None
 
 
 shared_data = SharedData()

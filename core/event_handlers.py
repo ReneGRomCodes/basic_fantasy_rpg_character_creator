@@ -142,6 +142,7 @@ def save_load_events(screen, state: str, mouse_pos) -> str:
     confirm_proceed_button = sd.save_load_screen.confirm_proceed_button.button_rect
     confirm_delete_button = sd.save_load_screen.confirm_delete_button.button_rect
     confirm_overwrite_button = sd.save_load_screen.confirm_overwrite_button.button_rect
+    cancel_button = sd.save_load_screen.cancel_button.button_rect
     # Set of states when confirmation message is displayed.
     confirm_states: set[str] = {"char_not_saved", "char_delete", "char_overwrite"}
 
@@ -166,7 +167,7 @@ def save_load_events(screen, state: str, mouse_pos) -> str:
                     state = sd.save_load_screen.save_character(state)
 
                 if load_button.collidepoint(mouse_pos):
-                    # Load character and return to character sheet.
+                    # Load character and go to character sheet.
                     state = sd.save_load_screen.load_character()
 
                 if delete_button.collidepoint(mouse_pos):
@@ -181,7 +182,16 @@ def save_load_events(screen, state: str, mouse_pos) -> str:
                         state = "character_sheet"
 
         elif state in confirm_states:
-            pass
+            if event.type == pygame.MOUSEBUTTONUP:
+                if cancel_button.collidepoint(mouse_pos):
+                    # Cancel loading and return to save/load screen.
+                    state = "init_save_load_screen"
+
+                if confirm_proceed_button.collidepoint(mouse_pos):
+                    # Set 'is_saved' to 'True' to allow for loading of saved character if current one isn't saved.
+                    sd.cs_sheet.is_saved = True
+                    # Load character and go to character sheet.
+                    state = sd.save_load_screen.load_character()
 
     return state
 

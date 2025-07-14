@@ -92,6 +92,9 @@ class SaveLoadScreen:
             "slot_07": slot_07,
             "slot_08": slot_08,
         }
+        # Default text used to format and identify empty slots. ": EMPTY" is unique to the default text attribute for
+        # empty slots.
+        self.empty_slot: str = ": EMPTY"
         # Configure field width and text attributes for each slot element based on stored data in 'characters.json'.
         self.configure_character_slots()
 
@@ -175,7 +178,7 @@ class SaveLoadScreen:
             else:
                 # Set default string ('Slot XX: EMPTY') if no character is saved at 'slot_id'.
                 slot_text: list[str] = slot_id.split("_")
-                slot.text = f"{slot_text[0].capitalize()} {slot_text[1]}: EMPTY"
+                slot.text = f"{slot_text[0].capitalize()} {slot_text[1]}{self.empty_slot}"
 
             # Adjust the slot's interactive rect width and render updated text surface.
             slot.interactive_rect.width = int(self.screen_width / 2)
@@ -234,15 +237,15 @@ class SaveLoadScreen:
         RETURNS:
             program state as string
         """
-        # Default text used to identify empty slots. ": EMPTY" is unique to the default text attribute for empty slots.
-        empty_slot_check_str: str = ": EMPTY"
-
-        if self.selected_slot and empty_slot_check_str not in self.selected_slot[1].text:
-            with open(settings.save_file) as f:
-                data = json.load(f)
-                sd.character.deserialize(data[self.selected_slot[0]])
-                uisd.is_loaded = self.selected_slot[0]
-                return "init_character_sheet"
+        if self.selected_slot and self.empty_slot not in self.selected_slot[1].text:
+            if uisd.load_only_flag or sd.cs_sheet.is_saved:
+                with open(settings.save_file) as f:
+                    data = json.load(f)
+                    sd.character.deserialize(data[self.selected_slot[0]])
+                    uisd.is_loaded = self.selected_slot[0]
+                    return "init_character_sheet"
+            else:
+                return "char_not_saved"
 
         # If no valid slot is selected, return to the save/load screen.
         return "init_save_load_screen"
@@ -299,9 +302,6 @@ class SaveLoadScreen:
         edge_spacing = uisd.gui_elements["default_edge_spacing"]
         button_spacing = uisd.gui_elements["button_spacing"]
 
-        # Position confirmation message.
-        self.confirmation_message.text_rect.bottom = self.screen_rect.centery - edge_spacing
-
         # Position button instances.
         for button in self.confirm_buttons_group:
             button.button_rect.top = self.screen_rect.centery + edge_spacing
@@ -314,11 +314,16 @@ class SaveLoadScreen:
         ARGS:
             state: program state.
         """
-        if state == "char_not_saved":
-            self.confirmation_message.text = self.not_saved_message
-        elif state == "char_delete":
-            self.confirmation_message.text = self.delete_message
-        elif state == "char_overwrite":
-            self.confirmation_message.text = self.overwrite_message
+        # Spacing and instance variable.
+        edge_spacing = uisd.gui_elements["default_edge_spacing"]
+        confirm: TextField = self.confirmation_message
 
-        self.confirmation_message.render_new_text_surface()
+        if state == "char_not_saved":
+            confirm.text = self.not_saved_message
+        elif state == "char_delete":
+            confirm.text = self.delete_message
+        elif state == "char_overwrite":
+            confirm.text = self.overwrite_message
+
+        confirm.render_new_text_surface()
+        confirm.text_rect.bottom, confirm.text_rect.centerx = self.screen_rect.centery - edge_spacing, self.screen_rect.centerx

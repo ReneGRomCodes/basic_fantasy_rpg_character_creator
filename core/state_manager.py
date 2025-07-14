@@ -82,7 +82,8 @@ def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
         state = eh.save_load_events(screen, state, mouse_pos)
 
     elif state in confirm_states:
-        # Display confirmation message.
+        # Format and display confirmation message.
+        sd.save_load_screen.format_confirm_message(state)
         sd.save_load_screen.show_confirm_message(state, mouse_pos)
 
         state = eh.save_load_events(screen, state, mouse_pos)
