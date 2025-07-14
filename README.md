@@ -58,14 +58,14 @@ Run:
 project_root/
 │── main.py                   # Main entry point, initializes Pygame and runs the main loop
 │── core/                     # Handles game logic (settings, state management, character models, etc.)
-│   ├── items/                # Contains modules for item classes and instances (Weapons, equipment, etc.)
-│   ├───── item_instances.py  # Contains item instances.
-│   ├───── item_objects.py    # Stores item classes.
 │   ├── settings.py           # Stores configuration values (screen size, etc.)
 │   ├── event_handlers.py     # Handles input events
 │   ├── state_manager.py      # Manages application states
 │   ├── rules.py              # Defines game mechanics and rules
-│   └── character_model.py    # Manages character attributes and interactions
+│   ├── character_model.py    # Manages character attributes and interactions
+│   └── items/                # Contains modules for item classes and instances (Weapons, equipment, etc.)
+│       ├─ item_instances.py  # Contains item instances.
+│       └─ item_objects.py    # Stores item classes.
 │
 │── descr/                    # Stores string-based descriptions (races, classes, etc.)
 │
