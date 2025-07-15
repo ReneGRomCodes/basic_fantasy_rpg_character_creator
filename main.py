@@ -2,7 +2,7 @@ import pygame
 import core.state_manager as sm
 from core.settings import settings
 from gui.shared_data import ui_shared_data as uisd
-from gui.gui_elements import initialize_screen_elements
+from gui.ui_registry import initialize_ui_registry
 """Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
 It initializes the program and starts the main functionality."""
 
@@ -19,7 +19,7 @@ def initialize_character_creator() -> tuple[pygame.Surface, pygame.time.Clock]:
     pygame.display.set_caption("Basic Fantasy RPG Character Creator")
     # Initialize dict with GUI elements within module 'gui/shared_data.py'. See class 'UISharedData' and package 'gui'
     # for details.
-    uisd.gui_elements = initialize_screen_elements(screen)
+    uisd.ui_registry = initialize_ui_registry(screen)
 
     return screen, clock
 
@@ -50,7 +50,7 @@ def run_character_creator() -> None:
         mouse_pos = pygame.mouse.get_pos()
 
         # Blit background image to screen.
-        screen.blit(uisd.gui_elements["background_image"], (0, 0))
+        screen.blit(uisd.ui_registry["background_image"], (0, 0))
 
         # Main states.
         if state in main_states:

@@ -105,10 +105,10 @@ class SharedData:
             option: selected instance of 'InteractiveText' representing selected race or class.
         """
         # Race selection logic.
-        if option in uisd.gui_elements["active_races"]:
+        if option in uisd.ui_registry["active_races"]:
             self.selected_race = self.handle_selection_logic(option, self.selected_race)
         # Class selection logic.
-        elif option in uisd.gui_elements["active_classes"]:
+        elif option in uisd.ui_registry["active_classes"]:
             self.selected_class = self.handle_selection_logic(option, self.selected_class)
 
     def clear_race_class_selection(self):
@@ -180,7 +180,7 @@ class SharedData:
     def clear_language_selection(self) -> None:
         """Reset entire language selection."""
         # Reset all languages to unselected state.
-        for language in uisd.gui_elements["lang_fields"]:
+        for language in uisd.ui_registry["lang_fields"]:
             language.selected = False
         # Set 'self.selected_languages' to default value.
         self.selected_languages: list = []

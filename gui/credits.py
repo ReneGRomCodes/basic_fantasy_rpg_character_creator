@@ -16,10 +16,10 @@ class Credits:
         ARGS:
             screen: PyGame window.
         """
-        # Assign text sizes from 'gui_elements' to attributes.
-        title_size: int = uisd.gui_elements["title_size"]
-        text_large: int = uisd.gui_elements["text_large"]
-        text_medium: int = uisd.gui_elements["text_medium"]
+        # Assign text sizes from 'ui_registry' to attributes.
+        title_size: int = uisd.ui_registry["title_size"]
+        text_large: int = uisd.ui_registry["text_large"]
+        text_medium: int = uisd.ui_registry["text_medium"]
         # Positioning variables.
         self.credits_pos_y_start: int = screen.get_rect().bottom + 5
         self.title_pos_x: int = screen.get_rect().centerx + screen.get_rect().width / 12

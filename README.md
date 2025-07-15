@@ -72,7 +72,7 @@ project_root/
 │── gui/                      # Manages UI components and rendering.
 │   ├── screen_objects.py     # GUI element classes (buttons, text fields, etc.)
 │   ├── cs_model.py           # Character sheet class and GUI logic
-│   ├── gui_elements.py       # Creates and stores references to UI elements for rendering
+│   ├── ui_registry.py        # Creates and stores references to UI elements for rendering
 │   ├── gui.py                # Handles UI logic and rendering functions
 │   ├── ui_helpers.py         # Helper functions for positioning elements
 │   ├── sl_model.py           # Save/load screen logic
@@ -103,7 +103,7 @@ Example: Adding a "Luck" Ability Score
         In screen_objects.py, create a new UI element class (or reuse an existing one) to display the "Luck" score.
 
     Add It to the GUI System
-        Instantiate the "Luck" UI element in gui_elements.py, and add it to relevant functions in gui.py, ensuring it is
+        Instantiate the "Luck" UI element in ui_registry.py, and add it to relevant functions in gui.py, ensuring it is
         included in the relevant screens.
 
     Adjust UI Layout
@@ -117,7 +117,7 @@ minimal effort while keeping the UI flexible and consistent.
 
 Choose an appropriate GUI class from screen_objects.py
 
-Instantiate the new element in gui_elements.py according to documentation within the module.
+Instantiate the new element in ui_registry.py according to documentation within the module.
 
 Implement the new element in the relevant modules (e.g., gui.py).
 

@@ -164,17 +164,17 @@ def custom_character_state_manager(screen, state: str, mouse_pos) -> str:
 
     elif state == "spell_selection":
         # Display spell selection screen for Magic-Users.
-        sd.set_default_spell(uisd.gui_elements["spell_fields"])
+        sd.set_default_spell(uisd.ui_registry["spell_fields"])
         gui.show_spell_selection_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state, mouse_pos)
 
     elif state == "language_selection":
         # Get default languages for character's race.
-        sd.set_default_languages(uisd.gui_elements["lang_fields"])
+        sd.set_default_languages(uisd.ui_registry["lang_fields"])
 
         # Set default languages and return state 'name_character' if conditions to display language selection are not met.
         if not uisd.language_flag:
-            sd.character.set_languages(uisd.gui_elements["lang_fields"])
+            sd.character.set_languages(uisd.ui_registry["lang_fields"])
             return "name_character"
         # Display language selection screen if conditions are met.
         else:
@@ -239,8 +239,8 @@ def random_character_state_manager(screen, state: str, mouse_pos) -> str:
                 sd.character.set_class(sd.selected_class)
                 sd.character.set_character_values()
                 # Select and set various additional character attributes like spells and languages.
-                sd.character.set_random_selections(uisd.gui_elements["spell_fields"], rls.set_language_flag(sd.character),
-                                                   uisd.gui_elements["lang_fields"])
+                sd.character.set_random_selections(uisd.ui_registry["spell_fields"], rls.set_language_flag(sd.character),
+                                                   uisd.ui_registry["lang_fields"])
 
                 state = "set_random_money"
 

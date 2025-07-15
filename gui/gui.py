@@ -10,12 +10,12 @@ def show_title_screen(screen) -> None:
     ARGS:
         screen: PyGame window.
     """
-    # Assign gui_elements to variables.
-    title = uisd.gui_elements["title_screen_fields"][0]
-    subtitle = uisd.gui_elements["title_screen_fields"][1]
-    copyright_notice = uisd.gui_elements["title_screen_fields"][2]
-    progress_bar = uisd.gui_elements["title_screen_fields"][3]
-    continue_to_main = uisd.gui_elements["title_screen_fields"][4]
+    # Assign ui_registry to variables.
+    title = uisd.ui_registry["title_screen_fields"][0]
+    subtitle = uisd.ui_registry["title_screen_fields"][1]
+    copyright_notice = uisd.ui_registry["title_screen_fields"][2]
+    progress_bar = uisd.ui_registry["title_screen_fields"][3]
+    continue_to_main = uisd.ui_registry["title_screen_fields"][4]
 
     # Position title, subtitle and copyright notice.
     ui.position_title_screen_elements(screen)
@@ -36,10 +36,10 @@ def show_main_menu(screen, mouse_pos) -> None:
         screen: PyGame window.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
-    # Assign gui_elements to variables.
-    title = uisd.gui_elements["main_menu_title"]
-    start = uisd.gui_elements["start_button"]
-    menu_buttons = uisd.gui_elements["menu_buttons"]
+    # Assign ui_registry to variables.
+    title = uisd.ui_registry["main_menu_title"]
+    start = uisd.ui_registry["start_button"]
+    menu_buttons = uisd.ui_registry["menu_buttons"]
 
     # Position buttons and main menu title field.
     ui.position_main_menu_screen_elements(screen)
@@ -59,10 +59,10 @@ def show_character_menu(screen, mouse_pos) -> None:
         screen: PyGame window.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
-    # Assign gui_elements to variables.
-    custom = uisd.gui_elements["custom"]
-    random = uisd.gui_elements["random"]
-    back_button = uisd.gui_elements["back_button"]
+    # Assign ui_registry to variables.
+    custom = uisd.ui_registry["custom"]
+    random = uisd.ui_registry["random"]
+    back_button = uisd.ui_registry["back_button"]
 
     # Position buttons.
     ui.position_character_menu_screen_elements(screen)
@@ -80,12 +80,12 @@ def show_ability_scores_screen(screen, mouse_pos) -> None:
         screen: PyGame window.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
-    # Assign fields and buttons from 'gui_elements' to variables.
-    screen_title = uisd.gui_elements["abilities_title"]
-    reroll_button = uisd.gui_elements["reroll_button"]
-    back_button = uisd.gui_elements["back_button"]
-    continue_button = uisd.gui_elements["continue_button"]
-    ability_fields = uisd.gui_elements["ability_fields"]
+    # Assign fields and buttons from 'ui_registry' to variables.
+    screen_title = uisd.ui_registry["abilities_title"]
+    reroll_button = uisd.ui_registry["reroll_button"]
+    back_button = uisd.ui_registry["back_button"]
+    continue_button = uisd.ui_registry["continue_button"]
+    ability_fields = uisd.ui_registry["ability_fields"]
 
     # Array of ability fields. Each item is a tuple with the GUI element at index 0 and the corresponding attribute from
     # character object at index 1. 'character.abilities[]' stores values in a dict as lists with base score at index 0
@@ -119,14 +119,14 @@ def show_race_class_selection_screen(screen, mouse_pos) -> None:
         screen: PyGame window.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
-    # Assign fields and buttons from 'gui_elements' to variables.
-    screen_title = uisd.gui_elements["race_class_title"]
-    reset_button = uisd.gui_elements["reset_button"]
-    back_button = uisd.gui_elements["back_button"]
-    active_races = uisd.gui_elements["active_races"]
-    active_classes = uisd.gui_elements["active_classes"]
-    inactive_races = uisd.gui_elements["inactive_races"]
-    inactive_classes = uisd.gui_elements["inactive_classes"]
+    # Assign fields and buttons from 'ui_registry' to variables.
+    screen_title = uisd.ui_registry["race_class_title"]
+    reset_button = uisd.ui_registry["reset_button"]
+    back_button = uisd.ui_registry["back_button"]
+    active_races = uisd.ui_registry["active_races"]
+    active_classes = uisd.ui_registry["active_classes"]
+    inactive_races = uisd.ui_registry["inactive_races"]
+    inactive_classes = uisd.ui_registry["inactive_classes"]
 
     # Draw screen title.
     ui.draw_screen_title(screen, screen_title)
@@ -151,11 +151,11 @@ def show_spell_selection_screen(screen, mouse_pos) -> None:
             screen: PyGame window.
             mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
-    # Assign fields and buttons from 'gui_elements' to variables.
-    screen_title = uisd.gui_elements["spell_title"]
-    screen_note = uisd.gui_elements["spell_note"]
-    back_button = uisd.gui_elements["back_button"]
-    spells = uisd.gui_elements["spell_fields"]
+    # Assign fields and buttons from 'ui_registry' to variables.
+    screen_title = uisd.ui_registry["spell_title"]
+    screen_note = uisd.ui_registry["spell_note"]
+    back_button = uisd.ui_registry["back_button"]
+    spells = uisd.ui_registry["spell_fields"]
 
     # Draw screen title and buttons.
     ui.draw_screen_title(screen, screen_title)
@@ -176,13 +176,13 @@ def show_language_selection_screen(screen, mouse_pos) -> None:
                 screen: PyGame window.
                 mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
-    # Assign fields and buttons from 'gui_elements' to variables.
-    screen_title = uisd.gui_elements["lang_title"]
-    screen_note = uisd.gui_elements["lang_note"]
-    reset_button = uisd.gui_elements["reset_button"]
-    back_button = uisd.gui_elements["back_button"]
-    languages = uisd.gui_elements["lang_fields"]
-    inactive_languages = uisd.gui_elements["inactive_language_fields"]
+    # Assign fields and buttons from 'ui_registry' to variables.
+    screen_title = uisd.ui_registry["lang_title"]
+    screen_note = uisd.ui_registry["lang_note"]
+    reset_button = uisd.ui_registry["reset_button"]
+    back_button = uisd.ui_registry["back_button"]
+    languages = uisd.ui_registry["lang_fields"]
+    inactive_languages = uisd.ui_registry["inactive_language_fields"]
 
     # Draw screen title and buttons.
     ui.draw_screen_title(screen, screen_title)
@@ -201,11 +201,11 @@ def show_naming_screen(screen, mouse_pos) -> None:
         screen: PyGame window.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
-    # Assign fields and buttons from 'gui_elements' to variables.
-    naming_prompt = uisd.gui_elements["naming_prompt"]
-    back_button = uisd.gui_elements["back_button"]
-    character_name = uisd.gui_elements["character_name_input"][0].manager.value
-    character_name_field = uisd.gui_elements["character_name_input"][1]
+    # Assign fields and buttons from 'ui_registry' to variables.
+    naming_prompt = uisd.ui_registry["naming_prompt"]
+    back_button = uisd.ui_registry["back_button"]
+    character_name = uisd.ui_registry["character_name_input"][0].manager.value
+    character_name_field = uisd.ui_registry["character_name_input"][1]
 
     # Create text attribute for naming prompt object to include chosen race and class, and position it on screen.
     ui.build_and_position_prompt(screen, naming_prompt)
@@ -227,10 +227,10 @@ def show_starting_money_screen(screen, mouse_pos) -> None:
         screen: PyGame window.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
-    # Assign text fields and buttons from 'gui_elements' to variables.
-    screen_title = uisd.gui_elements["starting_money_title"]
-    back_button = uisd.gui_elements["back_button"]
-    choices = uisd.gui_elements["starting_money_choices"]
+    # Assign text fields and buttons from 'ui_registry' to variables.
+    screen_title = uisd.ui_registry["starting_money_title"]
+    back_button = uisd.ui_registry["back_button"]
+    choices = uisd.ui_registry["starting_money_choices"]
 
     # Get positions for screen elements.
     ui.position_money_screen_elements(screen)
@@ -261,9 +261,9 @@ def show_character_complete_screen(screen, mouse_pos) -> None:
         screen: PyGame window.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
-    # Assign text field and button from 'gui_elements' to variables.
-    completion_message = uisd.gui_elements["completion_message"]
-    show_character_sheet = uisd.gui_elements["show_character_sheet"]
+    # Assign text field and button from 'ui_registry' to variables.
+    completion_message = uisd.ui_registry["completion_message"]
+    show_character_sheet = uisd.ui_registry["show_character_sheet"]
 
     # Position screen elements.
     ui.position_completion_screen_elements(screen, completion_message, show_character_sheet)

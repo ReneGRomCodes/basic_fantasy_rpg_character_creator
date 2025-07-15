@@ -27,9 +27,9 @@ class CharacterSheet:
         self.screen_height: int = self.screen_rect.height
         self.screen_width: int = self.screen_rect.width
 
-        # Size variables and elements from dict 'gui_elements'.
-        self.edge_spacing: int = uisd.gui_elements["default_edge_spacing"]
-        text_medium: int = uisd.gui_elements["text_medium"]
+        # Size variables and elements from dict 'ui_registry'.
+        self.edge_spacing: int = uisd.ui_registry["default_edge_spacing"]
+        text_medium: int = uisd.ui_registry["text_medium"]
 
         # Class specific size variables.
         self.text_standard: int = int(self.screen_height / 50)
@@ -49,12 +49,12 @@ class CharacterSheet:
         self.button_group: tuple[Button, ...] = (self.main_menu_button, self.save_load_button)
         # Set default button width.
         for button in self.button_group:
-            button.button_rect.width = uisd.gui_elements["default_button_width"]
+            button.button_rect.width = uisd.ui_registry["default_button_width"]
 
         # Attribute indicating if character has been saved to 'save/characters.json'. Contains 'slot_id' string if so.
         self.is_saved: str | bool = False
         # Confirmation message objects.
-        self.confirmation_message: TextField = so.TextField(screen, "Exit without saving?", uisd.gui_elements["text_large"])
+        self.confirmation_message: TextField = so.TextField(screen, "Exit without saving?", uisd.ui_registry["text_large"])
         self.exit_button: Button = so.Button(screen, "CONTINUE WITHOUT SAVING", self.text_standard)
         self.cancel_button: Button = so.Button(screen, "CANCEL", self.text_standard)
         self.save_button: Button = so.Button(screen, "SAVE CHARACTER", self.text_standard)
@@ -861,8 +861,8 @@ class CharacterSheet:
     def position_exit_confirm_message(self) -> None:
         """Position confirmation message objects."""
         # Spacing variables.
-        edge_spacing = uisd.gui_elements["default_edge_spacing"]
-        button_spacing = uisd.gui_elements["button_spacing"]
+        edge_spacing = uisd.ui_registry["default_edge_spacing"]
+        button_spacing = uisd.ui_registry["button_spacing"]
 
         # Position confirmation message.
         self.confirmation_message.text_rect.bottom = self.screen_rect.centery - edge_spacing

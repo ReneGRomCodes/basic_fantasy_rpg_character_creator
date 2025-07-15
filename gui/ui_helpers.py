@@ -17,7 +17,7 @@ def draw_screen_title(screen, screen_title: TextField) -> None:
         screen: PyGame window.
         screen_title: instance of class 'TextField()' representing the screen title.
     """
-    screen_title.text_rect.top = screen.get_rect().top + uisd.gui_elements["default_edge_spacing"]
+    screen_title.text_rect.top = screen.get_rect().top + uisd.ui_registry["default_edge_spacing"]
     screen_title.text_rect.centerx = screen.get_rect().centerx
     screen_title.draw_text()
 
@@ -30,13 +30,13 @@ def draw_special_button(screen, button: Button, mouse_pos) -> None:
         mouse_pos: position of mouse on screen.
     """
     button.button_rect.centerx = screen.get_rect().centerx
-    button.button_rect.bottom = screen.get_rect().bottom - uisd.gui_elements["default_edge_spacing"]
+    button.button_rect.bottom = screen.get_rect().bottom - uisd.ui_registry["default_edge_spacing"]
     button.draw_button(mouse_pos)
 
 
 def draw_conditional_continue_button(mouse_pos, condition_1: object | bool = False, condition_2: object | bool = False,
                                      check_mode: str = "any", alt_button: str = "inactive") -> None:
-    """Draw either active or inactive instance of continue button or skip button from module 'gui_elements' based on
+    """Draw either active or inactive instance of continue button or skip button from module 'ui_registry' based on
     conditional parameters.
     NOTE: 'skip' button rect does not need a dedicated '.collidepoint' detection in event handler as it's position is
     identical to the standard 'continue' button rect. Just use that one for event detection and Bob's your uncle.
@@ -49,10 +49,10 @@ def draw_conditional_continue_button(mouse_pos, condition_1: object | bool = Fal
         alt_button: String to determine which conditional button alternative should be displayed. "inactive" for an
                     inactive continue button, "skip" for a skip button. Default is "inactive".
     """
-    # Assign buttons from dict 'gui_elements' to variables.
-    continue_button, inactive_continue_button, skip_button = (uisd.gui_elements["continue_button"],
-                                                              uisd.gui_elements["inactive_continue_button"],
-                                                              uisd.gui_elements["skip_button"])
+    # Assign buttons from dict 'ui_registry' to variables.
+    continue_button, inactive_continue_button, skip_button = (uisd.ui_registry["continue_button"],
+                                                              uisd.ui_registry["inactive_continue_button"],
+                                                              uisd.ui_registry["skip_button"])
 
     # Check if condition_1 and/or condition_2 have valid values and draw appropriate (active/inactive) continue or skip
     # button on screen.
@@ -75,7 +75,7 @@ def draw_screen_note(screen, note: TextField) -> None:
         note: 'TextField' instance for screen-specific notes.
     """
     # Position notes at the screens left.
-    note.text_rect.left = screen.get_rect().left + uisd.gui_elements["default_edge_spacing"]
+    note.text_rect.left = screen.get_rect().left + uisd.ui_registry["default_edge_spacing"]
     note.text_rect.centery = screen.get_rect().centery
     # Draw note on screen.
     note.draw_text()
@@ -170,17 +170,17 @@ def show_info_panels(elements: list | tuple, mouse_pos) -> None:
 """Background functions for title screen."""
 
 def position_title_screen_elements(screen) -> None:
-    """Position objects from 'gui_elements' for title screen.
+    """Position objects from 'ui_registry' for title screen.
     ARGS:
         screen: PyGame window.
     """
-    # Assign gui_elements to variables.
-    spacing: int = uisd.gui_elements["title_screen_spacing"]
-    title = uisd.gui_elements["title_screen_fields"][0]
-    subtitle = uisd.gui_elements["title_screen_fields"][1]
-    copyright_notice = uisd.gui_elements["title_screen_fields"][2]
-    progress_bar = uisd.gui_elements["title_screen_fields"][3]
-    continue_to_main = uisd.gui_elements["title_screen_fields"][4]
+    # Assign ui_registry to variables.
+    spacing: int = uisd.ui_registry["title_screen_spacing"]
+    title = uisd.ui_registry["title_screen_fields"][0]
+    subtitle = uisd.ui_registry["title_screen_fields"][1]
+    copyright_notice = uisd.ui_registry["title_screen_fields"][2]
+    progress_bar = uisd.ui_registry["title_screen_fields"][3]
+    continue_to_main = uisd.ui_registry["title_screen_fields"][4]
 
     if not uisd.position_flag:
         # Position title, subtitle and copyright notice.
@@ -198,16 +198,16 @@ def position_title_screen_elements(screen) -> None:
 """Background functions for main menu screen."""
 
 def position_main_menu_screen_elements(screen) -> None:
-    """Format and position objects from 'gui_elements' for main menu screen.
+    """Format and position objects from 'ui_registry' for main menu screen.
     ARGS:
         screen: PyGame window.
     """
-    # Assign gui_elements to variables.
-    spacing: int = uisd.gui_elements["title_screen_spacing"]
-    button_spacing: int = uisd.gui_elements["button_spacing"]
-    title = uisd.gui_elements["main_menu_title"]
-    start = uisd.gui_elements["start_button"]
-    menu_buttons = uisd.gui_elements["menu_buttons"]
+    # Assign ui_registry to variables.
+    spacing: int = uisd.ui_registry["title_screen_spacing"]
+    button_spacing: int = uisd.ui_registry["button_spacing"]
+    title = uisd.ui_registry["main_menu_title"]
+    start = uisd.ui_registry["start_button"]
+    menu_buttons = uisd.ui_registry["menu_buttons"]
 
     if not uisd.position_flag:
         # Format/position title text field and start button.
@@ -233,14 +233,14 @@ def position_main_menu_screen_elements(screen) -> None:
 """Background functions for character menu screen."""
 
 def position_character_menu_screen_elements(screen) -> None:
-    """Position objects from 'gui_elements' for character menu screen.
+    """Position objects from 'ui_registry' for character menu screen.
     ARGS:
         screen: PyGame window.
     """
-    # Assign gui_elements to variables.
-    custom = uisd.gui_elements["custom"]
-    random = uisd.gui_elements["random"]
-    button_spacing: int = uisd.gui_elements["button_spacing"]
+    # Assign ui_registry to variables.
+    custom = uisd.ui_registry["custom"]
+    random = uisd.ui_registry["random"]
+    button_spacing: int = uisd.ui_registry["button_spacing"]
 
     if not uisd.position_flag:
     # Position buttons.
@@ -273,7 +273,7 @@ def position_ability_scores_screen_elements(screen, abilities_array: tuple[tuple
     element_pos_y, pos_y_offset = set_elements_pos_y_values(screen, abilities_array)
 
     # Create instances of class 'TextField' to show ability scores and bonus/penalty on screen. Text string is placeholder
-    # and text size is 'field_text_size' as retrieved from first 'gui_elements' entry in 'abilities_array' to ensure
+    # and text size is 'field_text_size' as retrieved from first 'ui_registry' entry in 'abilities_array' to ensure
     # correct scaling. Placeholder text is dynamically changed for each ability in for-loop further down.
     field_text_size: int = abilities_array[0][0].size
     ability_score_field = so.TextField(screen, "score", field_text_size)
@@ -369,8 +369,8 @@ def get_rc_options(active_races: tuple[InteractiveText, ...], active_classes: tu
     'race_class_check()' if their 'text' attributes match entries in 'sd.possible_characters' (first word for race,
     second for class) and return it in 'rc_options'.
     ARGS:
-        active_races: entry from gui element dict 'gui_elements["active_races"]'.
-        active_classes: entry from gui element dict 'gui_elements["active_classes"]'.
+        active_races: entry from ui_registry dict 'ui_registry["active_races"]'.
+        active_classes: entry from ui_registry dict 'ui_registry["active_classes"]'.
     RETURNS:
         rc_options: dict for instances of 'InteractiveText' for allowed race/class combinations.
     """
@@ -405,10 +405,10 @@ def position_race_class_elements_new(screen, active_races: tuple[InteractiveText
     """Position screen elements for race/class selection screen.
     ARGS:
         screen: pygame window.
-        active_races: entry from gui element dict 'gui_elements["active_races"]'.
-        inactive_races: entry from gui element dict 'gui_elements["inactive_races"]'.
-        active_classes: entry from gui element dict 'gui_elements["active_classes"]'.
-        inactive_classes: entry from gui element dict 'gui_elements["inactive_classes"]'.
+        active_races: entry from ui_registry dict 'ui_registry["active_races"]'.
+        inactive_races: entry from ui_registry dict 'ui_registry["inactive_races"]'.
+        active_classes: entry from ui_registry dict 'ui_registry["active_classes"]'.
+        inactive_classes: entry from ui_registry dict 'ui_registry["inactive_classes"]'.
     """
     # Race and class specific variables for x-positioning.
     race_x_pos: int = int(screen.get_rect().width / 4)
@@ -424,13 +424,13 @@ def position_race_class_elements_new(screen, active_races: tuple[InteractiveText
         # Create set of strings to check if inactive or selectable text field should be displayed.
         check_set: set[str] = set([r.text for r in uisd.rc_options["races"]] + [c.text for c in uisd.rc_options["classes"]])
 
-        # Position ALL race/class elements from 'gui_elements' at default position outside the screen to avoid persistent
+        # Position ALL race/class elements from 'ui_registry' at default position outside the screen to avoid persistent
         # on-screen position of screen objects.
         for rc in active_races + active_classes + inactive_races + inactive_classes:
             if isinstance(rc, InteractiveText):
-                rc.interactive_rect.bottomright = uisd.gui_elements["off_screen_pos"]
+                rc.interactive_rect.bottomright = uisd.ui_registry["off_screen_pos"]
             elif isinstance(rc, TextField):
-                rc.text_rect.bottomright = uisd.gui_elements["off_screen_pos"]
+                rc.text_rect.bottomright = uisd.ui_registry["off_screen_pos"]
 
         # Position/draw race selection.
         for race in inactive_races:
@@ -459,10 +459,10 @@ def draw_race_class_selection_elements(screen, active_races: tuple[InteractiveTe
     """Call positioning function and draw screen elements for race/class selection.
     ARGS:
         screen: pygame window.
-        active_races: entry from gui element dict 'gui_elements["active_races"]'.
-        inactive_races: entry from gui element dict 'gui_elements["inactive_races"]'.
-        active_classes: entry from gui element dict 'gui_elements["active_classes"]'.
-        inactive_classes: entry from gui element dict 'gui_elements["inactive_classes"]'.
+        active_races: entry from ui_registry dict 'ui_registry["active_races"]'.
+        inactive_races: entry from ui_registry dict 'ui_registry["inactive_races"]'.
+        active_classes: entry from ui_registry dict 'ui_registry["active_classes"]'.
+        inactive_classes: entry from ui_registry dict 'ui_registry["inactive_classes"]'.
         mouse_pos: position of mouse on screen.
     """
     # Position race/class selection elements on screen.
@@ -555,14 +555,14 @@ def position_language_selection_screen_elements(screen, languages: tuple[Interac
                     language.interactive_rect.centerx = screen.get_rect().centerx
                     language.interactive_rect.centery = uisd.lang_pos_y_dict[language.text]
                 else:
-                    language.interactive_rect.bottomright = uisd.gui_elements["off_screen_pos"]
+                    language.interactive_rect.bottomright = uisd.ui_registry["off_screen_pos"]
 
         # Position greyed-out 'TextField' instances from 'inactive_languages'.
         for index, inactive_language in enumerate(inactive_languages):
             if languages[index].selected or uisd.lang_selection_active:
                 # Move elements off-screen when corresponding selectable element has been selected or selection is still
                 # permitted.
-                inactive_language.text_rect.bottomright = uisd.gui_elements["off_screen_pos"]
+                inactive_language.text_rect.bottomright = uisd.ui_registry["off_screen_pos"]
             else:
                 # Position inactive elements on screen if previous conditions do not apply.
                 inactive_language.text_rect.centerx = screen.get_rect().centerx
@@ -619,28 +619,28 @@ def build_and_position_prompt(screen, naming_prompt: TextField) -> None:
 """Background functions for starting money screen."""
 
 def position_money_screen_elements(screen) -> None:
-    """Position objects from 'gui_elements' for starting money screen.
+    """Position objects from 'ui_registry' for starting money screen.
     ARGS:
         screen: PyGame window.
     """
     if not uisd.position_flag:
         # Positioning of button instances.
         money_button_pos_y: int = screen.get_rect().height / 3
-        random_money_button, custom_money_button = (uisd.gui_elements["starting_money_choices"][0],
-                                                    uisd.gui_elements["starting_money_choices"][1])
+        random_money_button, custom_money_button = (uisd.ui_registry["starting_money_choices"][0],
+                                                    uisd.ui_registry["starting_money_choices"][1])
         random_money_button.button_rect.top, random_money_button.button_rect.centerx = (money_button_pos_y,
                                                                                         screen.get_rect().centerx * 0.5)
         custom_money_button.button_rect.top, custom_money_button.button_rect.centerx = (money_button_pos_y,
                                                                                         screen.get_rect().centerx * 1.5)
 
         # Positioning of text input and text field instances.
-        rolling_dice_money_field, random_money_field = (uisd.gui_elements["random_money"][0],
-                                                        uisd.gui_elements["random_money"][1])
+        rolling_dice_money_field, random_money_field = (uisd.ui_registry["random_money"][0],
+                                                        uisd.ui_registry["random_money"][1])
         rolling_dice_money_field.text_rect.centery, random_money_field.text_rect.centery = (screen.get_rect().centery * 1.1,
                                                                                             screen.get_rect().centery * 1.1)
-        money_input_prompt: TextField = uisd.gui_elements["money_amount_input"][2]
+        money_input_prompt: TextField = uisd.ui_registry["money_amount_input"][2]
         money_input_prompt.text_rect.centery = screen.get_rect().centery * 1.05
-        money_amount_field: TextInputField = uisd.gui_elements["money_amount_input"][1]
+        money_amount_field: TextInputField = uisd.ui_registry["money_amount_input"][1]
         money_amount_field.input_bg_field.top = screen.get_rect().centery * 1.15
 
         uisd.position_flag = True
@@ -650,7 +650,7 @@ def choose_money_option(choices: list[Button], mouse_pos) -> None:
     """Choose option to either generate random amount of money or let user input a custom amount, return 'starting_money'
     if random amount is chosen, set and return 'random_money_flag'/'custom_money_flag' accordingly.
     ARGS:
-        choices: List of instances of 'Button' class from dict 'gui_elements'.
+        choices: List of instances of 'Button' class from dict 'ui_registry'.
         mouse_pos: position of mouse on screen.
     """
     if pygame.mouse.get_pressed()[0]:
@@ -671,14 +671,14 @@ def draw_chosen_money_option(screen) -> None:
     # Set duration for dice roll in seconds.
     dice_roll_duration: int | float = 1
 
-    # Assign font size and text field instances from dict 'gui_elements' to variables.
-    text_large: int = uisd.gui_elements["text_large"]
+    # Assign font size and text field instances from dict 'ui_registry' to variables.
+    text_large: int = uisd.ui_registry["text_large"]
     # Random money fields.
-    rolling_dice_money_field, random_money_field = (uisd.gui_elements["random_money"][0],
-                                                    uisd.gui_elements["random_money"][1])
+    rolling_dice_money_field, random_money_field = (uisd.ui_registry["random_money"][0],
+                                                    uisd.ui_registry["random_money"][1])
     # Money input fields.
-    money_amount_field: TextInputField = uisd.gui_elements["money_amount_input"][1]
-    money_input_prompt: TextField = uisd.gui_elements["money_amount_input"][2]
+    money_amount_field: TextInputField = uisd.ui_registry["money_amount_input"][1]
+    money_input_prompt: TextField = uisd.ui_registry["money_amount_input"][2]
 
     if sd.random_money_flag:
         # Check timer to allow for dice roll effect.
@@ -704,7 +704,7 @@ def starting_money_dice_roll(screen, random_money_field: TextField, text_large: 
     ARGS:
         screen: PyGame window.
         random_money_field: reference text field to position the money display correctly.
-        text_large: font size instance for text rendering. Usually 'gui_elements["text_large"]' is used, but any 'int'
+        text_large: font size instance for text rendering. Usually 'ui_registry["text_large"]' is used, but any 'int'
             can be passed.
         rolling: boolean flag to indicate if the dice roll is still ongoing.
             If 'True', displays a "rolling" message. If 'False', shows the final amount. Default is 'True'.
@@ -732,8 +732,8 @@ def position_completion_screen_elements(screen, completion_message: TextField, s
         completion_message: instance of class 'TextField' showing completion message.
         show_character_sheet: instance of class 'Button' to proceed to character sheet.
     """
-    # Assign spacing value from 'gui_elements' to variables.
-    spacing: int = uisd.gui_elements["title_screen_spacing"]
+    # Assign spacing value from 'ui_registry' to variables.
+    spacing: int = uisd.ui_registry["title_screen_spacing"]
 
     if not uisd.position_flag:
         # Position screen elements.

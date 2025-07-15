@@ -10,9 +10,9 @@ class UISharedData:
 
     def __init__(self) -> None:
         """Initialize shared data attributes."""
-        # Dict of UI elements as created in 'gui/gui_elements.py'. Relevant function call to populate the dict is called
+        # Dict of UI elements as created in 'gui/ui_registry.py'. Relevant function call to populate the dict is called
         # from 'run_character_creator()' in 'main.py' when program is initialized.
-        self.gui_elements: dict = {}
+        self.ui_registry: dict = {}
 
         # Flag to set mode in which save/load screen is displayed. 'False' allows for save and load, 'True' for load only.
         # See class 'SaveLoadScreen' in 'sl_model.py' for details.

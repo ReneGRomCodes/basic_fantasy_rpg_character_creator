@@ -5,8 +5,8 @@ from pygame_textinput import TextInputVisualizer
 """
 Classes for screen objects (buttons, text, etc.).
 
-Instances for GUI objects are created in module 'gui/gui_elements.py', scaled if necessary, and then added to dict
-'gui_elements'.
+Instances for GUI objects are created in module 'gui/ui_registry.py', scaled if necessary, and then added to dict
+'ui_registry'.
 Functions for the use of screen objects are located in 'gui/gui.py' with helper functions for positioning located in
 'gui/ui_helpers.py'.
 

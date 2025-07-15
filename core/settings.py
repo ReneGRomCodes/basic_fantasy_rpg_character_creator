@@ -19,7 +19,7 @@ class Settings:
 
         # Art assets.
         self.font: str = "gui/art/font/EagleLake-Regular.ttf"
-        # Assets are loaded and scaled in 'gui/gui_elements.py' to be then accessible via dict 'gui_elements'.
+        # Assets are loaded and scaled in 'gui/ui_registry.py' to be then accessible via dict 'ui_registry'.
         self.bg_image: str = "gui/art/bg_image.jpg"
 
         # Background color for screen.

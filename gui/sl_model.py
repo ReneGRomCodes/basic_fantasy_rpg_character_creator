@@ -43,12 +43,12 @@ class SaveLoadScreen:
         # character sheet screen.
         self.load_only: bool = uisd.load_only_flag
 
-        # Size variables and elements from dict 'gui_elements'.
-        gui_elements: dict = uisd.gui_elements
-        self.edge_spacing: int = gui_elements["default_edge_spacing"]
-        title_size: int = gui_elements["title_size"]
+        # Size variables and elements from dict 'ui_registry'.
+        ui_registry: dict = uisd.ui_registry
+        self.edge_spacing: int = ui_registry["default_edge_spacing"]
+        title_size: int = ui_registry["title_size"]
         text_standard: int = int(self.screen_height / 50)
-        text_medium: int = gui_elements["text_medium"]
+        text_medium: int = ui_registry["text_medium"]
 
         # Set strings for element text attributes based on screen mode flag.
         if self.load_only:
@@ -68,7 +68,7 @@ class SaveLoadScreen:
         self.button_group: tuple[Button, ...] = (self.exit_button, self.save_button, self.load_button, self.delete_button)
         # Set default button width.
         for button in self.button_group:
-            button.button_rect.width = gui_elements["default_button_width"]
+            button.button_rect.width = ui_registry["default_button_width"]
 
         # Character slots representing entries in file 'save/characters.json'.
         slot_00: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
@@ -105,7 +105,7 @@ class SaveLoadScreen:
         self.not_saved_message: str = "Current character is not saved. Proceed anyway?"
         self.delete_message: str = "Delete selected character?"
         self.overwrite_message: str = "Overwrite selected character?"
-        self.confirmation_message: TextField = so.TextField(screen, "", uisd.gui_elements["text_large"])
+        self.confirmation_message: TextField = so.TextField(screen, "", uisd.ui_registry["text_large"])
         self.confirm_proceed_button: Button = so.Button(screen, "PROCEED", text_standard)
         self.confirm_delete_button: Button = so.Button(screen, "DELETE", text_standard)
         self.confirm_overwrite_button: Button = so.Button(screen, "OVERWRITE", text_standard)
@@ -135,17 +135,17 @@ class SaveLoadScreen:
     def position_sl_elements(self) -> None:
         """Position save/load screen elements."""
         # Position exit button at the bottom right of the screen.
-        self.exit_button.button_rect.bottomright = uisd.gui_elements["bottom_right_pos"]
+        self.exit_button.button_rect.bottomright = uisd.ui_registry["bottom_right_pos"]
         # Position delete button.
         self.delete_button.button_rect.bottom = self.screen_rect.bottom - self.edge_spacing
 
         # Position save and load buttons based on screen mode flag 'self.load_only'.
         if self.load_only:
-            self.load_button.button_rect.bottomleft = uisd.gui_elements["bottom_left_pos"]
+            self.load_button.button_rect.bottomleft = uisd.ui_registry["bottom_left_pos"]
             # Position save button outside the screen to avoid accidental collision detection.
-            self.save_button.button_rect.bottomright = uisd.gui_elements["off_screen_pos"]
+            self.save_button.button_rect.bottomright = uisd.ui_registry["off_screen_pos"]
         else:
-            self.save_button.button_rect.bottomleft = uisd.gui_elements["bottom_left_pos"]
+            self.save_button.button_rect.bottomleft = uisd.ui_registry["bottom_left_pos"]
             self.load_button.button_rect.bottomleft = self.save_button.button_rect.bottomright
 
         # Position character slots.
@@ -305,8 +305,8 @@ class SaveLoadScreen:
     def position_confirm_message_elements(self, state) -> None:
         """Position confirmation message objects."""
         # Spacing and instance variables.
-        edge_spacing = uisd.gui_elements["default_edge_spacing"]
-        button_spacing = uisd.gui_elements["button_spacing"]
+        edge_spacing = uisd.ui_registry["default_edge_spacing"]
+        button_spacing = uisd.ui_registry["button_spacing"]
         confirm: TextField = self.confirmation_message
         # Position variables for buttons.
         button_top, button_right = self.screen_rect.centery + edge_spacing, self.screen_rect.centerx - button_spacing
@@ -318,7 +318,7 @@ class SaveLoadScreen:
         # Position button instances outside of screen before positioning relevant buttons on screen based on program
         # state.
         for button in self.confirm_buttons_group:
-            button.button_rect.bottomright = uisd.gui_elements["off_screen_pos"]
+            button.button_rect.bottomright = uisd.ui_registry["off_screen_pos"]
 
         if state == "char_not_saved":
             self.confirm_proceed_button.button_rect.top = button_top

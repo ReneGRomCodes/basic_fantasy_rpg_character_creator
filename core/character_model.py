@@ -141,7 +141,7 @@ class Character:
         self.name = char_name
 
         # Reset value for name input field to empty string.
-        uisd.gui_elements["character_name_input"][0].manager.value = ""
+        uisd.ui_registry["character_name_input"][0].manager.value = ""
 
     def set_ability_dict(self) -> None:
         """Build attribute dictionary 'self.abilities' for character abilities. Values are lists with base score at
