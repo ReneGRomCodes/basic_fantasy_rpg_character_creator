@@ -1,10 +1,14 @@
+"""
+Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
+It initializes the program and starts the main functionality.
+"""
 import pygame
+
 import core.state_manager as sm
 from core.settings import settings
+
 from gui.shared_data import ui_shared_data as uisd
 from gui.ui_registry import initialize_ui_registry
-"""Main module for the 'Basic Fantasy RPG Character Creator'. This module serves as the entry point for the application.
-It initializes the program and starts the main functionality."""
 
 
 def initialize_character_creator() -> tuple[pygame.Surface, pygame.time.Clock]:

@@ -1,8 +1,10 @@
-import gui.ui_helpers as ui
+"""
+Main GUI functions.
+"""
 from core.shared_data import shared_data as sd
-from gui.shared_data import ui_shared_data as uisd
 
-"""Main GUI functions."""
+import gui.ui_helpers as ui
+from .shared_data import ui_shared_data as uisd
 
 
 def show_title_screen(screen) -> None:

@@ -1,6 +1,8 @@
+"""
+Helper and check functions to generate and return values in accordance to game rules.
+"""
 import random
 
-"""Helper and check functions to generate and return values in accordance to game rules."""
 
 """General functions."""
 

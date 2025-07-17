@@ -1,7 +1,3 @@
-import pygame
-from core.settings import settings
-import random
-from pygame_textinput import TextInputVisualizer
 """
 Classes for screen objects (buttons, text, etc.).
 
@@ -15,6 +11,12 @@ handle their own instances/logic in modules 'gui/credits.py' and 'gui/settings_g
 
 See documentation in relevant modules for details.
 """
+import pygame
+import random
+
+from pygame_textinput import TextInputVisualizer
+
+from core.settings import settings
 
 
 class TextField:

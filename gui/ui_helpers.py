@@ -1,12 +1,15 @@
-import pygame
-from core.rules import roll_starting_money
-import gui.screen_objects as so
+"""
+Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens.
+"""
 import time
-from gui.screen_objects import TextField, Button, InteractiveText, TextInputField
-from core.shared_data import shared_data as sd
-from gui.shared_data import ui_shared_data as uisd
 
-"""Background functions for GUI, i.e. value build/retrieval and object positioning functions for pygame screens."""
+import pygame
+
+from core.rules import roll_starting_money
+from core.shared_data import shared_data as sd
+
+from .screen_objects import TextField, Button, InteractiveText, TextInputField
+from .shared_data import ui_shared_data as uisd
 
 
 """General functions."""
@@ -276,8 +279,8 @@ def position_ability_scores_screen_elements(screen, abilities_array: tuple[tuple
     # and text size is 'field_text_size' as retrieved from first 'ui_registry' entry in 'abilities_array' to ensure
     # correct scaling. Placeholder text is dynamically changed for each ability in for-loop further down.
     field_text_size: int = abilities_array[0][0].size
-    ability_score_field = so.TextField(screen, "score", field_text_size)
-    bonus_penalty_field = so.TextField(screen, "bonus_penalty", field_text_size)
+    ability_score_field = TextField(screen, "score", field_text_size)
+    bonus_penalty_field = TextField(screen, "bonus_penalty", field_text_size)
 
     # Loop through each ability and corresponding stats to format, position and display the ability name, score and
     # bonus/penalty as they are grouped in 'abilities_array'.
@@ -718,7 +721,7 @@ def starting_money_dice_roll(screen, random_money_field: TextField, text_large: 
         starting_money_message: str = str(sd.starting_money) + " gold pieces"
 
     # Create TextField instance 'random_money_result_field', and position and draw it on screen.
-    random_money_result_field = so.TextField(screen, starting_money_message, text_large)
+    random_money_result_field = TextField(screen, starting_money_message, text_large)
     random_money_result_field.text_rect.top = random_money_field.text_rect.bottom
     random_money_result_field.draw_text()
 

@@ -1,13 +1,16 @@
-import pygame
+"""
+Class to organize and access save/load screen objects as attributes.
+"""
 import json
-import gui.screen_objects as so
-from gui.ui_helpers import draw_screen_title, set_elements_pos_y_values
-from gui.screen_objects import TextField, Button, InteractiveText
-from gui.shared_data import ui_shared_data as uisd
+
+import pygame
+
 from core.shared_data import shared_data as sd
 from core.settings import settings
 
-"""Class to organize and access save/load screen objects as attributes."""
+from .ui_helpers import draw_screen_title, set_elements_pos_y_values
+from .screen_objects import TextField, Button, InteractiveText
+from .shared_data import ui_shared_data as uisd
 
 """
 # Data structure for empty JSON file 'save/characters.json'.
@@ -59,11 +62,11 @@ class SaveLoadScreen:
             self.exit_button_text: str = "Return"
 
         # General screen objects.
-        self.title: TextField = so.TextField(screen, self.title_text, title_size)
-        self.exit_button: Button = so.Button(screen, self.exit_button_text, text_medium)
-        self.save_button: Button = so.Button(screen, "Save", text_medium)
-        self.load_button: Button = so.Button(screen, "Load", text_medium)
-        self.delete_button: Button = so.Button(screen, "Delete Character", text_medium)
+        self.title: TextField = TextField(screen, self.title_text, title_size)
+        self.exit_button: Button = Button(screen, self.exit_button_text, text_medium)
+        self.save_button: Button = Button(screen, "Save", text_medium)
+        self.load_button: Button = Button(screen, "Load", text_medium)
+        self.delete_button: Button = Button(screen, "Delete Character", text_medium)
         # Tuple with 'Button' instances for use in for-loops when accessing instances.
         self.button_group: tuple[Button, ...] = (self.exit_button, self.save_button, self.load_button, self.delete_button)
         # Set default button width.
@@ -71,15 +74,15 @@ class SaveLoadScreen:
             button.button_rect.width = ui_registry["default_button_width"]
 
         # Character slots representing entries in file 'save/characters.json'.
-        slot_00: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
-        slot_01: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
-        slot_02: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
-        slot_03: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
-        slot_04: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
-        slot_05: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
-        slot_06: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
-        slot_07: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
-        slot_08: InteractiveText = so.InteractiveText(screen, "", text_medium, select=True)
+        slot_00: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
+        slot_01: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
+        slot_02: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
+        slot_03: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
+        slot_04: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
+        slot_05: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
+        slot_06: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
+        slot_07: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
+        slot_08: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
         # Dict with slot elements assigned as values to keys which correspond to keys in 'save/characters.json'.
         self.slots: dict[str, InteractiveText] = {
             "slot_00": slot_00,
@@ -105,11 +108,11 @@ class SaveLoadScreen:
         self.not_saved_message: str = "Current character is not saved. Proceed anyway?"
         self.delete_message: str = "Delete selected character?"
         self.overwrite_message: str = "Overwrite selected character?"
-        self.confirmation_message: TextField = so.TextField(screen, "", uisd.ui_registry["text_large"])
-        self.confirm_proceed_button: Button = so.Button(screen, "PROCEED", text_standard)
-        self.confirm_delete_button: Button = so.Button(screen, "DELETE", text_standard)
-        self.confirm_overwrite_button: Button = so.Button(screen, "OVERWRITE", text_standard)
-        self.cancel_button: Button = so.Button(screen, "CANCEL", text_standard)
+        self.confirmation_message: TextField = TextField(screen, "", uisd.ui_registry["text_large"])
+        self.confirm_proceed_button: Button = Button(screen, "PROCEED", text_standard)
+        self.confirm_delete_button: Button = Button(screen, "DELETE", text_standard)
+        self.confirm_overwrite_button: Button = Button(screen, "OVERWRITE", text_standard)
+        self.cancel_button: Button = Button(screen, "CANCEL", text_standard)
         # Tuple with 'Button' instances for use in for-loops when accessing instances.
         self.confirm_buttons_group: tuple[Button, ...] = (self.confirm_proceed_button, self.confirm_delete_button,
                                                           self.confirm_overwrite_button, self.cancel_button)

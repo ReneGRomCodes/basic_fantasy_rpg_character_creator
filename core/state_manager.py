@@ -1,15 +1,19 @@
-from core.character_model import Character
-from gui.credits import Credits
+"""
+Main functions/state managers used in 'main.py'.
+"""
+import random
+
 import gui.gui as gui
-import core.rules as rls
-import core.event_handlers as eh
-from core.shared_data import shared_data as sd
+from gui.credits import Credits
 from gui.shared_data import ui_shared_data as uisd
 from gui.settings_gui import SettingsGUI
 from gui.cs_model import CharacterSheet
 from gui.sl_model import SaveLoadScreen
-import random
-"""Main functions/state managers used in 'main.py'."""
+
+import core.rules as rls
+import core.event_handlers as eh
+from .shared_data import shared_data as sd
+from .character_model import Character
 
 
 def main_state_manager(screen, state: str, mouse_pos) -> str:

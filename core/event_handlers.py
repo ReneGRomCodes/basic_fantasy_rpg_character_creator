@@ -1,9 +1,14 @@
-import pygame
+"""
+Contains event handler functions.
+"""
 import sys
-import core.rules as rls
-from core.shared_data import shared_data as sd
+
+import pygame
+
 from gui.shared_data import ui_shared_data as uisd
-"""Contains event handler functions."""
+
+import core.rules as rls
+from .shared_data import shared_data as sd
 
 """
                            SCREENS FLOW CHART:

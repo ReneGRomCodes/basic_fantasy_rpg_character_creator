@@ -1,13 +1,14 @@
-import gui.screen_objects as so
-from gui.screen_objects import TextField, InteractiveText, Button
-from gui.ui_helpers import draw_screen_title
-import pygame
-from gui.ui_registry import initialize_ui_registry
-from core.settings import settings
-from gui.shared_data import ui_shared_data as uisd
 """
 Class for settings screen.
 """
+import pygame
+
+from core.settings import settings
+
+from .screen_objects import TextField, InteractiveText, Button
+from .ui_helpers import draw_screen_title
+from .ui_registry import initialize_ui_registry
+from .shared_data import ui_shared_data as uisd
 
 
 class SettingsGUI:
@@ -24,13 +25,13 @@ class SettingsGUI:
         self.text_medium: int = uisd.ui_registry["text_medium"]
 
         # Screen title.
-        self.title: TextField = so.TextField(screen, "- SETTINGS -", self.title_size)
+        self.title: TextField = TextField(screen, "- SETTINGS -", self.title_size)
         # Window size settings elements.
-        self.window_size_field: TextField = so.TextField(screen, "Window Size", self.text_large)
-        window_size_button_small: InteractiveText = so.InteractiveText(screen, "1280x720", self.text_medium, select=True)
-        window_size_button_medium: InteractiveText = so.InteractiveText(screen, "1600x900", self.text_medium, select=True)
-        window_size_button_large: InteractiveText = so.InteractiveText(screen, "1920x1080", self.text_medium, select=True)
-        window_size_button_full: InteractiveText = so.InteractiveText(screen, "Full Screen", self.text_medium, select=True)
+        self.window_size_field: TextField = TextField(screen, "Window Size", self.text_large)
+        window_size_button_small: InteractiveText = InteractiveText(screen, "1280x720", self.text_medium, select=True)
+        window_size_button_medium: InteractiveText = InteractiveText(screen, "1600x900", self.text_medium, select=True)
+        window_size_button_large: InteractiveText = InteractiveText(screen, "1920x1080", self.text_medium, select=True)
+        window_size_button_full: InteractiveText = InteractiveText(screen, "Full Screen", self.text_medium, select=True)
         # Tuple of window size option buttons.
         self.window_size_buttons: tuple[InteractiveText, ...] = (window_size_button_small, window_size_button_medium,
                                                                  window_size_button_large, window_size_button_full)

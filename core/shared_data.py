@@ -1,11 +1,12 @@
-from gui.screen_objects import InteractiveText
-from core.rules import get_class_categories, get_race_class_defaults
-from gui.shared_data import ui_shared_data as uisd
 """
 Shared data class for character creation process.
 Only instance of this class, 'shared_data', is created at the bottom of this module and imported/referenced in
 'state_manager.py' and 'event_handlers.py'.
 """
+from gui.screen_objects import InteractiveText
+from gui.shared_data import ui_shared_data as uisd
+
+from .rules import get_class_categories, get_race_class_defaults
 
 
 class SharedData:

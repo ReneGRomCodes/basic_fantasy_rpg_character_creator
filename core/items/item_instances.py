@@ -1,6 +1,8 @@
-from core.items.item_objects import Item, Weapon, Projectile, RangedWeapon, Armor
-"""Initialize instances of classes from 'item_objects.py'.
-Instances are sorted into dicts at the end of this file for use in other modules."""
+"""
+Initialize instances of classes from 'item_objects.py'.
+Instances are sorted into dicts at the end of this file for use in other modules.
+"""
+from .item_objects import Item, Weapon, Projectile, RangedWeapon, Armor
 
 
 # General Equipment (args = "name, cost, weight").

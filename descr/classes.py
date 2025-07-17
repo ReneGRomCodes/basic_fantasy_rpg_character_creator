@@ -1,4 +1,6 @@
-"""Contains function for the class descriptions."""
+"""
+Contains function for the class descriptions.
+"""
 
 def get_class_descr() -> dict[str, tuple[str, str]]:
     """Initialize variables containing class descriptions and return them in dict 'class_descr'.

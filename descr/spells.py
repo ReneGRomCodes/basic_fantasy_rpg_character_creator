@@ -1,4 +1,6 @@
-"""Contains function for the spells descriptions."""
+"""
+Contains function for the spells descriptions.
+"""
 
 def get_spell_descr() -> dict:
     """Initialize variables containing spell descriptions and return them in dict 'spell_descr'.

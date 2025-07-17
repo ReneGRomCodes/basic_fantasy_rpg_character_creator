@@ -1,11 +1,11 @@
-import gui.screen_objects as so
-from gui.screen_objects import TextField
-from gui.ui_helpers import draw_screen_title
-from core.settings import settings
-from gui.shared_data import ui_shared_data as uisd
 """
 Class for credits screen.
 """
+from core.settings import settings
+
+from .screen_objects import TextField
+from .ui_helpers import draw_screen_title
+from .shared_data import ui_shared_data as uisd
 
 
 class Credits:
@@ -29,16 +29,16 @@ class Credits:
         self.dynamic_pos_y: int = self.credits_pos_y_start
 
         # Credits screen title.
-        self.credits_title: TextField = so.TextField(screen, "- CREDITS -", title_size)
+        self.credits_title: TextField = TextField(screen, "- CREDITS -", title_size)
         # Credits.
-        dev_title: TextField = so.TextField(screen, "Lead Developer", text_large)
-        dev_name: TextField = so.TextField(screen, "René Grewe Romero", text_medium)
-        concept_creator_title: TextField = so.TextField(screen, "Based on 'Basic Tabletop RPG'", text_large)
-        concept_creator_name: TextField = so.TextField(screen, "by Chris Gonnerman", text_medium)
-        art_ui_title: TextField = so.TextField(screen, "Artwork & UI Design", text_large)
-        art_ui_name: TextField = so.TextField(screen, "René Grewe Romero", text_medium)
-        font_creator_title: TextField = so.TextField(screen, "Font 'Eagle Lake'", text_large)
-        font_creator_name: TextField = so.TextField(screen, "by Brian J. Bonislawsky", text_medium)
+        dev_title: TextField = TextField(screen, "Lead Developer", text_large)
+        dev_name: TextField = TextField(screen, "René Grewe Romero", text_medium)
+        concept_creator_title: TextField = TextField(screen, "Based on 'Basic Tabletop RPG'", text_large)
+        concept_creator_name: TextField = TextField(screen, "by Chris Gonnerman", text_medium)
+        art_ui_title: TextField = TextField(screen, "Artwork & UI Design", text_large)
+        art_ui_name: TextField = TextField(screen, "René Grewe Romero", text_medium)
+        font_creator_title: TextField = TextField(screen, "Font 'Eagle Lake'", text_large)
+        font_creator_name: TextField = TextField(screen, "by Brian J. Bonislawsky", text_medium)
 
         # Array of objects to be shown on screen as instantiated above. Each inner tuple representing a credit category,
         # with the element at index [0] being the category title and the following elements being the credited names.

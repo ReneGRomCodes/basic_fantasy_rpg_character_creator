@@ -1,4 +1,6 @@
-"""Contains function for the race descriptions."""
+"""
+Contains function for the race descriptions.
+"""
 
 def get_race_descr() -> dict[str, tuple[str, str]]:
     """Initialize variables containing race descriptions and return them in dict 'race_descr'.
