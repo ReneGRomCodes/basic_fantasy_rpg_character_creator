@@ -6,7 +6,7 @@ Only instance of this class, 'shared_data', is created at the bottom of this mod
 from gui.screen_objects import InteractiveText
 from gui.shared_data import ui_shared_data as uisd
 
-from .rules import get_class_categories, get_race_class_defaults
+from .rules import RACE_DATA, CLASS_DATA, CLASS_CATEGORIES
 
 
 class SharedData:
@@ -23,9 +23,9 @@ class SharedData:
         self.cs_sheet: object | None = None  # Instance of 'CharacterSheet'.
 
         # Class sets for category checks (example: spell selection screen shown only for magic using classes).
-        self.spell_using_classes, self.magic_classes, self.no_armor_classes = get_class_categories()
-        # Dicts of default values for races and classes (spells, languages, etc.).
-        self.default_spells, self.default_languages = get_race_class_defaults()
+        self.spell_using_classes: set[str] = CLASS_CATEGORIES["spell_using_classes"]
+        self.magic_classes: set[str] = CLASS_CATEGORIES["magic_classes"]
+        self.no_armor_classes: set[str] = CLASS_CATEGORIES["no_armor_classes"]
 
         # Possible race-class combinations.
         # 'None' as starting value before actual value is assigned.
@@ -129,8 +129,10 @@ class SharedData:
         ARGS:
             spells: tuple with instances of interactive text fields for spell selection.
         """
+        default_spells = CLASS_DATA[self.character.class_name.lower()]["spells"]
+
         for spell in spells:
-            if spell.text in self.default_spells[self.character.class_name.lower()]:
+            if spell.text in default_spells:
                 spell.selected = True
 
     def select_spell(self, option: InteractiveText) -> None:
@@ -138,8 +140,10 @@ class SharedData:
         ARGS:
             option: selected instance of 'InteractiveText' representing selected spell.
         """
+        default_spells = CLASS_DATA[self.character.class_name.lower()]["spells"]
+
         # Ignore selection if clicked spell is the class-specific default. Prevents it from overriding other selections.
-        if option.text not in self.default_spells.values():
+        if option.text not in default_spells:
             # Spell selection logic.
             self.selected_spell = self.handle_selection_logic(option, self.selected_spell)
 
@@ -151,8 +155,10 @@ class SharedData:
         ARGS:
             languages: tuple with instances of interactive text fields for language selection.
         """
+        default_languages = RACE_DATA[self.character.race_name.lower()]["languages"]
+
         for language in languages:
-            if language.text in self.default_languages[self.character.race_name.lower()]:
+            if language.text in default_languages:
                 language.selected = True
 
     def select_languages(self, option: InteractiveText) -> None:
@@ -161,12 +167,14 @@ class SharedData:
         ARGS:
             option: selected instance of 'InteractiveText' representing selected language.
         """
+        default_languages = RACE_DATA[self.character.race_name.lower()]["languages"]
+
         # Number of languages a character can learn in addition to race-specific languages. Value equals character's
         # intelligence bonus.
         max_additional_languages: int = self.character.abilities["int"][1]
 
         # Ignore selection if clicked language is a race-specific default. Prevents it from overriding other selections.
-        if option.text not in self.default_languages[self.character.race_name.lower()]:
+        if option.text not in default_languages:
             # language selection logic.
             self.selected_languages = self.handle_selection_logic(option, self.selected_languages, multi_selection=True,
                                                                   limit=max_additional_languages)

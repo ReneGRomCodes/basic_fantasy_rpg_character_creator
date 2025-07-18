@@ -26,23 +26,27 @@ RACE_DATA = {
         "race_specials": ("Darkvision 60'",
                           "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"),
         "race_bonuses": SAVING_THROWS["dwarf_bonuses"],
+        "languages": {"Common", "Dwarvish"},
     },
     "elf": {
         "race_hit_die": 6,
         "race_specials": ("Darkvision 60'", "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
                           "Range reduction by 1 for surprise checks"),
         "race_bonuses": SAVING_THROWS["elf_bonuses"],
+        "languages": {"Common", "Elvish"},
     },
     "halfling": {
         "race_hit_die": 6,
         "race_specials": ("+1 attack bonus on ranged weapons", "+1 to initiative die rolls",
                           "Hide (10% chance to be detected outdoors, 30% chance to be detected indoors"),
         "race_bonuses": SAVING_THROWS["halfling_bonuses"],
+        "languages": {"Common", "Halfling"},
     },
     "human": {
         "race_hit_die": False,
         "race_specials": ("+10% to all earned XP", ),
         "race_bonuses": SAVING_THROWS["human_bonuses"],
+        "languages": {"Common"},
     },
 }
 
@@ -70,7 +74,7 @@ CLASS_DATA = {
         "next_level_xp": 2500,
         "class_specials": (),
         "class_saving_throws": SAVING_THROWS["magic_user_saves"],
-        "spells": [],
+        "spells": ["Read Magic"],
         "inventory": [item_inst.spellbook],
         "weight_carried": item_inst.spellbook.weight,
     },
@@ -88,7 +92,7 @@ CLASS_DATA = {
         "next_level_xp": 4500,
         "class_specials": (),
         "class_saving_throws": SAVING_THROWS["fighter_magic_user_saves"],
-        "spells": [],
+        "spells": ["Read Magic"],
         "inventory": [item_inst.spellbook],
         "weight_carried": item_inst.spellbook.weight,
     },
@@ -97,10 +101,16 @@ CLASS_DATA = {
         "next_level_xp": 3750,
         "class_specials": (),
         "class_saving_throws": SAVING_THROWS["magic_user_thief_saves"],
-        "spells": [],
+        "spells": ["Read Magic"],
         "inventory": [item_inst.spellbook],
         "weight_carried": item_inst.spellbook.weight,
     },
+}
+
+CLASS_CATEGORIES = {
+    "spell_using_classes": {"Cleric", "Magic-User", "Fighter/Magic-User", "Magic-User/Thief"},  # ALL spell casters.
+    "magic_classes": {"Magic-User", "Fighter/Magic-User", "Magic-User/Thief"},  # Only 'true' magic users.
+    "no_armor_classes": {"Magic-User"}  # Classes that are not allowed to wear armor.
 }
 
 
@@ -120,53 +130,6 @@ def dice_roll(n: int, m: int) -> int:
         result += random.randint(1, m)
 
     return result
-
-
-def get_class_categories() -> tuple[set[str], ...]:
-    """Create and return class sets for category checks (example: spell selection screen shown only for magic using
-    classes, etc.).
-    Function is called from within 'SharedData' class in module 'core/shared_data.py' from where the sets are used
-    throughout the program, as well as from class 'Character' in 'core/character_model.py' when creating a random
-    character.
-    RETURNS:
-        spell_using_classes
-        magic_classes
-        no_armor_classes
-    """
-    # ALL spell casters.
-    spell_using_classes = {"Cleric", "Magic-User", "Fighter/Magic-User", "Magic-User/Thief"}
-    # Only 'true' magic users.
-    magic_classes: set[str] = {"Magic-User", "Fighter/Magic-User", "Magic-User/Thief"}
-    # Classes that are not allowed to wear armor.
-    no_armor_classes: set[str] = {"Magic-User"}
-
-    return spell_using_classes, magic_classes, no_armor_classes
-
-
-def get_race_class_defaults() -> tuple[dict[str, str], dict[str, set[str]]]:
-    """Create and return dicts with race and class specific default values.
-    Function is called from within 'SharedData' class in module 'core/shared_data.py' from where the dicts are used
-    throughout the program, as well as from class 'Character' in 'core/character_model.py' when creating a random
-    character.
-    RETURNS:
-        default_spells
-        default_languages
-    """
-    default_spells = {
-        "magic-user": "Read Magic",
-        "fighter/magic-user": "Read Magic",
-        "magic-user/thief": "Read Magic",
-        "cleric": "No Spell",
-    }
-
-    default_languages = {
-        "human": {"Common"},
-        "elf": {"Common", "Elvish"},
-        "dwarf": {"Common", "Dwarvish"},
-        "halfling": {"Common", "Halfling"},
-    }
-
-    return default_spells, default_languages
 
 
 """Ability scores."""

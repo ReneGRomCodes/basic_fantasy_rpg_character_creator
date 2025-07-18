@@ -9,7 +9,7 @@ from gui.shared_data import ui_shared_data as uisd
 
 import core.items.item_instances as item_inst
 from .items import Armor
-from .rules import RACE_DATA, CLASS_DATA, dice_roll, get_ability_score, get_class_categories, get_race_class_defaults
+from .rules import RACE_DATA, CLASS_DATA, CLASS_CATEGORIES, dice_roll, get_ability_score
 from .shared_data import shared_data as sd
 
 
@@ -262,8 +262,9 @@ class Character:
              language_list: tuple with instances of interactive text fields for language selection.
         """
         # Dicts/sets for checks of default values for various races/classes.
-        magic_classes = get_class_categories()[1]
-        default_spells, default_languages = get_race_class_defaults()
+        magic_classes = CLASS_CATEGORIES["magic_classes"]
+        default_spells = CLASS_DATA[self.class_name.lower()]["spells"]
+        default_languages = RACE_DATA[self.race_name.lower()]["languages"]
 
         # Choose default and random spell for magic using classes.
         if self.class_name in magic_classes:
@@ -271,13 +272,13 @@ class Character:
             random.choice(spell_list).selected = True
             # Check for and retrieve default spell.
             for spell in spell_list:
-                if spell.text in default_spells[self.class_name.lower()]:
+                if spell.text in default_spells:
                     spell.selected = True
             # Set selected spells.
             self.set_starting_spell(spell_list)
 
         # Set default language for character's race.
-        for language in default_languages[self.race_name.lower()]:
+        for language in default_languages:
             for lang in language_list:
                 if language == lang.text:
                     lang.selected = True
