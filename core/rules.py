@@ -1,7 +1,107 @@
 """
-Helper and check functions to generate and return values in accordance to game rules.
+Look-ups, helper- and check-functions representing the game rules.
 """
 import random
+
+import core.items.item_instances as item_inst
+
+
+SAVING_THROWS = {  # Saving throw values (Death Ray or Poison, Magic Wands, Paralysis or Petrify, Dragon Breath, Spells).
+    "cleric_saves": (11, 12, 14, 16, 15),
+    "fighter_saves": (12, 13, 14, 15, 17),
+    "magic_user_saves": (13, 14, 13, 16, 15),
+    "thief_saves": (13, 14, 13, 16, 15),
+    "fighter_magic_user_saves": (13, 14, 14, 16, 17),
+    "magic_user_thief_saves": (13, 14, 13, 16, 15),
+
+    "dwarf_bonuses": (4, 4, 4, 3, 4),
+    "elf_bonuses": (0, 2, 1, 0, 2),
+    "halfling_bonuses": (4, 4, 4, 3, 4),
+    "human_bonuses": (0, 0, 0, 0, 0),
+}
+
+RACE_DATA = {
+    "dwarf": {
+        "race_hit_die": False,
+        "race_specials": ("Darkvision 60'",
+                          "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"),
+        "race_bonuses": SAVING_THROWS["dwarf_bonuses"],
+    },
+    "elf": {
+        "race_hit_die": 6,
+        "race_specials": ("Darkvision 60'", "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
+                          "Range reduction by 1 for surprise checks"),
+        "race_bonuses": SAVING_THROWS["elf_bonuses"],
+    },
+    "halfling": {
+        "race_hit_die": 6,
+        "race_specials": ("+1 attack bonus on ranged weapons", "+1 to initiative die rolls",
+                          "Hide (10% chance to be detected outdoors, 30% chance to be detected indoors"),
+        "race_bonuses": SAVING_THROWS["halfling_bonuses"],
+    },
+    "human": {
+        "race_hit_die": False,
+        "race_specials": ("+10% to all earned XP", ),
+        "race_bonuses": SAVING_THROWS["human_bonuses"],
+    },
+}
+
+CLASS_DATA = {
+    "cleric": {
+        "class_hit_die": 6,
+        "next_level_xp": 1500,
+        "class_specials": ("Turn the Undead", ),
+        "class_saving_throws": SAVING_THROWS["cleric_saves"],
+        "spells": ["No Spells"],
+        "inventory": [],
+        "weight_carried": 0,
+    },
+    "fighter": {
+        "class_hit_die": 8,
+        "next_level_xp": 2000,
+        "class_specials": (),
+        "class_saving_throws": SAVING_THROWS["fighter_saves"],
+        "spells": [],
+        "inventory": [],
+        "weight_carried": 0,
+    },
+    "magic-user": {
+        "class_hit_die": 4,
+        "next_level_xp": 2500,
+        "class_specials": (),
+        "class_saving_throws": SAVING_THROWS["magic_user_saves"],
+        "spells": [],
+        "inventory": [item_inst.spellbook],
+        "weight_carried": item_inst.spellbook.weight,
+    },
+    "thief": {
+        "class_hit_die": 4,
+        "next_level_xp": 1250,
+        "class_specials": ("Sneak Attack", "Thief Abilities"),
+        "class_saving_throws": SAVING_THROWS["thief_saves"],
+        "spells": [],
+        "inventory": [],
+        "weight_carried": 0,
+    },
+    "fighter/magic-user": {
+        "class_hit_die": 6,
+        "next_level_xp": 4500,
+        "class_specials": (),
+        "class_saving_throws": SAVING_THROWS["fighter_magic_user_saves"],
+        "spells": [],
+        "inventory": [item_inst.spellbook],
+        "weight_carried": item_inst.spellbook.weight,
+    },
+    "magic-user/thief": {
+        "class_hit_die": 4,
+        "next_level_xp": 3750,
+        "class_specials": (),
+        "class_saving_throws": SAVING_THROWS["magic_user_thief_saves"],
+        "spells": [],
+        "inventory": [item_inst.spellbook],
+        "weight_carried": item_inst.spellbook.weight,
+    },
+}
 
 
 """General functions."""

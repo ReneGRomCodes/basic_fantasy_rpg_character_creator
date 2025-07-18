@@ -8,8 +8,8 @@ from gui.screen_objects import InteractiveText
 from gui.shared_data import ui_shared_data as uisd
 
 import core.items.item_instances as item_inst
-from .rules import dice_roll, get_ability_score, get_class_categories, get_race_class_defaults
-from .items.item_objects import Armor
+from .items import Armor
+from .rules import RACE_DATA, CLASS_DATA, dice_roll, get_ability_score, get_class_categories, get_race_class_defaults
 from .shared_data import shared_data as sd
 
 
@@ -19,22 +19,22 @@ class Character:
     def __init__(self) -> None:
         """Initialize race and class-specific attributes and character values."""
         # Race specific attributes.
-        self.race_name: str | None = None
+        self.race_name: str = ""
         self.race_specials: tuple[str, ...] = ()
         self.bonuses: tuple[int, ...] = ()
         # Class specific attributes.
-        self.class_name: str | None = None
+        self.class_name: str = ""
         self.class_specials: tuple[str, ...] = ()
         self.class_saving_throws: tuple[int, ...] = ()
 
-        # Race/class maximum hit die. Attributes only used to set characters maximum hit die.
+        # Race/class maximum hit die. Attributes used to set characters maximum hit die.
         self.race_hit_die: int | False = False
         self.class_hit_die: int | False = False
 
         # Character attributes. Values set based on race and class.
-        self.name: str | None = None
+        self.name: str = ""
         self.abilities: dict[str, list[int]] = {}
-        self.armor_class: int | None = None
+        self.armor_class: int = 0
         self.attack_bonus: int = 1  # Default attack bonus of +1 for Lvl characters.
         self.specials: tuple[str, ...] = ()
         self.max_hit_die: int | False = False
@@ -45,7 +45,7 @@ class Character:
         self.languages: list[str] = []
         self.spells: list[str] = []
         self.hp: int = 0
-        self.movement: int | None = None
+        self.movement: int = 0
         # Attributes related to inventory.
         self.carrying_capacity: dict[str, int] = {}
         self.weight_carried: int | float = 0
@@ -62,27 +62,11 @@ class Character:
         """
         self.race_name = race_selection
 
-        if race_selection == "Dwarf":
-            self.race_hit_die = False
-            self.race_specials = ("Darkvision 60'",
-                                  "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6")
-            self.bonuses = (4, 4, 4, 3, 4)
-        elif race_selection == "Elf":
-            self.race_hit_die = 6
-            self.race_specials = ("Darkvision 60'",
-                                  "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
-                                  "Range reduction by 1 for surprise checks")
-            self.bonuses = (0, 2, 1, 0, 2)
-        elif race_selection == "Halfling":
-            self.race_hit_die = 6
-            self.race_specials = ("+1 attack bonus on ranged weapons",
-                                  "+1 to initiative die rolls",
-                                  "Hide (10% chance to be detected outdoors, 30% chance to be detected indoors")
-            self.bonuses = (4, 4, 4, 3, 4)
-        elif race_selection == "Human":
-            self.race_hit_die = False
-            self.race_specials = ("+10% to all earned XP", )
-            self.bonuses = (0, 0, 0, 0, 0)
+        race_data: dict = RACE_DATA[race_selection.lower()]
+
+        self.race_hit_die = race_data["race_hit_die"]
+        self.race_specials = race_data["race_specials"]
+        self.bonuses = race_data["race_bonuses"]
 
     def set_class(self, class_selection: str) -> None:
         """Set class-specific values based on chosen class.
@@ -91,50 +75,15 @@ class Character:
         """
         self.class_name = class_selection
 
-        if class_selection == "Cleric":
-            self.class_hit_die = 6
-            self.next_level_xp = 1500
-            self.class_specials = ("Turn the Undead", )
-            self.class_saving_throws = (11, 12, 14, 16, 15)
-            self.spells = ["No Spells"]
-            self.inventory = []
-            self.weight_carried = 0
-        elif class_selection == "Fighter":
-            self.class_hit_die = 8
-            self.next_level_xp = 2000
-            self.class_specials = ()
-            self.class_saving_throws = (12, 13, 14, 15, 17)
-            self.inventory = []
-            self.weight_carried = 0
-        elif class_selection == "Magic-User":
-            self.class_hit_die = 4
-            self.next_level_xp = 2500
-            self.class_specials = ()
-            self.class_saving_throws = (13, 14, 13, 16, 15)
-            self.inventory.append(item_inst.spellbook)
-            self.weight_carried += item_inst.spellbook.weight
-        elif class_selection == "Thief":
-            self.class_hit_die = 4
-            self.next_level_xp = 1250
-            self.class_specials = ("Sneak Attack", "Thief Abilities")
-            self.class_saving_throws = (13, 14, 13, 16, 15)
-            self.inventory = []
-            self.weight_carried = 0
-        # Elf-specific combination classes.
-        elif class_selection == "Fighter/Magic-User":
-            self.class_hit_die = 6
-            self.next_level_xp = 4500
-            self.class_specials = ()
-            self.class_saving_throws = (13, 14, 14, 16, 17)
-            self.inventory = [item_inst.spellbook]
-            self.weight_carried += item_inst.spellbook.weight
-        elif class_selection == "Magic-User/Thief":
-            self.class_hit_die = 4
-            self.next_level_xp = 3750
-            self.class_specials = ("Sneak Attack", "Thief Abilities")
-            self.class_saving_throws = (13, 14, 13, 16, 15)
-            self.inventory = [item_inst.spellbook]
-            self.weight_carried += item_inst.spellbook.weight
+        class_data: dict = CLASS_DATA[class_selection.lower()]
+
+        self.class_hit_die = class_data["class_hit_die"]
+        self.next_level_xp = class_data["next_level_xp"]
+        self.class_specials = class_data["class_specials"]
+        self.class_saving_throws = class_data["class_saving_throws"]
+        self.spells = class_data["spells"]
+        self.inventory = class_data["inventory"]
+        self.weight_carried = class_data["weight_carried"]
 
     def reset_character(self) -> None:
         """Reset values that may not be overwritten otherwise when creating a new character."""
@@ -283,10 +232,8 @@ class Character:
         for spell in spell_list:
             if spell.selected:
                 self.spells.append(spell.text)
-                # Reset spell to default 'False'.
                 spell.selected = False
 
-        # Reset 'selected_spell' attribute in 'shared_data'.
         sd.selected_spell = None
 
     def set_languages(self, language_list: tuple[InteractiveText, ...]) -> None:
@@ -302,7 +249,6 @@ class Character:
             if language.selected:
                 self.languages.append(language.text)
 
-        # Reset all language selection related data.
         sd.clear_language_selection()
 
     def set_random_selections(self, spell_list: tuple[InteractiveText], language_flag: bool,
