@@ -10,4 +10,3 @@ this point it has become mostly a dumping ground for 'todos'.
 # TODOS:
 # TODO add sections for thief skills to character sheet
 # TODO add option to allow for minor customization of randomly generated characters?
-# TODO clean up imports via '__init__.py' files

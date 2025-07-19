@@ -406,7 +406,7 @@ class CharacterSheet:
         self.position_armor()
 
         # Get lists for dynamically positioned elements.
-        self.specials_pos_y_list: list[int] = self.get_position_dynamic_field(self.special_ability, self.character.specials,
+        self.specials_pos_y_list: list[int] = self.get_position_dynamic_field(self.special_ability, self.character.race_specials,
                                                                               self.special_abilities, text_prefix=" - ")
         self.class_special_pos_y_list: list[int] = self.get_position_dynamic_field(self.class_special, self.character.class_specials,
                                                                                    self.class_specials)
@@ -522,7 +522,7 @@ class CharacterSheet:
         # Draw sections anchor object 'self.special_abilities'.
         self.special_abilities.draw_text()
         # Format, position and draw special abilities.
-        self.format_and_draw_dynamic_field(self.special_ability, self.character.specials, self.special_abilities,
+        self.format_and_draw_dynamic_field(self.special_ability, self.character.race_specials, self.special_abilities,
                                            self.specials_pos_y_list, text_prefix=" - ")
 
     def position_spells(self) -> None:

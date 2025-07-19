@@ -6,7 +6,9 @@ import random
 import core.items.item_instances as item_inst
 
 
-SAVING_THROWS = {  # Saving throw values (Death Ray or Poison, Magic Wands, Paralysis or Petrify, Dragon Breath, Spells).
+SAVING_THROWS = {
+    "categories": ("Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"),
+
     "cleric_saves": (11, 12, 14, 16, 15),
     "fighter_saves": (12, 13, 14, 15, 17),
     "magic_user_saves": (13, 14, 13, 16, 15),
@@ -75,8 +77,8 @@ CLASS_DATA = {
         "class_specials": (),
         "class_saving_throws": SAVING_THROWS["magic_user_saves"],
         "spells": ["Read Magic"],
-        "inventory": [item_inst.spellbook],
-        "weight_carried": item_inst.spellbook.weight,
+        "inventory": [item_inst.SPELLBOOK],
+        "weight_carried": item_inst.SPELLBOOK.weight,
     },
     "thief": {
         "class_hit_die": 4,
@@ -93,8 +95,8 @@ CLASS_DATA = {
         "class_specials": (),
         "class_saving_throws": SAVING_THROWS["fighter_magic_user_saves"],
         "spells": ["Read Magic"],
-        "inventory": [item_inst.spellbook],
-        "weight_carried": item_inst.spellbook.weight,
+        "inventory": [item_inst.SPELLBOOK],
+        "weight_carried": item_inst.SPELLBOOK.weight,
     },
     "magic-user/thief": {
         "class_hit_die": 4,
@@ -102,8 +104,8 @@ CLASS_DATA = {
         "class_specials": (),
         "class_saving_throws": SAVING_THROWS["magic_user_thief_saves"],
         "spells": ["Read Magic"],
-        "inventory": [item_inst.spellbook],
-        "weight_carried": item_inst.spellbook.weight,
+        "inventory": [item_inst.SPELLBOOK],
+        "weight_carried": item_inst.SPELLBOOK.weight,
     },
 }
 
