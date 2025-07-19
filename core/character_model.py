@@ -9,7 +9,7 @@ from gui.shared_data import ui_shared_data as uisd
 
 import core.items.item_instances as item_inst
 from .items import Armor
-from .rules import RACE_DATA, CLASS_DATA, CLASS_CATEGORIES, SAVING_THROWS, dice_roll, get_ability_score
+from .rules import RACE_DATA, CLASS_DATA, CLASS_CATEGORIES, SAVING_THROWS, MOVEMENT_RULES, dice_roll, get_ability_score
 from .shared_data import shared_data as sd
 
 
@@ -150,63 +150,39 @@ class Character:
 
     def set_carrying_capacity(self) -> None:
         """Set dict 'self.carrying_capacity' based on race and strength score."""
+        carry_cap: tuple[tuple[int, int, int], ...] = RACE_DATA[self.race_name.lower()]["carrying_cap"]
+        strength_threshold_index: int = 0
+        cap_light_index: int = 1
+        cap_heavy_index: int = 2
         strength: int = self.abilities["str"][0]
-
         cap_light_key: str = "Light Load"
         cap_heavy_key: str = "Heavy Load"
 
-        # Basic carrying capacities for Halflings.
-        if self.race_name == "Halfling":
-            if strength <= 3:
-                self.carrying_capacity = {cap_light_key: 20, cap_heavy_key: 40, }
-            elif strength <= 5:
-                self.carrying_capacity = {cap_light_key: 30, cap_heavy_key: 60, }
-            elif strength <= 8:
-                self.carrying_capacity = {cap_light_key: 40, cap_heavy_key: 80, }
-            elif strength <= 12:
-                self.carrying_capacity = {cap_light_key: 50, cap_heavy_key: 100, }
-            elif strength <= 15:
-                self.carrying_capacity = {cap_light_key: 55, cap_heavy_key: 110, }
-            elif strength <= 17:
-                self.carrying_capacity = {cap_light_key: 60, cap_heavy_key: 120, }
-            else:
-                self.carrying_capacity = {cap_light_key: 65, cap_heavy_key: 130, }
-
-        # Basic carrying capacity for all other races:
-        else:
-            if strength <= 3:
-                self.carrying_capacity = {cap_light_key: 25, cap_heavy_key: 60, }
-            elif strength <= 5:
-                self.carrying_capacity = {cap_light_key: 35, cap_heavy_key: 90, }
-            elif strength <= 8:
-                self.carrying_capacity = {cap_light_key: 50, cap_heavy_key: 120, }
-            elif strength <= 12:
-                self.carrying_capacity = {cap_light_key: 60, cap_heavy_key: 150, }
-            elif strength <= 15:
-                self.carrying_capacity = {cap_light_key: 65, cap_heavy_key: 165, }
-            elif strength <= 17:
-                self.carrying_capacity = {cap_light_key: 70, cap_heavy_key: 180, }
-            else:
-                self.carrying_capacity = {cap_light_key: 80, cap_heavy_key: 195, }
+        for item in carry_cap:
+            if strength > item[strength_threshold_index]:
+                self.carrying_capacity = {cap_light_key: item[cap_light_index], cap_heavy_key: item[cap_heavy_index]}
 
     def set_movement_rate(self) -> None:
-        """Set movement rate based on encumbrance ('self.carrying_capacity') and worn armor. Has to be called whenever
-        changes to 'self.weight_carried' are made in other methods."""
+        """Set movement rate based on encumbrance and worn armor. Has to be called whenever changes to 'self.weight_carried'
+        are made in other methods."""
+        light_encumbrance: dict[str, int] = MOVEMENT_RULES["light_load"]
+        heavy_encumbrance: dict[str, int] = MOVEMENT_RULES["heavy_load"]
+
         if self.weight_carried <= self.carrying_capacity["Light Load"]:
             if self.armor == item_inst.NO_ARMOR:
-                self.movement: int = 40
+                self.movement: int = light_encumbrance["no_armor"]
             elif self.armor == item_inst.LEATHER_ARMOR:
-                self.movement: int = 30
+                self.movement: int = light_encumbrance["leather_armor"]
             else:
-                self.movement: int = 20
+                self.movement: int = light_encumbrance["other"]
 
         elif self.weight_carried <= self.carrying_capacity["Heavy Load"]:
             if self.armor == item_inst.NO_ARMOR:
-                self.movement: int = 30
+                self.movement: int = heavy_encumbrance["no_armor"]
             elif self.armor == item_inst.LEATHER_ARMOR:
-                self.movement: int = 20
+                self.movement: int = heavy_encumbrance["leather_armor"]
             else:
-                self.movement: int = 10
+                self.movement: int = heavy_encumbrance["other"]
 
     def set_starting_spell(self, spell_list: tuple[InteractiveText, ...]) -> None:
         """Append 'text' attributes from instances in 'spell_list' to 'self.spells' if their 'selected' attribute is set

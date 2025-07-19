@@ -6,7 +6,47 @@ import random
 import core.items.item_instances as item_inst
 
 
-SAVING_THROWS = {
+CLASS_CATEGORIES: dict = {
+    "spell_using_classes": {"Cleric", "Magic-User", "Fighter/Magic-User", "Magic-User/Thief"},  # ALL spell casters.
+    "magic_classes": {"Magic-User", "Fighter/Magic-User", "Magic-User/Thief"},  # Only 'true' magic users.
+    "no_armor_classes": {"Magic-User"}  # Classes that are not allowed to wear armor.
+}
+
+CARRY_RULES: dict = {  # Carrying capacities. Each entry is (strength_threshold, light_load, heavy_load).
+    "default": (
+        (3, 25, 60),
+        (5, 35, 90),
+        (8, 50, 120),
+        (12, 60, 150),
+        (15, 65, 165),
+        (17, 70, 180),
+        (18, 80, 195),
+    ),
+    "halfling": (
+        (3, 20, 40),
+        (5, 30, 60),
+        (8, 40, 80),
+        (12, 50, 100),
+        (15, 55, 110),
+        (17, 60, 120),
+        (18, 65, 130),
+    )
+}
+
+MOVEMENT_RULES: dict = {  # Movement rates based on encumbrance and worn armor.
+    "light_load": {
+        "no_armor": 40,
+        "leather_armor": 30,
+        "other": 20
+    },
+    "heavy_load": {
+        "no_armor": 30,
+        "leather_armor": 20,
+        "other": 10
+    },
+}
+
+SAVING_THROWS: dict = {
     "categories": ("Death Ray or Poison", "Magic Wands", "Paralysis or Petrify", "Dragon Breath", "Spells"),
 
     "cleric_saves": (11, 12, 14, 16, 15),
@@ -22,13 +62,14 @@ SAVING_THROWS = {
     "human_bonuses": (0, 0, 0, 0, 0),
 }
 
-RACE_DATA = {
+RACE_DATA: dict = {
     "dwarf": {
         "race_hit_die": False,
         "race_specials": ("Darkvision 60'",
                           "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"),
         "race_bonuses": SAVING_THROWS["dwarf_bonuses"],
         "languages": {"Common", "Dwarvish"},
+        "carrying_cap": CARRY_RULES["default"],
     },
     "elf": {
         "race_hit_die": 6,
@@ -36,6 +77,7 @@ RACE_DATA = {
                           "Range reduction by 1 for surprise checks"),
         "race_bonuses": SAVING_THROWS["elf_bonuses"],
         "languages": {"Common", "Elvish"},
+        "carrying_cap": CARRY_RULES["default"],
     },
     "halfling": {
         "race_hit_die": 6,
@@ -43,16 +85,18 @@ RACE_DATA = {
                           "Hide (10% chance to be detected outdoors, 30% chance to be detected indoors"),
         "race_bonuses": SAVING_THROWS["halfling_bonuses"],
         "languages": {"Common", "Halfling"},
+        "carrying_cap": CARRY_RULES["halfling"],
     },
     "human": {
         "race_hit_die": False,
         "race_specials": ("+10% to all earned XP", ),
         "race_bonuses": SAVING_THROWS["human_bonuses"],
         "languages": {"Common"},
+        "carrying_cap": CARRY_RULES["default"],
     },
 }
 
-CLASS_DATA = {
+CLASS_DATA: dict = {
     "cleric": {
         "class_hit_die": 6,
         "next_level_xp": 1500,
@@ -107,12 +151,6 @@ CLASS_DATA = {
         "inventory": [item_inst.SPELLBOOK],
         "weight_carried": item_inst.SPELLBOOK.weight,
     },
-}
-
-CLASS_CATEGORIES = {
-    "spell_using_classes": {"Cleric", "Magic-User", "Fighter/Magic-User", "Magic-User/Thief"},  # ALL spell casters.
-    "magic_classes": {"Magic-User", "Fighter/Magic-User", "Magic-User/Thief"},  # Only 'true' magic users.
-    "no_armor_classes": {"Magic-User"}  # Classes that are not allowed to wear armor.
 }
 
 
