@@ -52,5 +52,11 @@ class UISharedData:
         """Reset position flag to 'False'. Used in event handler."""
         self.position_flag = False
 
+    def reset_input_fields(self) -> None:
+        """Reset text input fields to ensure each character creation process starts with empty input fields. Called from
+        event handler in state 'creation_complete' before initializing character sheet screen."""
+        self.ui_registry["character_name_input"][0].manager.value = ""
+        self.ui_registry["money_amount_input"][0].manager.value = ""
+
 
 ui_shared_data = UISharedData()

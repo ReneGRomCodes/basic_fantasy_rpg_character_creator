@@ -14,7 +14,7 @@ class Settings:
         self.small_screen: tuple[int, int] = (1280,720)
         self.medium_screen: tuple[int, int] = (1600,900)
         self.large_screen: tuple[int, int] = (1920,1080)
-        # Frame rate.
+
         self.frame_rate: int = 30
 
         # Art assets.
@@ -37,11 +37,9 @@ class Settings:
         self.text_input_border_color: tuple[int, int, int] = (150, 110, 80)
         self.inactive_continue_button_hover_color: tuple[int, int, int] = (215, 140, 130)
         self.inactive_continue_button_click_color: tuple[int, int, int] = (190, 65, 50)
-        # Progress bar:
         self.progress_bar_color: tuple[int, int, int] = (120, 180, 70)
         self.bar_border_color: tuple[int, int, int] = (220, 130, 75)
 
-        # Value collection for use in settings screen when resetting to default.
         self.default_settings: tuple[tuple] = (self.small_screen, )
 
         # Empty starting attributes. Values are assigned first in 'run_character_creator()' in 'main.py' by calling the
@@ -50,7 +48,6 @@ class Settings:
         # is handled by 'set_default()' method.
         self.screen_size: tuple[int, int] | None = None
 
-        # JSON save file for characters.
         self.save_file = "save/characters.json"
 
     def set_default(self) -> None:
@@ -58,5 +55,4 @@ class Settings:
         self.screen_size: tuple[tuple] = self.default_settings[0]
 
 
-# Create shared settings object.
 settings: Settings = Settings()
