@@ -58,8 +58,6 @@ def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
     RETURNS:
         state
     """
-    confirm_states: set[str] = {"char_not_saved", "char_delete", "char_overwrite"}
-
     if state == "init_save_load_screen":
         sd.save_load_screen = SaveLoadScreen(screen)
         sd.save_load_screen.position_sl_elements()
@@ -69,7 +67,7 @@ def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
         sd.save_load_screen.show_sl_screen(mouse_pos)
         state = eh.save_load_events(screen, state, mouse_pos)
 
-    elif state in confirm_states:
+    elif state in {"char_not_saved", "char_delete", "char_overwrite"}:
         sd.save_load_screen.format_confirm_message(state)
         sd.save_load_screen.show_confirm_message(state, mouse_pos)
         state = eh.save_load_events(screen, state, mouse_pos)
