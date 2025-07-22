@@ -245,7 +245,7 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                         sd.character.set_race(sd.selected_race.text)
                         sd.character.set_class(sd.selected_class.text)
                         sd.character.set_character_values()
-                        if sd.character.class_name in sd.magic_classes:
+                        if sd.character.class_name in rls.CLASS_CATEGORIES["magic_classes"]:
                             state = "spell_selection"
                         else:
                             state = "language_selection"
@@ -276,7 +276,7 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
 
                 if back_button.collidepoint(mouse_pos):
                     sd.clear_language_selection()
-                    if sd.character.class_name in sd.magic_classes:
+                    if sd.character.class_name in rls.CLASS_CATEGORIES["magic_classes"]:
                         state = "spell_selection"
                     else:
                         state = "race_class_selection"
@@ -341,7 +341,7 @@ def naming_character_events(screen, state: str, mouse_pos) -> str:
                 if state == "name_character":
                     if uisd.language_flag:
                         state = "language_selection"
-                    elif sd.character.class_name in sd.magic_classes:
+                    elif sd.character.class_name in rls.CLASS_CATEGORIES["magic_classes"]:
                         state = "spell_selection"
                     else:
                         state = "race_class_selection"

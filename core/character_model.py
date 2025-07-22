@@ -9,7 +9,7 @@ from gui.shared_data import ui_shared_data as uisd
 
 import core.items.item_instances as item_inst
 from .items import Armor
-from .rules import RACE_DATA, CLASS_DATA, CLASS_CATEGORIES, SAVING_THROWS, MOVEMENT_RULES, dice_roll, get_ability_score
+from .rules import RACE_DATA, CLASS_DATA, ABILITIES, CLASS_CATEGORIES, SAVING_THROWS, MOVEMENT_RULES, dice_roll, get_ability_score
 from .shared_data import shared_data as sd
 
 
@@ -31,7 +31,7 @@ class Character:
         self.name: str = ""
         self.abilities: dict[str, list[int]] = {}
         self.armor_class: int = 0
-        self.attack_bonus: int = 1  # Default attack bonus of +1 for Lvl characters.
+        self.attack_bonus: int = 1  # Default attack bonus of +1 for Lvl-1 characters.
         self.specials: tuple[str, ...] = ()
         self.max_hit_die: int | False = False
         self.xp: int = 0
@@ -58,7 +58,7 @@ class Character:
         """
         self.race_name = race_selection
 
-        race_data: dict = RACE_DATA[race_selection.lower()]
+        race_data: dict = RACE_DATA[race_selection]
 
         self.race_specials = race_data["race_specials"]
         self.bonuses = race_data["race_bonuses"]
@@ -70,7 +70,7 @@ class Character:
         """
         self.class_name = class_selection
 
-        class_data: dict = CLASS_DATA[class_selection.lower()]
+        class_data: dict = CLASS_DATA[class_selection]
 
         self.next_level_xp = class_data["next_level_xp"]
         self.class_specials = class_data["class_specials"]
@@ -93,15 +93,13 @@ class Character:
     def set_ability_dict(self) -> None:
         """Build attribute dictionary 'self.abilities' for character abilities. Values are lists with base score at
         index 0 and bonus/penalty at index 1."""
-        ability_names: tuple[str, ...] = ("str", "dex", "con", "int", "wis", "cha")
-
-        for item in ability_names:
+        for ability in ABILITIES:
             # Adding default INT bonus of +1.
-            if item == "int":
-                self.abilities[item] = get_ability_score()
-                self.abilities[item][1] += 1
+            if ability == "int":
+                self.abilities[ability] = get_ability_score()
+                self.abilities[ability][1] += 1
             else:
-                self.abilities[item] = get_ability_score()
+                self.abilities[ability] = get_ability_score()
 
     def set_character_values(self) -> None:
         """Collected method calls to set multiple attributes."""
@@ -115,8 +113,8 @@ class Character:
 
     def set_max_hit_die(self) -> None:
         """Set 'self.max_hit_die' based on chosen race and class."""
-        race_hit_die: dict = RACE_DATA[self.race_name.lower()]["race_hit_die"]
-        class_hit_die: dict = CLASS_DATA[self.class_name.lower()]["class_hit_die"]
+        race_hit_die: dict = RACE_DATA[self.race_name]["race_hit_die"]
+        class_hit_die: dict = CLASS_DATA[self.class_name]["class_hit_die"]
 
         if race_hit_die and class_hit_die > race_hit_die:
             self.max_hit_die = race_hit_die
@@ -150,7 +148,7 @@ class Character:
 
     def set_carrying_capacity(self) -> None:
         """Set dict 'self.carrying_capacity' based on race and strength score."""
-        carry_cap: tuple[tuple[int, int, int], ...] = RACE_DATA[self.race_name.lower()]["carrying_cap"]
+        carry_cap: tuple[tuple[int, int, int], ...] = RACE_DATA[self.race_name]["carrying_cap"]
         strength_threshold_index: int = 0
         cap_light_index: int = 1
         cap_heavy_index: int = 2
@@ -224,8 +222,8 @@ class Character:
              language_list: tuple with instances of interactive text fields for language selection.
         """
         magic_classes = CLASS_CATEGORIES["magic_classes"]
-        default_spells = CLASS_DATA[self.class_name.lower()]["spells"]
-        default_languages = RACE_DATA[self.race_name.lower()]["languages"]
+        default_spells = CLASS_DATA[self.class_name]["spells"]
+        default_languages = RACE_DATA[self.race_name]["languages"]
 
         if self.class_name in magic_classes:
             random.choice(spell_list).selected = True

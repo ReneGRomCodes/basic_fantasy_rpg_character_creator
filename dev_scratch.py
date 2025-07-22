@@ -10,3 +10,5 @@ this point it has become mostly a dumping ground for 'todos'.
 # TODOS:
 # TODO add sections for thief skills to character sheet
 # TODO add option to allow for minor customization of randomly generated characters?
+# TODO add 'export to pdf' functionality -> check reportlab and fpdf2 libraries
+# TODO rework logic for permitted race/class combinations

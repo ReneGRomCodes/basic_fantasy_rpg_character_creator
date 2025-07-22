@@ -6,7 +6,7 @@ Only instance of this class, 'shared_data', is created at the bottom of this mod
 from gui.screen_objects import InteractiveText
 from gui.shared_data import ui_shared_data as uisd
 
-from .rules import RACE_DATA, CLASS_DATA, CLASS_CATEGORIES
+from .rules import RACE_DATA, CLASS_DATA
 
 
 class SharedData:
@@ -16,33 +16,21 @@ class SharedData:
     def __init__(self) -> None:
         """Initialize shared data attributes."""
         # Variable for later instances of class objects.
-        self.character: object | None = None  # Instance 'Character()'.
-        self.save_load_screen: object | None # Instance 'SaveLoadScreen()'.
-        self.credits_screen: object | None = None  # Instance 'Credits()'.
-        self.settings_gui: object = None  # Instance 'SettingsGUI()'
-        self.cs_sheet: object | None = None  # Instance of 'CharacterSheet'.
+        self.character: object | None = None
+        self.save_load_screen: object | None
+        self.credits_screen: object | None = None
+        self.settings_gui: object = None
+        self.cs_sheet: object | None = None
 
-        # Class sets for category checks (example: spell selection screen shown only for magic using classes).
-        self.spell_using_classes: set[str] = CLASS_CATEGORIES["spell_using_classes"]
-        self.magic_classes: set[str] = CLASS_CATEGORIES["magic_classes"]
-        self.no_armor_classes: set[str] = CLASS_CATEGORIES["no_armor_classes"]
-
-        # Possible race-class combinations.
-        # 'None' as starting value before actual value is assigned.
         self.possible_characters: list[str] | None = None
         # 'InteractiveText' instances representing selected race and class in custom creation, string in random creation.
-        # 'None' as default values before actual values are assigned.
         self.selected_race: InteractiveText | str | None = None
         self.selected_class: InteractiveText | str | None = None
 
-        # 'InteractiveText' instances representing selected spell for spell casters.
-        # 'None' as default values before actual values are assigned.
         self.selected_spell: InteractiveText | None = None
 
-        # 'InteractiveText' instances representing selected languages for character.
         self.selected_languages: list[InteractiveText] = []
 
-        # Characters starting money.
         self.starting_money: int = 0
         self.random_money_flag: bool = False  # Flag to check money selection.
         self.custom_money_flag: bool = False  # Flag to check money selection.
@@ -66,34 +54,26 @@ class SharedData:
             selected_attr
         """
         if not multi_selection:
-            # Check if option is already selected.
             if selected_attr:
-                # Deselect option if the same option is clicked again.
                 if selected_attr == option:
                     selected_attr = None
-                # Switch selection if different option is chosen.
                 else:
                     selected_attr.selected = False
                     selected_attr = option
-            # Set selected option if none has been previously chosen.
             else:
                 selected_attr = option
 
         else:
             if selected_attr:
-                # Deselect option if the same option is clicked again.
                 if option in selected_attr:
                     selected_attr.remove(option)
-                # Add selection to list.
                 else:
-                    # Check if selection limit is reached and add option to 'selected_attr' if permitted.
                     if len(selected_attr) < limit:
                         selected_attr.append(option)
                     else:
                         # Set 'selected' attribute to 'False' to override 'handle_mouse_interaction()' method of class
                         # 'InteractiveText' setting it to 'True'. See class method docstring for details.
                         option.selected = False
-            # Add selection if list is empty.
             else:
                 selected_attr = [option]
 
@@ -105,10 +85,8 @@ class SharedData:
         ARGS:
             option: selected instance of 'InteractiveText' representing selected race or class.
         """
-        # Race selection logic.
         if option in uisd.ui_registry["active_races"]:
             self.selected_race = self.handle_selection_logic(option, self.selected_race)
-        # Class selection logic.
         elif option in uisd.ui_registry["active_classes"]:
             self.selected_class = self.handle_selection_logic(option, self.selected_class)
 
@@ -129,7 +107,7 @@ class SharedData:
         ARGS:
             spells: tuple with instances of interactive text fields for spell selection.
         """
-        default_spells = CLASS_DATA[self.character.class_name.lower()]["spells"]
+        default_spells = CLASS_DATA[self.character.class_name]["spells"]
 
         for spell in spells:
             if spell.text in default_spells:
@@ -140,11 +118,10 @@ class SharedData:
         ARGS:
             option: selected instance of 'InteractiveText' representing selected spell.
         """
-        default_spells = CLASS_DATA[self.character.class_name.lower()]["spells"]
+        default_spells = CLASS_DATA[self.character.class_name]["spells"]
 
         # Ignore selection if clicked spell is the class-specific default. Prevents it from overriding other selections.
         if option.text not in default_spells:
-            # Spell selection logic.
             self.selected_spell = self.handle_selection_logic(option, self.selected_spell)
 
     def set_default_languages(self, languages: tuple[InteractiveText, ...]) -> None:
@@ -155,7 +132,7 @@ class SharedData:
         ARGS:
             languages: tuple with instances of interactive text fields for language selection.
         """
-        default_languages = RACE_DATA[self.character.race_name.lower()]["languages"]
+        default_languages = RACE_DATA[self.character.race_name]["languages"]
 
         for language in languages:
             if language.text in default_languages:
@@ -167,7 +144,7 @@ class SharedData:
         ARGS:
             option: selected instance of 'InteractiveText' representing selected language.
         """
-        default_languages = RACE_DATA[self.character.race_name.lower()]["languages"]
+        default_languages = RACE_DATA[self.character.race_name]["languages"]
 
         # Number of languages a character can learn in addition to race-specific languages. Value equals character's
         # intelligence bonus.
@@ -175,12 +152,9 @@ class SharedData:
 
         # Ignore selection if clicked language is a race-specific default. Prevents it from overriding other selections.
         if option.text not in default_languages:
-            # language selection logic.
             self.selected_languages = self.handle_selection_logic(option, self.selected_languages, multi_selection=True,
                                                                   limit=max_additional_languages)
 
-        # Check if maximum number of additional languages have been selected and deactivate further selection by setting
-        # corresponding flag in 'ui_shared_data'.
         if max_additional_languages == len(self.selected_languages):
             uisd.lang_selection_active = False
         else:
@@ -188,13 +162,10 @@ class SharedData:
 
     def clear_language_selection(self) -> None:
         """Reset entire language selection."""
-        # Reset all languages to unselected state.
         for language in uisd.ui_registry["lang_fields"]:
             language.selected = False
-        # Set 'self.selected_languages' to default value.
         self.selected_languages: list = []
-        # Set flag 'uisd.lang_selection_active' to default value in case selection permission has been denied previously,
-        # because maximum number of additional languages have been chosen before reset.
+
         uisd.lang_selection_active = True
 
     def shared_data_janitor(self) -> None:
@@ -206,22 +177,17 @@ class SharedData:
         This resolves multiple issues that caused the program to freeze when switching between different screens or when
         creating a new character after one has already been created.
         """
-        # Unselect race and class selection if user visited race/class selection screen previously. 'isinstance' check is
-        # necessary as variables can hold either a screen object or a string during custom and random character creation
-        # respectively.
         if isinstance(self.selected_race, InteractiveText):
             self.selected_race.selected = False
         if isinstance(self.selected_class, InteractiveText):
             self.selected_class.selected = False
-        # Unselect spell selection if user visited spell selection screen previously.
+
         if self.selected_spell:
             self.selected_spell.selected = False
-        # Unselect language selection if user visited language selection screen previously.
         if self.selected_languages:
             for language in self.selected_languages:
                 language.selected = False
 
-        # Reset attributes to 'None'.
         self.possible_characters: None = None
         self.selected_race: None = None
         self.selected_class: None = None

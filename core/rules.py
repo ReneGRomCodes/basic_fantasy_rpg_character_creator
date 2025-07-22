@@ -6,10 +6,13 @@ import random
 import core.items.item_instances as item_inst
 
 
+ABILITIES: tuple[str, ...] = ("str", "dex", "con", "int", "wis", "cha")
+
 CLASS_CATEGORIES: dict = {
     "spell_using_classes": {"Cleric", "Magic-User", "Fighter/Magic-User", "Magic-User/Thief"},  # ALL spell casters.
     "magic_classes": {"Magic-User", "Fighter/Magic-User", "Magic-User/Thief"},  # Only 'true' magic users.
-    "no_armor_classes": {"Magic-User"}  # Classes that are not allowed to wear armor.
+    "no_armor_classes": {"Magic-User"},  # Classes that are not allowed to wear armor.
+    "no_shield_classes": {"Thief", "Magic-User/Thief"}  # Classes that are not allowed to use a shield.
 }
 
 CARRY_RULES: dict = {  # Carrying capacities. Each entry is (strength_threshold, light_load, heavy_load).
@@ -22,7 +25,7 @@ CARRY_RULES: dict = {  # Carrying capacities. Each entry is (strength_threshold,
         (17, 70, 180),
         (18, 80, 195),
     ),
-    "halfling": (
+    "Halfling": (
         (3, 20, 40),
         (5, 30, 60),
         (8, 40, 80),
@@ -63,7 +66,7 @@ SAVING_THROWS: dict = {
 }
 
 RACE_DATA: dict = {
-    "dwarf": {
+    "Dwarf": {
         "race_hit_die": False,
         "race_specials": ("Darkvision 60'",
                           "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"),
@@ -71,7 +74,7 @@ RACE_DATA: dict = {
         "languages": {"Common", "Dwarvish"},
         "carrying_cap": CARRY_RULES["default"],
     },
-    "elf": {
+    "Elf": {
         "race_hit_die": 6,
         "race_specials": ("Darkvision 60'", "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
                           "Range reduction by 1 for surprise checks"),
@@ -79,15 +82,15 @@ RACE_DATA: dict = {
         "languages": {"Common", "Elvish"},
         "carrying_cap": CARRY_RULES["default"],
     },
-    "halfling": {
+    "Halfling": {
         "race_hit_die": 6,
         "race_specials": ("+1 attack bonus on ranged weapons", "+1 to initiative die rolls",
                           "Hide (10% chance to be detected outdoors, 30% chance to be detected indoors"),
         "race_bonuses": SAVING_THROWS["halfling_bonuses"],
         "languages": {"Common", "Halfling"},
-        "carrying_cap": CARRY_RULES["halfling"],
+        "carrying_cap": CARRY_RULES["Halfling"],
     },
-    "human": {
+    "Human": {
         "race_hit_die": False,
         "race_specials": ("+10% to all earned XP", ),
         "race_bonuses": SAVING_THROWS["human_bonuses"],
@@ -97,7 +100,7 @@ RACE_DATA: dict = {
 }
 
 CLASS_DATA: dict = {
-    "cleric": {
+    "Cleric": {
         "class_hit_die": 6,
         "next_level_xp": 1500,
         "class_specials": ("Turn the Undead", ),
@@ -106,7 +109,7 @@ CLASS_DATA: dict = {
         "inventory": [],
         "weight_carried": 0,
     },
-    "fighter": {
+    "Fighter": {
         "class_hit_die": 8,
         "next_level_xp": 2000,
         "class_specials": (),
@@ -115,7 +118,7 @@ CLASS_DATA: dict = {
         "inventory": [],
         "weight_carried": 0,
     },
-    "magic-user": {
+    "Magic-User": {
         "class_hit_die": 4,
         "next_level_xp": 2500,
         "class_specials": (),
@@ -124,7 +127,7 @@ CLASS_DATA: dict = {
         "inventory": [item_inst.SPELLBOOK],
         "weight_carried": item_inst.SPELLBOOK.weight,
     },
-    "thief": {
+    "Thief": {
         "class_hit_die": 4,
         "next_level_xp": 1250,
         "class_specials": ("Sneak Attack", "Thief Abilities"),
@@ -133,7 +136,7 @@ CLASS_DATA: dict = {
         "inventory": [],
         "weight_carried": 0,
     },
-    "fighter/magic-user": {
+    "Fighter/Magic-User": {
         "class_hit_die": 6,
         "next_level_xp": 4500,
         "class_specials": (),
@@ -142,7 +145,7 @@ CLASS_DATA: dict = {
         "inventory": [item_inst.SPELLBOOK],
         "weight_carried": item_inst.SPELLBOOK.weight,
     },
-    "magic-user/thief": {
+    "Magic-User/Thief": {
         "class_hit_die": 4,
         "next_level_xp": 3750,
         "class_specials": (),
