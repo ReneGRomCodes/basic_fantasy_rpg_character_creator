@@ -100,7 +100,7 @@ def main_events(screen, state: str, mouse_pos) -> str:
                     state = "main_menu"
 
                 # Window size selection logic.
-                for option in sd.settings_gui.window_size_buttons:
+                for option in sd.settings_gui.size_buttons_list:
                     if option.interactive_rect.collidepoint(mouse_pos):
                         sd.settings_gui.select_window_size(screen, mouse_pos)
 
