@@ -52,19 +52,15 @@ def draw_conditional_continue_button(mouse_pos, condition_1: object | bool = Fal
         alt_button: String to determine which conditional button alternative should be displayed. "inactive" for an
                     inactive continue button, "skip" for a skip button. Default is "inactive".
     """
-    # Assign buttons from dict 'ui_registry' to variables.
     continue_button, inactive_continue_button, skip_button = (uisd.ui_registry["continue_button"],
                                                               uisd.ui_registry["inactive_continue_button"],
                                                               uisd.ui_registry["skip_button"])
 
-    # Check if condition_1 and/or condition_2 have valid values and draw appropriate (active/inactive) continue or skip
-    # button on screen.
     if check_mode == "any" and (condition_1 or condition_2):
         continue_button.draw_button(mouse_pos)
     elif check_mode == "all" and (condition_1 and condition_2):
         continue_button.draw_button(mouse_pos)
     else:
-        # Check which alternative button should be displayed if no previous conditions are met.
         if alt_button == "inactive":
             inactive_continue_button.draw_button(mouse_pos)
         elif alt_button == "skip":
@@ -77,10 +73,9 @@ def draw_screen_note(screen, note: TextField) -> None:
         screen: PyGame window.
         note: 'TextField' instance for screen-specific notes.
     """
-    # Position notes at the screens left.
     note.text_rect.left = screen.get_rect().left + uisd.ui_registry["default_edge_spacing"]
     note.text_rect.centery = screen.get_rect().centery
-    # Draw note on screen.
+
     note.draw_text()
 
 
@@ -97,22 +92,19 @@ def set_elements_pos_y_values(screen, elements: list | tuple) -> tuple[int, int]
         elements_pos_y: Y-position for first GUI element on screen.
         pos_y_offset: Offset value to position following elements.
     """
-    # Set reference variables for positioning.
+    # Reference variables for positioning.
     screen_center_y = screen.get_rect().centery
     n_elements: int = len(elements)
     # Check 'elements' for type and assign first element to variable as reference object for further positioning.
     ref_element = elements[0][0] if isinstance(elements[0], (list, tuple)) else elements[0]
 
-    # Position 'ref_element' at the y-center axis for final 'element_pos_y' calculation further down. Exact position of
-    # 'ref_element' based on evenness of 'n_elements'.
+    # Position 'ref_element' at the y-center axis for final 'element_pos_y' calculation further down.
     if n_elements % 2 == 0:
-        # Even number of elements in 'elements'.
         ref_element.text_rect.top = screen_center_y
     else:
-        # Odd number of elements in 'elements'.
         ref_element.text_rect.centery = screen_center_y
 
-    # Calculate offset multiplier for use in 'pos_y_offset' based on number of abilities in 'elements'.
+    # Calculate offset multiplier for use in 'pos_y_offset' based on number of items in 'elements'.
     if n_elements <= 8:
         offset_multiplier: int | float = 2
     elif n_elements <= 11:
@@ -120,7 +112,7 @@ def set_elements_pos_y_values(screen, elements: list | tuple) -> tuple[int, int]
     else:
         offset_multiplier: int | float = 1
 
-    # Set initial position on y-axis for ability score fields and offset value for spacing between each element.
+    # Set initial position on y-axis for elements and offset value for spacing between each element.
     pos_y_offset = ref_element.text_rect.height * offset_multiplier
     element_pos_y = ref_element.text_rect.top - (int(n_elements / 2) * pos_y_offset)
 
@@ -157,7 +149,6 @@ def show_info_panels(elements: list | tuple, mouse_pos) -> None:
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     NOTE: This function must be called at the end of relevant screen functions to ensure info panels are drawn on top of
     other screen elements."""
-
     # Check if 'elements' is list/tuple or single instance and ensure that mouse interaction is only handled if element
     # is an instance of class 'InteractiveText'. Prevents errors in cases where 'elements' might contain instances of
     # other classes.
@@ -177,7 +168,7 @@ def position_title_screen_elements(screen) -> None:
     ARGS:
         screen: PyGame window.
     """
-    # Assign ui_registry to variables.
+    screen_rect: pygame.Rect = screen.get_rect()
     spacing: int = uisd.ui_registry["title_screen_spacing"]
     title = uisd.ui_registry["title_screen_fields"][0]
     subtitle = uisd.ui_registry["title_screen_fields"][1]
@@ -186,14 +177,13 @@ def position_title_screen_elements(screen) -> None:
     continue_to_main = uisd.ui_registry["title_screen_fields"][4]
 
     if not uisd.position_flag:
-        # Position title, subtitle and copyright notice.
-        title.text_rect.centerx = screen.get_rect().centerx
-        title.text_rect.bottom = screen.get_rect().centery - spacing
-        subtitle.text_rect.centerx = screen.get_rect().centerx
-        subtitle.text_rect.top = screen.get_rect().centery + spacing
-        copyright_notice.text_rect.centerx = screen.get_rect().centerx
-        copyright_notice.text_rect.bottom = screen.get_rect().bottom - spacing
-        progress_bar.container_rect.centery = screen.get_rect().height * 0.7
+        title.text_rect.centerx = screen_rect.centerx
+        title.text_rect.bottom = screen_rect.centery - spacing
+        subtitle.text_rect.centerx = screen_rect.centerx
+        subtitle.text_rect.top = screen_rect.centery + spacing
+        copyright_notice.text_rect.centerx = screen_rect.centerx
+        copyright_notice.text_rect.bottom = screen_rect.bottom - spacing
+        progress_bar.container_rect.centery = screen_rect.height * 0.7
         continue_to_main.text_rect.centery = progress_bar.container_rect.centery
         uisd.position_flag = True
 
@@ -205,7 +195,7 @@ def position_main_menu_screen_elements(screen) -> None:
     ARGS:
         screen: PyGame window.
     """
-    # Assign ui_registry to variables.
+    screen_rect: pygame.Rect = screen.get_rect()
     spacing: int = uisd.ui_registry["title_screen_spacing"]
     button_spacing: int = uisd.ui_registry["button_spacing"]
     title = uisd.ui_registry["main_menu_title"]
@@ -213,20 +203,18 @@ def position_main_menu_screen_elements(screen) -> None:
     menu_buttons = uisd.ui_registry["menu_buttons"]
 
     if not uisd.position_flag:
-        # Format/position title text field and start button.
-        title.text_rect.centery = screen.get_rect().height / 4
-        title.text_rect.centerx = screen.get_rect().centerx
-        start.button_rect.width = screen.get_rect().width / 4
-        start.button_rect.centerx = screen.get_rect().centerx
-        start.button_rect.bottom = screen.get_rect().centery - spacing
+        title.text_rect.centery = screen_rect.height / 4
+        title.text_rect.centerx = screen_rect.centerx
+        start.button_rect.width = screen_rect.width / 4
+        start.button_rect.centerx = screen_rect.centerx
+        start.button_rect.bottom = screen_rect.centery - spacing
 
-        # Format, position and draw additional menu buttons.
         for index, button in enumerate(menu_buttons):
-            button.button_rect.width = screen.get_rect().width / 6
-            button.button_rect.centerx = screen.get_rect().centerx
+            button.button_rect.width = screen_rect.width / 6
+            button.button_rect.centerx = screen_rect.centerx
 
             if index == 0:
-                button.button_rect.top = screen.get_rect().centery + spacing * 2
+                button.button_rect.top = screen_rect.centery + spacing * 2
             else:
                 button.button_rect.top = menu_buttons[index - 1].button_rect.bottom + button_spacing
 
@@ -240,17 +228,16 @@ def position_character_menu_screen_elements(screen) -> None:
     ARGS:
         screen: PyGame window.
     """
-    # Assign ui_registry to variables.
+    screen_rect: pygame.Rect = screen.get_rect()
     custom = uisd.ui_registry["custom"]
     random = uisd.ui_registry["random"]
     button_spacing: int = uisd.ui_registry["button_spacing"]
 
     if not uisd.position_flag:
-    # Position buttons.
-        custom.button_rect.centerx = screen.get_rect().centerx
-        custom.button_rect.bottom = screen.get_rect().centery - (button_spacing / 2)
-        random.button_rect.centerx = screen.get_rect().centerx
-        random.button_rect.top = screen.get_rect().centery + (button_spacing / 2)
+        custom.button_rect.centerx = screen_rect.centerx
+        custom.button_rect.bottom = screen_rect.centery - (button_spacing / 2)
+        random.button_rect.centerx = screen_rect.centerx
+        random.button_rect.top = screen_rect.centery + (button_spacing / 2)
 
         uisd.position_flag = True
 
@@ -268,42 +255,33 @@ def position_ability_scores_screen_elements(screen, abilities_array: tuple[tuple
             purpose.
         mouse_pos: position of mouse on screen.
     """
-    # X-positions for ability, score and bonus/penalty columns.
     ability_name_x: int = screen.get_rect().width / 3
     ability_score_x: int = screen.get_rect().width / 6 * 3.7
     bonus_penalty_x: int = screen.get_rect().width / 6 * 4
-    # Get y-position for first ability object and position offset value for further objects.
+
     element_pos_y, pos_y_offset = set_elements_pos_y_values(screen, abilities_array)
 
     # Create instances of class 'TextField' to show ability scores and bonus/penalty on screen. Text string is placeholder
-    # and text size is 'field_text_size' as retrieved from first 'ui_registry' entry in 'abilities_array' to ensure
-    # correct scaling. Placeholder text is dynamically changed for each ability in for-loop further down.
+    # and is dynamically changed for each ability in for-loop further down.
     field_text_size: int = abilities_array[0][0].size
     ability_score_field = TextField(screen, "score", field_text_size)
     bonus_penalty_field = TextField(screen, "bonus_penalty", field_text_size)
 
-    # Loop through each ability and corresponding stats to format, position and display the ability name, score and
-    # bonus/penalty as they are grouped in 'abilities_array'.
     for ability_name, ability_score in abilities_array:
-        # Position ability name on screen.
         ability_name.interactive_rect.top = element_pos_y
         ability_name.interactive_rect.left = ability_name_x
 
-        # Format text attributes for ability score- and bonus/penalty fields.
         format_ability_fields(ability_score, ability_score_field, bonus_penalty_field)
 
-        # Position ability score and bonus/penalty on screen.
         ability_score_field.text_rect.top = ability_name.interactive_rect.top
         ability_score_field.text_rect.right = ability_score_x
         bonus_penalty_field.text_rect.top = ability_score_field.text_rect.top
         bonus_penalty_field.text_rect.right = bonus_penalty_x
 
-        # Draw ability fields on screen.
         ability_name.draw_interactive_text(mouse_pos)
         ability_score_field.draw_text()
         bonus_penalty_field.draw_text()
 
-        # Set new y-position for next element.
         element_pos_y += pos_y_offset
 
 
@@ -316,11 +294,10 @@ def format_ability_fields(ability_score: list[int], ability_score_field: TextFie
         ability_score_field: instance of class 'TextField' to display ability scores.
         bonus_penalty_field: instance of class 'TextField' to display bonus/penalty scores.
     """
-    # Change contents and re-render 'ability_score_field' instance for each ability score stat.
     ability_score_field.text = str(ability_score[0])
     ability_score_field.render_new_text_surface()
 
-    # 'Pre-formatting' bonus/penalty to string for easier formatting and better code-readability further down.
+    # 'Pre-formatting' bonus/penalty to string.
     bonus_penalty: str = f"{ability_score[1]}"
     # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
     # string if bonus_penalty is 0.
@@ -329,7 +306,6 @@ def format_ability_fields(ability_score: list[int], ability_score_field: TextFie
     elif ability_score[1] == 0:
         bonus_penalty: str = ""
 
-    # Change contents and re-render 'bonus_penalty_field' instance for each ability score stat.
     bonus_penalty_field.text = bonus_penalty
     bonus_penalty_field.render_new_text_surface()
 
@@ -494,13 +470,10 @@ def position_spell_selection_screen_elements(screen, spells: tuple[InteractiveTe
         spells: tuple containing instances of class 'InteractiveText' representing available spells.
     """
     if not uisd.position_flag:
-        # Get dynamic y-positions for items in 'spells'.
         pos_y_start, pos_y_offset = set_elements_pos_y_values(screen, spells)
 
         for index, spell in enumerate(spells):
-            # Align element x-position at screen center.
             spell.interactive_rect.centerx = screen.get_rect().centerx
-            # Assign dynamic y-positions to elements.
             if index == 0:
                 spell.interactive_rect.centery = pos_y_start
             else:
@@ -518,14 +491,11 @@ def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, 
         screen_note: 'TextField' instance showing notes for spell selection.
         mouse_pos: position of mouse on screen.
     """
-    # Position elements on screen.
     position_spell_selection_screen_elements(screen, spells)
 
-    # Draw elements from 'spells'.
     for spell in spells:
         spell.draw_interactive_text(mouse_pos)
 
-    # Draw further elements on screen.
     draw_screen_note(screen, screen_note)
 
 
@@ -541,7 +511,6 @@ def position_language_selection_screen_elements(screen, languages: tuple[Interac
         inactive_languages: tuple containing instances of class 'TextField' representing non-selectable languages.
     """
     if not uisd.position_flag:
-        # Populate dict with y-positions in 'ui_shared_data'.
         get_pos_y_dict(screen, languages, uisd.lang_pos_y_dict)
 
         # Position selectable 'InteractiveText' instances from 'languages'.
@@ -584,17 +553,14 @@ def draw_language_selection_screen_elements(screen, languages: tuple[Interactive
         screen_note: 'TextField' instance showing notes for language selection.
         mouse_pos: position of mouse on screen.
     """
-    # Position elements on screen.
     position_language_selection_screen_elements(screen, languages, inactive_languages)
 
-    # Draw elements for selectable and non-selectable languages.
     for language in languages + inactive_languages:
         if isinstance(language, InteractiveText):
             language.draw_interactive_text(mouse_pos)
         elif isinstance(language, TextField):
             language.draw_text()
 
-    # Draw further elements on screen.
     draw_screen_note(screen, screen_note)
 
 
@@ -613,7 +579,6 @@ def build_and_position_prompt(screen, naming_prompt: TextField) -> None:
         naming_prompt.text_surface = naming_prompt.font.render(naming_prompt.text, True, naming_prompt.text_color)
         naming_prompt.text_rect = naming_prompt.text_surface.get_rect()
 
-        # Position final naming prompt on screen.
         naming_prompt.text_rect.centerx, naming_prompt.text_rect.centery = screen.get_rect().centerx, screen.get_rect().centery / 1.3
 
         uisd.position_flag = True
@@ -627,7 +592,6 @@ def position_money_screen_elements(screen) -> None:
         screen: PyGame window.
     """
     if not uisd.position_flag:
-        # Positioning of button instances.
         money_button_pos_y: int = screen.get_rect().height / 3
         random_money_button, custom_money_button = (uisd.ui_registry["starting_money_choices"][0],
                                                     uisd.ui_registry["starting_money_choices"][1])
@@ -636,7 +600,6 @@ def position_money_screen_elements(screen) -> None:
         custom_money_button.button_rect.top, custom_money_button.button_rect.centerx = (money_button_pos_y,
                                                                                         screen.get_rect().centerx * 1.5)
 
-        # Positioning of text input and text field instances.
         rolling_dice_money_field, random_money_field = (uisd.ui_registry["random_money"][0],
                                                         uisd.ui_registry["random_money"][1])
         rolling_dice_money_field.text_rect.centery, random_money_field.text_rect.centery = (screen.get_rect().centery * 1.1,
@@ -656,13 +619,15 @@ def choose_money_option(choices: list[Button], mouse_pos) -> None:
         choices: List of instances of 'Button' class from dict 'ui_registry'.
         mouse_pos: position of mouse on screen.
     """
+    random_money: pygame.Rect = choices[0].button_rect
+    custom_money: pygame.Rect = choices[1].button_rect
+
     if pygame.mouse.get_pressed()[0]:
-        # Set flags to appropriate values based chosen option.
-        if choices[0].button_rect.collidepoint(mouse_pos):
+        if random_money.collidepoint(mouse_pos):
             sd.random_money_flag, sd.custom_money_flag = True, False
             # Set dice roll timer.
             uisd.dice_roll_start_time = time.time()
-        if choices[1].button_rect.collidepoint(mouse_pos):
+        if custom_money.collidepoint(mouse_pos):
             sd.random_money_flag, sd.custom_money_flag = False, True
 
 
@@ -671,11 +636,9 @@ def draw_chosen_money_option(screen) -> None:
     ARGS:
         screen: PyGame window.
     """
-    # Set duration for dice roll in seconds.
+    text_large: int = uisd.ui_registry["text_large"]
     dice_roll_duration: int | float = 1
 
-    # Assign font size and text field instances from dict 'ui_registry' to variables.
-    text_large: int = uisd.ui_registry["text_large"]
     # Random money fields.
     rolling_dice_money_field, random_money_field = (uisd.ui_registry["random_money"][0],
                                                     uisd.ui_registry["random_money"][1])
@@ -712,12 +675,9 @@ def starting_money_dice_roll(screen, random_money_field: TextField, text_large: 
         rolling: boolean flag to indicate if the dice roll is still ongoing.
             If 'True', displays a "rolling" message. If 'False', shows the final amount. Default is 'True'.
     """
-    # Check if "rolling" message or final amount should be displayed.
     if rolling:
-        # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
         starting_money_message: str = str(sd.starting_money)
     else:
-        # Build string 'starting_money_message' for use as argument in TextField instance 'random_money_result_field'.
         starting_money_message: str = str(sd.starting_money) + " gold pieces"
 
     # Create TextField instance 'random_money_result_field', and position and draw it on screen.
@@ -735,11 +695,9 @@ def position_completion_screen_elements(screen, completion_message: TextField, s
         completion_message: instance of class 'TextField' showing completion message.
         show_character_sheet: instance of class 'Button' to proceed to character sheet.
     """
-    # Assign spacing value from 'ui_registry' to variables.
     spacing: int = uisd.ui_registry["title_screen_spacing"]
 
     if not uisd.position_flag:
-        # Position screen elements.
         completion_message.text_rect.bottom = screen.get_rect().centery - spacing
         show_character_sheet.button_rect.top = screen.get_rect().centery + spacing
         show_character_sheet.button_rect.centerx = screen.get_rect().centerx

@@ -20,7 +20,7 @@ def initialize_ui_registry(screen) -> dict:
     'initialize_ui_registry()' needs to be called again if changes to screen size (i.e. in settings screen) are made.
 
 
-    Class overview (imported as 'so'):
+    Class overview (imported from 'screen_objects.py'):
     TextField(screen, text, size, bg_color=False, text_color="default", multi_line=False, surface_width=0, text_pos=(0,0):
         Basic text field.
 
@@ -110,6 +110,12 @@ def initialize_ui_registry(screen) -> dict:
     skip_button.button_rect.bottomright = button_bottomright_pos
     back_button.button_rect.bottomleft = button_bottomleft_pos
 
+    # Initialize dictionaries from 'descr' package for info panels.
+    ability_descr = abilities.get_ability_descr()
+    race_descr = races.get_race_descr()
+    class_descr = classes.get_class_descr()
+    spell_descr = spells.get_spell_descr()
+
     # Art assets.
     background_image: pygame.transform.scale = pygame.transform.scale(pygame.image.load(settings.bg_image).convert(),
                                                                       (screen_width, screen_height))
@@ -147,10 +153,6 @@ def initialize_ui_registry(screen) -> dict:
     ability_scores_screen_title: TextField = TextField(screen, "- ABILITIES -", text_large)
     reroll_button: Button = Button(screen, "Roll Again", text_medium)
     reroll_button.button_rect.width = button_width
-    # Initialize dictionaries from 'descr' package for info panels.
-    ability_descr = abilities.get_ability_descr()
-    race_descr = races.get_race_descr()
-    class_descr = classes.get_class_descr()
     # Info panels.
     ability_01_info: InfoPanel = InfoPanel(screen, ability_descr["str_descr"], text_small, multi_line=True,
                                            surface_width=info_panel_width, pos="topright")
@@ -268,8 +270,6 @@ def initialize_ui_registry(screen) -> dict:
     spell_selection_note_01: TextField = TextField(screen, spell_selection_note_01_str, text_standard,
                                                    bg_color=settings.info_panel_bg_color, multi_line=True,
                                                    surface_width=info_panel_width)
-    # Initialize dictionary from 'descr' package for info panels.
-    spell_descr = spells.get_spell_descr()
     # Spell info panels.
     spell_01_info: InfoPanel = InfoPanel(screen, spell_descr["read_magic"], text_small, multi_line=True,
                                          surface_width=info_panel_width, pos="right")

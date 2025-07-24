@@ -137,6 +137,7 @@ def show_spell_selection_screen(screen, mouse_pos) -> None:
     back_button.draw_button(mouse_pos)
     # Show continue button only if spell selection has been made, display skip button otherwise.
     ui.draw_conditional_continue_button(mouse_pos, sd.selected_spell, alt_button="skip")
+
     ui.draw_spell_selection_screen_elements(screen, spells, screen_note, mouse_pos)
 
     ui.show_info_panels(spells, mouse_pos)
@@ -160,6 +161,7 @@ def show_language_selection_screen(screen, mouse_pos) -> None:
     ui.draw_special_button(screen, reset_button, mouse_pos)
     # Show continue button only if language selection has been made, display skip button otherwise.
     ui.draw_conditional_continue_button(mouse_pos, sd.selected_languages, alt_button="skip")
+
     ui.draw_language_selection_screen_elements(screen, languages, inactive_languages, screen_note, mouse_pos)
 
 
