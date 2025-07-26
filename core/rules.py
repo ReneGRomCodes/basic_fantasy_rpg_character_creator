@@ -7,6 +7,12 @@ import core.items.item_instances as item_inst
 
 
 ABILITIES: tuple[str, ...] = ("str", "dex", "con", "int", "wis", "cha")
+STRENGTH: str = ABILITIES[0]
+DEXTERITY: str = ABILITIES[1]
+CONSTITUTION: str = ABILITIES[2]
+INTELLIGENCE: str = ABILITIES[3]
+WISDOM: str = ABILITIES[4]
+CHARISMA: str = ABILITIES[5]
 
 CLASS_CATEGORIES: dict = {
     "spell_using_classes": {"Cleric", "Magic-User", "Fighter/Magic-User", "Magic-User/Thief"},  # ALL spell casters.
@@ -67,33 +73,41 @@ SAVING_THROWS: dict = {
 
 RACE_DATA: dict = {
     "Dwarf": {
+        "min_max_score": {"minimum": (CONSTITUTION, 9), "maximum": (CHARISMA, 17)},
         "race_hit_die": False,
         "race_specials": ("Darkvision 60'",
                           "Detect new construction, shifting walls, slanting passages, traps w/ 1-2 on d6"),
         "race_bonuses": SAVING_THROWS["dwarf_bonuses"],
+        "classes": ("Cleric", "Fighter", "Thief"),
         "languages": {"Common", "Dwarvish"},
         "carrying_cap": CARRY_RULES["default"],
     },
     "Elf": {
+        "min_max_score": {"minimum": (INTELLIGENCE, 9), "maximum": (CONSTITUTION, 17)},
         "race_hit_die": 6,
         "race_specials": ("Darkvision 60'", "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
                           "Range reduction by 1 for surprise checks"),
         "race_bonuses": SAVING_THROWS["elf_bonuses"],
+        "classes": ("Cleric", "Fighter", "Magic-User", "Thief", "Fighter/Magic-User", "Magic-User/Thief"),
         "languages": {"Common", "Elvish"},
         "carrying_cap": CARRY_RULES["default"],
     },
     "Halfling": {
+        "min_max_score": {"minimum": (DEXTERITY, 9), "maximum": (STRENGTH, 17)},
         "race_hit_die": 6,
         "race_specials": ("+1 attack bonus on ranged weapons", "+1 to initiative die rolls",
                           "Hide (10% chance to be detected outdoors, 30% chance to be detected indoors"),
         "race_bonuses": SAVING_THROWS["halfling_bonuses"],
+        "classes": ("Cleric", "Fighter", "Thief"),
         "languages": {"Common", "Halfling"},
         "carrying_cap": CARRY_RULES["Halfling"],
     },
     "Human": {
+        "min_max_score": False,
         "race_hit_die": False,
         "race_specials": ("+10% to all earned XP", ),
         "race_bonuses": SAVING_THROWS["human_bonuses"],
+        "classes": ("Cleric", "Fighter", "Magic-User", "Thief"),
         "languages": {"Common"},
         "carrying_cap": CARRY_RULES["default"],
     },
@@ -101,6 +115,7 @@ RACE_DATA: dict = {
 
 CLASS_DATA: dict = {
     "Cleric": {
+        "min_score": ((WISDOM, 9), ),
         "class_hit_die": 6,
         "next_level_xp": 1500,
         "class_specials": ("Turn the Undead", ),
@@ -110,6 +125,7 @@ CLASS_DATA: dict = {
         "weight_carried": 0,
     },
     "Fighter": {
+        "min_score": ((STRENGTH, 9), ),
         "class_hit_die": 8,
         "next_level_xp": 2000,
         "class_specials": (),
@@ -119,6 +135,7 @@ CLASS_DATA: dict = {
         "weight_carried": 0,
     },
     "Magic-User": {
+        "min_score": ((INTELLIGENCE, 9), ),
         "class_hit_die": 4,
         "next_level_xp": 2500,
         "class_specials": (),
@@ -128,6 +145,7 @@ CLASS_DATA: dict = {
         "weight_carried": item_inst.SPELLBOOK.weight,
     },
     "Thief": {
+        "min_score": ((DEXTERITY, 9), ),
         "class_hit_die": 4,
         "next_level_xp": 1250,
         "class_specials": ("Sneak Attack", "Thief Abilities"),
@@ -137,6 +155,7 @@ CLASS_DATA: dict = {
         "weight_carried": 0,
     },
     "Fighter/Magic-User": {
+        "min_score": ((STRENGTH, 9), (INTELLIGENCE, 9)),
         "class_hit_die": 6,
         "next_level_xp": 4500,
         "class_specials": (),
@@ -146,6 +165,7 @@ CLASS_DATA: dict = {
         "weight_carried": item_inst.SPELLBOOK.weight,
     },
     "Magic-User/Thief": {
+        "min_score": ((INTELLIGENCE, 9), (DEXTERITY, 9)),
         "class_hit_die": 4,
         "next_level_xp": 3750,
         "class_specials": (),
@@ -219,25 +239,23 @@ def get_race_list(character: object) -> list[str]:
     ARGS:
         character: Instance of class 'Character'.
     RETURNS:
-        race_list: list of possible races.
+        race_list: list of possible races as strings.
     """
-    min_score: int = 9
-    max_score: int = 17
+    race_list: list[str] = []
 
-    race_list: list[str] = ["Human"]  # Humans have no minimum requirements.
+    for race, scores in RACE_DATA.items():
 
-    con_score: int = character.abilities["con"][0]  # Constitution.
-    cha_score: int = character.abilities["cha"][0]  # Charisma.
-    int_score: int = character.abilities["int"][0]  # Intelligence.
-    dex_score: int = character.abilities["dex"][0]  # Dexterity.
-    str_score: int = character.abilities["str"][0]  # Strength.
+        if not scores["min_max_score"]:
+            race_list.append(race)
 
-    if con_score >= min_score and cha_score <= max_score:
-        race_list.append("Dwarf")
-    if int_score >= min_score and con_score <= max_score:
-        race_list.append("Elf")
-    if dex_score >= min_score and str_score <= max_score:
-        race_list.append("Halfling")
+        else:
+            min_ability: str = scores["min_max_score"]["minimum"][0]
+            min_score: int = scores["min_max_score"]["minimum"][1]
+            max_ability: str = scores["min_max_score"]["maximum"][0]
+            max_score: int = scores["min_max_score"]["maximum"][1]
+
+            if character.abilities[min_ability][0] >= min_score and character.abilities[max_ability][0] <= max_score:
+                race_list.append(race)
 
     return race_list
 
@@ -247,29 +265,31 @@ def get_class_list(character: object) -> list[str]:
     ARGS:
         character: Instance of class 'Character'.
     RETURNS:
-        class_list: list of possible classes.
+        class_list: list of possible classes as strings.
     """
-    min_score: int = 9
-
     class_list: list[str] = []
 
-    wis_score: int = character.abilities["wis"][0]  # Wisdom.
-    str_score: int = character.abilities["str"][0]  # Strength.
-    int_score: int = character.abilities["int"][0]  # Intelligence.
-    dex_score: int = character.abilities["dex"][0]  # Dexterity.
+    for cls, scores in CLASS_DATA.items():
 
-    if wis_score >= min_score:
-        class_list.append("Cleric")
-    if str_score >= min_score:
-        class_list.append("Fighter")
-        if int_score >= min_score:
-            class_list.append("Fighter/Magic-User")
-    if int_score >= min_score:
-        class_list.append("Magic-User")
-        if dex_score >= min_score:
-            class_list.append("Magic-User/Thief")
-    if dex_score >= min_score:
-        class_list.append("Thief")
+        if not scores["min_score"][0]:  # Add class if it has no minimum score requirements.
+            class_list.append(cls)
+
+        else:
+            class_list.append(cls)
+
+            for requirement in scores["min_score"]:
+                ability: str = requirement[0]
+                min_score: int = requirement[1]
+                char_ability_score: int = character.abilities[ability][0]
+                last_or_only_req: tuple[str, int] = scores["min_score"][-1]
+
+                if requirement == last_or_only_req and char_ability_score >= min_score:
+                    break
+                elif char_ability_score >= min_score:
+                    pass
+                else:
+                    class_list.remove(cls)
+                    break
 
     return class_list
 

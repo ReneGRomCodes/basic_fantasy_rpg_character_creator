@@ -315,10 +315,10 @@ def format_ability_fields(ability_score: list[int], ability_score_field: TextFie
 def race_class_check(rc_options: dict[str, list[InteractiveText]], active_races: tuple[InteractiveText, ...],
                      active_classes: tuple[InteractiveText, ...], race_name: str, class_name: str)\
         -> dict[str, list[InteractiveText]]:
-    """Check 'active_races' and 'active_classes' and populate/return dict 'rc_options' with allowed race/class
-    combinations for use in function 'get_rc_options()'.
+    """Check 'active_races' and 'active_classes' and populate/return dict 'rc_options' with allowed races and classes
+    for use in function 'get_rc_options()'.
     ARGS:
-        rc_options: dict for instances of 'InteractiveText' for allowed race/class combinations.
+        rc_options: dict for instances of 'InteractiveText' for allowed races and classes.
         active_races: tuple containing 'InteractiveText' instances for all available races in game.
         active_classes: tuple containing 'InteractiveText' instances for all available classes in game.
         race_name: name of allowed race as string for check.
@@ -351,7 +351,7 @@ def get_rc_options(active_races: tuple[InteractiveText, ...], active_classes: tu
         active_races: entry from ui_registry dict 'ui_registry["active_races"]'.
         active_classes: entry from ui_registry dict 'ui_registry["active_classes"]'.
     RETURNS:
-        rc_options: dict for instances of 'InteractiveText' for allowed race/class combinations.
+        rc_options: dict for instances of 'InteractiveText' for allowed races and classes.
     """
     # Dictionary for available race and class choices to be returned.
     rc_options: dict[str, list] = {
