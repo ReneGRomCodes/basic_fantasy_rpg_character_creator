@@ -270,32 +270,30 @@ def get_class_list(character: object) -> list[str]:
     class_list: list[str] = []
 
     for cls, scores in CLASS_DATA.items():
+        class_list.append(cls)  # Add class and assume it is valid until it fails a check further down.
 
-        if not scores["min_score"][0]:  # Add class if it has no minimum score requirements.
-            class_list.append(cls)
-
+        if not scores["min_score"][0]:
+            break
         else:
-            class_list.append(cls)
-
             for requirement in scores["min_score"]:
                 ability: str = requirement[0]
                 min_score: int = requirement[1]
-                char_ability_score: int = character.abilities[ability][0]
                 last_or_only_req: tuple[str, int] = scores["min_score"][-1]
+                char_ability_score: int = character.abilities[ability][0]
 
                 if requirement == last_or_only_req and char_ability_score >= min_score:
                     break
                 elif char_ability_score >= min_score:
                     pass
                 else:
-                    class_list.remove(cls)
+                    class_list.remove(cls)  # Remove class if it fails a requirement check.
                     break
 
     return class_list
 
 
 def check_valid_race_class(character: object) -> bool:
-    """Check if a character has at least one valid race/class combination.
+    """Check if a character has at least one valid race/class combination to choose from.
     ARGS:
         character: Instance of class 'Character'.
     RETURNS:
@@ -304,22 +302,15 @@ def check_valid_race_class(character: object) -> bool:
     race_check_list: list[str] = get_race_list(character)
     class_check_list: list[str] = get_class_list(character)
 
-    if not class_check_list:
-        return False
+    valid_races: set[str] = {
+        race for race in race_check_list
+        if any(cls in RACE_DATA[race]["classes"] for cls in class_check_list)
+    }
 
-    # Exclude Dwarves and Halflings if 'Magic-User' is the only class available.
-    if class_check_list == ["Magic-User"] and "Dwarf" in race_check_list:
-        race_check_list.remove("Dwarf")
-    if class_check_list == ["Magic-User"] and "Halfling" in race_check_list:
-        race_check_list.remove("Halfling")
-
-    # Check if race list is empty after 'Magic-User' check above.
-    # NOTE: unnecessary with the current rule set as 'race_list' will always contain at least "Humans". If-statement
-    # left in place to ensure that function still works should that change in the future.
-    if not race_check_list:
-        return False
-    else:
+    if valid_races and class_check_list:
         return True
+    else:
+        return False
 
 
 def build_possible_characters_list(character: object) -> list[str]:
