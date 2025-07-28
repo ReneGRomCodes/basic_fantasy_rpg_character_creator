@@ -296,17 +296,17 @@ def format_ability_fields(ability_score: list[int], ability_score_field: TextFie
     """
     ability_score_field.text = str(ability_score[0])
     ability_score_field.render_new_text_surface()
+    bonus_penalty_int: int = ability_score[1]
+    bonus_penalty_str: str = f"{bonus_penalty_int}"
 
-    # 'Pre-formatting' bonus/penalty to string.
-    bonus_penalty: str = f"{ability_score[1]}"
     # Check bonus/penalty for positive or negative value to apply correct prefix in text field or give out an empty
     # string if bonus_penalty is 0.
-    if ability_score[1] > 0:
-        bonus_penalty: str = f"+{bonus_penalty}"
-    elif ability_score[1] == 0:
-        bonus_penalty: str = ""
+    if bonus_penalty_int > 0:
+        bonus_penalty_str = f"+{bonus_penalty_str}"
+    elif bonus_penalty_int == 0:
+        bonus_penalty_str = ""
 
-    bonus_penalty_field.text = bonus_penalty
+    bonus_penalty_field.text = bonus_penalty_str
     bonus_penalty_field.render_new_text_surface()
 
 
@@ -326,17 +326,12 @@ def race_class_check(rc_options: dict[str, list[InteractiveText]], active_races:
     RETURNS:
         rc_options
     """
-    # Check if the race matches.
     for race in active_races:
-        if race.text == race_name:
-            # Assuring only one instance of each object is added to dict.
-            if race not in rc_options["races"]:
+        if race.text == race_name and race not in rc_options["races"]:
                 rc_options["races"].append(race)
-    # Check if the class matches.
+
     for cls in active_classes:
-        if cls.text == class_name:
-            # Assuring only one instance of each object is added to dict.
-            if cls not in rc_options["classes"]:
+        if cls.text == class_name and cls not in rc_options["classes"]:
                 rc_options["classes"].append(cls)
 
     return rc_options
@@ -353,14 +348,12 @@ def get_rc_options(active_races: tuple[InteractiveText, ...], active_classes: tu
     RETURNS:
         rc_options: dict for instances of 'InteractiveText' for allowed races and classes.
     """
-    # Dictionary for available race and class choices to be returned.
     rc_options: dict[str, list] = {
         "races": [],
         "classes": [],
     }
 
     for character in sd.possible_characters:
-        # Split each possible character to get race and class.
         race_name, class_name = character.split()
 
         # Add all available races and classes to dict if none are selected.
@@ -378,7 +371,7 @@ def get_rc_options(active_races: tuple[InteractiveText, ...], active_classes: tu
     return rc_options
 
 
-def position_race_class_elements_new(screen, active_races: tuple[InteractiveText, ...], inactive_races: tuple[TextField, ...],
+def position_race_class_elements(screen, active_races: tuple[InteractiveText, ...], inactive_races: tuple[TextField, ...],
                                      active_classes: tuple[InteractiveText, ...], inactive_classes: tuple[TextField, ...])\
         -> None:
     """Position screen elements for race/class selection screen.
@@ -389,14 +382,12 @@ def position_race_class_elements_new(screen, active_races: tuple[InteractiveText
         active_classes: entry from ui_registry dict 'ui_registry["active_classes"]'.
         inactive_classes: entry from ui_registry dict 'ui_registry["inactive_classes"]'.
     """
-    # Race and class specific variables for x-positioning.
     race_x_pos: int = int(screen.get_rect().width / 4)
     class_x_pos: int = race_x_pos * 3
 
     if not uisd.position_flag:
-        # Populate dicts 'uisd.race_pos_y_dict' and 'uisd.class_pos_y_dict' with y-positions.
-        get_pos_y_dict(screen, active_races, uisd.race_pos_y_dict)
-        get_pos_y_dict(screen, active_classes, uisd.class_pos_y_dict)
+        get_pos_y_dict(screen, active_races, uisd.race_pos_y_dict)  # Race y-positions.
+        get_pos_y_dict(screen, active_classes, uisd.class_pos_y_dict)  # Class y-positions.
 
         # Populate dict with instances of InteractiveText representing available race/class options.
         uisd.rc_options = get_rc_options(active_races, active_classes)
@@ -405,24 +396,20 @@ def position_race_class_elements_new(screen, active_races: tuple[InteractiveText
 
         # Position ALL race/class elements from 'ui_registry' at default position outside the screen to avoid persistent
         # on-screen position of screen objects.
-        for rc in active_races + active_classes + inactive_races + inactive_classes:
-            if isinstance(rc, InteractiveText):
-                rc.interactive_rect.bottomright = uisd.ui_registry["off_screen_pos"]
-            elif isinstance(rc, TextField):
-                rc.text_rect.bottomright = uisd.ui_registry["off_screen_pos"]
+        for race_class in active_races + active_classes + inactive_races + inactive_classes:
+            if isinstance(race_class, InteractiveText):
+                race_class.interactive_rect.bottomright = uisd.ui_registry["off_screen_pos"]
+            elif isinstance(race_class, TextField):
+                race_class.text_rect.bottomright = uisd.ui_registry["off_screen_pos"]
 
-        # Position/draw race selection.
         for race in inactive_races:
-            # Check if race.text attribute is in 'check_set', proceed with active UI object if so, inactive object otherwise.
             if race.text in check_set:
                 for r in uisd.rc_options["races"]:
                     r.interactive_rect.centerx, r.interactive_rect.centery = race_x_pos, uisd.race_pos_y_dict[r.text]
             else:
                 race.text_rect.centerx, race.text_rect.centery = race_x_pos, uisd.race_pos_y_dict[race.text]
 
-        # Position/draw class selection.
         for cls in inactive_classes:
-            # Check if class.text attribute is in 'check_set', proceed with active UI object if so, inactive object otherwise.
             if cls.text in check_set:
                 for c in uisd.rc_options["classes"]:
                     c.interactive_rect.centerx, c.interactive_rect.centery = class_x_pos, uisd.class_pos_y_dict[c.text]
@@ -444,16 +431,14 @@ def draw_race_class_selection_elements(screen, active_races: tuple[InteractiveTe
         inactive_classes: entry from ui_registry dict 'ui_registry["inactive_classes"]'.
         mouse_pos: position of mouse on screen.
     """
-    # Position race/class selection elements on screen.
-    position_race_class_elements_new(screen, active_races, inactive_races, active_classes, inactive_classes)
+    position_race_class_elements(screen, active_races, inactive_races, active_classes, inactive_classes)
 
-    # Draw race selection elements.
     for race in active_races + inactive_races:
         if isinstance(race, InteractiveText):
             race.draw_interactive_text(mouse_pos)
         elif isinstance(race, TextField):
             race.draw_text()
-    # Draw class selection elements.
+
     for cls in active_classes + inactive_classes:
         if isinstance(cls, InteractiveText):
             cls.draw_interactive_text(mouse_pos)

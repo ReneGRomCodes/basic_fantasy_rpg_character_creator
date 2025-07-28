@@ -303,8 +303,7 @@ def check_valid_race_class(character: object) -> bool:
     class_check_list: list[str] = get_class_list(character)
 
     valid_races: set[str] = {
-        race for race in race_check_list
-        if any(cls in RACE_DATA[race]["classes"] for cls in class_check_list)
+        race for race in race_check_list if any(cls in RACE_DATA[race]["classes"] for cls in class_check_list)
     }
 
     if valid_races and class_check_list:
@@ -325,15 +324,10 @@ def build_possible_characters_list(character: object) -> list[str]:
     class_list: list[str] = get_class_list(character)
     possible_characters: list[str] = []
 
-    for char_race in race_list:
-        for char_class in class_list:
-            if char_race in {"Dwarf", "Halfling"} and char_class == "Magic-User":
-                pass
-            elif char_race != "Elf" and char_class in {"Fighter/Magic-User", "Magic-User/Thief"}:
-                pass
-            else:
-                race_class = char_race + " " + char_class
-                possible_characters.append(race_class)
+    for race in race_list:
+        for cls in class_list:
+            if cls in RACE_DATA[race]["classes"]:
+                possible_characters.append(race + " " + cls)
 
     return possible_characters
 
