@@ -14,15 +14,36 @@ from .shared_data import ui_shared_data as uisd
 
 """General functions."""
 
-def draw_screen_title(screen, screen_title: TextField) -> None:
+def draw_screen_title(screen, screen_title: TextField, title_background=True) -> None:
     """Draw 'screen_title' object on screen at default position.
     ARGS:
         screen: PyGame window.
         screen_title: instance of class 'TextField()' representing the screen title.
+        title_background: bool to trigger default background image for title text.
     """
     screen_title.text_rect.top = screen.get_rect().top + uisd.ui_registry["default_edge_spacing"]
     screen_title.text_rect.centerx = screen.get_rect().centerx
+
+    if title_background:
+        draw_title_background_image(screen, screen_title)
+
     screen_title.draw_text()
+
+
+def draw_title_background_image(screen, screen_title: TextField) -> None:
+    """Resize, position and draw default background image for screen title.
+    ARGS:
+        screen: PyGame window.
+        screen_title: instance of class 'TextField()' representing the screen title.
+    """
+    title_bg_image_width = screen_title.text_rect.width + (screen.get_rect().width / 10)
+    title_bg_image_height = screen_title.text_rect.height + (screen.get_rect().height / 10)
+    title_bg_image = pygame.transform.scale(uisd.ui_registry["title_image"], (title_bg_image_width, title_bg_image_height))
+
+    x = screen_title.text_rect.left - (screen.get_rect().width / 20)
+    y = screen_title.text_rect.top - (screen.get_rect().height / 20)
+
+    screen.blit(title_bg_image, (x, y))
 
 
 def draw_special_button(screen, button: Button, mouse_pos) -> None:
