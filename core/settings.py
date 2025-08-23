@@ -19,8 +19,6 @@ class Settings:
 
         # Art assets.
         self.font: str = "gui/art/font/EagleLake-Regular.ttf"
-        # Assets are loaded and scaled in 'gui/ui_registry.py' to be then accessible via dict 'ui_registry'.
-        self.bg_image: str = "gui/art/bg_image.png"
 
         # Background color for screen.
         self.bg_color: tuple[int, int, int] = (235, 210, 160)  # OBSOLETE. 'self.bg_image' IS USED NOW.

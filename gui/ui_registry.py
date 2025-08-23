@@ -117,8 +117,22 @@ def initialize_ui_registry(screen) -> dict:
     spell_descr = spells.get_spell_descr()
 
     # Art assets.
-    background_image: pygame.transform.scale = pygame.transform.scale(pygame.image.load(settings.bg_image).convert(),
-                                                                      (screen_width, screen_height))
+    path_bg_image: str = "gui/art/background.png"
+    path_bg_title_image: str = "gui/art/title_background.png"
+    path_button_image: str = "gui/art/button.png"
+    path_title_image: str = "gui/art/title.png"
+    path_parchment_images: tuple[str, ...] = ("gui/art/parchment01.png", "gui/art/parchment02.png",
+                                              "gui/art/parchment03.png")
+
+    background_image = pygame.transform.scale(pygame.image.load(path_bg_image).convert(), (screen_width, screen_height))
+    title_background_image = pygame.transform.scale(pygame.image.load(path_bg_title_image).convert(), (screen_width, screen_height))
+    button_image = pygame.transform.scale(pygame.image.load(path_button_image).convert(), (screen_width, screen_height))
+    title_image = pygame.transform.scale(pygame.image.load(path_title_image).convert(), (screen_width, screen_height))
+    parchment_image_00 = pygame.transform.scale(pygame.image.load(path_parchment_images[0]).convert(), (screen_width, screen_height))
+    parchment_image_01 = pygame.transform.scale(pygame.image.load(path_parchment_images[1]).convert(), (screen_width, screen_height))
+    parchment_image_02 = pygame.transform.scale(pygame.image.load(path_parchment_images[2]).convert(), (screen_width, screen_height))
+
+
 
     # Title screen.
     title: TextField = TextField(screen, "BASIC FANTASY ROLE-PLAYING GAME", title_size)
@@ -407,6 +421,10 @@ def initialize_ui_registry(screen) -> dict:
         "off_screen_pos": off_screen_position,
         # Art assets.
         "background_image": background_image,
+        "title_background_image": title_background_image,
+        "button_image": button_image,
+        "title_image": title_image,
+        "parchment_images": (parchment_image_00, parchment_image_01, parchment_image_02),
 
         # Title screen.
         "title_screen_fields": (title, subtitle, copyright_notice, title_progress_bar, continue_to_main_menu),

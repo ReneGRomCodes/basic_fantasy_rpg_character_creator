@@ -44,7 +44,10 @@ def run_character_creator() -> None:
 
     while True:
         mouse_pos = pygame.mouse.get_pos()
-        screen.blit(uisd.ui_registry["background_image"], (0, 0))
+
+        # Display background image based on program state.
+        bg_image = uisd.ui_registry["title_background_image"] if state == "title_screen" else uisd.ui_registry["background_image"]
+        screen.blit(bg_image, (0, 0))
 
         # Main states.
         if state in MAIN_STATES:
