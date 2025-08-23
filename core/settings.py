@@ -17,7 +17,7 @@ class Settings:
 
         self.frame_rate: int = 30
 
-        # Art assets.
+        # Fonts.
         self.font: str = "gui/art/font/EagleLake-Regular.ttf"
 
         # Background color for screen.

@@ -7,6 +7,7 @@ import pygame
 
 from core.rules import roll_starting_money
 from core.shared_data import shared_data as sd
+from core.settings import settings
 
 from .screen_objects import TextField, Button, InteractiveText, TextInputField
 from .shared_data import ui_shared_data as uisd
@@ -19,7 +20,7 @@ def draw_screen_title(screen, screen_title: TextField, title_background=True) ->
     ARGS:
         screen: PyGame window.
         screen_title: instance of class 'TextField()' representing the screen title.
-        title_background: bool to trigger default background image for title text.
+        title_background: bool to trigger default background image for title text. Default is 'True'.
     """
     screen_title.text_rect.top = screen.get_rect().top + uisd.ui_registry["default_edge_spacing"]
     screen_title.text_rect.centerx = screen.get_rect().centerx
@@ -28,22 +29,6 @@ def draw_screen_title(screen, screen_title: TextField, title_background=True) ->
         draw_title_background_image(screen, screen_title)
 
     screen_title.draw_text()
-
-
-def draw_title_background_image(screen, screen_title: TextField) -> None:
-    """Resize, position and draw default background image for screen title.
-    ARGS:
-        screen: PyGame window.
-        screen_title: instance of class 'TextField()' representing the screen title.
-    """
-    title_bg_image_width = screen_title.text_rect.width + (screen.get_rect().width / 10)
-    title_bg_image_height = screen_title.text_rect.height + (screen.get_rect().height / 10)
-    title_bg_image = pygame.transform.scale(uisd.ui_registry["title_image"], (title_bg_image_width, title_bg_image_height))
-
-    x = screen_title.text_rect.left - (screen.get_rect().width / 20)
-    y = screen_title.text_rect.top - (screen.get_rect().height / 20)
-
-    screen.blit(title_bg_image, (x, y))
 
 
 def draw_special_button(screen, button: Button, mouse_pos) -> None:
@@ -180,6 +165,36 @@ def show_info_panels(elements: list | tuple, mouse_pos) -> None:
     else:
         if isinstance(elements, InteractiveText):
             elements.handle_mouse_interaction_info_panels(mouse_pos)
+
+
+"""Functions for background images (titles, buttons, etc.)."""
+
+def draw_title_background_image(screen, screen_title: TextField) -> None:
+    """Resize, position and draw default background image for screen title.
+    ARGS:
+        screen: PyGame window.
+        screen_title: instance of class 'TextField' representing the screen title.
+    """
+    title_bg_image_width = screen_title.text_rect.width * 1.7
+    title_bg_image_height = screen_title.text_rect.height * 2
+    title_bg_image = pygame.transform.scale(uisd.ui_registry["title_image"], (title_bg_image_width, title_bg_image_height))
+    title_bg_rect = title_bg_image.get_rect(center=screen_title.text_rect.center)
+
+    screen.blit(title_bg_image, title_bg_rect)
+
+
+def draw_button_background_image(screen, button):
+    """Resize, position and draw default button backgrounds.
+    ARGS:
+        screen: PyGame window.
+        button: instance of class 'Button'.
+    """
+    button_image_width = button.button_rect.width * 1.25
+    button_image_height = button.button_rect.height * 1.6
+    button_image = pygame.transform.scale(uisd.ui_registry["button_image"], (button_image_width, button_image_height))
+    button_image_rect = button_image.get_rect(center=button.button_rect.center)
+
+    screen.blit(button_image, button_image_rect)
 
 
 """Background functions for title screen."""

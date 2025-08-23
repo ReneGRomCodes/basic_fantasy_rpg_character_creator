@@ -40,10 +40,15 @@ def show_main_menu(screen, mouse_pos) -> None:
     menu_buttons = uisd.ui_registry["menu_buttons"]
 
     ui.position_main_menu_screen_elements(screen)
+
+    ui.draw_title_background_image(screen, title)
     title.draw_text()
+
+    ui.draw_button_background_image(screen, start)
     start.draw_button(mouse_pos)
 
     for button in menu_buttons:
+        ui.draw_button_background_image(screen, button)
         button.draw_button(mouse_pos)
 
 
@@ -58,6 +63,9 @@ def show_character_menu(screen, mouse_pos) -> None:
     back_button = uisd.ui_registry["back_button"]
 
     ui.position_character_menu_screen_elements(screen)
+    ui.draw_button_background_image(screen, custom)
+    ui.draw_button_background_image(screen, random)
+    ui.draw_button_background_image(screen, back_button)
     custom.draw_button(mouse_pos)
     random.draw_button(mouse_pos)
     back_button.draw_button(mouse_pos)
@@ -89,6 +97,10 @@ def show_ability_scores_screen(screen, mouse_pos) -> None:
 
     ui.position_ability_scores_screen_elements(screen, abilities_array, mouse_pos)
     ui.draw_screen_title(screen, screen_title)
+
+    ui.draw_button_background_image(screen, reroll_button)
+    ui.draw_button_background_image(screen, back_button)
+    ui.draw_button_background_image(screen, continue_button)
     ui.draw_special_button(screen, reroll_button, mouse_pos)
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
