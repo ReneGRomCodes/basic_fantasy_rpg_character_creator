@@ -7,7 +7,6 @@ import pygame
 
 from core.rules import roll_starting_money
 from core.shared_data import shared_data as sd
-from core.settings import settings
 
 from .screen_objects import TextField, Button, InteractiveText, TextInputField
 from .shared_data import ui_shared_data as uisd
@@ -31,25 +30,31 @@ def draw_screen_title(screen, screen_title: TextField, title_background=True) ->
     screen_title.draw_text()
 
 
-def draw_special_button(screen, button: Button, mouse_pos) -> None:
+def draw_special_button(screen, button: Button, mouse_pos, button_background=True) -> None:
     """Draw special use button (i.e. 'Roll Again' or 'Reset') at the bottom center of the screen.
     ARGS:
         screen: PyGame window.
         button: instance of class 'Button()' representing the special use button.
         mouse_pos: position of mouse on screen.
+        button_background: bool to trigger default background image for button. Default is 'True'.
     """
     button.button_rect.centerx = screen.get_rect().centerx
     button.button_rect.bottom = screen.get_rect().bottom - uisd.ui_registry["default_edge_spacing"]
+
+    if button_background:
+        draw_button_background_image(screen, button)
+
     button.draw_button(mouse_pos)
 
 
-def draw_conditional_continue_button(mouse_pos, condition_1: object | bool = False, condition_2: object | bool = False,
-                                     check_mode: str = "any", alt_button: str = "inactive") -> None:
+def draw_conditional_continue_button(screen, mouse_pos, condition_1: object | bool = False, condition_2: object | bool = False,
+                                     check_mode: str = "any", alt_button: str = "inactive", button_background=True) -> None:
     """Draw either active or inactive instance of continue button or skip button from module 'ui_registry' based on
     conditional parameters.
     NOTE: 'skip' button rect does not need a dedicated '.collidepoint' detection in event handler as it's position is
     identical to the standard 'continue' button rect. Just use that one for event detection and Bob's your uncle.
     ARGS:
+        screen: PyGame window.
         mouse_pos: mouse position on screen.
         condition_1: first condition to be checked. Default is "False".
         condition_2: second condition to be checked. Default is "False".
@@ -57,20 +62,26 @@ def draw_conditional_continue_button(mouse_pos, condition_1: object | bool = Fal
                     or "all" to require both. Default is "any".
         alt_button: String to determine which conditional button alternative should be displayed. "inactive" for an
                     inactive continue button, "skip" for a skip button. Default is "inactive".
+        button_background: bool to trigger default background image for button. Default is 'True'.
     """
     continue_button, inactive_continue_button, skip_button = (uisd.ui_registry["continue_button"],
                                                               uisd.ui_registry["inactive_continue_button"],
                                                               uisd.ui_registry["skip_button"])
 
     if check_mode == "any" and (condition_1 or condition_2):
-        continue_button.draw_button(mouse_pos)
+        button = continue_button
     elif check_mode == "all" and (condition_1 and condition_2):
-        continue_button.draw_button(mouse_pos)
+        button = continue_button
     else:
         if alt_button == "inactive":
-            inactive_continue_button.draw_button(mouse_pos)
+            button = inactive_continue_button
         elif alt_button == "skip":
-            skip_button.draw_button(mouse_pos)
+            button = skip_button
+
+    if button_background:
+        draw_button_background_image(screen, button)
+
+    button.draw_button(mouse_pos)
 
 
 def draw_screen_note(screen, note: TextField) -> None:
@@ -162,8 +173,7 @@ def show_info_panels(elements: list | tuple, mouse_pos) -> None:
         for element in elements:
             if isinstance(element, InteractiveText):
                 element.handle_mouse_interaction_info_panels(mouse_pos)
-    else:
-        if isinstance(elements, InteractiveText):
+    if isinstance(elements, InteractiveText):
             elements.handle_mouse_interaction_info_panels(mouse_pos)
 
 
@@ -171,6 +181,9 @@ def show_info_panels(elements: list | tuple, mouse_pos) -> None:
 
 def draw_title_background_image(screen, screen_title: TextField) -> None:
     """Resize, position and draw default background image for screen title.
+    NOTE: This function doesn't need to be called for standard screen titles that are drawn via function
+    'draw_screen_title()' as the background can be handled there via argument 'title_background'. See function docstring
+    for details.
     ARGS:
         screen: PyGame window.
         screen_title: instance of class 'TextField' representing the screen title.
@@ -183,8 +196,12 @@ def draw_title_background_image(screen, screen_title: TextField) -> None:
     screen.blit(title_bg_image, title_bg_rect)
 
 
-def draw_button_background_image(screen, button):
+def draw_button_background_image(screen, button: Button):
     """Resize, position and draw default button backgrounds.
+    NOTE: This function doesn't need to be called for special or conditional buttons that are drawn via functions
+    'draw_special_button()' or 'draw_conditional_button()' as the background can be handled there via argument
+    'button_background'. See function docstring for details.
+    for details.
     ARGS:
         screen: PyGame window.
         button: instance of class 'Button'.

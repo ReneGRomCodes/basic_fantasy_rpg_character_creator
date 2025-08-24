@@ -63,6 +63,7 @@ def show_character_menu(screen, mouse_pos) -> None:
     back_button = uisd.ui_registry["back_button"]
 
     ui.position_character_menu_screen_elements(screen)
+
     ui.draw_button_background_image(screen, custom)
     ui.draw_button_background_image(screen, random)
     ui.draw_button_background_image(screen, back_button)
@@ -98,7 +99,6 @@ def show_ability_scores_screen(screen, mouse_pos) -> None:
     ui.position_ability_scores_screen_elements(screen, abilities_array, mouse_pos)
     ui.draw_screen_title(screen, screen_title)
 
-    ui.draw_button_background_image(screen, reroll_button)
     ui.draw_button_background_image(screen, back_button)
     ui.draw_button_background_image(screen, continue_button)
     ui.draw_special_button(screen, reroll_button, mouse_pos)
@@ -125,10 +125,12 @@ def show_race_class_selection_screen(screen, mouse_pos) -> None:
 
     ui.draw_screen_title(screen, screen_title)
     ui.draw_race_class_selection_elements(screen, active_races, active_classes, inactive_races, inactive_classes, mouse_pos)
+
     ui.draw_special_button(screen, reset_button, mouse_pos)
+    ui.draw_button_background_image(screen, back_button)
     back_button.draw_button(mouse_pos)
     # Show continue button only if race AND class have been selected otherwise show inactive continue button.
-    ui.draw_conditional_continue_button(mouse_pos, sd.selected_race, sd.selected_class, check_mode="all")
+    ui.draw_conditional_continue_button(screen, mouse_pos, sd.selected_race, sd.selected_class, check_mode="all")
 
     ui.show_info_panels(active_races, mouse_pos)
     ui.show_info_panels(active_classes, mouse_pos)
@@ -146,9 +148,11 @@ def show_spell_selection_screen(screen, mouse_pos) -> None:
     spells = uisd.ui_registry["spell_fields"]
 
     ui.draw_screen_title(screen, screen_title)
+
+    ui.draw_button_background_image(screen, back_button)
     back_button.draw_button(mouse_pos)
     # Show continue button only if spell selection has been made, display skip button otherwise.
-    ui.draw_conditional_continue_button(mouse_pos, sd.selected_spell, alt_button="skip")
+    ui.draw_conditional_continue_button(screen, mouse_pos, sd.selected_spell, alt_button="skip")
 
     ui.draw_spell_selection_screen_elements(screen, spells, screen_note, mouse_pos)
 
@@ -169,10 +173,12 @@ def show_language_selection_screen(screen, mouse_pos) -> None:
     inactive_languages = uisd.ui_registry["inactive_language_fields"]
 
     ui.draw_screen_title(screen, screen_title)
+
+    ui.draw_button_background_image(screen, back_button)
     back_button.draw_button(mouse_pos)
     ui.draw_special_button(screen, reset_button, mouse_pos)
     # Show continue button only if language selection has been made, display skip button otherwise.
-    ui.draw_conditional_continue_button(mouse_pos, sd.selected_languages, alt_button="skip")
+    ui.draw_conditional_continue_button(screen, mouse_pos, sd.selected_languages, alt_button="skip")
 
     ui.draw_language_selection_screen_elements(screen, languages, inactive_languages, screen_note, mouse_pos)
 
@@ -189,11 +195,15 @@ def show_naming_screen(screen, mouse_pos) -> None:
     character_name_field = uisd.ui_registry["character_name_input"][1]
 
     ui.build_and_position_prompt(screen, naming_prompt)
+    ui.draw_title_background_image(screen, naming_prompt)
     naming_prompt.draw_text()
+
     character_name_field.draw_input_field()
+
+    ui.draw_button_background_image(screen, back_button)
     back_button.draw_button(mouse_pos)
     # Show continue button only if language selection has been made, display skip button otherwise.
-    ui.draw_conditional_continue_button(mouse_pos, character_name, alt_button="skip")
+    ui.draw_conditional_continue_button(screen, mouse_pos, character_name, alt_button="skip")
 
 
 def show_starting_money_screen(screen, mouse_pos) -> None:
@@ -210,13 +220,16 @@ def show_starting_money_screen(screen, mouse_pos) -> None:
     ui.draw_screen_title(screen, screen_title)
 
     for choice in choices:
+        ui.draw_button_background_image(screen, choice)
         choice.draw_button(mouse_pos)
 
     ui.choose_money_option(choices, mouse_pos)
     ui.draw_chosen_money_option(screen)
+
+    ui.draw_button_background_image(screen, back_button)
     back_button.draw_button(mouse_pos)
     # Show continue button only if a money option has been selected otherwise show inactive continue button.
-    ui.draw_conditional_continue_button(mouse_pos, uisd.dice_roll_complete, sd.custom_money_flag)
+    ui.draw_conditional_continue_button(screen, mouse_pos, uisd.dice_roll_complete, sd.custom_money_flag)
 
 
 def show_character_complete_screen(screen, mouse_pos) -> None:
@@ -229,5 +242,8 @@ def show_character_complete_screen(screen, mouse_pos) -> None:
     show_character_sheet = uisd.ui_registry["show_character_sheet"]
 
     ui.position_completion_screen_elements(screen, completion_message, show_character_sheet)
+
+    ui.draw_title_background_image(screen, completion_message)
+    ui.draw_button_background_image(screen, show_character_sheet)
     completion_message.draw_text()
     show_character_sheet.draw_button(mouse_pos)
