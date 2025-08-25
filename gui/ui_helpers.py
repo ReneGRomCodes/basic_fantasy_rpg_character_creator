@@ -211,7 +211,7 @@ def draw_text_background_image_wood(screen, text: TextField):
     screen.blit(text_bg_image, text_bg_rect)
 
 
-def draw_button_background_image(screen, button: Button):
+def draw_button_background_image(screen, button: Button, button_border=False):
     """Resize, position and draw default button backgrounds.
     NOTE: This function doesn't need to be called for special or conditional buttons that are drawn via functions
     'draw_special_button()' or 'draw_conditional_button()' as the background can be handled there via argument
@@ -220,7 +220,13 @@ def draw_button_background_image(screen, button: Button):
     ARGS:
         screen: PyGame window.
         button: instance of class 'Button'.
+        button_border: bool to set if default border around Button object is to be displayed when button has a background.
+            'False' / deactivated by default.
     """
+    if not button_border:
+        # 'Remove' button border by setting its width to -1.
+        button.border_width = -1
+
     button_image_width = button.button_rect.width * 1.25
     button_image_height = button.button_rect.height * 1.6
     button_image = pygame.transform.scale(uisd.ui_registry["button_image"], (button_image_width, button_image_height))
