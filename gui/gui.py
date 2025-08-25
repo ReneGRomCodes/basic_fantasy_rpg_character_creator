@@ -20,12 +20,17 @@ def show_title_screen(screen) -> None:
     continue_to_main = uisd.ui_registry["title_screen_fields"][4]
 
     ui.position_title_screen_elements(screen)
+
+    ui.draw_title_background_image(screen, title)
+    ui.draw_text_background_image_wood(screen, subtitle)
+    ui.draw_title_background_image(screen, copyright_notice)
     title.draw_text()
     subtitle.draw_text()
     copyright_notice.draw_text()
     progress_bar.draw_progress_bar()
 
     if progress_bar.finished:
+        ui.draw_text_background_image_wood(screen, continue_to_main)
         continue_to_main.draw_text()
 
 

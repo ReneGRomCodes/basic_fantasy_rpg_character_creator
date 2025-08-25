@@ -196,6 +196,21 @@ def draw_title_background_image(screen, screen_title: TextField) -> None:
     screen.blit(title_bg_image, title_bg_rect)
 
 
+def draw_text_background_image_wood(screen, text: TextField):
+    """Resize, position and draw background image (wood) for text.
+    ARGS:
+        screen: PyGame window.
+        text: instance of class 'TextField' representing text.
+    """
+    text_bg_image_width = text.text_rect.width * 1.7
+    text_bg_image_height = text.text_rect.height * 2
+    # Default asset for buttons backgrounds is re-used here.
+    text_bg_image = pygame.transform.scale(uisd.ui_registry["button_image"], (text_bg_image_width, text_bg_image_height))
+    text_bg_rect = text_bg_image.get_rect(center=text.text_rect.center)
+
+    screen.blit(text_bg_image, text_bg_rect)
+
+
 def draw_button_background_image(screen, button: Button):
     """Resize, position and draw default button backgrounds.
     NOTE: This function doesn't need to be called for special or conditional buttons that are drawn via functions

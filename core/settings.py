@@ -21,10 +21,11 @@ class Settings:
         self.font: str = "gui/art/font/EagleLake-Regular.ttf"
 
         # Background color for screen.
-        self.bg_color: tuple[int, int, int] = (235, 210, 160)  # OBSOLETE. 'self.bg_image' IS USED NOW.
+        self.bg_color: tuple[int, int, int] = (235, 210, 160)  # OBSOLETE.
 
         # Color settings for screen objects.
         self.text_color: tuple[int, int, int] = (50, 35, 25)
+        self.credits_text_color: tuple[int, int, int] = (235, 210, 160)
         self.button_border_color: tuple[int, int, int] = (150, 110, 80)
         self.greyed_out_text_color: tuple[int, int, int] = (130, 110, 90)
         self.info_panel_bg_color: tuple[int, int, int] = (205, 175, 115)
