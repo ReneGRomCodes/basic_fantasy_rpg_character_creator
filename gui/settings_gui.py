@@ -6,7 +6,7 @@ import pygame
 from core.settings import settings
 
 from .screen_objects import TextField, InteractiveText, Button
-from .ui_helpers import draw_screen_title
+from .ui_helpers import draw_screen_title, draw_button_background_image
 from .ui_registry import initialize_ui_registry
 from .shared_data import ui_shared_data as uisd
 
@@ -72,8 +72,10 @@ class SettingsGUI:
         back_button: Button = uisd.ui_registry["back_button"]
 
         self.format_settings_screen_elements(screen)
+        self.format_position_element_background(screen)
 
         draw_screen_title(screen, self.title)
+        draw_button_background_image(screen, back_button)
         back_button.draw_button(mouse_pos)
 
         self.window_size_field.draw_text()
@@ -108,6 +110,19 @@ class SettingsGUI:
         window_size_medium.left, window_size_medium.bottom = window_size_anchor.right + spacing, window_size_anchor.bottom
         window_size_large.left, window_size_large.top = window_size_anchor.left, window_size_anchor.bottom + spacing
         window_size_full.left, window_size_full.top = window_size_anchor.right + spacing, window_size_anchor.bottom + spacing
+
+    @staticmethod
+    def format_position_element_background(screen) -> None:
+        """Format, position and draw element background on screen.
+        ARGS:
+            screen: PyGame Window.
+        """
+        bg_image_width = screen.get_rect().width / 1.2
+        bg_image_height = screen.get_rect().height / 2
+        bg_image = pygame.transform.scale(uisd.ui_registry["parchment_images"][0], (bg_image_width, bg_image_height))
+        bg_rect = bg_image.get_rect(center=screen.get_rect().center)
+
+        screen.blit(bg_image, bg_rect)
 
     def select_window_size(self, screen, mouse_pos) -> None:
         """Selection logic for program's window size. Change attribute 'self.selected_window_size', re-initialize  and

@@ -196,7 +196,7 @@ def draw_title_background_image(screen, screen_title: TextField) -> None:
     screen.blit(title_bg_image, title_bg_rect)
 
 
-def draw_text_background_image_wood(screen, text: TextField):
+def draw_text_background_image_wood(screen, text: TextField) -> None:
     """Resize, position and draw background image (wood) for text.
     ARGS:
         screen: PyGame window.
@@ -211,7 +211,7 @@ def draw_text_background_image_wood(screen, text: TextField):
     screen.blit(text_bg_image, text_bg_rect)
 
 
-def draw_button_background_image(screen, button: Button, button_border=False):
+def draw_button_background_image(screen, button: Button, button_border=False) -> None:
     """Resize, position and draw default button backgrounds.
     NOTE: This function doesn't need to be called for special or conditional buttons that are drawn via functions
     'draw_special_button()' or 'draw_conditional_button()' as the background can be handled there via argument
