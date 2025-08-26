@@ -8,7 +8,7 @@ import pygame
 from core.shared_data import shared_data as sd
 from core.settings import settings
 
-from .ui_helpers import draw_screen_title, set_elements_pos_y_values
+from .ui_helpers import draw_screen_title, draw_button_background_image, set_elements_pos_y_values
 from .screen_objects import TextField, Button, InteractiveText
 from .shared_data import ui_shared_data as uisd
 
@@ -117,6 +117,7 @@ class SaveLoadScreen:
         draw_screen_title(self.screen, self.title)
 
         for button in self.button_group:
+            draw_button_background_image(self.screen, button)
             button.draw_button(mouse_pos)
 
         for slot in self.slots.values():

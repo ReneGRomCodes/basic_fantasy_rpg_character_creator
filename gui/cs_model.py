@@ -8,7 +8,7 @@ from core.shared_data import shared_data
 from core.rules import CLASS_CATEGORIES, ABILITIES, SAVING_THROWS
 
 from .screen_objects import TextField, Button
-from .ui_helpers import draw_screen_title
+from .ui_helpers import draw_screen_title, draw_button_background_image
 from .shared_data import ui_shared_data as uisd
 
 
@@ -319,6 +319,7 @@ class CharacterSheet:
 
         draw_screen_title(self.screen, self.title)
         for button in self.button_group:
+            draw_button_background_image(self.screen, button)
             button.draw_button(mouse_pos)
 
         for field in self.basic_info_groups:
@@ -714,7 +715,7 @@ class CharacterSheet:
             grid_pos[0] = 0
             grid_pos[1] += int(grid_cell_height)
 
-    def show_exit_confirm_message(self, mouse_pos) -> None:
+    def show_exit_confirm_message(self, screen, mouse_pos) -> None:
         """Draw confirmation message when exiting character sheet screen.
         ARGS:
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
@@ -722,6 +723,7 @@ class CharacterSheet:
         self.confirmation_message.draw_text()
 
         for button in self.confirmation_button_group:
+            draw_button_background_image(screen, button)
             button.draw_button(mouse_pos)
 
     def position_exit_confirm_message(self) -> None:

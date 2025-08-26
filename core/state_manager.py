@@ -239,7 +239,7 @@ def character_sheet_state_manager(screen, state: str, mouse_pos) -> str:
         state = eh.cs_sheet_events(screen, state, mouse_pos)
 
     elif state == "sheet_confirmation":
-        sd.cs_sheet.show_exit_confirm_message(mouse_pos)
+        sd.cs_sheet.show_exit_confirm_message(screen, mouse_pos)
         state = eh.cs_sheet_events(screen, state, mouse_pos)
 
     return state
