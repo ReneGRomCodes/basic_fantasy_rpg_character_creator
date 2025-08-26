@@ -120,6 +120,8 @@ class SaveLoadScreen:
             draw_button_background_image(self.screen, button)
             button.draw_button(mouse_pos)
 
+        self.position_draw_slots_background()
+
         for slot in self.slots.values():
             slot.draw_interactive_text(mouse_pos)
 
@@ -163,6 +165,15 @@ class SaveLoadScreen:
 
             slot.interactive_rect.width = int(self.screen_width / 2)
             slot.render_new_text_surface()
+
+    def position_draw_slots_background(self) -> None:
+        """Position and draw backǵround image for character slots on screen."""
+        bg_image_width = self.slots["slot_00"].interactive_rect.width * 1.3
+        bg_image_height = self.slots["slot_00"].interactive_rect.height * len(self.slots) * 2
+        bg_image = pygame.transform.scale(uisd.ui_registry["parchment_images"][1], (bg_image_width, bg_image_height))
+        bg_image_rect = bg_image.get_rect(center=self.screen.get_rect().center)
+
+        self.screen.blit(bg_image, bg_image_rect)
 
     def select_character_slot(self, slot_id: str, slot: InteractiveText) -> None:
         """Selection logic for character slots. Updates 'self.selected_slot' to store the selected slot ID and instance.
