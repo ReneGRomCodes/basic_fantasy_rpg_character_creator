@@ -433,7 +433,7 @@ class InfoPanel(TextField):
             screen: pygame window.
             text: string to be shown in text field.
             size: font size for text.
-            bg_color: background color for rect. Default is RGB(210, 180, 130).
+            bg_color: background color for rect. OBSOLETE BECAUSE BACKGROUND IMAGE IS NOW USED!
             text_color: string for text color presets. "default" for RGB(55, 40, 25), "inactive" for greyed-out text.
                         Use RGB tuple for others.
             multi_line: boolean to control if text is rendered in a one- or multi-line textfield. Default is 'False'.
@@ -464,12 +464,8 @@ class InfoPanel(TextField):
             slide = False
 
         # Background image.
-        bg_image_file_path = "gui/art/parchment03.png"
-        bg_image_file = pygame.image.load(bg_image_file_path)
-        bg_image_width = self.text_rect.width * 1.4
-        bg_image_height = self.text_rect.height * 1.8
-        self.bg_image = pygame.transform.scale(bg_image_file, (bg_image_width, bg_image_height))
-        self.bg_rect: pygame.Rect = self.bg_image.get_rect(center=self.text_rect.center)
+        bg_image_file_path: str = "gui/art/parchment03.png"
+        self.bg_image, self.bg_rect = self.get_bg_image_and_rect(bg_image_file_path)
 
         self.slide: bool = slide
 
@@ -649,6 +645,23 @@ class InfoPanel(TextField):
                 self.bg_rect.left = anchor_x
             else:
                 self.bg_rect.right = anchor_x
+
+    def get_bg_image_and_rect(self, file) -> tuple:
+        """Create image from file and return 'bg_image' and 'bg_rect'.
+        ARGS:
+            file: path to image file.
+        RETURNS:
+            bg_image, bg_rect
+        """
+        bg_image_file_path: str = file
+        bg_image_file = pygame.image.load(bg_image_file_path)
+        bg_image_width = self.text_rect.width * 1.4
+        bg_image_height = self.text_rect.height * 1.8
+
+        bg_image = pygame.transform.scale(bg_image_file, (bg_image_width, bg_image_height))
+        bg_rect: pygame.Rect = bg_image.get_rect(center=self.text_rect.center)
+
+        return bg_image, bg_rect
 
 
 class TextInputField:
