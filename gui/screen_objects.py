@@ -463,8 +463,15 @@ class InfoPanel(TextField):
         if not pos:
             slide = False
 
+        # Background image.
+        bg_image_file_path = "gui/art/parchment03.png"
+        bg_image_file = pygame.image.load(bg_image_file_path)
+        bg_image_width = self.text_rect.width * 1.4
+        bg_image_height = self.text_rect.height * 1.8
+        self.bg_image = pygame.transform.scale(bg_image_file, (bg_image_width, bg_image_height))
+        self.bg_rect: pygame.Rect = self.bg_image.get_rect(center=self.text_rect.center)
+
         self.slide: bool = slide
-        self.bg_rect: pygame.Rect = self.background_rect
 
         # Dict with screen related reference coordinates (anchors) for info panel positions.
         # ["key"][0] = y-positions, ["key"][1] = x-positions.
@@ -505,14 +512,14 @@ class InfoPanel(TextField):
                 self.slide_panel_in()
 
             self.text_rect.center = self.bg_rect.center
-            pygame.draw.rect(self.screen, self.bg_color, self.bg_rect)
+            self.screen.blit(self.bg_image, self.bg_rect)
             self.screen.blit(self.text_surface, self.text_rect)
 
         else:
             if self.slide and self.pos:
                 self.slide_panel_out()
                 self.text_rect.center = self.bg_rect.center
-                pygame.draw.rect(self.screen, self.bg_color, self.bg_rect)
+                self.screen.blit(self.bg_image, self.bg_rect)
                 self.screen.blit(self.text_surface, self.text_rect)
 
     def slide_panel_in(self) -> None:
