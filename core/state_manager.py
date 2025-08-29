@@ -69,7 +69,7 @@ def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
 
     elif state in {"char_not_saved", "char_delete", "char_overwrite"}:
         sd.save_load_screen.format_confirm_message(state)
-        sd.save_load_screen.show_confirm_message(state, mouse_pos)
+        sd.save_load_screen.show_confirm_message(mouse_pos)
         state = eh.save_load_events(screen, state, mouse_pos)
 
     return state

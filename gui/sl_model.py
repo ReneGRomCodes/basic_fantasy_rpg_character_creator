@@ -8,7 +8,7 @@ import pygame
 from core.shared_data import shared_data as sd
 from core.settings import settings
 
-from .ui_helpers import draw_screen_title, draw_button_background_image, set_elements_pos_y_values
+from .ui_helpers import draw_screen_title, draw_title_background_image, draw_button_background_image, set_elements_pos_y_values
 from .screen_objects import TextField, Button, InteractiveText
 from .shared_data import ui_shared_data as uisd
 
@@ -269,16 +269,18 @@ class SaveLoadScreen:
 
         return state
 
-    def show_confirm_message(self, state, mouse_pos) -> None:
+    def show_confirm_message(self, mouse_pos) -> None:
         """Draw confirmation message for save/load operations.
         ARGS:
-        state: program state.
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
         """
+        draw_title_background_image(self.screen, self.confirmation_message)
+        draw_button_background_image(self.screen, self.cancel_button)
         self.confirmation_message.draw_text()
         self.cancel_button.draw_button(mouse_pos)
 
         for button in self.confirm_buttons_group:
+            draw_button_background_image(self.screen, button)
             button.draw_button(mouse_pos)
 
     def position_confirm_message_elements(self, state) -> None:
