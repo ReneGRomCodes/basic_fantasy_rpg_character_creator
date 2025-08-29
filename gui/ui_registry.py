@@ -280,8 +280,7 @@ def initialize_ui_registry(screen) -> dict:
     spell_selection_screen_title: TextField = TextField(screen, "- CHOOSE   A   FIRST   LEVEL   SPELL -", text_large)
     spell_selection_note_01_str: str = ("All Magic-Users begin knowing 'Read Magic'.\n"
                                            "Spells with an '*' are reversible after casting.")
-    spell_selection_note_01: TextField = TextField(screen, spell_selection_note_01_str, text_standard,
-                                                   bg_color=settings.info_panel_bg_color, multi_line=True,
+    spell_selection_note_01: TextField = TextField(screen, spell_selection_note_01_str, text_standard, multi_line=True,
                                                    surface_width=info_panel_width)
     # Spell info panels.
     spell_01_info: InfoPanel = InfoPanel(screen, spell_descr["read_magic"], text_small, multi_line=True,
@@ -339,8 +338,7 @@ def initialize_ui_registry(screen) -> dict:
     language_selection_screen_title: TextField = TextField(screen, "- LANGUAGES -", text_large)
     language_selection_note_01_str: str = "All Characters begin knowing 'Common' and their race-specific language."
     language_selection_note_01: TextField = TextField(screen, language_selection_note_01_str, text_standard,
-                                                         bg_color=settings.info_panel_bg_color, multi_line=True,
-                                                         surface_width=info_panel_width)
+                                                      multi_line=True, surface_width=info_panel_width)
     # Selectable language fields.
     language_01_field: InteractiveText = InteractiveText(screen, "Common", text_medium, select=True)
     language_02_field: InteractiveText = InteractiveText(screen, "Elvish", text_medium, select=True)

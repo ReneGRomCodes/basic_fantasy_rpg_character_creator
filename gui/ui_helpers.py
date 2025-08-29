@@ -93,6 +93,7 @@ def draw_screen_note(screen, note: TextField) -> None:
     note.text_rect.left = screen.get_rect().left + uisd.ui_registry["default_edge_spacing"]
     note.text_rect.centery = screen.get_rect().centery
 
+    draw_text_background_image_parchment(screen, note)
     note.draw_text()
 
 
@@ -197,7 +198,7 @@ def draw_title_background_image(screen, screen_title: TextField) -> None:
 
 
 def draw_text_background_image_wood(screen, text: TextField) -> None:
-    """Resize, position and draw background image (wood) for text.
+    """Resize, position and draw background image (wood) for textfield.
     ARGS:
         screen: PyGame window.
         text: instance of class 'TextField' representing text.
@@ -206,6 +207,24 @@ def draw_text_background_image_wood(screen, text: TextField) -> None:
     text_bg_image_height = text.text_rect.height * 2
     # Default asset for buttons backgrounds is re-used here.
     text_bg_image = pygame.transform.scale(uisd.ui_registry["button_image"], (text_bg_image_width, text_bg_image_height))
+    text_bg_rect = text_bg_image.get_rect(center=text.text_rect.center)
+
+    screen.blit(text_bg_image, text_bg_rect)
+
+
+def draw_text_background_image_parchment(screen, text: TextField, parchment=0) -> None:
+    """RResize, position and draw background image (parchment) for textfield.
+    NOTE: This function doesn't need to be called for screen notes which are drawn via function 'draw_screen_note()
+    as this function is called there by default.
+    ARGS:
+        screen: PyGame window.
+        text: instance of class 'TextField' representing text.
+        parchment: index for choice of parchment background image from entry in 'ui_registry' dict. default is index '0'.
+    """
+    text_bg_image_width = text.text_rect.width * 1.5
+    text_bg_image_height = text.text_rect.height * 2
+    text_bg_image = pygame.transform.scale(uisd.ui_registry["parchment_images"][parchment],
+                                           (text_bg_image_width, text_bg_image_height))
     text_bg_rect = text_bg_image.get_rect(center=text.text_rect.center)
 
     screen.blit(text_bg_image, text_bg_rect)
