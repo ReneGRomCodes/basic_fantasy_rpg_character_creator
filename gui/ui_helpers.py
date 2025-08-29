@@ -84,16 +84,19 @@ def draw_conditional_continue_button(screen, mouse_pos, condition_1: object | bo
     button.draw_button(mouse_pos)
 
 
-def draw_screen_note(screen, note: TextField) -> None:
+def draw_screen_note(screen, note: TextField, note_background=True) -> None:
     """Position and draw screen-specific notes on default position (centered at left edge) on screen.
     ARGS:
         screen: PyGame window.
         note: 'TextField' instance for screen-specific notes.
+        note_background: bool to trigger default background image for screen note. Default is 'True'.
     """
     note.text_rect.left = screen.get_rect().left + uisd.ui_registry["default_edge_spacing"]
     note.text_rect.centery = screen.get_rect().centery
 
-    draw_text_background_image_parchment(screen, note)
+    if note_background:
+        draw_text_background_image_parchment(screen, note)
+
     note.draw_text()
 
 
@@ -214,8 +217,8 @@ def draw_text_background_image_wood(screen, text: TextField) -> None:
 
 def draw_text_background_image_parchment(screen, text: TextField, parchment=0) -> None:
     """RResize, position and draw background image (parchment) for textfield.
-    NOTE: This function doesn't need to be called for screen notes which are drawn via function 'draw_screen_note()
-    as this function is called there by default.
+    NOTE: This function doesn't need to be called for standard screen notes that are drawn via function 'draw_screen_note()'
+    as the background can be handled there via argument 'note_background'. See function docstring for details.
     ARGS:
         screen: PyGame window.
         text: instance of class 'TextField' representing text.
