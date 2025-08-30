@@ -131,16 +131,20 @@ def draw_element_background_image(screen, element: TextField | Button, backgroun
             "ornate_wood"
             "parchment"
         parchment: index for version of parchment from list in 'ui_registry["parchment_images"]'. Default is '0'
-        button_border: bool to set if default border around element is to be displayed when it is instance of class
-            'Button'. 'False' / deactivated by default.
+        button_border: bool to set if default border around element is to be displayed when 'element' is instance of class
+            'Button'. 'False'/deactivated by default.
 
-    NOTE: This function doesn't need to be called for elements like standard screen titles, special buttons (i.e.
-    'Roll Again' or 'Reset'), conditional continue buttons or standard screen notes, which are drawn by calling their
-    specialized functions 'draw_screen_title()', 'draw_special_button()', 'draw_conditional_continue_button()' and
-    'draw_screen_note()' respectively, and use arguments to activate/deactivate their background image. See function
-    docstrings for details.
-    Info panels which are drawn by calling 'show_info_panels()' have their background image handled via class methods.
-    See class 'InfoPanel' in 'gui/screen_objects.py' for details.
+    NOTE A: This function handles the background for Button instances in a way that it accommodates the "wood" background
+        only. Other backgrounds will work, but might not be scaled properly. Just add additional multiplier variables
+        and/or expand the 'background_type' checks if necessary.
+
+    NOTE B: This function doesn't need to be called for elements like standard screen titles, special buttons (i.e.
+        'Roll Again' or 'Reset'), conditional continue buttons or standard screen notes, which are drawn by calling their
+        specialized functions 'draw_screen_title()', 'draw_special_button()', 'draw_conditional_continue_button()' and
+        'draw_screen_note()' respectively, and use arguments to activate/deactivate their background image. See function
+        docstrings for details.
+        Info panels which are drawn by calling 'show_info_panels()' have their background image handled via class methods.
+        See class 'InfoPanel' in 'gui/screen_objects.py' for details.
     """
     # Size multipliers to account for transparent background in image files.
     wood_width_mult: float = 1.7
