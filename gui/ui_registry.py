@@ -119,15 +119,15 @@ def initialize_ui_registry(screen) -> dict:
     # Art assets.
     path_bg_image: str = "gui/art/background.png"
     path_bg_title_image: str = "gui/art/title_background.png"
-    path_button_image: str = "gui/art/button.png"
-    path_title_image: str = "gui/art/title.png"
+    path_wood_image: str = "gui/art/wood.png"
+    path_wood_ornate_image: str = "gui/art/wood_ornate.png"
     path_parchment_images: tuple[str, ...] = ("gui/art/parchment01.png", "gui/art/parchment02.png",
                                               "gui/art/parchment03.png")
     # Background images are scaled to screen size, further images are scaled when used in functions.
     background_image = pygame.transform.scale(pygame.image.load(path_bg_image).convert(), (screen_width, screen_height))
     title_background_image = pygame.transform.scale(pygame.image.load(path_bg_title_image).convert(), (screen_width, screen_height))
-    button_image = pygame.image.load(path_button_image)
-    title_image = pygame.image.load(path_title_image)
+    wood_image = pygame.image.load(path_wood_image)
+    wood_ornate_image = pygame.image.load(path_wood_ornate_image)
     parchment_image_00 = pygame.image.load(path_parchment_images[0])
     parchment_image_01 = pygame.image.load(path_parchment_images[1])
     parchment_image_02 = pygame.image.load(path_parchment_images[2])
@@ -419,8 +419,8 @@ def initialize_ui_registry(screen) -> dict:
         # Art assets.
         "background_image": background_image,
         "title_background_image": title_background_image,
-        "button_image": button_image,
-        "title_image": title_image,
+        "wood_image": wood_image,
+        "wood_ornate_image": wood_ornate_image,
         "parchment_images": (parchment_image_00, parchment_image_01, parchment_image_02),
 
         # Title screen.

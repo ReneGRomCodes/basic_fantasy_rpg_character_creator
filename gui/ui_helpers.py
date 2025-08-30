@@ -25,7 +25,7 @@ def draw_screen_title(screen, screen_title: TextField, title_background=True) ->
     screen_title.text_rect.centerx = screen.get_rect().centerx
 
     if title_background:
-        draw_title_background_image(screen, screen_title)
+        draw_element_background_image(screen, screen_title, "ornate_wood")
 
     screen_title.draw_text()
 
@@ -42,7 +42,7 @@ def draw_special_button(screen, button: Button, mouse_pos, button_background=Tru
     button.button_rect.bottom = screen.get_rect().bottom - uisd.ui_registry["default_edge_spacing"]
 
     if button_background:
-        draw_button_background_image(screen, button)
+        draw_element_background_image(screen, button, "wood")
 
     button.draw_button(mouse_pos)
 
@@ -79,7 +79,7 @@ def draw_conditional_continue_button(screen, mouse_pos, condition_1: object | bo
             button = skip_button
 
     if button_background:
-        draw_button_background_image(screen, button)
+        draw_element_background_image(screen, button, "wood")
 
     button.draw_button(mouse_pos)
 
@@ -95,10 +95,111 @@ def draw_screen_note(screen, note: TextField, note_background=True) -> None:
     note.text_rect.centery = screen.get_rect().centery
 
     if note_background:
-        draw_text_background_image_parchment(screen, note)
+        draw_element_background_image(screen, note, "parchment")
 
     note.draw_text()
 
+
+def show_info_panels(elements: list | tuple, mouse_pos) -> None:
+    """Iterate over a collection of GUI elements and call their method to handle mouse interactions regarding info panels
+    and display panels if applicable.
+    See class definition for 'InteractiveText' and 'InfoPanel' for details.
+    ARGS:
+        elements: List/tuple or single instance of GUI elements.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    NOTE: This function must be called at the end of relevant screen functions to ensure info panels are drawn on top of
+    other screen elements."""
+    # Check if 'elements' is list/tuple or single instance and ensure that mouse interaction is only handled if element
+    # is an instance of class 'InteractiveText'. Prevents errors in cases where 'elements' might contain instances of
+    # other classes.
+    if isinstance(elements, (list, tuple)):
+        for element in elements:
+            if isinstance(element, InteractiveText):
+                element.handle_mouse_interaction_info_panels(mouse_pos)
+    if isinstance(elements, InteractiveText):
+            elements.handle_mouse_interaction_info_panels(mouse_pos)
+
+
+def draw_element_background_image(screen, element: TextField | Button, background_type: str, parchment: int = 0,
+                                  button_border: bool = False) -> None:
+    """Resize, position and draw background image for UI elements.
+    ARGS:
+        screen: PyGame Window.
+        element: Instance of class 'TextField' or 'Button' that receives the background.
+        background_type: keyword string representing type of background:
+            "wood"
+            "ornate_wood"
+            "parchment"
+        parchment: index for version of parchment from list in 'ui_registry["parchment_images"]'. Default is '0'
+        button_border: bool to set if default border around element is to be displayed when it is instance of class
+            'Button'. 'False' / deactivated by default.
+
+    NOTE: This function doesn't need to be called for elements like standard screen titles, special buttons (i.e.
+    'Roll Again' or 'Reset'), conditional continue buttons or standard screen notes, which are drawn by calling their
+    specialized functions 'draw_screen_title()', 'draw_special_button()', 'draw_conditional_continue_button()' and
+    'draw_screen_note()' respectively, and use arguments to activate/deactivate their background image. See function
+    docstrings for details.
+    Info panels which are drawn by calling 'show_info_panels()' have their background image handled via class methods.
+    See class 'InfoPanel' in 'gui/screen_objects.py' for details.
+    """
+    # Size multipliers to account for transparent background in image files.
+    wood_width_mult: float = 1.7
+    wood_height_mult: float = 2.0
+    wood_width_button_mult: float = 1.25
+    wood_height_button_mult: float = 1.6
+    parchment_width_mult: float = 1.5
+    parchment_height_mult: float = 2.0
+
+    image = None
+    width_mult = None
+    height_mult = None
+    element_center = None
+    element_width = None
+    element_height = None
+
+    # Set multiplier and image variables based on 'background_type' and element class.
+    if background_type == "wood":
+        image = uisd.ui_registry["wood_image"]
+        if isinstance(element, Button):
+            width_mult = wood_width_button_mult
+            height_mult = wood_height_button_mult
+        else:
+            width_mult = wood_width_mult
+            height_mult = wood_height_mult
+
+    elif background_type == "ornate_wood":
+        image = uisd.ui_registry["wood_ornate_image"]
+        width_mult = wood_width_mult
+        height_mult = wood_height_mult
+
+    elif background_type == "parchment":
+        image = uisd.ui_registry["parchment_images"][parchment]
+        width_mult = parchment_width_mult
+        height_mult = parchment_height_mult
+
+    # Assign values to variables based on element class.
+    if isinstance(element, Button):
+        element_center = element.button_rect.center
+        element_width = element.button_rect.width
+        element_height = element.button_rect.height
+        if not button_border:
+            # 'Remove' button border by setting its width to -1.
+            element.border_width = -1
+
+    elif isinstance(element, TextField):
+        element_center = element.text_rect.center
+        element_width = element.text_rect.width
+        element_height = element.text_rect.height
+
+    image_width = element_width * width_mult
+    image_height = element_height * height_mult
+    image_loaded = pygame.transform.scale(image, (image_width, image_height))
+    image_rect = image_loaded.get_rect(center=element_center)
+
+    screen.blit(image_loaded, image_rect)
+
+
+"""Function for dynamic positioning."""
 
 def set_elements_pos_y_values(screen, elements: list | tuple) -> tuple[int, int]:
     """Dynamically set starting y-position for GUI elements on screen based on number of said elements.
@@ -159,102 +260,6 @@ def get_pos_y_dict(screen, active_fields: tuple[InteractiveText, ...], pos_dict:
             pos_dict[field.text] = pos_y_start
         else:
             pos_dict[field.text] = pos_y_start + pos_y_offset * index
-
-
-def show_info_panels(elements: list | tuple, mouse_pos) -> None:
-    """Iterate over a collection of GUI elements and call their method to handle mouse interactions regarding info panels
-    and display panels if applicable.
-    See class definition for 'InteractiveText' and 'InfoPanel' for details.
-    ARGS:
-        elements: List/tuple or single instance of GUI elements.
-        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
-    NOTE: This function must be called at the end of relevant screen functions to ensure info panels are drawn on top of
-    other screen elements."""
-    # Check if 'elements' is list/tuple or single instance and ensure that mouse interaction is only handled if element
-    # is an instance of class 'InteractiveText'. Prevents errors in cases where 'elements' might contain instances of
-    # other classes.
-    if isinstance(elements, (list, tuple)):
-        for element in elements:
-            if isinstance(element, InteractiveText):
-                element.handle_mouse_interaction_info_panels(mouse_pos)
-    if isinstance(elements, InteractiveText):
-            elements.handle_mouse_interaction_info_panels(mouse_pos)
-
-
-"""Functions for background images (titles, buttons, etc.)."""
-
-def draw_title_background_image(screen, screen_title: TextField) -> None:
-    """Resize, position and draw default background image for screen title.
-    NOTE: This function doesn't need to be called for standard screen titles that are drawn via function
-    'draw_screen_title()' as the background can be handled there via argument 'title_background'. See function docstring
-    for details.
-    ARGS:
-        screen: PyGame window.
-        screen_title: instance of class 'TextField' representing the screen title.
-    """
-    title_bg_image_width = screen_title.text_rect.width * 1.7
-    title_bg_image_height = screen_title.text_rect.height * 2
-    title_bg_image = pygame.transform.scale(uisd.ui_registry["title_image"], (title_bg_image_width, title_bg_image_height))
-    title_bg_rect = title_bg_image.get_rect(center=screen_title.text_rect.center)
-
-    screen.blit(title_bg_image, title_bg_rect)
-
-
-def draw_text_background_image_wood(screen, text: TextField) -> None:
-    """Resize, position and draw background image (wood) for textfield.
-    ARGS:
-        screen: PyGame window.
-        text: instance of class 'TextField' representing text.
-    """
-    text_bg_image_width = text.text_rect.width * 1.7
-    text_bg_image_height = text.text_rect.height * 2
-    # Default asset for buttons backgrounds is re-used here.
-    text_bg_image = pygame.transform.scale(uisd.ui_registry["button_image"], (text_bg_image_width, text_bg_image_height))
-    text_bg_rect = text_bg_image.get_rect(center=text.text_rect.center)
-
-    screen.blit(text_bg_image, text_bg_rect)
-
-
-def draw_text_background_image_parchment(screen, text: TextField, parchment=0) -> None:
-    """RResize, position and draw background image (parchment) for textfield.
-    NOTE: This function doesn't need to be called for standard screen notes that are drawn via function 'draw_screen_note()'
-    as the background can be handled there via argument 'note_background'. See function docstring for details.
-    ARGS:
-        screen: PyGame window.
-        text: instance of class 'TextField' representing text.
-        parchment: index for choice of parchment background image from entry in 'ui_registry' dict. default is index '0'.
-    """
-    text_bg_image_width = text.text_rect.width * 1.5
-    text_bg_image_height = text.text_rect.height * 2
-    text_bg_image = pygame.transform.scale(uisd.ui_registry["parchment_images"][parchment],
-                                           (text_bg_image_width, text_bg_image_height))
-    text_bg_rect = text_bg_image.get_rect(center=text.text_rect.center)
-
-    screen.blit(text_bg_image, text_bg_rect)
-
-
-def draw_button_background_image(screen, button: Button, button_border=False) -> None:
-    """Resize, position and draw default button backgrounds.
-    NOTE: This function doesn't need to be called for special or conditional buttons that are drawn via functions
-    'draw_special_button()' or 'draw_conditional_button()' as the background can be handled there via argument
-    'button_background'. See function docstring for details.
-    for details.
-    ARGS:
-        screen: PyGame window.
-        button: instance of class 'Button'.
-        button_border: bool to set if default border around Button object is to be displayed when button has a background.
-            'False' / deactivated by default.
-    """
-    if not button_border:
-        # 'Remove' button border by setting its width to -1.
-        button.border_width = -1
-
-    button_image_width = button.button_rect.width * 1.25
-    button_image_height = button.button_rect.height * 1.6
-    button_image = pygame.transform.scale(uisd.ui_registry["button_image"], (button_image_width, button_image_height))
-    button_image_rect = button_image.get_rect(center=button.button_rect.center)
-
-    screen.blit(button_image, button_image_rect)
 
 
 """Background functions for title screen."""

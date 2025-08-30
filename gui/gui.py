@@ -21,16 +21,16 @@ def show_title_screen(screen) -> None:
 
     ui.position_title_screen_elements(screen)
 
-    ui.draw_title_background_image(screen, title)
-    ui.draw_text_background_image_wood(screen, subtitle)
-    ui.draw_title_background_image(screen, copyright_notice)
+    ui.draw_element_background_image(screen, title, "ornate_wood")
+    ui.draw_element_background_image(screen, subtitle, "wood")
+    ui.draw_element_background_image(screen, copyright_notice, "ornate_wood")
     title.draw_text()
     subtitle.draw_text()
     copyright_notice.draw_text()
     progress_bar.draw_progress_bar()
 
     if progress_bar.finished:
-        ui.draw_text_background_image_wood(screen, continue_to_main)
+        ui.draw_element_background_image(screen, continue_to_main, "wood")
         continue_to_main.draw_text()
 
 
@@ -46,14 +46,14 @@ def show_main_menu(screen, mouse_pos) -> None:
 
     ui.position_main_menu_screen_elements(screen)
 
-    ui.draw_title_background_image(screen, title)
+    ui.draw_element_background_image(screen, title, "ornate_wood")
     title.draw_text()
 
-    ui.draw_button_background_image(screen, start)
+    ui.draw_element_background_image(screen, start, "wood")
     start.draw_button(mouse_pos)
 
     for button in menu_buttons:
-        ui.draw_button_background_image(screen, button)
+        ui.draw_element_background_image(screen, button, "wood")
         button.draw_button(mouse_pos)
 
 
@@ -69,9 +69,9 @@ def show_character_menu(screen, mouse_pos) -> None:
 
     ui.position_character_menu_screen_elements(screen)
 
-    ui.draw_button_background_image(screen, custom)
-    ui.draw_button_background_image(screen, random)
-    ui.draw_button_background_image(screen, back_button)
+    ui.draw_element_background_image(screen, custom, "wood")
+    ui.draw_element_background_image(screen, random, "wood")
+    ui.draw_element_background_image(screen, back_button, "wood")
     custom.draw_button(mouse_pos)
     random.draw_button(mouse_pos)
     back_button.draw_button(mouse_pos)
@@ -104,8 +104,8 @@ def show_ability_scores_screen(screen, mouse_pos) -> None:
     ui.position_ability_scores_screen_elements(screen, abilities_array, mouse_pos)
     ui.draw_screen_title(screen, screen_title)
 
-    ui.draw_button_background_image(screen, back_button)
-    ui.draw_button_background_image(screen, continue_button)
+    ui.draw_element_background_image(screen, back_button, "wood")
+    ui.draw_element_background_image(screen, continue_button, "wood")
     ui.draw_special_button(screen, reroll_button, mouse_pos)
     back_button.draw_button(mouse_pos)
     continue_button.draw_button(mouse_pos)
@@ -132,7 +132,7 @@ def show_race_class_selection_screen(screen, mouse_pos) -> None:
     ui.draw_race_class_selection_elements(screen, active_races, active_classes, inactive_races, inactive_classes, mouse_pos)
 
     ui.draw_special_button(screen, reset_button, mouse_pos)
-    ui.draw_button_background_image(screen, back_button)
+    ui.draw_element_background_image(screen, back_button, "wood")
     back_button.draw_button(mouse_pos)
     # Show continue button only if race AND class have been selected otherwise show inactive continue button.
     ui.draw_conditional_continue_button(screen, mouse_pos, sd.selected_race, sd.selected_class, check_mode="all")
@@ -154,7 +154,7 @@ def show_spell_selection_screen(screen, mouse_pos) -> None:
 
     ui.draw_screen_title(screen, screen_title)
 
-    ui.draw_button_background_image(screen, back_button)
+    ui.draw_element_background_image(screen, back_button, "wood")
     back_button.draw_button(mouse_pos)
     # Show continue button only if spell selection has been made, display skip button otherwise.
     ui.draw_conditional_continue_button(screen, mouse_pos, sd.selected_spell, alt_button="skip")
@@ -179,7 +179,7 @@ def show_language_selection_screen(screen, mouse_pos) -> None:
 
     ui.draw_screen_title(screen, screen_title)
 
-    ui.draw_button_background_image(screen, back_button)
+    ui.draw_element_background_image(screen, back_button, "wood")
     back_button.draw_button(mouse_pos)
     ui.draw_special_button(screen, reset_button, mouse_pos)
     # Show continue button only if language selection has been made, display skip button otherwise.
@@ -200,12 +200,12 @@ def show_naming_screen(screen, mouse_pos) -> None:
     character_name_field = uisd.ui_registry["character_name_input"][1]
 
     ui.build_and_position_prompt(screen, naming_prompt)
-    ui.draw_title_background_image(screen, naming_prompt)
+    ui.draw_element_background_image(screen, naming_prompt, "ornate_wood")
     naming_prompt.draw_text()
 
     character_name_field.draw_input_field()
 
-    ui.draw_button_background_image(screen, back_button)
+    ui.draw_element_background_image(screen, back_button, "wood")
     back_button.draw_button(mouse_pos)
     # Show continue button only if language selection has been made, display skip button otherwise.
     ui.draw_conditional_continue_button(screen, mouse_pos, character_name, alt_button="skip")
@@ -225,13 +225,13 @@ def show_starting_money_screen(screen, mouse_pos) -> None:
     ui.draw_screen_title(screen, screen_title)
 
     for choice in choices:
-        ui.draw_button_background_image(screen, choice)
+        ui.draw_element_background_image(screen, choice, "wood")
         choice.draw_button(mouse_pos)
 
     ui.choose_money_option(choices, mouse_pos)
     ui.draw_chosen_money_option(screen)
 
-    ui.draw_button_background_image(screen, back_button)
+    ui.draw_element_background_image(screen, back_button, "wood")
     back_button.draw_button(mouse_pos)
     # Show continue button only if a money option has been selected otherwise show inactive continue button.
     ui.draw_conditional_continue_button(screen, mouse_pos, uisd.dice_roll_complete, sd.custom_money_flag)
@@ -248,7 +248,7 @@ def show_character_complete_screen(screen, mouse_pos) -> None:
 
     ui.position_completion_screen_elements(screen, completion_message, show_character_sheet)
 
-    ui.draw_title_background_image(screen, completion_message)
-    ui.draw_button_background_image(screen, show_character_sheet)
+    ui.draw_element_background_image(screen, completion_message, "ornate_wood")
+    ui.draw_element_background_image(screen, show_character_sheet, "wood")
     completion_message.draw_text()
     show_character_sheet.draw_button(mouse_pos)

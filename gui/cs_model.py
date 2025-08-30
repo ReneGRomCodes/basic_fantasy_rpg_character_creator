@@ -8,7 +8,7 @@ from core.shared_data import shared_data
 from core.rules import CLASS_CATEGORIES, ABILITIES, SAVING_THROWS
 
 from .screen_objects import TextField, Button
-from .ui_helpers import draw_screen_title, draw_title_background_image, draw_button_background_image
+from .ui_helpers import draw_screen_title, draw_element_background_image
 from .shared_data import ui_shared_data as uisd
 
 
@@ -319,7 +319,7 @@ class CharacterSheet:
 
         draw_screen_title(self.screen, self.title)
         for button in self.button_group:
-            draw_button_background_image(self.screen, button)
+            draw_element_background_image(self.screen, button, "wood")
             button.draw_button(mouse_pos)
 
         for field in self.basic_info_groups:
@@ -720,11 +720,11 @@ class CharacterSheet:
         ARGS:
         mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
         """
-        draw_title_background_image(screen, self.confirmation_message)
+        draw_element_background_image(screen, self.confirmation_message, "ornate_wood")
         self.confirmation_message.draw_text()
 
         for button in self.confirmation_button_group:
-            draw_button_background_image(screen, button)
+            draw_element_background_image(screen, button, "wood")
             button.draw_button(mouse_pos)
 
     def position_exit_confirm_message(self) -> None:

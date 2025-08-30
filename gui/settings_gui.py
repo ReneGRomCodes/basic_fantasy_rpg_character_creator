@@ -6,7 +6,7 @@ import pygame
 from core.settings import settings
 
 from .screen_objects import TextField, InteractiveText, Button
-from .ui_helpers import draw_screen_title, draw_button_background_image
+from .ui_helpers import draw_screen_title, draw_element_background_image
 from .ui_registry import initialize_ui_registry
 from .shared_data import ui_shared_data as uisd
 
@@ -75,7 +75,7 @@ class SettingsGUI:
         self.format_position_element_background(screen)
 
         draw_screen_title(screen, self.title)
-        draw_button_background_image(screen, back_button)
+        draw_element_background_image(screen, back_button, "wood")
         back_button.draw_button(mouse_pos)
 
         self.window_size_field.draw_text()
