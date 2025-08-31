@@ -136,7 +136,7 @@ def draw_element_background_image(screen, element: TextField | Button, backgroun
 
     NOTE A: This function handles the background for Button instances in a way that it accommodates the "wood" background
         only. Other backgrounds will work, but might not be scaled properly. Just add additional multiplier variables
-        and/or expand the 'background_type' checks if necessary.
+        and/or expand the 'background_type' check block if necessary.
 
     NOTE B: This function doesn't need to be called for elements like standard screen titles, special buttons (i.e.
         'Roll Again' or 'Reset'), conditional continue buttons or standard screen notes, which are drawn by calling their
@@ -413,6 +413,41 @@ def format_ability_fields(ability_score: list[int], ability_score_field: TextFie
 
     bonus_penalty_field.text = bonus_penalty_str
     bonus_penalty_field.render_new_text_surface()
+
+
+def draw_abilities_background(screen, abilities_array: tuple[tuple[object, list[int]], ...]) -> None:
+    """Scale, position and display background for ability score block on abilities screen.
+    ARGS:
+        screen: PyGame Window.
+        abilities_array: Array of screen objects representing abilities and ability scores.
+            See function 'show_ability_scores_screen()' in 'gui/gui.py' for detailed description of its structure and
+            purpose.
+    """
+    # Helper variables for better readability.
+    screen_rect = screen.get_rect()
+    n_ablts: int = len(abilities_array)
+    ablts_arr_mid_index: int = n_ablts // 2
+    ablts_arr_mid_rect = abilities_array[ablts_arr_mid_index][0].interactive_rect
+    ablts_arr_mid_prev_rect = abilities_array[ablts_arr_mid_index-1][0].interactive_rect
+
+    ability_field_height = ablts_arr_mid_rect.height
+    image_height_multiplier = n_ablts * 2.5
+
+    image = uisd.ui_registry["parchment_images"][1]
+    image_width = screen_rect.width / 1.8
+    image_height = ability_field_height * image_height_multiplier
+
+    image_loaded = pygame.transform.scale(image, (image_width, image_height))
+    image_rect = image_loaded.get_rect(centerx=screen_rect.centerx)
+
+    # Set image y-position based on number of abilities in 'abilities_array' to assure background is properly centered.
+    if n_ablts % 2 == 0:
+        image_center_y_offset = (ablts_arr_mid_rect.top - ablts_arr_mid_prev_rect.bottom) / 2
+        image_rect.centery = ablts_arr_mid_rect.top - image_center_y_offset
+    else:
+        image_rect.centery = ablts_arr_mid_rect.centery
+
+    screen.blit(image_loaded, image_rect)
 
 
 """Background functions for race/class selection screen."""
