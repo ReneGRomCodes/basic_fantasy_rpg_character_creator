@@ -122,7 +122,8 @@ def show_info_panels(elements: list | tuple, mouse_pos) -> None:
 
 def draw_element_background_image(screen, element: TextField | Button, background_type: str, parchment: int = 0,
                                   button_border: bool = False) -> None:
-    """Resize, position and draw background image for UI elements.
+    """Resize, position and draw background image for single UI elements (use 'draw_elements_array_background_image()'
+    for grouped elements).
     ARGS:
         screen: PyGame Window.
         element: Instance of class 'TextField' or 'Button' that receives the background.
@@ -199,6 +200,43 @@ def draw_element_background_image(screen, element: TextField | Button, backgroun
     image_height = element_height * height_mult
     image_loaded = pygame.transform.scale(image, (image_width, image_height))
     image_rect = image_loaded.get_rect(center=element_center)
+
+    screen.blit(image_loaded, image_rect)
+
+
+def draw_elements_array_background_image(screen, elements_array, parchment=0) -> None:  # TODO general background image function.
+    # Helper variables for better readability.
+    screen_rect = screen.get_rect()
+    ref_element = elements_array[0]
+    n_elements: int = len(elements_array)
+    elements_arr_mid_index: int = n_elements // 2
+    # Size multipliers to account for transparent background in image files.
+    image_width_mult: float = 1.5
+    image_height_mult: float = 1.4
+
+    ref_element_rect = None
+    elements_arr_mid_rect = None
+    elements_arr_mid_prev_rect = None
+    elements_arr_last_rect = None
+
+    # Set variable values based on element types in 'elements_arrays'.
+    if isinstance(ref_element, InteractiveText):
+        ref_element_rect = elements_array[0].interactive_rect
+        elements_arr_mid_rect = elements_array[elements_arr_mid_index].interactive_rect
+        elements_arr_mid_prev_rect = elements_array[elements_arr_mid_index-1].interactive_rect
+        elements_arr_last_rect = elements_array[-1].interactive_rect
+    elif isinstance(ref_element, TextField):
+        ref_element_rect = elements_array[0].text_rect
+        elements_arr_mid_rect = elements_array[elements_arr_mid_index].text_rect
+        elements_arr_mid_prev_rect = elements_array[elements_arr_mid_index - 1].text_rect
+        elements_arr_last_rect = elements_array[-1].text_rect
+
+    image_width = ref_element_rect.width * image_width_mult
+    image_height = (elements_arr_last_rect.bottom - ref_element_rect.top) * image_height_mult
+    image = uisd.ui_registry["parchment_images"][parchment]
+    image_loaded = pygame.transform.scale(image, (image_width, image_height))
+    image_rect = image_loaded.get_rect(centerx=ref_element_rect.centerx)
+    image_rect.centery = screen_rect.centery
 
     screen.blit(image_loaded, image_rect)
 
@@ -349,7 +387,7 @@ def position_character_menu_screen_elements(screen) -> None:
 
 """Background functions for ability scores screen."""
 
-def position_ability_scores_screen_elements(screen, abilities_array: tuple[tuple[object, list[int]], ...],
+def draw_ability_scores_screen_elements(screen, abilities_array: tuple[tuple[object, list[int]], ...],
                                             mouse_pos) -> None:
     """Position, format and draw objects for ability scores screen. 'abilities_array' stores ability objects in function
     'show_ability_scores_screen()'.
@@ -360,6 +398,8 @@ def position_ability_scores_screen_elements(screen, abilities_array: tuple[tuple
             purpose.
         mouse_pos: position of mouse on screen.
     """
+    draw_abilities_background(screen, abilities_array)
+
     ability_name_x: int = screen.get_rect().width / 3
     ability_score_x: int = screen.get_rect().width / 6 * 3.7
     bonus_penalty_x: int = screen.get_rect().width / 6 * 4
@@ -572,6 +612,7 @@ def draw_race_class_selection_elements(screen, active_races: tuple[InteractiveTe
         mouse_pos: position of mouse on screen.
     """
     position_race_class_elements(screen, active_races, inactive_races, active_classes, inactive_classes)
+    # TODO add background image function call here!
 
     for race in active_races + inactive_races:
         if isinstance(race, InteractiveText):
@@ -617,6 +658,7 @@ def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, 
         mouse_pos: position of mouse on screen.
     """
     position_spell_selection_screen_elements(screen, spells)
+    draw_elements_array_background_image(screen, spells)
 
     for spell in spells:
         spell.draw_interactive_text(mouse_pos)

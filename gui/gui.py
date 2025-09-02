@@ -101,8 +101,7 @@ def show_ability_scores_screen(screen, mouse_pos) -> None:
         (ability_fields[5], sd.character.abilities[ABILITIES[5]]),  # Charisma
     )
 
-    ui.draw_abilities_background(screen, abilities_array)
-    ui.position_ability_scores_screen_elements(screen, abilities_array, mouse_pos)
+    ui.draw_ability_scores_screen_elements(screen, abilities_array, mouse_pos)
     ui.draw_screen_title(screen, screen_title)
 
     ui.draw_element_background_image(screen, back_button, "wood")
