@@ -219,12 +219,13 @@ def draw_elements_array_background_image(screen, elements_array, parchment=0) ->
     elements_arr_mid_prev_rect = None
     elements_arr_last_rect = None
 
-    # Set variable values based on element types in 'elements_arrays'.
+    # Set values to use correct rect attributes based on element types in 'elements_arrays'.
     if isinstance(ref_element, InteractiveText):
         ref_element_rect = elements_array[0].interactive_rect
         elements_arr_mid_rect = elements_array[elements_arr_mid_index].interactive_rect
         elements_arr_mid_prev_rect = elements_array[elements_arr_mid_index-1].interactive_rect
         elements_arr_last_rect = elements_array[-1].interactive_rect
+
     elif isinstance(ref_element, TextField):
         ref_element_rect = elements_array[0].text_rect
         elements_arr_mid_rect = elements_array[elements_arr_mid_index].text_rect
@@ -236,7 +237,12 @@ def draw_elements_array_background_image(screen, elements_array, parchment=0) ->
     image = uisd.ui_registry["parchment_images"][parchment]
     image_loaded = pygame.transform.scale(image, (image_width, image_height))
     image_rect = image_loaded.get_rect(centerx=ref_element_rect.centerx)
-    image_rect.centery = screen_rect.centery
+    # Set image y-position based on number of abilities in 'abilities_array' to assure background is properly centered.
+    if n_elements % 2 == 0:
+        image_center_y_offset = (elements_arr_mid_rect.top - elements_arr_mid_prev_rect.bottom) / 2
+        image_rect.centery = elements_arr_mid_rect.top - image_center_y_offset
+    else:
+        image_rect.centery = elements_arr_mid_rect.centery
 
     screen.blit(image_loaded, image_rect)
 
@@ -721,6 +727,7 @@ def draw_language_selection_screen_elements(screen, languages: tuple[Interactive
         mouse_pos: position of mouse on screen.
     """
     position_language_selection_screen_elements(screen, languages, inactive_languages)
+    # TODO add background image function call here!
 
     for language in languages + inactive_languages:
         if isinstance(language, InteractiveText):
