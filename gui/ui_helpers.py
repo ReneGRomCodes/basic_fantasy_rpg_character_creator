@@ -120,6 +120,8 @@ def show_info_panels(elements: list | tuple, mouse_pos) -> None:
             elements.handle_mouse_interaction_info_panels(mouse_pos)
 
 
+"""Functions for element background images."""
+
 def draw_element_background_image(screen, element: TextField | Button, background_type: str, parchment: int = 0,
                                   button_border: bool = False) -> None:
     """Resize, position and draw background image for single UI elements (use 'draw_elements_array_background_image()'
@@ -204,47 +206,79 @@ def draw_element_background_image(screen, element: TextField | Button, backgroun
     screen.blit(image_loaded, image_rect)
 
 
-def draw_elements_array_background_image(screen, elements_array, parchment=0) -> None:  # TODO general background image function.
-    # Helper variables for better readability.
-    screen_rect = screen.get_rect()
-    ref_element = elements_array[0]
-    n_elements: int = len(elements_array)
-    elements_arr_mid_index: int = n_elements // 2
+def draw_grouped_elements_background_image(screen, element_lists: list[tuple], parchment=1) -> None:  # TODO general background image function.
+    """
+    ARGS:
+        screen: PyGame Window.
+        element_lists:
+        parchment:
+    """
     # Size multipliers to account for transparent background in image files.
     image_width_mult: float = 1.5
     image_height_mult: float = 1.4
 
-    ref_element_rect = None
-    elements_arr_mid_rect = None
-    elements_arr_mid_prev_rect = None
-    elements_arr_last_rect = None
+    # Get first and last group element on-screen.
+    first_element_rect, last_element_rect = get_first_last_onscreen_element_rects(element_lists)
 
-    # Set values to use correct rect attributes based on element types in 'elements_arrays'.
-    if isinstance(ref_element, InteractiveText):
-        ref_element_rect = elements_array[0].interactive_rect
-        elements_arr_mid_rect = elements_array[elements_arr_mid_index].interactive_rect
-        elements_arr_mid_prev_rect = elements_array[elements_arr_mid_index-1].interactive_rect
-        elements_arr_last_rect = elements_array[-1].interactive_rect
-
-    elif isinstance(ref_element, TextField):
-        ref_element_rect = elements_array[0].text_rect
-        elements_arr_mid_rect = elements_array[elements_arr_mid_index].text_rect
-        elements_arr_mid_prev_rect = elements_array[elements_arr_mid_index - 1].text_rect
-        elements_arr_last_rect = elements_array[-1].text_rect
-
-    image_width = ref_element_rect.width * image_width_mult
-    image_height = (elements_arr_last_rect.bottom - ref_element_rect.top) * image_height_mult
+    image_width = first_element_rect.width * image_width_mult
+    image_height = (last_element_rect.bottom - first_element_rect.top) * image_height_mult
     image = uisd.ui_registry["parchment_images"][parchment]
     image_loaded = pygame.transform.scale(image, (image_width, image_height))
-    image_rect = image_loaded.get_rect(centerx=ref_element_rect.centerx)
-    # Set image y-position based on number of abilities in 'abilities_array' to assure background is properly centered.
-    if n_elements % 2 == 0:
-        image_center_y_offset = (elements_arr_mid_rect.top - elements_arr_mid_prev_rect.bottom) / 2
-        image_rect.centery = elements_arr_mid_rect.top - image_center_y_offset
-    else:
-        image_rect.centery = elements_arr_mid_rect.centery
+    image_rect = image_loaded.get_rect(centerx=first_element_rect.centerx)
+
+    image_rect.centery = screen.get_rect().centery  # FIXME
 
     screen.blit(image_loaded, image_rect)
+
+
+def get_first_last_onscreen_element_rects(element_lists: list[tuple]) -> tuple[pygame.Rect, pygame.Rect]:
+    """
+    ARGS:
+         element_lists:
+    RETURNS:
+    """
+    if len(element_lists) == 1:
+        first_element = element_lists[0][0]
+        last_element = element_lists[0][-1]
+
+        if isinstance(first_element, InteractiveText):
+            first_element_rect = first_element.interactive_rect
+            last_element_rect = last_element.interactive_rect
+        else:
+            first_element_rect = first_element.text_rect
+            last_element_rect = last_element.text_rect
+
+    else:
+        first_element_0 = element_lists[0][0]
+        last_element_0 = element_lists[0][-1]
+        first_element_1 = element_lists[1][0]
+        last_element_1 = element_lists[1][-1]
+
+        first_element_rect = get_element_rect(first_element_0, first_element_1)
+        last_element_rect = get_element_rect(last_element_0, last_element_1)
+
+    return first_element_rect, last_element_rect
+
+
+def get_element_rect(element_0: InteractiveText | TextField, element_1: InteractiveText | TextField) -> pygame.Rect:
+    """
+    ARGS:
+         element_0:
+         element_1:
+    RETURNS:
+    """
+    if isinstance(element_0, InteractiveText):
+        if element_0.interactive_rect.left < 0:
+            element_rect = element_1.text_rect
+        else:
+            element_rect = element_0.interactive_rect
+    else:
+        if element_0.text_rect.left < 0:
+            element_rect = element_1.interactive_rect
+        else:
+            element_rect = element_0.text_rect
+
+    return element_rect
 
 
 """Function for dynamic positioning."""
@@ -463,6 +497,8 @@ def format_ability_fields(ability_score: list[int], ability_score_field: TextFie
 
 def draw_abilities_background(screen, abilities_array: tuple[tuple[object, list[int]], ...]) -> None:
     """Scale, position and display background for ability score block on abilities screen.
+    This function is specialized for the ability scores screen to account for the fact that multiple elements and element
+    groups 'share' a single background image, which is unique to this screen.
     ARGS:
         screen: PyGame Window.
         abilities_array: Array of screen objects representing abilities and ability scores.
@@ -619,6 +655,8 @@ def draw_race_class_selection_elements(screen, active_races: tuple[InteractiveTe
     """
     position_race_class_elements(screen, active_races, inactive_races, active_classes, inactive_classes)
     # TODO add background image function call here!
+    draw_grouped_elements_background_image(screen, [active_races, inactive_races])
+    draw_grouped_elements_background_image(screen, [active_classes, inactive_classes])
 
     for race in active_races + inactive_races:
         if isinstance(race, InteractiveText):
@@ -664,7 +702,8 @@ def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, 
         mouse_pos: position of mouse on screen.
     """
     position_spell_selection_screen_elements(screen, spells)
-    draw_elements_array_background_image(screen, spells)
+    # TODO add background image function call here!
+    draw_grouped_elements_background_image(screen, [spells])
 
     for spell in spells:
         spell.draw_interactive_text(mouse_pos)
@@ -728,6 +767,7 @@ def draw_language_selection_screen_elements(screen, languages: tuple[Interactive
     """
     position_language_selection_screen_elements(screen, languages, inactive_languages)
     # TODO add background image function call here!
+    draw_grouped_elements_background_image(screen, [languages, inactive_languages])
 
     for language in languages + inactive_languages:
         if isinstance(language, InteractiveText):

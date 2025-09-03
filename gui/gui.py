@@ -143,9 +143,9 @@ def show_race_class_selection_screen(screen, mouse_pos) -> None:
 
 def show_spell_selection_screen(screen, mouse_pos) -> None:
     """Display spell selection screen.
-        ARGS:
-            screen: PyGame window.
-            mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    ARGS:
+        screen: PyGame window.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
     screen_title = uisd.ui_registry["spell_title"]
     screen_note = uisd.ui_registry["spell_note"]
@@ -166,9 +166,9 @@ def show_spell_selection_screen(screen, mouse_pos) -> None:
 
 def show_language_selection_screen(screen, mouse_pos) -> None:
     """Display language selection screen.
-            ARGS:
-                screen: PyGame window.
-                mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    ARGS:
+        screen: PyGame window.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
     """
     screen_title = uisd.ui_registry["lang_title"]
     screen_note = uisd.ui_registry["lang_note"]
