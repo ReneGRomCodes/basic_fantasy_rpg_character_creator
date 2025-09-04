@@ -214,7 +214,7 @@ def draw_grouped_elements_background_image(screen, element_lists: list[tuple], p
     for single elements).
     ARGS:
         screen: PyGame Window.
-        element_lists: list of up to two tuples containing element groups as , i.e. active and/or inactive element groups
+        element_lists: list of up to two tuples containing element groups, i.e. active and/or inactive element groups
             for selection screens. See relevant screen function in module 'gui/gui.py' for reference.
         parchment: index for version of parchment from list in 'ui_registry["parchment_images"]'. Default is '1'.
 
@@ -235,7 +235,7 @@ def draw_grouped_elements_background_image(screen, element_lists: list[tuple], p
     elements_block_height: int = last_centery - first_centery
     image_centery: int = int(first_centery + (elements_block_height / 2))
 
-    image_width: float = first_element_rect.width * image_width_mult
+    image_width: float = get_image_width(element_lists) * image_width_mult
     image_height: float = (last_element_rect.bottom - first_element_rect.top) * image_height_mult
     image = uisd.ui_registry["parchment_images"][parchment]
     image_loaded = pygame.transform.scale(image, (image_width, image_height))
@@ -244,10 +244,26 @@ def draw_grouped_elements_background_image(screen, element_lists: list[tuple], p
     screen.blit(image_loaded, image_rect)
 
 
+def get_image_width(elements_list: list[tuple]) -> float:
+    """Find and return appropriate width for background image based on the widest element in 'elements_list'.
+    ARGS:
+        elements_list: list of up to two tuples containing element groups, i.e. active and/or inactive element groups
+            for selection screens. See relevant screen function in module 'gui/gui.py' for reference.
+    RETURNS:
+        float representing width of widest element in 'elements_list'.
+    """
+    elements_width: list[float] = []
+
+    for item in elements_list:
+        elements_width.append(item[0].interactive_rect.width if isinstance(item[0], InteractiveText) else item[0].text_rect.width)
+
+    return max(elements_width)
+
+
 def get_first_last_onscreen_element_rects(element_lists: list[tuple]) -> tuple[pygame.Rect, pygame.Rect]:
     """Get first and last element that is displayed on screen and return correct rects for each based on their class.
     ARGS:
-         element_lists: list of up to two tuples containing element groups as , i.e. active and/or inactive element groups
+         element_lists: list of up to two tuples containing element groups, i.e. active and/or inactive element groups
             for selection screens. See relevant screen function in module 'gui/gui.py' for reference.
     RETURNS:
         Tuple of rects for first and last element of on-screen block.
