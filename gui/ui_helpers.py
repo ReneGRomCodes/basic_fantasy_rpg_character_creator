@@ -133,15 +133,18 @@ def draw_element_background_image(screen, element: TextField | Button, backgroun
             "wood"
             "ornate_wood"
             "parchment"
-        parchment: index for version of parchment from list in 'ui_registry["parchment_images"]'. Default is '0'
+        parchment: index for version of parchment from list in 'ui_registry["parchment_images"]'. Default is '0'.
         button_border: bool to set if default border around element is to be displayed when 'element' is instance of class
             'Button'. 'False'/deactivated by default.
 
-    NOTE A: This function handles the background for Button instances in a way that it accommodates the "wood" background
+    NOTE A: This function handles only elements which are instances of class 'TextField' or 'Button' in its current form.
+        Handling of other GUI classes can be added by implementing appropriate code blocks, re-using the existing structure.
+
+    NOTE B: This function handles the background for Button instances in a way that it accommodates the "wood" background
         only. Other backgrounds will work, but might not be scaled properly. Just add additional multiplier variables
         and/or expand the 'background_type' check block if necessary.
 
-    NOTE B: This function doesn't need to be called for elements like standard screen titles, special buttons (i.e.
+    NOTE C: This function doesn't need to be called for elements like standard screen titles, special buttons (i.e.
         'Roll Again' or 'Reset'), conditional continue buttons or standard screen notes, which are drawn by calling their
         specialized functions 'draw_screen_title()', 'draw_special_button()', 'draw_conditional_continue_button()' and
         'draw_screen_note()' respectively, and use arguments to activate/deactivate their background image. See function
@@ -206,53 +209,65 @@ def draw_element_background_image(screen, element: TextField | Button, backgroun
     screen.blit(image_loaded, image_rect)
 
 
-def draw_grouped_elements_background_image(screen, element_lists: list[tuple], parchment=1) -> None:  # TODO general background image function.
-    """
+def draw_grouped_elements_background_image(screen, element_lists: list[tuple], parchment=1) -> None:
+    """Resize, position and draw parchment background image for grouped UI elements (use 'draw_element_background_image()'
+    for single elements).
     ARGS:
         screen: PyGame Window.
-        element_lists:
-        parchment:
+        element_lists: list of up to two tuples containing element groups as , i.e. active and/or inactive element groups
+            for selection screens. See relevant screen function in module 'gui/gui.py' for reference.
+        parchment: index for version of parchment from list in 'ui_registry["parchment_images"]'. Default is '1'.
+
+    NOTE: This function handles only elements which are instances of class 'TextField' or 'InteractiveText' in its current
+        form. Handling of other GUI classes can be added by implementing appropriate code blocks, re-using the existing
+        structure. Same goes for helper functions 'get_first_last_onscreen_element_rects()' and 'get_element_rect()'.
+        Furthermore, only background images which are part of 'uisd.ui_registry["parchment_images"]' are used here. See
+        handling of different background options in 'draw_element_background_image()' if you want to expand this function.
     """
     # Size multipliers to account for transparent background in image files.
     image_width_mult: float = 1.5
     image_height_mult: float = 1.4
 
-    # Get first and last group element on-screen.
+    # Get first and last group element rect on-screen.
     first_element_rect, last_element_rect = get_first_last_onscreen_element_rects(element_lists)
+    first_centery, last_centery = first_element_rect.centery, last_element_rect.centery
+    # Calculate y-position of background image.
+    elements_block_height: int = last_centery - first_centery
+    image_centery: int = int(first_centery + (elements_block_height / 2))
 
-    image_width = first_element_rect.width * image_width_mult
-    image_height = (last_element_rect.bottom - first_element_rect.top) * image_height_mult
+    image_width: float = first_element_rect.width * image_width_mult
+    image_height: float = (last_element_rect.bottom - first_element_rect.top) * image_height_mult
     image = uisd.ui_registry["parchment_images"][parchment]
     image_loaded = pygame.transform.scale(image, (image_width, image_height))
-    image_rect = image_loaded.get_rect(centerx=first_element_rect.centerx)
-
-    image_rect.centery = screen.get_rect().centery  # FIXME
+    image_rect: pygame.Rect = image_loaded.get_rect(centerx=first_element_rect.centerx, centery=image_centery)
 
     screen.blit(image_loaded, image_rect)
 
 
 def get_first_last_onscreen_element_rects(element_lists: list[tuple]) -> tuple[pygame.Rect, pygame.Rect]:
-    """
+    """Get first and last element that is displayed on screen and return correct rects for each based on their class.
     ARGS:
-         element_lists:
+         element_lists: list of up to two tuples containing element groups as , i.e. active and/or inactive element groups
+            for selection screens. See relevant screen function in module 'gui/gui.py' for reference.
     RETURNS:
+        Tuple of rects for first and last element of on-screen block.
     """
     if len(element_lists) == 1:
-        first_element = element_lists[0][0]
-        last_element = element_lists[0][-1]
+        first_element: TextField | InteractiveText = element_lists[0][0]
+        last_element: TextField | InteractiveText = element_lists[0][-1]
 
         if isinstance(first_element, InteractiveText):
-            first_element_rect = first_element.interactive_rect
-            last_element_rect = last_element.interactive_rect
+            first_element_rect: pygame.Rect = first_element.interactive_rect
+            last_element_rect: pygame.Rect = last_element.interactive_rect
         else:
-            first_element_rect = first_element.text_rect
-            last_element_rect = last_element.text_rect
+            first_element_rect: pygame.Rect = first_element.text_rect
+            last_element_rect: pygame.Rect = last_element.text_rect
 
     else:
-        first_element_0 = element_lists[0][0]
-        last_element_0 = element_lists[0][-1]
-        first_element_1 = element_lists[1][0]
-        last_element_1 = element_lists[1][-1]
+        first_element_0: TextField | InteractiveText = element_lists[0][0]
+        last_element_0: TextField | InteractiveText = element_lists[0][-1]
+        first_element_1: TextField | InteractiveText = element_lists[1][0]
+        last_element_1: TextField | InteractiveText = element_lists[1][-1]
 
         first_element_rect = get_element_rect(first_element_0, first_element_1)
         last_element_rect = get_element_rect(last_element_0, last_element_1)
@@ -261,22 +276,24 @@ def get_first_last_onscreen_element_rects(element_lists: list[tuple]) -> tuple[p
 
 
 def get_element_rect(element_0: InteractiveText | TextField, element_1: InteractiveText | TextField) -> pygame.Rect:
-    """
+    """Check which of two UI elements (of different classes) is positioned off-screen and return correct rect for
+    on-screen element.
     ARGS:
-         element_0:
-         element_1:
+         element_0: first element to be checked.
+         element_1: second element to be checked.
     RETURNS:
+        Rect (text_rect or interactive_rect) for on-screen element.
     """
     if isinstance(element_0, InteractiveText):
         if element_0.interactive_rect.left < 0:
-            element_rect = element_1.text_rect
+            element_rect: pygame.Rect = element_1.text_rect
         else:
-            element_rect = element_0.interactive_rect
+            element_rect: pygame.Rect = element_0.interactive_rect
     else:
         if element_0.text_rect.left < 0:
-            element_rect = element_1.interactive_rect
+            element_rect: pygame.Rect = element_1.interactive_rect
         else:
-            element_rect = element_0.text_rect
+            element_rect: pygame.Rect = element_0.text_rect
 
     return element_rect
 
@@ -654,7 +671,6 @@ def draw_race_class_selection_elements(screen, active_races: tuple[InteractiveTe
         mouse_pos: position of mouse on screen.
     """
     position_race_class_elements(screen, active_races, inactive_races, active_classes, inactive_classes)
-    # TODO add background image function call here!
     draw_grouped_elements_background_image(screen, [active_races, inactive_races])
     draw_grouped_elements_background_image(screen, [active_classes, inactive_classes])
 
@@ -702,7 +718,6 @@ def draw_spell_selection_screen_elements(screen, spells: tuple[InteractiveText, 
         mouse_pos: position of mouse on screen.
     """
     position_spell_selection_screen_elements(screen, spells)
-    # TODO add background image function call here!
     draw_grouped_elements_background_image(screen, [spells])
 
     for spell in spells:
@@ -766,7 +781,6 @@ def draw_language_selection_screen_elements(screen, languages: tuple[Interactive
         mouse_pos: position of mouse on screen.
     """
     position_language_selection_screen_elements(screen, languages, inactive_languages)
-    # TODO add background image function call here!
     draw_grouped_elements_background_image(screen, [languages, inactive_languages])
 
     for language in languages + inactive_languages:
