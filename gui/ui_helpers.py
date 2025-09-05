@@ -25,7 +25,7 @@ def draw_screen_title(screen, screen_title: TextField, title_background=True) ->
     screen_title.text_rect.centerx = screen.get_rect().centerx
 
     if title_background:
-        draw_element_background_image(screen, screen_title, "ornate_wood")
+        draw_single_element_background_image(screen, screen_title, "ornate_wood")
 
     screen_title.draw_text()
 
@@ -42,7 +42,7 @@ def draw_special_button(screen, button: Button, mouse_pos, button_background=Tru
     button.button_rect.bottom = screen.get_rect().bottom - uisd.ui_registry["default_edge_spacing"]
 
     if button_background:
-        draw_element_background_image(screen, button, "wood")
+        draw_single_element_background_image(screen, button, "wood")
 
     button.draw_button(mouse_pos)
 
@@ -79,7 +79,7 @@ def draw_conditional_continue_button(screen, mouse_pos, condition_1: object | bo
             button = skip_button
 
     if button_background:
-        draw_element_background_image(screen, button, "wood")
+        draw_single_element_background_image(screen, button, "wood")
 
     button.draw_button(mouse_pos)
 
@@ -95,7 +95,7 @@ def draw_screen_note(screen, note: TextField, note_background=True) -> None:
     note.text_rect.centery = screen.get_rect().centery
 
     if note_background:
-        draw_element_background_image(screen, note, "parchment")
+        draw_single_element_background_image(screen, note, "parchment")
 
     note.draw_text()
 
@@ -122,7 +122,37 @@ def show_info_panels(elements: list | tuple, mouse_pos) -> None:
 
 """Functions for element background images."""
 
-def draw_element_background_image(screen, element: TextField | Button, background_type: str, parchment: int = 0,
+def draw_image(screen, image_type: str, width: float | int, height: float | int, center: tuple[int, int] = (0,0),
+               parchment: int = 0) -> None:
+    """Load, scale, position and draw image on screen.
+    ARGS:
+        screen: PyGame Window.
+        image_type: keyword string representing type of background:
+            "wood"
+            "ornate_wood"
+            "parchment"
+        width: float/int for image width.
+        height: float/int for image height.
+        center: tuple of ints for image center position on screen. Default is (0,0).
+        parchment: index for version of parchment from list in 'ui_registry["parchment_images"]' if image type 'parchment
+            is chosen. Default is '0'.
+    """
+    image = None
+
+    if image_type == "wood":
+        image = uisd.ui_registry["wood_image"]
+    elif image_type == "ornate_wood":
+        image = uisd.ui_registry["wood_ornate_image"]
+    elif image_type == "parchment":
+        image = uisd.ui_registry["parchment_images"][parchment]
+
+    image_loaded = pygame.transform.scale(image, (width, height))
+    image_rect = image_loaded.get_rect(center=center)
+
+    screen.blit(image_loaded, image_rect)
+
+
+def draw_single_element_background_image(screen, element: TextField | Button, background_type: str, parchment: int = 0,
                                   button_border: bool = False) -> None:
     """Resize, position and draw background image for single UI elements (use 'draw_elements_array_background_image()'
     for grouped elements).
@@ -160,7 +190,6 @@ def draw_element_background_image(screen, element: TextField | Button, backgroun
     parchment_width_mult: float = 1.5
     parchment_height_mult: float = 2.0
 
-    image = None
     width_mult = None
     height_mult = None
     element_center = None
@@ -169,7 +198,6 @@ def draw_element_background_image(screen, element: TextField | Button, backgroun
 
     # Set multiplier and image variables based on 'background_type' and element class.
     if background_type == "wood":
-        image = uisd.ui_registry["wood_image"]
         if isinstance(element, Button):
             width_mult = wood_width_button_mult
             height_mult = wood_height_button_mult
@@ -178,12 +206,10 @@ def draw_element_background_image(screen, element: TextField | Button, backgroun
             height_mult = wood_height_mult
 
     elif background_type == "ornate_wood":
-        image = uisd.ui_registry["wood_ornate_image"]
         width_mult = wood_width_mult
         height_mult = wood_height_mult
 
     elif background_type == "parchment":
-        image = uisd.ui_registry["parchment_images"][parchment]
         width_mult = parchment_width_mult
         height_mult = parchment_height_mult
 
@@ -203,10 +229,8 @@ def draw_element_background_image(screen, element: TextField | Button, backgroun
 
     image_width = element_width * width_mult
     image_height = element_height * height_mult
-    image_loaded = pygame.transform.scale(image, (image_width, image_height))
-    image_rect = image_loaded.get_rect(center=element_center)
 
-    screen.blit(image_loaded, image_rect)
+    draw_image(screen, background_type, image_width, image_height, center=element_center, parchment=parchment)
 
 
 def draw_grouped_elements_background_image(screen, element_lists: list[tuple], parchment=1) -> None:
@@ -220,7 +244,7 @@ def draw_grouped_elements_background_image(screen, element_lists: list[tuple], p
 
     NOTE: This function handles only elements which are instances of class 'TextField' or 'InteractiveText' in its current
         form. Handling of other GUI classes can be added by implementing appropriate code blocks, re-using the existing
-        structure. Same goes for helper functions 'get_first_last_onscreen_element_rects()' and 'get_element_rect()'.
+        structure. Same goes for helper functions 'get_first_last_onscreen_element_rect()' and 'get_element_rect()'.
         Furthermore, only background images which are part of 'uisd.ui_registry["parchment_images"]' are used here. See
         handling of different background options in 'draw_element_background_image()' if you want to expand this function.
     """
@@ -229,7 +253,7 @@ def draw_grouped_elements_background_image(screen, element_lists: list[tuple], p
     image_height_mult: float = 1.4
 
     # Get first and last group element rect on-screen.
-    first_element_rect, last_element_rect = get_first_last_onscreen_element_rects(element_lists)
+    first_element_rect, last_element_rect = get_first_last_onscreen_element_rect(element_lists)
     first_centery, last_centery = first_element_rect.centery, last_element_rect.centery
     # Calculate y-position of background image.
     elements_block_height: int = last_centery - first_centery
@@ -237,11 +261,9 @@ def draw_grouped_elements_background_image(screen, element_lists: list[tuple], p
 
     image_width: float = get_image_width(element_lists) * image_width_mult
     image_height: float = (last_element_rect.bottom - first_element_rect.top) * image_height_mult
-    image = uisd.ui_registry["parchment_images"][parchment]
-    image_loaded = pygame.transform.scale(image, (image_width, image_height))
-    image_rect: pygame.Rect = image_loaded.get_rect(centerx=first_element_rect.centerx, centery=image_centery)
+    image_center: tuple[int, int] = (first_element_rect.centerx, image_centery)
 
-    screen.blit(image_loaded, image_rect)
+    draw_image(screen, "parchment", image_width, image_height, center=image_center, parchment=parchment)
 
 
 def get_image_width(elements_list: list[tuple]) -> float:
@@ -260,7 +282,7 @@ def get_image_width(elements_list: list[tuple]) -> float:
     return max(elements_width)
 
 
-def get_first_last_onscreen_element_rects(element_lists: list[tuple]) -> tuple[pygame.Rect, pygame.Rect]:
+def get_first_last_onscreen_element_rect(element_lists: list[tuple]) -> tuple[pygame.Rect, pygame.Rect]:
     """Get first and last element that is displayed on screen and return correct rects for each based on their class.
     ARGS:
          element_lists: list of up to two tuples containing element groups, i.e. active and/or inactive element groups
