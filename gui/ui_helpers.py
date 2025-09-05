@@ -902,6 +902,7 @@ def draw_chosen_money_option(screen) -> None:
     ARGS:
         screen: PyGame window.
     """
+    screen_rect = screen.get_rect()
     text_large: int = uisd.ui_registry["text_large"]
     dice_roll_duration: int | float = 1
 
@@ -913,6 +914,12 @@ def draw_chosen_money_option(screen) -> None:
     money_input_prompt: TextField = uisd.ui_registry["money_amount_input"][2]
 
     if sd.random_money_flag:
+        # Scale, position and draw background image for random money output message.
+        image_width = screen_rect.width / 3
+        image_height = screen_rect.height / 5
+        image_center = (screen_rect.centerx, rolling_dice_money_field.text_rect.bottom)
+        draw_image(screen, "parchment", image_width, image_height, center=image_center, parchment=2)
+
         # Check timer to allow for dice roll effect.
         if time.time() - uisd.dice_roll_start_time < dice_roll_duration:
             rolling_dice_money_field.draw_text()
@@ -926,7 +933,9 @@ def draw_chosen_money_option(screen) -> None:
             # Reset global dice roll timer. Not strictly necessary, but better safe than sorry.
             uisd.dice_roll_start_time = 0
             uisd.dice_roll_complete = True
+
     elif sd.custom_money_flag:
+        draw_single_element_background_image(screen, money_input_prompt, "parchment", parchment=2)
         money_input_prompt.draw_text()
         money_amount_field.draw_input_field()
 
