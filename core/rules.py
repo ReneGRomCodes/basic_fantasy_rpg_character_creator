@@ -168,7 +168,7 @@ CLASS_DATA: dict = {
         "min_score": ((INTELLIGENCE, 9), (DEXTERITY, 9)),
         "class_hit_die": 4,
         "next_level_xp": 3750,
-        "class_specials": (),
+        "class_specials": ("Sneak Attack", "Thief Abilities"),
         "class_saving_throws": SAVING_THROWS["magic_user_thief_saves"],
         "spells": ["Read Magic"],
         "inventory": [item_inst.SPELLBOOK],

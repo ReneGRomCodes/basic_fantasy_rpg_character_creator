@@ -184,7 +184,7 @@ class CharacterSheet:
         else:
             class_text = self.character.class_name
 
-        self.class_specials: TextField = TextField(screen, class_text + " SPECIALS", text_large)  # ANCHOR
+        self.class_specials: TextField = TextField(screen, class_text.upper() + " SPECIALS", text_large)  # ANCHOR
         # 'class_special' object has its text and position dynamically modified in method 'draw_format_dynamic_field()'
         # to account for the fact that number of specials in 'character.class_specials' is unpredictable at the start of
         # the character creation.
