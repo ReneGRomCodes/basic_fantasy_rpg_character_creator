@@ -305,6 +305,16 @@ class CharacterSheet:
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
         )
 
+        # Background image attributes.
+        bg_type = uisd.ui_registry["parchment_images"][2]
+        bg_width: float = self.screen_width * 1.18
+        bg_height: float = self.screen_height * 1.15
+        bg_center: tuple[int, int] = self.screen_rect.center
+        self.bg_image_loaded = pygame.transform.scale(bg_type, (bg_width, bg_height))
+        self.bg_image_rect = self.bg_image_loaded.get_rect(center=bg_center)
+        # List of character attribute categories as stored in 'self.screen_grid_array'.
+        self.cs_categories = [col for row in self.screen_grid_array for col in row if col]
+
 
     """Main methods to position/display character sheet. Called from function 'character_sheet_state_manager()' in
     'core/state_manager.py'."""
@@ -316,6 +326,8 @@ class CharacterSheet:
         """
         if self.show_grid:
             self.draw_grid()
+
+        self.draw_cs_background()
 
         draw_screen_title(self.screen, self.title)
         for button in self.button_group:
@@ -364,6 +376,9 @@ class CharacterSheet:
         if self.character.class_name in CLASS_CATEGORIES["spell_using_classes"]:
             self.spell_pos_y_list: list[int] = self.get_position_dynamic_field(self.spell, self.character.spells,
                                                                                self.spells)
+
+    def draw_cs_background(self):
+        self.screen.blit(self.bg_image_loaded, self.bg_image_rect)
 
 
     """Helper methods for use within this class.
