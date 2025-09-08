@@ -8,5 +8,4 @@ this point it has become mostly a dumping ground for 'todos'.
 # TODO Equip/unequip methods work only for armor right now in 'character_model.py'
 
 # TODOS:
-# TODO add sections for thief skills to character sheet
 # TODO add 'export to pdf' functionality -> check reportlab and fpdf2 libraries

@@ -85,7 +85,9 @@ RACE_DATA: dict = {
     "Elf": {
         "min_max_score": {"minimum": (INTELLIGENCE, 9), "maximum": (CONSTITUTION, 17)},
         "race_hit_die": 6,
-        "race_specials": ("Darkvision 60'", "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
+        "race_specials": ("Darkvision 60'",
+                          "Detect secret doors 1-2 on d6, 1 on d6 with a cursory look",
+                          "Immune to the paralyzing attack of ghouls",
                           "Range reduction by 1 for surprise checks"),
         "race_bonuses": SAVING_THROWS["elf_bonuses"],
         "classes": ("Cleric", "Fighter", "Magic-User", "Thief", "Fighter/Magic-User", "Magic-User/Thief"),
@@ -95,7 +97,9 @@ RACE_DATA: dict = {
     "Halfling": {
         "min_max_score": {"minimum": (DEXTERITY, 9), "maximum": (STRENGTH, 17)},
         "race_hit_die": 6,
-        "race_specials": ("+1 attack bonus on ranged weapons", "+1 to initiative die rolls",
+        "race_specials": ("+1 attack bonus on ranged weapons",
+                          "+2 bonus to AC when attacked in melee by creatures larger than man-sized ",
+                          "+1 to initiative die rolls",
                           "Hide (10% chance to be detected outdoors, 30% chance to be detected indoors"),
         "race_bonuses": SAVING_THROWS["halfling_bonuses"],
         "classes": ("Cleric", "Fighter", "Thief"),

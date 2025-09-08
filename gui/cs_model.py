@@ -305,6 +305,7 @@ class CharacterSheet:
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
         )
 
+        # TODO work in progress!
         # Background image attributes.
         bg_type = uisd.ui_registry["parchment_images"][2]
         bg_width: float = self.screen_width * 1.18
@@ -353,6 +354,8 @@ class CharacterSheet:
 
     def position_cs_elements(self) -> None:
         """Position character sheet elements on screen."""
+        valinor = (-9999, self.screen_rect.centery)  # Off-screen position for unused elements based on race/class.
+                                                     # can only be reached by sailing the Straight Road.
         self.position_anchors()
 
         self.main_menu_button.button_rect.bottomright = (self.screen_rect.right - self.edge_spacing,
@@ -364,7 +367,16 @@ class CharacterSheet:
         self.position_saving_throws()
         self.position_weight_carrying_capacity()
         self.position_weapon()
-        self.position_armor()
+
+        # Move anchor objects to valinor if irrelevant for character race/class.
+        if self.character.class_name not in CLASS_CATEGORIES["spell_using_classes"]:
+            self.spells.text_rect.center = valinor
+        if not self.character.class_specials:
+            self.class_specials.text_rect.center = valinor
+        if self.character.class_name not in CLASS_CATEGORIES["no_armor_classes"]:
+            self.position_armor()
+        else:
+            self.armor_label.text_rect.center = valinor
 
         self.specials_pos_y_list: list[int] = self.get_position_dynamic_field(self.special_ability, self.character.race_specials,
                                                                               self.special_abilities, text_prefix=" - ")
@@ -372,11 +384,10 @@ class CharacterSheet:
                                                                                    self.class_specials)
         self.inventory_pos_y_list: list[object] = self.get_position_dynamic_field(self.inventory_item, self.inventory_item_list,
                                                                                   self.inventory)
-
-        if self.character.class_name in CLASS_CATEGORIES["spell_using_classes"]:
-            self.spell_pos_y_list: list[int] = self.get_position_dynamic_field(self.spell, self.character.spells,
+        self.spell_pos_y_list: list[int] = self.get_position_dynamic_field(self.spell, self.character.spells,
                                                                                self.spells)
 
+    # TODO work in progress!
     def draw_cs_background(self):
         self.screen.blit(self.bg_image_loaded, self.bg_image_rect)
 
