@@ -1,6 +1,7 @@
 """
 Helper class to organize and access character sheet objects as attributes.
 """
+import random
 import pygame
 
 from core.character_model import Character
@@ -82,7 +83,6 @@ class CharacterSheet:
         cls: TextField = TextField(screen, f"Class: {self.character.class_name}", text_large)
         level: TextField = TextField(screen, f"Level: {self.character.level}", text_large)
         next_lvl_xp: TextField = TextField(screen, f"XP to next level: {self.character.next_level_xp}", text_large)
-        money: TextField = TextField(screen, f"Money: {self.character.money}", text_large)
         movement: TextField = TextField(screen, f"Movement: {self.character.movement}{self.distance_unit}", self.text_standard)
         # Combat related elements.
         armor_class: TextField = TextField(screen, f"Armor Class: {self.character.armor_class}", self.text_standard)
@@ -91,8 +91,8 @@ class CharacterSheet:
         # Language elements.
         languages: TextField = TextField(screen, f"Languages: {self.build_languages_string()}", self.text_standard)
 
-        self.basic_info_groups: tuple[TextField, ...] = (name, xp, race, cls, level, next_lvl_xp, money, movement,
-                                                         armor_class, health_points, attack_bonus, languages)
+        self.basic_info_group_0: tuple[TextField, ...] = (name, xp, race, cls, level, next_lvl_xp, languages)
+        self.basic_info_group_1: tuple[TextField, ...] = (movement, armor_class, health_points, attack_bonus)
 
         # Abilities elements.
         # Ability name strings as defined in 'core/rules.py' ABILITIES.
@@ -218,6 +218,10 @@ class CharacterSheet:
         self.inventory_item_weight: TextField = TextField(screen, "", self.text_standard)
         self.inventory_item_list, self.inventory_item_weight_list = self.get_inventory_strings()
         self.inventory_pos_y_list: list[int] = []
+        # Money element. Thematically related to inventory and handled together in draw method 'draw_inventory()'.
+        self.money: TextField = TextField(screen, f"Money: {self.character.money}", text_large)
+
+        self.inventory_group: tuple[TextField, ...] = (self.inventory, self.money)
 
         # Weapon elements.
         self.weapon_label: TextField = TextField(screen, "WEAPON", self.text_standard)  # ANCHOR
@@ -262,7 +266,6 @@ class CharacterSheet:
         cls  : TextField = cls
         level: TextField = level
         nxtxp: TextField = next_lvl_xp
-        money: TextField = money
         mvmnt: TextField = movement
         arcls: TextField = armor_class
         hp   : TextField = health_points
@@ -275,6 +278,7 @@ class CharacterSheet:
         clssp: TextField = self.class_specials
         crcap: TextField = self.carrying_cap
         invty: TextField = self.inventory
+        money: TextField = self.money
         weapn: TextField = self.weapon_label
         armor: TextField = self.armor_label
 
@@ -306,15 +310,20 @@ class CharacterSheet:
         )
 
         # TODO work in progress!
-        # Background image attributes.
+        # Character sheet background image attributes.
         bg_type = uisd.ui_registry["parchment_images"][2]
         bg_width: float = self.screen_width * 1.18
         bg_height: float = self.screen_height * 1.15
         bg_center: tuple[int, int] = self.screen_rect.center
         self.bg_image_loaded = pygame.transform.scale(bg_type, (bg_width, bg_height))
-        self.bg_image_rect = self.bg_image_loaded.get_rect(center=bg_center)
+        self.bg_image_rect: pygame.Rect = self.bg_image_loaded.get_rect(center=bg_center)
+        # Groups/sections background attributes.
+        self.groups_bg_type = uisd.ui_registry["parchment_images"][1]
+        self.groups_bg_list = uisd.ui_registry["parchment_images"]
         # List of character attribute categories as stored in 'self.screen_grid_array'.
-        self.cs_categories = [col for row in self.screen_grid_array for col in row if col]
+        #self.cs_categories = [col for row in self.screen_grid_array for col in row if col]
+        self.bg_groups: tuple[tuple, ...] = (self.basic_info_group_0, self.basic_info_group_1)
+        self.bg_group_images = {}
 
 
     """Main methods to position/display character sheet. Called from function 'character_sheet_state_manager()' in
@@ -325,9 +334,6 @@ class CharacterSheet:
         ARGS:
             mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
         """
-        if self.show_grid:
-            self.draw_grid()
-
         self.draw_cs_background()
 
         draw_screen_title(self.screen, self.title)
@@ -335,8 +341,9 @@ class CharacterSheet:
             draw_single_element_background_image(self.screen, button, "wood")
             button.draw_button(mouse_pos)
 
-        for field in self.basic_info_groups:
-            field.draw_text()
+        for group in (self.basic_info_group_0, self.basic_info_group_1):
+            for field in group:
+                field.draw_text()
 
         self.draw_ability_scores()
         self.draw_saving_throws()
@@ -344,18 +351,17 @@ class CharacterSheet:
         self.draw_weight_carrying_capacity()
         self.draw_inventory()
         self.draw_weapon()
+        self.draw_spells()
+        self.draw_class_specials()
+        self.draw_armor()
 
-        if self.character.class_name in CLASS_CATEGORIES["spell_using_classes"]:
-            self.draw_spells()
-        if self.character.class_specials:
-            self.draw_class_specials()
-        if self.character.class_name not in CLASS_CATEGORIES["no_armor_classes"]:
-            self.draw_armor()
+        if self.show_grid:
+            self.draw_grid()
 
     def position_cs_elements(self) -> None:
         """Position character sheet elements on screen."""
-        valinor = (-9999, self.screen_rect.centery)  # Off-screen position for unused elements based on race/class.
-                                                     # can only be reached by sailing the Straight Road.
+        valinor: tuple[int, int] = (-9999, self.screen_rect.centery)  # Off-screen position for unused elements based on race/class.
+                                                                      # Can only be reached by sailing the 'Straight Road'.
         self.position_anchors()
 
         self.main_menu_button.button_rect.bottomright = (self.screen_rect.right - self.edge_spacing,
@@ -368,7 +374,7 @@ class CharacterSheet:
         self.position_weight_carrying_capacity()
         self.position_weapon()
 
-        # Move anchor objects to valinor if irrelevant for character race/class.
+        # Move anchor objects to Valinor if irrelevant for character race/class.
         if self.character.class_name not in CLASS_CATEGORIES["spell_using_classes"]:
             self.spells.text_rect.center = valinor
         if not self.character.class_specials:
@@ -385,11 +391,33 @@ class CharacterSheet:
         self.inventory_pos_y_list: list[object] = self.get_position_dynamic_field(self.inventory_item, self.inventory_item_list,
                                                                                   self.inventory)
         self.spell_pos_y_list: list[int] = self.get_position_dynamic_field(self.spell, self.character.spells,
-                                                                               self.spells)
+                                                                           self.spells)
+
+        self.get_section_backgrounds_dict()
 
     # TODO work in progress!
-    def draw_cs_background(self):
+    def draw_cs_background(self) -> None:
         self.screen.blit(self.bg_image_loaded, self.bg_image_rect)
+
+        for v in self.bg_group_images.values():
+            self.screen.blit(v[0], v[1])
+
+    def get_section_backgrounds_dict(self) -> None:
+        for index, group in enumerate(self.bg_groups):
+            group_top: int = min(group, key=lambda x: x.text_rect.top).text_rect.top
+            group_bottom: int = max(group, key=lambda x: x.text_rect.bottom).text_rect.bottom
+            group_left: int = min(group, key=lambda x: x.text_rect.left).text_rect.left
+            group_right: int = max(group, key=lambda x: x.text_rect.right).text_rect.right
+
+            width = group_right - group_left
+            height = group_bottom - group_top
+            center = ((group_left + (width // 2)), (group_top + (height // 2)))
+
+            image = pygame.Surface.copy(self.groups_bg_list[random.randint(0, len(self.groups_bg_list) - 1)])
+            image_loaded = pygame.transform.scale(image, (width, height))
+            image_rect = image_loaded.get_rect(center=center)
+
+            self.bg_group_images[index] = (image_loaded, image_rect)
 
 
     """Helper methods for use within this class.
@@ -525,7 +553,9 @@ class CharacterSheet:
 
     def draw_inventory(self) -> None:
         """Format, position and inventory elements on screen."""
-        self.inventory.draw_text()
+        for field in self.inventory_group:
+            field.draw_text()
+
         self.format_and_draw_dynamic_field(self.inventory_item, self.inventory_item_list, self.inventory,
                                            self.inventory_pos_y_list)
         self.position_and_draw_inventory_weight()
