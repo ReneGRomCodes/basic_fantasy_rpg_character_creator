@@ -317,13 +317,16 @@ class CharacterSheet:
         bg_center: tuple[int, int] = self.screen_rect.center
         self.bg_image_loaded = pygame.transform.scale(bg_type, (bg_width, bg_height))
         self.bg_image_rect: pygame.Rect = self.bg_image_loaded.get_rect(center=bg_center)
+
         # Groups/sections background attributes.
-        self.groups_bg_type = uisd.ui_registry["parchment_images"][1]
+        self.groups_bg_type = uisd.ui_registry["parchment_images"][1]  # TODO throw out if random selection looks okay.
         self.groups_bg_list = uisd.ui_registry["parchment_images"]
-        # List of character attribute categories as stored in 'self.screen_grid_array'.
-        #self.cs_categories = [col for row in self.screen_grid_array for col in row if col]
-        self.bg_groups: tuple[tuple, ...] = (self.basic_info_group_0, self.basic_info_group_1)
-        self.bg_group_images = {}
+        #self.cs_categories = [col for row in self.screen_grid_array for col in row if col]  # TODO can go if not used.
+        ability_bg_group = self.get_bg_group(self.ability_groups, self.abilities)
+        saving_throws_bg_group = self.get_bg_group(self.saving_throw_groups, self.saving_throws)
+        self.groups_bg: tuple[tuple, ...] = (self.basic_info_group_0, self.basic_info_group_1, ability_bg_group,
+                                             saving_throws_bg_group)
+        self.groups_bg_images = {}
 
 
     """Main methods to position/display character sheet. Called from function 'character_sheet_state_manager()' in
@@ -399,25 +402,42 @@ class CharacterSheet:
     def draw_cs_background(self) -> None:
         self.screen.blit(self.bg_image_loaded, self.bg_image_rect)
 
-        for v in self.bg_group_images.values():
+        for v in self.groups_bg_images.values():
             self.screen.blit(v[0], v[1])
 
     def get_section_backgrounds_dict(self) -> None:
-        for index, group in enumerate(self.bg_groups):
+        for index, group in enumerate(self.groups_bg):
             group_top: int = min(group, key=lambda x: x.text_rect.top).text_rect.top
             group_bottom: int = max(group, key=lambda x: x.text_rect.bottom).text_rect.bottom
             group_left: int = min(group, key=lambda x: x.text_rect.left).text_rect.left
             group_right: int = max(group, key=lambda x: x.text_rect.right).text_rect.right
+            group_width = group_right - group_left
+            group_height = group_bottom - group_top
 
-            width = group_right - group_left
-            height = group_bottom - group_top
-            center = ((group_left + (width // 2)), (group_top + (height // 2)))
+            width_mult: float = 1.3
+            height_mult: float = 1.5
+            image_width: int = int(group_width * width_mult)
+            image_height: int = int(group_height * height_mult)
+            center: tuple[int, int] = ((group_left + (group_width // 2)), (group_top + (group_height // 2)))
 
             image = pygame.Surface.copy(self.groups_bg_list[random.randint(0, len(self.groups_bg_list) - 1)])
-            image_loaded = pygame.transform.scale(image, (width, height))
+            image_loaded = pygame.transform.scale(image, (image_width, image_height))
             image_rect = image_loaded.get_rect(center=center)
 
-            self.bg_group_images[index] = (image_loaded, image_rect)
+            self.groups_bg_images[index] = (image_loaded, image_rect)
+
+    @staticmethod
+    def get_bg_group(group_array: tuple[tuple, ...], anchor: None | TextField = None) -> tuple:
+        bg_group_list = []
+
+        if anchor:
+            bg_group_list.append(anchor)
+
+        for item in group_array:
+            for element in item:
+                bg_group_list.append(element)
+
+        return tuple(bg_group_list)
 
 
     """Helper methods for use within this class.
