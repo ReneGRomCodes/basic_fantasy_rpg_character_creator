@@ -219,7 +219,7 @@ class CharacterSheet:
         self.inventory_item_list, self.inventory_item_weight_list = self.get_inventory_strings()
         self.inventory_pos_y_list: list[int] = []
         # Money element. Thematically related to inventory and handled together in draw method 'draw_inventory()', but
-        # positioned separately via 'self.screen_grid_array' further down..
+        # positioned separately via 'self.screen_grid_array' further down.
         self.money: TextField = TextField(screen, f"Money: {self.character.money}", text_large)
 
         self.inventory_group: tuple[TextField, ...] = (self.inventory, self.money)
@@ -322,7 +322,6 @@ class CharacterSheet:
 
         # Groups/sections background attributes.
         self.groups_bg_list = uisd.ui_registry["parchment_images"]
-        #self.cs_categories = [col for row in self.screen_grid_array for col in row if col]  # TODO can go if not used.
 
         # Sections to be included in 'abilities_bg_group'.
         ability_sect = self.get_section_from_array(self.ability_groups, self.abilities)
@@ -339,15 +338,15 @@ class CharacterSheet:
         money_sect = (self.money, )
 
         # Sections to be included in 'weapon_armor_bg_group'.
-        weapon_sect = None
-        armor_sect = None
+        weapon_sect = self.weapon_header_group + self.weapon_group
+        armor_sect = self.armor_header_group + self.get_section_from_array(self.armor_group)
 
         # Final section groups for shared backgrounds.
         basic_info_bg_group = self.basic_info_group_0
         base_abilities_bg_group = ability_sect + saving_throws_sect
         specials_bg_group = None  # Contains special abilities, class abilities, spells.
         inventory_bg_group = None  # Contains money, carrying capacity, inventory.
-        weapon_armor_bg_group = self.basic_info_group_1  # Contains worn armor and weapons.
+        weapon_armor_bg_group = self.basic_info_group_1 + weapon_sect + armor_sect
 
         self.bg_groups: tuple[tuple, ...] = (basic_info_bg_group, base_abilities_bg_group, specials_bg_group,
                                              inventory_bg_group, weapon_armor_bg_group)
@@ -432,7 +431,7 @@ class CharacterSheet:
 
     def get_groups_backgrounds_dict(self) -> None:
         for index, group in enumerate(self.bg_groups):
-            if group:  # TODO remove if block when 'None' groups are removed from 'self.groups.bg'.
+            if group:  # TODO remove if-block when 'None' groups are removed from 'self.groups.bg'.
                 group_top: int = min(group, key=lambda x: x.text_rect.top).text_rect.top
                 group_bottom: int = max(group, key=lambda x: x.text_rect.bottom).text_rect.bottom
                 group_left: int = min(group, key=lambda x: x.text_rect.left).text_rect.left
@@ -469,7 +468,7 @@ class CharacterSheet:
 
         return sheet_bg_image_surface, sheet_bg_image_rect
 
-    def get_and_format_group_background(self, group_width, group_height, group_left, group_top)\
+    def get_and_format_group_background(self, group_width: int, group_height: int, group_left: int, group_top: int)\
             -> tuple[pygame.Surface, pygame.Rect]:
         if group_width >= group_height:
             width_mult: float = 1.3
