@@ -218,7 +218,8 @@ class CharacterSheet:
         self.inventory_item_weight: TextField = TextField(screen, "", self.text_standard)
         self.inventory_item_list, self.inventory_item_weight_list = self.get_inventory_strings()
         self.inventory_pos_y_list: list[int] = []
-        # Money element. Thematically related to inventory and handled together in draw method 'draw_inventory()'.
+        # Money element. Thematically related to inventory and handled together in draw method 'draw_inventory()', but
+        # positioned separately via 'self.screen_grid_array' further down..
         self.money: TextField = TextField(screen, f"Money: {self.character.money}", text_large)
 
         self.inventory_group: tuple[TextField, ...] = (self.inventory, self.money)
@@ -322,10 +323,28 @@ class CharacterSheet:
         self.groups_bg_type = uisd.ui_registry["parchment_images"][1]  # TODO throw out if random selection looks okay.
         self.groups_bg_list = uisd.ui_registry["parchment_images"]
         #self.cs_categories = [col for row in self.screen_grid_array for col in row if col]  # TODO can go if not used.
-        ability_bg_group = self.get_bg_group(self.ability_groups, self.abilities)
-        saving_throws_bg_group = self.get_bg_group(self.saving_throw_groups, self.saving_throws)
+        ability_bg_group = self.get_bg_group_from_array(self.ability_groups, self.abilities)
+        saving_throws_bg_group = self.get_bg_group_from_array(self.saving_throw_groups, self.saving_throws)
+
+        specials_bg_group = None  # Contains special abilities, class abilities, spells.
+        # Groups to be included in 'specials_bg_group'.
+        special_ablt_bg_group = None
+        spell_bg_group = None
+        cls_special_bg_group = None
+
+        inventory_bg_group = None  # Contains money, carrying capacity, inventory.
+        # Groups to be included in 'inventory_bg_group'.
+        weight_bg_group = self.get_bg_group_from_array(self.weight_group, self.carrying_cap)
+        money_bg_group = (self.money, )
+
+        weapon_armor_bg_group = None  # Contains worn armor and weapons.
+        # Groups to be included in 'weapon_armor_bg_group'.
+        weapon_bg_group = None
+        armor_bg_group = None
+
         self.groups_bg: tuple[tuple, ...] = (self.basic_info_group_0, self.basic_info_group_1, ability_bg_group,
-                                             saving_throws_bg_group)
+                                             saving_throws_bg_group, specials_bg_group, inventory_bg_group,
+                                             weapon_armor_bg_group)
         self.groups_bg_images = {}
 
 
@@ -407,27 +426,20 @@ class CharacterSheet:
 
     def get_section_backgrounds_dict(self) -> None:
         for index, group in enumerate(self.groups_bg):
-            group_top: int = min(group, key=lambda x: x.text_rect.top).text_rect.top
-            group_bottom: int = max(group, key=lambda x: x.text_rect.bottom).text_rect.bottom
-            group_left: int = min(group, key=lambda x: x.text_rect.left).text_rect.left
-            group_right: int = max(group, key=lambda x: x.text_rect.right).text_rect.right
-            group_width = group_right - group_left
-            group_height = group_bottom - group_top
+            if group:  # TODO remove if block when 'None' groups are removed from 'self.groups.bg'.
+                group_top: int = min(group, key=lambda x: x.text_rect.top).text_rect.top
+                group_bottom: int = max(group, key=lambda x: x.text_rect.bottom).text_rect.bottom
+                group_left: int = min(group, key=lambda x: x.text_rect.left).text_rect.left
+                group_right: int = max(group, key=lambda x: x.text_rect.right).text_rect.right
+                group_width = group_right - group_left
+                group_height = group_bottom - group_top
 
-            width_mult: float = 1.3
-            height_mult: float = 1.5
-            image_width: int = int(group_width * width_mult)
-            image_height: int = int(group_height * height_mult)
-            center: tuple[int, int] = ((group_left + (group_width // 2)), (group_top + (group_height // 2)))
+                image_surface, image_rect = self.get_and_format_image(group_width, group_height, group_left, group_top)
 
-            image = pygame.Surface.copy(self.groups_bg_list[random.randint(0, len(self.groups_bg_list) - 1)])
-            image_loaded = pygame.transform.scale(image, (image_width, image_height))
-            image_rect = image_loaded.get_rect(center=center)
-
-            self.groups_bg_images[index] = (image_loaded, image_rect)
+                self.groups_bg_images[index] = (image_surface, image_rect)
 
     @staticmethod
-    def get_bg_group(group_array: tuple[tuple, ...], anchor: None | TextField = None) -> tuple:
+    def get_bg_group_from_array(group_array: tuple[tuple, ...], anchor: None | TextField = None) -> tuple[TextField, ...]:
         bg_group_list = []
 
         if anchor:
@@ -438,6 +450,24 @@ class CharacterSheet:
                 bg_group_list.append(element)
 
         return tuple(bg_group_list)
+
+    def get_and_format_image(self, group_width, group_height, group_left, group_top) -> tuple[pygame.Surface, pygame.Rect]:
+        if group_width >= group_height:
+            width_mult: float = 1.3
+            height_mult: float = 1.5
+        else:
+            width_mult: float = 1.4
+            height_mult: float = 1.3
+
+        image_width: int = int(group_width * width_mult)
+        image_height: int = int(group_height * height_mult)
+        center: tuple[int, int] = ((group_left + (group_width // 2)), (group_top + (group_height // 2)))
+
+        image = pygame.Surface.copy(self.groups_bg_list[random.randint(0, len(self.groups_bg_list) - 1)])
+        image_loaded = pygame.transform.scale(image, (image_width, image_height))
+        image_rect = image_loaded.get_rect(center=center)
+
+        return image_loaded, image_rect
 
 
     """Helper methods for use within this class.
