@@ -349,7 +349,6 @@ class CharacterSheet:
         inventory_bg_group = None  # Contains money, carrying capacity, inventory.
         weapon_armor_bg_group = self.basic_info_group_1  # Contains worn armor and weapons.
 
-
         self.bg_groups: tuple[tuple, ...] = (basic_info_bg_group, base_abilities_bg_group, specials_bg_group,
                                              inventory_bg_group, weapon_armor_bg_group)
         self.groups_bg_images = {}
@@ -447,16 +446,15 @@ class CharacterSheet:
 
     @staticmethod
     def get_section_from_array(group_array: tuple[tuple, ...], anchor: None | TextField = None) -> tuple[TextField, ...]:
-        sect_list = []
+        section = ()
 
         if anchor:
-            sect_list.append(anchor)
+            section += (anchor, )
 
         for item in group_array:
-            for element in item:
-                sect_list.append(element)
+            section += item
 
-        return tuple(sect_list)
+        return section
 
     def get_and_format_sheet_background(self) -> tuple[pygame.Surface, pygame.Rect]:
         width_mult: float = 1.23
