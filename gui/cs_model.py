@@ -283,7 +283,7 @@ class CharacterSheet:
         weapn: TextField = self.weapon_label
         armor: TextField = self.armor_label
 
-        self.screen_grid_array: tuple[tuple[False | TextField, ...], ...] = (
+        self.screen_grid_array: tuple[tuple[bool | TextField, ...], ...] = (
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
@@ -311,40 +311,47 @@ class CharacterSheet:
         )
 
         # TODO work in progress!
+        """'Sections' (i.e. ability scores, inventory, carrying weight) are sorted into 'groups' based on their position
+        on screen to share a background image.
+        For example:
+        'abilities_bg_group' for ability related sections contains the groups for ability scores and saving throws, which
+        are usually handled separately."""
         # Character sheet background image attributes.
-        bg_type = uisd.ui_registry["parchment_images"][2]
-        bg_width: float = self.screen_width * 1.18
-        bg_height: float = self.screen_height * 1.15
-        bg_center: tuple[int, int] = self.screen_rect.center
-        self.bg_image_loaded = pygame.transform.scale(bg_type, (bg_width, bg_height))
-        self.bg_image_rect: pygame.Rect = self.bg_image_loaded.get_rect(center=bg_center)
+        self.sheet_bg_type = uisd.ui_registry["wood_image"]
+        self.sheet_bg_image_surface, self.sheet_bg_image_rect = self.get_and_format_sheet_background()
 
         # Groups/sections background attributes.
-        self.groups_bg_type = uisd.ui_registry["parchment_images"][1]  # TODO throw out if random selection looks okay.
         self.groups_bg_list = uisd.ui_registry["parchment_images"]
         #self.cs_categories = [col for row in self.screen_grid_array for col in row if col]  # TODO can go if not used.
-        ability_bg_group = self.get_bg_group_from_array(self.ability_groups, self.abilities)
-        saving_throws_bg_group = self.get_bg_group_from_array(self.saving_throw_groups, self.saving_throws)
 
+        # Sections to be included in 'abilities_bg_group'.
+        ability_sect = self.get_section_from_array(self.ability_groups, self.abilities)
+        saving_throws_sect = self.get_section_from_array(self.saving_throw_groups, self.saving_throws)
+
+        # Sections to be included in 'specials_bg_group'.
+        special_ablt_sect = None
+        spell_sect = None
+        cls_special_sect = None
+
+        # Sections to be included in 'inventory_bg_group'.
+        weight_sect = self.get_section_from_array(self.weight_group, self.carrying_cap)
+        inventory_sect = None
+        money_sect = (self.money, )
+
+        # Sections to be included in 'weapon_armor_bg_group'.
+        weapon_sect = None
+        armor_sect = None
+
+        # Final section groups for shared backgrounds.
+        basic_info_bg_group = self.basic_info_group_0
+        base_abilities_bg_group = ability_sect + saving_throws_sect
         specials_bg_group = None  # Contains special abilities, class abilities, spells.
-        # Groups to be included in 'specials_bg_group'.
-        special_ablt_bg_group = None
-        spell_bg_group = None
-        cls_special_bg_group = None
-
         inventory_bg_group = None  # Contains money, carrying capacity, inventory.
-        # Groups to be included in 'inventory_bg_group'.
-        weight_bg_group = self.get_bg_group_from_array(self.weight_group, self.carrying_cap)
-        money_bg_group = (self.money, )
+        weapon_armor_bg_group = self.basic_info_group_1  # Contains worn armor and weapons.
 
-        weapon_armor_bg_group = None  # Contains worn armor and weapons.
-        # Groups to be included in 'weapon_armor_bg_group'.
-        weapon_bg_group = None
-        armor_bg_group = None
 
-        self.groups_bg: tuple[tuple, ...] = (self.basic_info_group_0, self.basic_info_group_1, ability_bg_group,
-                                             saving_throws_bg_group, specials_bg_group, inventory_bg_group,
-                                             weapon_armor_bg_group)
+        self.bg_groups: tuple[tuple, ...] = (basic_info_bg_group, base_abilities_bg_group, specials_bg_group,
+                                             inventory_bg_group, weapon_armor_bg_group)
         self.groups_bg_images = {}
 
 
@@ -415,17 +422,17 @@ class CharacterSheet:
         self.spell_pos_y_list: list[int] = self.get_position_dynamic_field(self.spell, self.character.spells,
                                                                            self.spells)
 
-        self.get_section_backgrounds_dict()
+        self.get_groups_backgrounds_dict()
 
     # TODO work in progress!
     def draw_cs_background(self) -> None:
-        self.screen.blit(self.bg_image_loaded, self.bg_image_rect)
+        self.screen.blit(self.sheet_bg_image_surface, self.sheet_bg_image_rect)
 
         for v in self.groups_bg_images.values():
             self.screen.blit(v[0], v[1])
 
-    def get_section_backgrounds_dict(self) -> None:
-        for index, group in enumerate(self.groups_bg):
+    def get_groups_backgrounds_dict(self) -> None:
+        for index, group in enumerate(self.bg_groups):
             if group:  # TODO remove if block when 'None' groups are removed from 'self.groups.bg'.
                 group_top: int = min(group, key=lambda x: x.text_rect.top).text_rect.top
                 group_bottom: int = max(group, key=lambda x: x.text_rect.bottom).text_rect.bottom
@@ -434,27 +441,41 @@ class CharacterSheet:
                 group_width = group_right - group_left
                 group_height = group_bottom - group_top
 
-                image_surface, image_rect = self.get_and_format_image(group_width, group_height, group_left, group_top)
+                image_surface, image_rect = self.get_and_format_group_background(group_width, group_height, group_left, group_top)
 
                 self.groups_bg_images[index] = (image_surface, image_rect)
 
     @staticmethod
-    def get_bg_group_from_array(group_array: tuple[tuple, ...], anchor: None | TextField = None) -> tuple[TextField, ...]:
-        bg_group_list = []
+    def get_section_from_array(group_array: tuple[tuple, ...], anchor: None | TextField = None) -> tuple[TextField, ...]:
+        sect_list = []
 
         if anchor:
-            bg_group_list.append(anchor)
+            sect_list.append(anchor)
 
         for item in group_array:
             for element in item:
-                bg_group_list.append(element)
+                sect_list.append(element)
 
-        return tuple(bg_group_list)
+        return tuple(sect_list)
 
-    def get_and_format_image(self, group_width, group_height, group_left, group_top) -> tuple[pygame.Surface, pygame.Rect]:
+    def get_and_format_sheet_background(self) -> tuple[pygame.Surface, pygame.Rect]:
+        width_mult: float = 1.23
+        height_mult: float = 1.58
+
+        width: float = self.screen_width * width_mult
+        height: float = self.screen_height * height_mult
+        center: tuple[int, int] = self.screen_rect.center
+
+        sheet_bg_image_surface = pygame.transform.scale(self.sheet_bg_type, (width, height))
+        sheet_bg_image_rect: pygame.Rect = sheet_bg_image_surface.get_rect(center=center)
+
+        return sheet_bg_image_surface, sheet_bg_image_rect
+
+    def get_and_format_group_background(self, group_width, group_height, group_left, group_top)\
+            -> tuple[pygame.Surface, pygame.Rect]:
         if group_width >= group_height:
             width_mult: float = 1.3
-            height_mult: float = 1.5
+            height_mult: float = 1.3
         else:
             width_mult: float = 1.4
             height_mult: float = 1.3
