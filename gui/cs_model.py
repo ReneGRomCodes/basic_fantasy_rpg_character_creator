@@ -328,14 +328,13 @@ class CharacterSheet:
         saving_throws_sect = self.get_section_from_array(self.saving_throw_groups, self.saving_throws)
 
         # Sections to be included in 'specials_bg_group'.
-        special_ablt_sect = None
-        spell_sect = None
-        cls_special_sect = None
+        special_ablt_sect = (self.special_abilities, )                   # TODO dynamic fields
+        spell_sect = (self.spells, )                                     # TODO dynamic fields
+        cls_special_sect = (self.class_specials, )                       # TODO dynamic fields
 
         # Sections to be included in 'inventory_bg_group'.
         weight_sect = self.get_section_from_array(self.weight_group, self.carrying_cap)
-        inventory_sect = None
-        money_sect = (self.money, )
+        inventory_sect = self.inventory_group                            # TODO dynamic fields
 
         # Sections to be included in 'weapon_armor_bg_group'.
         weapon_sect = self.weapon_header_group + self.weapon_group
@@ -344,8 +343,8 @@ class CharacterSheet:
         # Final section groups for shared backgrounds.
         basic_info_bg_group = self.basic_info_group_0
         base_abilities_bg_group = ability_sect + saving_throws_sect
-        specials_bg_group = None  # Contains special abilities, class abilities, spells.
-        inventory_bg_group = None  # Contains money, carrying capacity, inventory.
+        specials_bg_group = special_ablt_sect + spell_sect + cls_special_sect
+        inventory_bg_group = weight_sect + inventory_sect
         weapon_armor_bg_group = self.basic_info_group_1 + weapon_sect + armor_sect
 
         self.bg_groups: tuple[tuple, ...] = (basic_info_bg_group, base_abilities_bg_group, specials_bg_group,
@@ -430,18 +429,34 @@ class CharacterSheet:
             self.screen.blit(v[0], v[1])
 
     def get_groups_backgrounds_dict(self) -> None:
-        for index, group in enumerate(self.bg_groups):
-            if group:  # TODO remove if-block when 'None' groups are removed from 'self.groups.bg'.
-                group_top: int = min(group, key=lambda x: x.text_rect.top).text_rect.top
-                group_bottom: int = max(group, key=lambda x: x.text_rect.bottom).text_rect.bottom
-                group_left: int = min(group, key=lambda x: x.text_rect.left).text_rect.left
-                group_right: int = max(group, key=lambda x: x.text_rect.right).text_rect.right
-                group_width = group_right - group_left
-                group_height = group_bottom - group_top
+        cleaned_bg_groups = self.clean_bg_groups()
 
-                image_surface, image_rect = self.get_and_format_group_background(group_width, group_height, group_left, group_top)
+        for index, group in enumerate(cleaned_bg_groups):
+            group_top: int = min(group, key=lambda x: x.text_rect.top).text_rect.top
+            group_bottom: int = max(group, key=lambda x: x.text_rect.bottom).text_rect.bottom
+            group_left: int = min(group, key=lambda x: x.text_rect.left).text_rect.left
+            group_right: int = max(group, key=lambda x: x.text_rect.right).text_rect.right
+            group_width = group_right - group_left
+            group_height = group_bottom - group_top
 
-                self.groups_bg_images[index] = (image_surface, image_rect)
+            image_surface, image_rect = self.get_and_format_group_background(group_width, group_height, group_left, group_top)
+
+            self.groups_bg_images[index] = (image_surface, image_rect)
+
+    def clean_bg_groups(self) -> list[list[TextField]]:
+        """Remove elements with negative coords (outside screen) from self.bg_groups."""
+        cleaned_bg_groups = []
+
+        for group in self.bg_groups:
+            cleaned_group = [item for item in group if all(val >= 0 for val in (item.text_rect.top,
+                                                                                item.text_rect.bottom,
+                                                                                item.text_rect.left,
+                                                                                item.text_rect.right))]
+
+            if cleaned_group:
+                cleaned_bg_groups.append(cleaned_group)
+
+        return cleaned_bg_groups
 
     @staticmethod
     def get_section_from_array(group_array: tuple[tuple, ...], anchor: None | TextField = None) -> tuple[TextField, ...]:
