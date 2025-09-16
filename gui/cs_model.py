@@ -321,8 +321,8 @@ class CharacterSheet:
         NOTE: Sections must then be manually added to corresponding group variable for shared backgrounds in method
             'get_bg_groups_raw()'!
             Sections which are using dynamically changing TextField instances (i.e. spells, class specials, etc.) are
-            handled using the following structure:
-            self.section = (anchor_field, dynamically_changing_field)
+            handled using the following simple structure:
+            self.section = self.anchor_field
             In addition to being added to corresponding groups in 'get_bg_groups_raw()', these section also have to be
             processed and assigned to specific variables within said function by calling 'get_dynamic_section()'. See
             both functions for details."""
@@ -338,13 +338,13 @@ class CharacterSheet:
         self.saving_throws_sect = self.get_section_from_array(self.saving_throw_groups, self.saving_throws)
 
         # Sections to be included in 'specials_bg_group'.
-        self.special_ablt_sect = (self.special_abilities, self.special_ability)      # TODO dynamic fields
-        self.spell_sect = (self.spells, self.spell)                                     # TODO dynamic fields
-        self.cls_special_sect = (self.class_specials, self.class_special)       # TODO dynamic fields
+        self.special_ablt_sect = self.special_abilities     # TODO dynamic fields
+        self.spell_sect = self.spells                       # TODO dynamic fields
+        self.cls_special_sect = self.class_specials         # TODO dynamic fields
 
         # Sections to be included in 'inventory_bg_group'.
         self.weight_sect = self.get_section_from_array(self.weight_group, self.carrying_cap)
-        self.inventory_sect = (self.inventory, self.inventory_item_weight)          # TODO dynamic fields
+        self.inventory_sect = self.inventory                # TODO dynamic fields
         self.money_sect = (self.money, )
 
         # Sections to be included in 'weapon_armor_bg_group'.
@@ -451,7 +451,7 @@ class CharacterSheet:
         cls_special_sect = self.get_dynamic_section(self.cls_special_sect, self.class_special_pos_y_list)
         inventory_sect = self.get_dynamic_section(self.inventory_sect, self.inventory_pos_y_list, width=int(self.screen_width / 4.2))
 
-        # Section groups for shared backgrounds.
+        # Final section groups for shared backgrounds.
         basic_info_bg_group = self.basic_info_group_0
         base_abilities_bg_group = self.ability_sect + self.saving_throws_sect
         specials_bg_group = special_ablt_sect + spell_sect + cls_special_sect
@@ -491,9 +491,7 @@ class CharacterSheet:
 
         return section
 
-    def get_dynamic_section(self, section: tuple[TextField, TextField], pos_y_list: list[int], width: int=False):
-        anchor_field = section[0]
-        dynamic_field = section[1]
+    def get_dynamic_section(self, anchor_field: TextField, pos_y_list: list[int], width: int=False):
 
         if not width:
             width = self.max_line_length
@@ -501,9 +499,9 @@ class CharacterSheet:
         if not pos_y_list:
             height = anchor_field.text_rect.height
         else:
-            height = pos_y_list[-2] + (dynamic_field.text_rect.height * 2) - anchor_field.text_rect.bottom
+            height = pos_y_list[-2] + (pos_y_list[-1]*2) - anchor_field.text_rect.bottom  # Don't ask! Just accept it!
 
-        section_field = TextField(self.screen, "", 0)
+        section_field = TextField(self.screen, "", height)
         section_field.text_rect.width = width
         section_field.text_rect.height = height
         section_field.text_rect.topleft = anchor_field.text_rect.topleft
