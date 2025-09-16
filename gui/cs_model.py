@@ -34,6 +34,7 @@ class CharacterSheet:
         self.text_standard: int = int(self.screen_height / 50)
         text_large: int = int(self.screen_height / 45)
         title_size: int = int(self.screen_height / 35)
+        self.max_line_length: int = int(self.screen_width / 3)  # Maximum length (width) for text fields before line break.
 
         # Units of measurement used on character sheet.
         self.weight_unit: str = " lbs"
@@ -166,7 +167,7 @@ class CharacterSheet:
         # for the fact that number of abilities in 'character.specials' is unpredictable at the start of the character
         # creation.
         self.special_ability: TextField = TextField(screen, "", self.text_standard, multi_line=True,
-                                                       surface_width=int(self.screen_width / 3))
+                                                    surface_width=self.max_line_length)
         self.specials_pos_y_list: list[int] = []
 
         # Spell elements for classes 'Magic-User', 'Cleric' or combination classes.
@@ -315,7 +316,16 @@ class CharacterSheet:
         on screen to share a background image.
         For example:
         'abilities_bg_group' for ability related sections contains the groups for ability scores and saving throws, which
-        are usually handled separately."""
+        are usually handled separately.
+        
+        NOTE: Sections must then be manually added to corresponding group variable for shared backgrounds in method
+            'get_bg_groups_raw()'!
+            Sections which are using dynamically changing TextField instances (i.e. spells, class specials, etc.) are
+            handled using the following structure:
+            self.section = (anchor_field, dynamically_changing_field)
+            In addition to being added to corresponding groups in 'get_bg_groups_raw()', these section also have to be
+            processed and assigned to specific variables within said function by calling 'get_dynamic_section()'. See
+            both functions for details."""
         # Character sheet background image attributes.
         self.sheet_bg_type = uisd.ui_registry["wood_image"]
         self.sheet_bg_image_surface, self.sheet_bg_image_rect = self.get_and_format_sheet_background()
@@ -324,31 +334,23 @@ class CharacterSheet:
         self.groups_bg_list = uisd.ui_registry["parchment_images"]
 
         # Sections to be included in 'abilities_bg_group'.
-        ability_sect = self.get_section_from_array(self.ability_groups, self.abilities)
-        saving_throws_sect = self.get_section_from_array(self.saving_throw_groups, self.saving_throws)
+        self.ability_sect = self.get_section_from_array(self.ability_groups, self.abilities)
+        self.saving_throws_sect = self.get_section_from_array(self.saving_throw_groups, self.saving_throws)
 
         # Sections to be included in 'specials_bg_group'.
-        special_ablt_sect = (self.special_abilities, )                   # TODO dynamic fields
-        spell_sect = (self.spells, )                                     # TODO dynamic fields
-        cls_special_sect = (self.class_specials, )                       # TODO dynamic fields
+        self.special_ablt_sect = (self.special_abilities, self.special_ability)      # TODO dynamic fields
+        self.spell_sect = (self.spells, self.spell)                                     # TODO dynamic fields
+        self.cls_special_sect = (self.class_specials, self.class_special)       # TODO dynamic fields
 
         # Sections to be included in 'inventory_bg_group'.
-        weight_sect = self.get_section_from_array(self.weight_group, self.carrying_cap)
-        inventory_sect = self.inventory_group                            # TODO dynamic fields
+        self.weight_sect = self.get_section_from_array(self.weight_group, self.carrying_cap)
+        self.inventory_sect = (self.inventory, self.inventory_item_weight)          # TODO dynamic fields
+        self.money_sect = (self.money, )
 
         # Sections to be included in 'weapon_armor_bg_group'.
-        weapon_sect = self.weapon_header_group + self.weapon_group
-        armor_sect = self.armor_header_group + self.get_section_from_array(self.armor_group)
+        self.weapon_sect = self.weapon_header_group + self.weapon_group
+        self.armor_sect = self.armor_header_group + self.get_section_from_array(self.armor_group)
 
-        # Final section groups for shared backgrounds.
-        basic_info_bg_group = self.basic_info_group_0
-        base_abilities_bg_group = ability_sect + saving_throws_sect
-        specials_bg_group = special_ablt_sect + spell_sect + cls_special_sect
-        inventory_bg_group = weight_sect + inventory_sect
-        weapon_armor_bg_group = self.basic_info_group_1 + weapon_sect + armor_sect
-
-        self.bg_groups: tuple[tuple, ...] = (basic_info_bg_group, base_abilities_bg_group, specials_bg_group,
-                                             inventory_bg_group, weapon_armor_bg_group)
         self.groups_bg_images = {}
 
 
@@ -416,8 +418,7 @@ class CharacterSheet:
                                                                                    self.class_specials)
         self.inventory_pos_y_list: list[object] = self.get_position_dynamic_field(self.inventory_item, self.inventory_item_list,
                                                                                   self.inventory)
-        self.spell_pos_y_list: list[int] = self.get_position_dynamic_field(self.spell, self.character.spells,
-                                                                           self.spells)
+        self.spell_pos_y_list: list[int] = self.get_position_dynamic_field(self.spell, self.character.spells, self.spells)
 
         self.get_groups_backgrounds_dict()
 
@@ -429,7 +430,7 @@ class CharacterSheet:
             self.screen.blit(v[0], v[1])
 
     def get_groups_backgrounds_dict(self) -> None:
-        cleaned_bg_groups = self.clean_bg_groups()
+        cleaned_bg_groups = self.clean_bg_groups(self.get_bg_groups_raw())
 
         for index, group in enumerate(cleaned_bg_groups):
             group_top: int = min(group, key=lambda x: x.text_rect.top).text_rect.top
@@ -443,11 +444,31 @@ class CharacterSheet:
 
             self.groups_bg_images[index] = (image_surface, image_rect)
 
-    def clean_bg_groups(self) -> list[list[TextField]]:
-        """Remove elements with negative coords (outside screen) from self.bg_groups."""
+    def get_bg_groups_raw(self):
+        # Sections using dynamically changing text fields.
+        special_ablt_sect = self.get_dynamic_section(self.special_ablt_sect, self.specials_pos_y_list)
+        spell_sect = self.get_dynamic_section(self.spell_sect, self.spell_pos_y_list)
+        cls_special_sect = self.get_dynamic_section(self.cls_special_sect, self.class_special_pos_y_list)
+        inventory_sect = self.get_dynamic_section(self.inventory_sect, self.inventory_pos_y_list, width=int(self.screen_width / 4.2))
+
+        # Section groups for shared backgrounds.
+        basic_info_bg_group = self.basic_info_group_0
+        base_abilities_bg_group = self.ability_sect + self.saving_throws_sect
+        specials_bg_group = special_ablt_sect + spell_sect + cls_special_sect
+        inventory_bg_group = self.weight_sect + inventory_sect + self.money_sect
+        weapon_armor_bg_group = self.basic_info_group_1 + self.weapon_sect + self.armor_sect
+
+        bg_groups: tuple[tuple, ...] = (basic_info_bg_group, base_abilities_bg_group, specials_bg_group,
+                                        inventory_bg_group, weapon_armor_bg_group)
+
+        return bg_groups
+
+    @staticmethod
+    def clean_bg_groups(bg_groups_raw) -> list[list[TextField]]:
+        """Remove elements with negative coords (outside screen) from bg_groups_raw."""
         cleaned_bg_groups = []
 
-        for group in self.bg_groups:
+        for group in bg_groups_raw:
             cleaned_group = [item for item in group if all(val >= 0 for val in (item.text_rect.top,
                                                                                 item.text_rect.bottom,
                                                                                 item.text_rect.left,
@@ -469,6 +490,30 @@ class CharacterSheet:
             section += item
 
         return section
+
+    def get_dynamic_section(self, section: tuple[TextField, TextField], pos_y_list: list[int], width: int=False):
+        anchor_field = section[0]
+        dynamic_field = section[1]
+
+        if not width:
+            width = self.max_line_length
+
+        if not pos_y_list:
+            height = anchor_field.text_rect.height
+        else:
+            height = pos_y_list[-2] + (dynamic_field.text_rect.height * 2) - anchor_field.text_rect.bottom
+
+        section_field = TextField(self.screen, "", 0)
+        section_field.text_rect.width = width
+        section_field.text_rect.height = height
+        section_field.text_rect.topleft = anchor_field.text_rect.topleft
+
+        if section_field.text_rect.right >= self.screen_rect.right:
+            section_field.text_rect.width = anchor_field.text_rect.left - self.screen_rect.right
+
+        new_section = (section_field, )
+
+        return new_section
 
     def get_and_format_sheet_background(self) -> tuple[pygame.Surface, pygame.Rect]:
         width_mult: float = 1.23
@@ -810,7 +855,7 @@ class CharacterSheet:
             # refusing to be reset any other way if 'multi_line' is 'True'.
             if field_object.multi_line:
                 default_object: TextField = TextField(self.screen, "", self.text_standard, multi_line=True,
-                                              surface_width=int(self.screen_width / 3))
+                                                      surface_width=self.max_line_length)
                 field_object: TextField = default_object
 
         return pos_y_list

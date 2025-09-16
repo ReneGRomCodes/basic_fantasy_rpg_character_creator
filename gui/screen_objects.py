@@ -124,7 +124,7 @@ class TextField:
 
         return text_surface
 
-    def expand_multiline_surface(self, text_surface: pygame.surface, y: int) -> tuple[pygame.surface, int, int]:
+    def expand_multiline_surface(self, text_surface: pygame.Surface, y: int) -> tuple[pygame.Surface, int, int]:
         """Helper function for use in 'render_multiline_surface()' to expand 'text_surface' to accommodate new lines of
         text automatically through use of a temporary surface.
         ARGS:
