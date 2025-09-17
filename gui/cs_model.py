@@ -311,44 +311,13 @@ class CharacterSheet:
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
         )
 
-        # TODO work in progress!
-        """'Sections' (i.e. ability scores, inventory, carrying weight) are sorted into 'groups' based on their position
-        on screen to share a background image.
-        For example:
-        'abilities_bg_group' for ability related sections contains the groups for ability scores and saving throws, which
-        are usually handled separately.
-        
-        NOTE: Sections must then be manually added to corresponding group variable for shared backgrounds in method
-            'get_bg_groups_raw()'!
-            Sections which are using dynamically changing TextField instances (i.e. spells, class specials, etc.) are
-            handled using the following simple structure:
-            self.section = self.anchor_field
-            In addition to being added to corresponding groups in 'get_bg_groups_raw()', these section also have to be
-            processed and assigned to specific variables within said function by calling 'get_dynamic_section()'. See
-            both functions for details."""
+        # TODO work in progress! Write doc!
         # Character sheet background images.
         self.sheet_bg_type: pygame.Surface = uisd.ui_registry["wood_image"]
         self.sheet_bg_image_surface, self.sheet_bg_image_rect = self.get_and_format_sheet_background()
         self.groups_bg_list: tuple[pygame.Surface, ...] = uisd.ui_registry["parchment_images"]
 
-        # Sections to be included in 'abilities_bg_group'.
-        self.ability_sect: tuple[TextField, ...] = self.get_section_from_array(self.ability_groups, self.abilities)
-        self.saving_throws_sect: tuple[TextField, ...] = self.get_section_from_array(self.saving_throw_groups, self.saving_throws)
-
-        # Sections to be included in 'specials_bg_group'.
-        self.special_ablt_sect: TextField = self.special_abilities     # TODO dynamic fields
-        self.spell_sect: TextField = self.spells                       # TODO dynamic fields
-        self.cls_special_sect: TextField = self.class_specials         # TODO dynamic fields
-
-        # Sections to be included in 'inventory_bg_group'.
-        self.weight_sect: tuple[TextField, ...] = self.get_section_from_array(self.weight_group, self.carrying_cap)
-        self.inventory_sect: TextField = self.inventory                # TODO dynamic fields
-        self.money_sect: tuple[TextField, ...] = (self.money, )
-
-        # Sections to be included in 'weapon_armor_bg_group'.
-        self.weapon_sect: tuple[TextField, ...] = self.weapon_header_group + self.weapon_group
-        self.armor_sect: tuple[TextField, ...] = self.armor_header_group + self.get_section_from_array(self.armor_group)
-
+        # Dict with background image surfaces and rects for each character sheet group.
         self.groups_bg_images: dict[int, tuple[pygame.Surface, pygame.Rect]] = {}
 
 
@@ -421,11 +390,44 @@ class CharacterSheet:
         # Get dict with background image surfaces and rects for each group on character sheet.
         self.get_groups_backgrounds_dict()
 
-    # TODO
-    """Methods for handling of background images.
-    
-    See documentation in the section for background images in __init__() method (can't miss it, it's right after the
-    'screen_grid_array') for details on how to add backgrounds to character sheet sections."""
+    # TODO work in progress! Write doc!
+    """Methods for handling of background images."""
+
+    def get_bg_groups(self) -> tuple[tuple[TextField, ...], ...]:
+        """Get and format all character sheet sections into groups, including ones that are positioned off-screen (when
+        irrelevant for a specific character) and return 'raw' array of groups.
+        RETURNS:
+            bg_groups: tuple of tuples containing all character sheet groups.
+        """
+        # Sections using dynamically changing text fields and dedicated Y-position lists.
+        special_ablt_sect: tuple[TextField] = self.get_dynamic_section(self.special_abilities, self.specials_pos_y_list)
+        spell_sect: tuple[TextField] = self.get_dynamic_section(self.spells, self.spell_pos_y_list)
+        cls_special_sect: tuple[TextField] = self.get_dynamic_section(self.class_specials, self.class_special_pos_y_list)
+        inventory_sect: tuple[TextField] = self.get_dynamic_section(self.inventory, self.inventory_pos_y_list,
+                                                                    width=int(self.screen_width / 4.2))
+
+        # Sections using 2-dimensional group arrays.
+        ability_sect: tuple[TextField, ...] = self.get_section_from_array(self.ability_groups, self.abilities)
+        saving_throws_sect: tuple[TextField, ...] = self.get_section_from_array(self.saving_throw_groups, self.saving_throws)
+        weight_sect: tuple[TextField, ...] = self.get_section_from_array(self.weight_group, self.carrying_cap)
+
+        # Sections using simple tuples of TextField instances.
+        money_sect: tuple[TextField, ...] = (self.money, )
+        weapon_sect: tuple[TextField, ...] = self.weapon_header_group + self.weapon_group
+        armor_sect: tuple[TextField, ...] = self.armor_header_group + self.get_section_from_array(self.armor_group)
+
+        # Final block of section groups as tuples of TextField instances for shared backgrounds to be returned in
+        # 'bg_groups'.
+        basic_info_bg_group: tuple[TextField, ...] = self.basic_info_group_0
+        base_abilities_bg_group: tuple[TextField, ...] = ability_sect + saving_throws_sect
+        specials_bg_group: tuple[TextField, ...] = special_ablt_sect + spell_sect + cls_special_sect
+        inventory_bg_group: tuple[TextField, ...] = weight_sect + inventory_sect + money_sect
+        weapon_armor_bg_group: tuple[TextField, ...] = self.basic_info_group_1 + weapon_sect + armor_sect
+
+        bg_groups: tuple[tuple[TextField, ...], ...] = (basic_info_bg_group, base_abilities_bg_group, specials_bg_group,
+                                                        inventory_bg_group, weapon_armor_bg_group)
+
+        return bg_groups
 
     def draw_cs_background(self) -> None:
         """Draw background images on screen."""
@@ -439,7 +441,7 @@ class CharacterSheet:
         """Check character sheet elements for on-screen position (sorting out elements that are off-screen), and get
         surfaces and rects for corresponding background images. Add image surfaces and rects to dict 'self.groups_bg_images'."""
         # Get character sheet groups list and remove elements that are positioned off-screen.
-        cleaned_bg_groups: list[list[TextField]] = self.clean_bg_groups(self.get_bg_groups_raw())
+        cleaned_bg_groups: list[list[TextField]] = self.clean_bg_groups(self.get_bg_groups())
 
         # Check group borders for min/max values to calculate overall group size for background image.
         for index, group in enumerate(cleaned_bg_groups):
@@ -454,31 +456,6 @@ class CharacterSheet:
             image_surface, image_rect = self.get_and_format_group_background(group_width, group_height, group_left, group_top)
 
             self.groups_bg_images[index] = (image_surface, image_rect)
-
-    def get_bg_groups_raw(self) -> tuple[tuple[TextField, ...], ...]:
-        """Get and format all character sheet groups, including groups that are positioned off-screen (when irrelevant
-        for a specific character) and return 'raw' array of groups.
-        RETURNS:
-            bg_groups: tuple of tuples containing all character sheet groups.
-        """
-        # Sections using dynamically changing text fields.
-        special_ablt_sect: tuple[TextField] = self.get_dynamic_section(self.special_ablt_sect, self.specials_pos_y_list)
-        spell_sect: tuple[TextField] = self.get_dynamic_section(self.spell_sect, self.spell_pos_y_list)
-        cls_special_sect: tuple[TextField] = self.get_dynamic_section(self.cls_special_sect, self.class_special_pos_y_list)
-        inventory_sect: tuple[TextField] = self.get_dynamic_section(self.inventory_sect, self.inventory_pos_y_list,
-                                                                    width=int(self.screen_width / 4.2))
-
-        # Final section groups as tuples of TextField instances for shared backgrounds to be returned in 'bg_groups'.
-        basic_info_bg_group: tuple[TextField, ...] = self.basic_info_group_0
-        base_abilities_bg_group: tuple[TextField, ...] = self.ability_sect + self.saving_throws_sect
-        specials_bg_group: tuple[TextField, ...] = special_ablt_sect + spell_sect + cls_special_sect
-        inventory_bg_group: tuple[TextField, ...] = self.weight_sect + inventory_sect + self.money_sect
-        weapon_armor_bg_group: tuple[TextField, ...] = self.basic_info_group_1 + self.weapon_sect + self.armor_sect
-
-        bg_groups: tuple[tuple[TextField, ...], ...] = (basic_info_bg_group, base_abilities_bg_group, specials_bg_group,
-                                                        inventory_bg_group, weapon_armor_bg_group)
-
-        return bg_groups
 
     @staticmethod
     def clean_bg_groups(bg_groups_raw: tuple[tuple[TextField, ...], ...]) -> list[list[TextField]]:
@@ -590,6 +567,10 @@ class CharacterSheet:
         RETURNS:
             tuple containing image surface and image rect for group.
         """
+        # Select random background image from 'self.groups_bg_list' in __init__() for each group. No specific reason
+        # apart from making the background look less uniform.
+        random_selected_image: pygame.Surface = self.groups_bg_list[random.randint(0, len(self.groups_bg_list) - 1)]
+
         # Assign scaling multipliers depending on orientation. "Lying" (wider than tall) and "upright" (taller than wide)
         # rectangles get slightly different multipliers so the background looks natural.
         if group_width >= group_height:
@@ -603,7 +584,7 @@ class CharacterSheet:
         image_height: int = int(group_height * height_mult)
         center: tuple[int, int] = ((group_left + (group_width // 2)), (group_top + (group_height // 2)))
 
-        image = pygame.Surface.copy(self.groups_bg_list[random.randint(0, len(self.groups_bg_list) - 1)])
+        image = pygame.Surface.copy(random_selected_image)
         image_surface = pygame.transform.scale(image, (image_width, image_height))
         image_rect = image_surface.get_rect(center=center)
 
