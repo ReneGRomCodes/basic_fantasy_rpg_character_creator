@@ -75,6 +75,7 @@ class SettingsGUI:
         self.format_position_element_background(screen)
 
         draw_screen_title(screen, self.title)
+        uisd.ui_registry["program_version"].draw_text()
         draw_single_element_background_image(screen, back_button, "wood")
         back_button.draw_button(mouse_pos)
 

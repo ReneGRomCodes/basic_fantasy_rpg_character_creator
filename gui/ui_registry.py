@@ -65,8 +65,9 @@ def initialize_ui_registry(screen) -> dict:
     """
 
     # Size and spacing variables that are calculated based on screen size for scalability.
-    screen_height: int = screen.get_rect().height
-    screen_width: int = screen.get_rect().width
+    screen_rect: pygame.Rect = screen.get_rect()
+    screen_height: int = screen_rect.height
+    screen_width: int = screen_rect.width
     title_size: int = int(screen_height / 24)
     text_standard: int = int(screen_height / 45)
     text_large: int = int(screen_height / 30)
@@ -81,15 +82,19 @@ def initialize_ui_registry(screen) -> dict:
     # Default coordinates for buttons that are positioned at the screen's bottom corners.
     # Assign 'button_bottomright_pos' to button's rect '.bottomright' or 'button_bottomleft_pos' to '.bottomleft'
     # respectively for proper positioning.
-    button_bottomright_pos: tuple[int, int] = (screen.get_rect().right - default_edge_spacing,
-                                               screen.get_rect().bottom - default_edge_spacing)
-    button_bottomleft_pos: tuple[int, int] = (screen.get_rect().left + default_edge_spacing,
-                                              screen.get_rect().bottom - default_edge_spacing)
+    button_bottomright_pos: tuple[int, int] = (screen_rect.right - default_edge_spacing,
+                                               screen_rect.bottom - default_edge_spacing)
+    button_bottomleft_pos: tuple[int, int] = (screen_rect.left + default_edge_spacing,
+                                              screen_rect.bottom - default_edge_spacing)
 
     # Off-Screen position for screen objects.
     # Assign 'off_screen_position' to screen object's rect '.bottomright' if object has to be positioned outside the
     # screen... for whatever reason.
-    off_screen_position: tuple[int, int] = screen.get_rect().topleft
+    off_screen_position: tuple[int, int] = screen_rect.topleft
+
+    # Program version field positioned by default at the bottom-right of the screen (main menu and settings screen.
+    program_version: TextField = TextField(screen, f"v{settings.program_version}", text_medium, text_color=settings.light_text_color)
+    program_version.text_rect.bottomright = screen_rect.bottomright
 
     # Standard buttons.
     continue_button: Button = Button(screen, "Continue", text_medium)
@@ -155,7 +160,7 @@ def initialize_ui_registry(screen) -> dict:
     # Character menu.
     custom: Button = Button(screen, "Create Custom Character", text_medium)
     random: Button = Button(screen, "Create Random Character", text_medium)
-    custom_random_button_width: int = int(screen.get_rect().width / 3)
+    custom_random_button_width: int = int(screen_rect.width / 3)
     custom.button_rect.width, random.button_rect.width = custom_random_button_width, custom_random_button_width
 
 
@@ -374,7 +379,7 @@ def initialize_ui_registry(screen) -> dict:
     # Choice buttons.
     random_money_button: Button = Button(screen, "Roll the dice for your starting money (3d6 x 10)", text_standard)
     custom_money_button: Button = Button(screen, "Choose your own amount of gold pieces", text_standard)
-    money_button_width: int = int(screen.get_rect().width / 2.5)
+    money_button_width: int = int(screen_rect.width / 2.5)
     random_money_button.button_rect.width, custom_money_button.button_rect.width = money_button_width, money_button_width
     # Random money message field.
     rolling_dice_money_field: TextField = TextField(screen, "Rolling the dice!", text_large)
@@ -405,6 +410,8 @@ def initialize_ui_registry(screen) -> dict:
         "default_button_width": button_width,
         "default_edge_spacing": default_edge_spacing,
         "button_spacing": button_spacing,
+        # Program version.
+        "program_version": program_version,
         # Standard buttons.
         "continue_button": continue_button,
         "inactive_continue_button": inactive_continue_button,

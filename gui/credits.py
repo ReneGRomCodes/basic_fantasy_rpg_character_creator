@@ -29,14 +29,14 @@ class Credits:
         self.dynamic_pos_y: int = self.credits_pos_y_start
 
         self.credits_title: TextField = TextField(screen, "- CREDITS -", title_size)
-        dev_title: TextField = TextField(screen, "Lead Developer", text_large, text_color=settings.credits_text_color)
-        dev_name: TextField = TextField(screen, "René Grewe Romero", text_medium, text_color=settings.credits_text_color)
-        concept_creator_title: TextField = TextField(screen, "Based on 'Basic Tabletop RPG'", text_large, text_color=settings.credits_text_color)
-        concept_creator_name: TextField = TextField(screen, "by Chris Gonnerman", text_medium, text_color=settings.credits_text_color)
-        art_ui_title: TextField = TextField(screen, "Artwork & UI Design", text_large, text_color=settings.credits_text_color)
-        art_ui_name: TextField = TextField(screen, "René Grewe Romero", text_medium, text_color=settings.credits_text_color)
-        font_creator_title: TextField = TextField(screen, "Font 'Eagle Lake'", text_large, text_color=settings.credits_text_color)
-        font_creator_name: TextField = TextField(screen, "by Brian J. Bonislawsky", text_medium, text_color=settings.credits_text_color)
+        dev_title: TextField = TextField(screen, "Lead Developer", text_large, text_color=settings.light_text_color)
+        dev_name: TextField = TextField(screen, "René Grewe Romero", text_medium, text_color=settings.light_text_color)
+        concept_creator_title: TextField = TextField(screen, "Based on 'Basic Tabletop RPG'", text_large, text_color=settings.light_text_color)
+        concept_creator_name: TextField = TextField(screen, "by Chris Gonnerman", text_medium, text_color=settings.light_text_color)
+        art_ui_title: TextField = TextField(screen, "Artwork & UI Design", text_large, text_color=settings.light_text_color)
+        art_ui_name: TextField = TextField(screen, "René Grewe Romero", text_medium, text_color=settings.light_text_color)
+        font_creator_title: TextField = TextField(screen, "Font 'Eagle Lake'", text_large, text_color=settings.light_text_color)
+        font_creator_name: TextField = TextField(screen, "by Brian J. Bonislawsky", text_medium, text_color=settings.light_text_color)
 
         self.credits_elements: tuple[tuple[TextField, TextField], ...] = ((dev_title, dev_name),
                                                                           (concept_creator_title, concept_creator_name),

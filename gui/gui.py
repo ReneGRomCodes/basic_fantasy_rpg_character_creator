@@ -48,6 +48,7 @@ def show_main_menu(screen, mouse_pos) -> None:
 
     ui.draw_single_element_background_image(screen, title, "ornate_wood")
     title.draw_text()
+    uisd.ui_registry["program_version"].draw_text()
 
     ui.draw_single_element_background_image(screen, start, "wood")
     start.draw_button(mouse_pos)

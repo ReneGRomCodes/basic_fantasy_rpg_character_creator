@@ -10,6 +10,8 @@ class Settings:
 
     def __init__(self) -> None:
         """Initialize pygame's settings."""
+        self.program_version: float = 1.0
+
         # Screen size options.
         self.small_screen: tuple[int, int] = (1280,720)
         self.medium_screen: tuple[int, int] = (1600,900)
@@ -25,7 +27,7 @@ class Settings:
 
         # Color settings for screen objects.
         self.text_color: tuple[int, int, int] = (50, 35, 25)
-        self.credits_text_color: tuple[int, int, int] = (235, 210, 160)
+        self.light_text_color: tuple[int, int, int] = (235, 210, 160)
         self.button_border_color: tuple[int, int, int] = (150, 110, 80)
         self.greyed_out_text_color: tuple[int, int, int] = (130, 110, 90)
         self.info_panel_bg_color: tuple[int, int, int] = (205, 175, 115)
