@@ -63,6 +63,7 @@ class CharacterSheet:
 
         """
         INITIALIZE CHARACTER SHEET ELEMENTS.
+        
         Character sheet elements are positioned using a grid-based system. Each 'anchor' field (usually just the field
         label) is placed into 'self.screen_grid_array' at the bottom of '__init__()', which drives the initial layout
         logic.
@@ -252,6 +253,8 @@ class CharacterSheet:
         self.armor_header_group, self.armor_group = self.get_armor_groups()
 
         """
+        PRIMARY POSITIONING VIA ANCHOR ELEMENTS.
+        
         16x24 screen grid for positioning of anchor elements. Further elements that belong to anchors are then positioned
         dynamically via helper methods if value elements are added to their corresponding group array above.
         
@@ -311,17 +314,32 @@ class CharacterSheet:
             (False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False),
         )
 
-        # TODO
+        """
+        GROUP BACKGROUND IMAGES.
+        
+        Attributes relating to 'group' background images for character sheet sections (e.g. sections for money, carry
+        weight and inventory are considered part of the 'inventory group').
+        The grouping of sections is handled via method 'get_bg_groups()', with the formatting, scaling and positioning
+        of corresponding background images being handled automatically further on. If you wish to add sections/groups to
+        this process you only have to tweak 'get_bg_groups()'. Details on how to do this are described in the method
+        docstring.
+        NOTE: 'groups' in this context here refers to groups of sections which share a background image, it has no
+        relation to the positioning of each section/group itself on screen which is explained further up and handled via
+        dedicated methods. So keep in mind that sections which make up a group as explained here should be positioned
+        close to each other and not overlap with other groups to avoid ending up with overlapping background images.
+        
+        Should there be any problems with the background image handling or you want more control over the background,
+        set flag attribute 'self.manual_bg_flag' to 'True'. This bypasses the entire automatic/dynamic group background
+        code and allows for a more customized, manual positioning and drawing of images via the method
+        'draw_custom_backgrounds()'. See method docstring there for details.
+        """
         # Character sheet background images.
         self.sheet_bg_type: pygame.Surface = uisd.ui_registry["wood_image"]
         self.sheet_bg_image_surface, self.sheet_bg_image_rect = self.get_and_format_sheet_background()
         self.groups_bg_list: tuple[pygame.Surface, ...] = uisd.ui_registry["parchment_images"]
-
-        # Dict with background image surfaces and rects for sections which are grouped together in method 'get_bg_groups()'
-        # to share a background image.
         self.groups_bg_images: dict[int, tuple[pygame.Surface, pygame.Rect]] = {}
 
-        # Switch to circumvent automatic/dynamic background image handling and allow for fully manual control over
+        # Switch to bypass automatic/dynamic background image handling and allow for fully manual control over
         # background images via method 'draw_custom_backgrounds()'. Mostly a contingency if my convoluted stuff goes
         # sideways. Just switch flag to 'True' and tweak everything via 'draw_custom_backgrounds()'.
         self.manual_bg_flag: bool = False
@@ -776,7 +794,7 @@ class CharacterSheet:
         self.exit_button.button_rect.left = self.cancel_button.button_rect.right + button_spacing
         self.save_button.button_rect.right = self.cancel_button.button_rect.left - button_spacing
 
-    # TODO
+
     """Methods for handling of background images."""
 
     def get_bg_groups(self) -> tuple[tuple[TextField, ...], ...]:
@@ -787,6 +805,10 @@ class CharacterSheet:
         Character sheet sections from within the __init__() method are sorted into section-tuples based on their original
         structure in __init__(). This only serves better maintainability/expandability and has no effect on the actual
         code execution or to which group the sections are finally assigned.
+
+        Each section has then to be assigned manually to its final group in block 'BACKGROUND GROUPS' to share a
+        background image with other related sections (i.e. the entire group).
+        If a completely new background group is created, it needs to be added to 'bg_groups' as well.
 
             DYNAMIC SECTIONS: contains character sheet sections which make use of dynamically changing text fields and
             dedicated Y-position list attributes in the __init__() method:
@@ -848,7 +870,7 @@ class CharacterSheet:
         specials_bg_group: tuple[TextField, ...] = special_ablt_sect + spell_sect + cls_special_sect
         inventory_bg_group: tuple[TextField, ...] = weight_sect + inventory_sect + money_sect
         combat_bg_group: tuple[TextField, ...] = self.basic_info_group_1 + weapon_sect + armor_sect
-        # Returned array of groups which share a background image.
+        # Returned array of groups which each share a background image.
         bg_groups: tuple[tuple[TextField, ...], ...] = (basic_info_bg_group, base_abilities_bg_group, specials_bg_group,
                                                         inventory_bg_group, combat_bg_group)
 
@@ -859,7 +881,6 @@ class CharacterSheet:
         self.screen.blit(self.sheet_bg_image_surface, self.sheet_bg_image_rect)
 
         if not self.manual_bg_flag:
-            # Draw background images for character sheet groups.
             for v in self.groups_bg_images.values():
                 self.screen.blit(v[0], v[1])
         else:
@@ -950,8 +971,7 @@ class CharacterSheet:
         if not pos_y_list:
             height: int = anchor_field.text_rect.height
         else:
-            height: int = pos_y_list[-2] + (
-                        pos_y_list[-1] * 2) - anchor_field.text_rect.bottom  # Don't ask! Just accept it!
+            height: int = pos_y_list[-2] + (pos_y_list[-1] * 2) - anchor_field.text_rect.bottom  # Don't ask! Just accept it!
 
         # Instantiate,scale and position TextField 'section_field' to represent character sheet section
         section_field: TextField = TextField(self.screen, "", height)
