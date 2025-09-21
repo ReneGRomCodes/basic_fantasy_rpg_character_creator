@@ -1,6 +1,8 @@
 # "Basic Fantasy RPG" Character Creator 
 ### *"Character creation engine-lite" built for easy system swapping*
 
+**Current Version: v1.0**
+
 ## Overview
 
 Being more than just a character creator, this application serves as a lightweight, modular engine for building RPG
