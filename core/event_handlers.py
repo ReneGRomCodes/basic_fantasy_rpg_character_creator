@@ -71,8 +71,8 @@ def main_events(screen, state: str, mouse_pos) -> str:
         handle_screen_switch_reset(screen, event, mouse_pos)
 
         if state == "title_screen":
-            if event.type == pygame.KEYUP or event.type == pygame.MOUSEBUTTONUP and screen.get_rect().collidepoint(mouse_pos)\
-                    and uisd.ui_registry["title_screen_fields"][3].finished:
+            if (event.type in {pygame.KEYUP, pygame.MOUSEBUTTONUP} and screen.get_rect().collidepoint(mouse_pos) and
+                    uisd.ui_registry["title_screen_fields"][3].finished):
                 state = "pre_main_menu"
 
         elif state == "main_menu":
@@ -205,6 +205,8 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
     back_button = uisd.ui_registry["back_button"].button_rect
     reroll_button = uisd.ui_registry["reroll_button"].button_rect
     reset_button = uisd.ui_registry["reset_button"].button_rect
+    confirm_character_no_button = uisd.ui_registry["confirm_character_buttons"][0].button_rect
+    confirm_character_yes_button = uisd.ui_registry["confirm_character_buttons"][1].button_rect
     show_sheet_button = uisd.ui_registry["show_character_sheet"].button_rect
 
     for event in pygame.event.get():
@@ -293,10 +295,18 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                 if sd.random_money_flag and uisd.dice_roll_complete:
                     if continue_button.collidepoint(mouse_pos):
                         sd.character.money = sd.starting_money
-                        state = "creation_complete"
+                        state = "confirm_character"
 
                 if sd.custom_money_flag:
                     state = "custom_input_money"
+
+        elif state == "confirm_character":
+            if event.type == pygame.MOUSEBUTTONUP:
+                if confirm_character_no_button.collidepoint(mouse_pos):
+                    state = "select_starting_money"
+
+                if confirm_character_yes_button.collidepoint(mouse_pos):
+                    state = "creation_complete"
 
         elif state == "creation_complete":
             if event.type == pygame.MOUSEBUTTONUP:
@@ -407,7 +417,7 @@ def custom_starting_money_events(screen, state: str, mouse_pos) -> str:
                     sd.character.money = int(starting_money_input.manager.value)
                 else:
                     sd.character.money = 0
-                state = "creation_complete"
+                state = "confirm_character"
 
             if random_money_button.collidepoint(mouse_pos):
                 starting_money_input.manager.value = ""

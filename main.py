@@ -19,8 +19,7 @@ SAVE_LOAD_STATES: set[str] = {"init_save_load_screen", "save_load_screen", "char
                               "char_overwrite"}
 CUSTOM_CHARACTER_STATES: set[str] = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
                                      "spell_selection", "language_selection", "select_starting_money",
-                                     "custom_input_money",
-                                     "creation_complete"}
+                                     "custom_input_money", "confirm_character", "creation_complete"}
 RANDOM_CHARACTER_STATES: set[str] = {"random_character", "set_random_money", "name_random_character"}
 CHARACTER_SHEET_STATES: set[str] = {"init_character_sheet", "character_sheet", "sheet_confirmation"}
 

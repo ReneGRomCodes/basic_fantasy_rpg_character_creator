@@ -170,6 +170,10 @@ def custom_character_state_manager(screen, state: str, mouse_pos) -> str:
         gui.show_starting_money_screen(screen, mouse_pos)
         state = eh.custom_starting_money_events(screen, state, mouse_pos)
 
+    elif state == "confirm_character":
+        gui.show_created_character_confirmation_screen(screen, mouse_pos)
+        state = eh.custom_character_events(screen,state, mouse_pos)
+
     elif state == "creation_complete":
         gui.show_character_complete_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state, mouse_pos)

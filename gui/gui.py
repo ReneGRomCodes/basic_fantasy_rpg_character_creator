@@ -6,6 +6,7 @@ from core.rules import ABILITIES
 
 import gui.ui_helpers as ui
 from .shared_data import ui_shared_data as uisd
+from .ui_helpers import draw_single_element_background_image
 
 
 def show_title_screen(screen) -> None:
@@ -236,6 +237,25 @@ def show_starting_money_screen(screen, mouse_pos) -> None:
     back_button.draw_button(mouse_pos)
     # Show continue button only if a money option has been selected otherwise show inactive continue button.
     ui.draw_conditional_continue_button(screen, mouse_pos, uisd.dice_roll_complete, sd.custom_money_flag)
+
+
+def show_created_character_confirmation_screen(screen, mouse_pos) -> None:
+    confirmation_message = uisd.ui_registry["confirm_character_message"]
+    choices = uisd.ui_registry["confirm_character_buttons"]
+
+    ui.position_confirm_created_character_elements(screen)
+
+    ui.draw_single_element_background_image(screen, confirmation_message, "parchment", parchment=1)
+    confirmation_message.draw_text()
+
+    for choice in choices:
+        ui.draw_single_element_background_image(screen, choice, "wood")
+        choice.draw_button(mouse_pos)
+
+
+# TODO smoke and mirrors 'building character sheet' with progress bar screen.
+def show_building_character_sheet_screen(screen, mouse_pos) -> None:
+    pass
 
 
 def show_character_complete_screen(screen, mouse_pos) -> None:

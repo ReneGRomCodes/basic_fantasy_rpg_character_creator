@@ -391,6 +391,15 @@ def initialize_ui_registry(screen) -> dict:
     money_amount_field: TextInputField = TextInputField(screen, money_amount_input, int(screen_width / 4))
 
 
+    # Character creation confirmation screen.
+    confirmation_message_field: TextField = TextField(screen, "The choices are made, the die is cast… do you accept your destiny?",
+                                                      text_large)
+    not_yet_button: Button = Button(screen, "Not yet, I need to rethink!", text_medium)
+    forward_to_destiny_button: Button = Button(screen, "Forward to destiny!", text_medium)
+    yes_no_button_width: int = int(screen_rect.width / 4)
+    not_yet_button.button_rect.width, forward_to_destiny_button.button_rect.width = yes_no_button_width, yes_no_button_width
+
+
     # Character creation complete screen.
     completion_message_field: TextField = TextField(screen, "CHARACTER CREATION COMPLETE", text_large)
     show_character_sheet_button: Button = Button(screen, "Show Character Sheet", text_medium)
@@ -473,6 +482,9 @@ def initialize_ui_registry(screen) -> dict:
         "starting_money_choices": (random_money_button, custom_money_button),
         "random_money": (rolling_dice_money_field, random_money_field),
         "money_amount_input": (money_amount_input, money_amount_field, money_input_prompt),
+        # Confirm character screen.
+        "confirm_character_message": confirmation_message_field,
+        "confirm_character_buttons": (not_yet_button, forward_to_destiny_button),
         # Character completion screen.
         "completion_message": completion_message_field,
         "show_character_sheet": show_character_sheet_button,

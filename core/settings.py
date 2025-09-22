@@ -38,7 +38,7 @@ class Settings:
         self.text_input_border_color: tuple[int, int, int] = (150, 110, 80)
         self.inactive_continue_button_hover_color: tuple[int, int, int] = (215, 140, 130)
         self.inactive_continue_button_click_color: tuple[int, int, int] = (190, 65, 50)
-        self.progress_bar_color: tuple[int, int, int] = (120, 180, 70)
+        self.progress_bar_color: tuple[int, int, int] = (48, 70, 50)
         self.bar_border_color: tuple[int, int, int] = (220, 130, 75)
 
         self.default_settings: tuple[tuple] = (self.small_screen, )
