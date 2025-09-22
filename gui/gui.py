@@ -240,6 +240,11 @@ def show_starting_money_screen(screen, mouse_pos) -> None:
 
 
 def show_created_character_confirmation_screen(screen, mouse_pos) -> None:
+    """Display confirmation screen. Giving user final chance to make changes or proceed to final character sheet creation.
+    ARGS:
+        screen: PyGame window.
+        mouse_pos: position of mouse on screen. Handed down by pygame from main loop.
+    """
     confirmation_message = uisd.ui_registry["confirm_character_message"]
     choices = uisd.ui_registry["confirm_character_buttons"]
 

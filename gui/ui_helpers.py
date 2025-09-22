@@ -965,13 +965,17 @@ def starting_money_dice_roll(screen, random_money_field: TextField, text_large: 
 """Background functions for character confirmation screen."""
 
 def position_confirm_created_character_elements(screen) -> None:
+    """Position screen elements for 'character confirmation' screen.
+    ARGS:
+        screen: PyGame window.
+    """
     spacing: int = uisd.ui_registry["title_screen_spacing"]
 
     if not uisd.position_flag:
         confirmation_message = uisd.ui_registry["confirm_character_message"]
         no_button, yes_button = uisd.ui_registry["confirm_character_buttons"][0], uisd.ui_registry["confirm_character_buttons"][1]
 
-        confirmation_message.text_rect.bottom = screen.get_rect().centery - spacing
+        confirmation_message.text_rect.bottom = screen.get_rect().centery - (spacing * 2)
 
         no_button.button_rect.top, yes_button.button_rect.top = (screen.get_rect().centery + (spacing * 4),
                                                                  screen.get_rect().centery + (spacing * 4))
