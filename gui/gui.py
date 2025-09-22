@@ -6,7 +6,6 @@ from core.rules import ABILITIES
 
 import gui.ui_helpers as ui
 from .shared_data import ui_shared_data as uisd
-from .ui_helpers import draw_single_element_background_image
 
 
 def show_title_screen(screen) -> None:
@@ -258,9 +257,19 @@ def show_created_character_confirmation_screen(screen, mouse_pos) -> None:
         choice.draw_button(mouse_pos)
 
 
-# TODO smoke and mirrors 'building character sheet' with progress bar screen.
-def show_building_character_sheet_screen(screen, mouse_pos) -> None:
-    pass
+def show_building_character_sheet_screen(screen) -> None:
+    """Show screen with character sheet creation 'progress'.
+    Honestly it's mot much more than a ProgressBar instances that does absolutely nothing except looking busy...
+    seriously! There is no actual process running in the background. But that's the spot in the program where the user
+    should get the impression that something is processed, so like in any office job: look busy when the boss is
+    watching ;)
+    ARGS:
+        screen: PyGame window.
+    """
+    progress_bar = uisd.ui_registry["creation_progress_bar"]
+
+    ui.position_character_sheet_creation_screen(screen)
+    progress_bar.draw_progress_bar()
 
 
 def show_character_complete_screen(screen, mouse_pos) -> None:

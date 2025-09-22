@@ -4,7 +4,6 @@ Background functions for GUI, i.e. value build/retrieval and object positioning 
 import time
 
 import pygame
-from cloudinit.util import center
 
 from core.rules import roll_starting_money
 from core.shared_data import shared_data as sd
@@ -981,6 +980,21 @@ def position_confirm_created_character_elements(screen) -> None:
                                                                  screen.get_rect().centery + (spacing * 4))
         no_button.button_rect.left = confirmation_message.text_rect.left
         yes_button.button_rect.right = confirmation_message.text_rect.right
+
+        uisd.position_flag = True
+
+
+"Background functions for character sheet creation screen."
+
+def position_character_sheet_creation_screen(screen) -> None:
+    """Position screen elements for 'creating character sheet' screen.
+    ARGS:
+        screen: PyGame window.
+    """
+    progress_bar = uisd.ui_registry["creation_progress_bar"]
+
+    if not uisd.position_flag:
+        progress_bar.container_rect.centery = screen.get_rect().centery
 
         uisd.position_flag = True
 

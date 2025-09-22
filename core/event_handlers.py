@@ -306,7 +306,7 @@ def custom_character_events(screen, state: str, mouse_pos) -> str:
                     state = "select_starting_money"
 
                 if confirm_character_yes_button.collidepoint(mouse_pos):
-                    state = "creation_complete"
+                    state = "create_character_sheet"
 
         elif state == "creation_complete":
             if event.type == pygame.MOUSEBUTTONUP:

@@ -174,6 +174,14 @@ def custom_character_state_manager(screen, state: str, mouse_pos) -> str:
         gui.show_created_character_confirmation_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen,state, mouse_pos)
 
+    elif state == "create_character_sheet":
+        progress_bar = uisd.ui_registry["creation_progress_bar"]
+        gui.show_building_character_sheet_screen(screen)
+
+        if progress_bar.finished:
+            progress_bar.finished, uisd.position_flag = False, False
+            return "creation_complete"
+
     elif state == "creation_complete":
         gui.show_character_complete_screen(screen, mouse_pos)
         state = eh.custom_character_events(screen, state, mouse_pos)
@@ -209,7 +217,15 @@ def random_character_state_manager(screen, state: str, mouse_pos) -> str:
 
     elif state == "set_random_money":
         sd.character.money = rls.roll_starting_money()
-        state = "name_random_character"
+        state = "create_random_character_sheet"
+
+    elif state == "create_random_character_sheet":
+        progress_bar = uisd.ui_registry["creation_progress_bar"]
+        gui.show_building_character_sheet_screen(screen)
+
+        if progress_bar.finished:
+            progress_bar.finished, uisd.position_flag = False, False
+            return "name_random_character"
 
     elif state == "name_random_character":
         # 'creation_complete' state that follows afterward is handled in 'custom_character()' to avoid duplicate code.

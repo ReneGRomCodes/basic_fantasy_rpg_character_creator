@@ -719,7 +719,7 @@ class ProgressBar:
     NOTE: This class creates a progress bar that 'simulates' loading without reflecting actual data processing or task
     completion. It is purely for visual effect to enhance the user experience."""
 
-    def __init__(self, screen, height: int = 30, length: int = 3, time: int | float = 5) -> None:
+    def __init__(self, screen, height: int | float = 30, length: int | float = 3, time: int | float = 5) -> None:
         """Initialize loading progress bar.
         ARGS:
             screen: pygame window.

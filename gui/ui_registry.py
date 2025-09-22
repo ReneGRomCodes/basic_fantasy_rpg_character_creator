@@ -400,6 +400,12 @@ def initialize_ui_registry(screen) -> dict:
     not_yet_button.button_rect.width, forward_to_destiny_button.button_rect.width = yes_no_button_width, yes_no_button_width
 
 
+    # Character sheet creation screen.
+    progress_bar_height: int | float = 15
+    progress_bar_length: int | float = 1.5
+    creating_cs_progress_bar: ProgressBar = ProgressBar(screen, progress_bar_height, progress_bar_length, 7)
+
+
     # Character creation complete screen.
     completion_message_field: TextField = TextField(screen, "CHARACTER CREATION COMPLETE", text_large)
     show_character_sheet_button: Button = Button(screen, "Show Character Sheet", text_medium)
@@ -485,6 +491,8 @@ def initialize_ui_registry(screen) -> dict:
         # Confirm character screen.
         "confirm_character_message": confirmation_message_field,
         "confirm_character_buttons": (not_yet_button, forward_to_destiny_button),
+        # Character sheet creation screen.
+        "creation_progress_bar": creating_cs_progress_bar,
         # Character completion screen.
         "completion_message": completion_message_field,
         "show_character_sheet": show_character_sheet_button,
