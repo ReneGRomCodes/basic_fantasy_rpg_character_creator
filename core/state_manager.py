@@ -179,7 +179,8 @@ def custom_character_state_manager(screen, state: str, mouse_pos) -> str:
         gui.show_building_character_sheet_screen(screen)
 
         if progress_bar.finished:
-            progress_bar.finished, uisd.position_flag = False, False
+            progress_bar.reset_progress_bar()
+            uisd.position_flag = False
             return "creation_complete"
 
     elif state == "creation_complete":
@@ -224,7 +225,8 @@ def random_character_state_manager(screen, state: str, mouse_pos) -> str:
         gui.show_building_character_sheet_screen(screen)
 
         if progress_bar.finished:
-            progress_bar.finished, uisd.position_flag = False, False
+            progress_bar.reset_progress_bar()
+            uisd.position_flag = False
             return "name_random_character"
 
     elif state == "name_random_character":

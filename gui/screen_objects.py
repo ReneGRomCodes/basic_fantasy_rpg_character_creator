@@ -862,3 +862,17 @@ class ProgressBar:
             self.speed: int = speed_up
             # Convert duration from seconds to frames and set timer.
             self.duration_timer: int = int(settings.frame_rate * speed_up_duration_min_max)
+
+    def reset_progress_bar(self) -> None:
+        """Resets progress bar attributes to starting values so instance can be re-reused.
+        Best use of this is method is by using the following block within the relevant state in 'core.state_manager.py':
+
+        if progressbar_instance.finished:
+            progressbar_instance.reset_progress_bar()
+
+        """
+        self.progress = 1
+        self.finished = False
+        self.speed = self.speed_backup
+        self.progress_bar_rect = None
+        self.build_progress_bar()

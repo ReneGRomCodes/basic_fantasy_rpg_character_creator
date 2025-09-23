@@ -403,7 +403,7 @@ def initialize_ui_registry(screen) -> dict:
     # Character sheet creation screen.
     progress_bar_height: int | float = 15
     progress_bar_length: int | float = 1.5
-    creating_cs_progress_bar: ProgressBar = ProgressBar(screen, progress_bar_height, progress_bar_length, 7)
+    creating_cs_progress_bar: ProgressBar = ProgressBar(screen, progress_bar_height, progress_bar_length, 4)
 
 
     # Character creation complete screen.

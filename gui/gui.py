@@ -259,7 +259,7 @@ def show_created_character_confirmation_screen(screen, mouse_pos) -> None:
 
 def show_building_character_sheet_screen(screen) -> None:
     """Show screen with character sheet creation 'progress'.
-    Honestly it's mot much more than a ProgressBar instances that does absolutely nothing except looking busy...
+    Honestly it's not much more than a ProgressBar instance that does absolutely nothing except looking busy...
     seriously! There is no actual process running in the background. But that's the spot in the program where the user
     should get the impression that something is processed, so like in any office job: look busy when the boss is
     watching ;)
