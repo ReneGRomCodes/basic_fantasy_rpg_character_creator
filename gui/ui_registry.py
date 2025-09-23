@@ -403,7 +403,9 @@ def initialize_ui_registry(screen) -> dict:
     # Character sheet creation screen.
     progress_bar_height: int | float = 15
     progress_bar_length: int | float = 1.5
-    creating_cs_progress_bar: ProgressBar = ProgressBar(screen, progress_bar_height, progress_bar_length, 4)
+    generating_character_progress_bar: ProgressBar = ProgressBar(screen, progress_bar_height, progress_bar_length, 7)
+    generating_character_message: TextField = TextField(screen, "Generating Character", text_large,
+                                                        text_color=settings.light_text_color)
 
 
     # Character creation complete screen.
@@ -492,7 +494,8 @@ def initialize_ui_registry(screen) -> dict:
         "confirm_character_message": confirmation_message_field,
         "confirm_character_buttons": (not_yet_button, forward_to_destiny_button),
         # Character sheet creation screen.
-        "creation_progress_bar": creating_cs_progress_bar,
+        "creation_in_progress_message": generating_character_message,
+        "creation_progress_bar": generating_character_progress_bar,
         # Character completion screen.
         "completion_message": completion_message_field,
         "show_character_sheet": show_character_sheet_button,

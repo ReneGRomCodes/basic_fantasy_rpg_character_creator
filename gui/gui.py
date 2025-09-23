@@ -267,9 +267,12 @@ def show_building_character_sheet_screen(screen) -> None:
         screen: PyGame window.
     """
     progress_bar = uisd.ui_registry["creation_progress_bar"]
+    message = uisd.ui_registry["creation_in_progress_message"]
 
     ui.position_character_sheet_creation_screen(screen)
+
     progress_bar.draw_progress_bar()
+    message.draw_text()
 
 
 def show_character_complete_screen(screen, mouse_pos) -> None:

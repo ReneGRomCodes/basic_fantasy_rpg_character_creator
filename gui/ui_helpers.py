@@ -992,9 +992,11 @@ def position_character_sheet_creation_screen(screen) -> None:
         screen: PyGame window.
     """
     progress_bar = uisd.ui_registry["creation_progress_bar"]
+    message = uisd.ui_registry["creation_in_progress_message"]
 
     if not uisd.position_flag:
         progress_bar.container_rect.centery = screen.get_rect().centery
+        message.text_rect.center = progress_bar.container_rect.center
 
         uisd.position_flag = True
 

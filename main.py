@@ -16,7 +16,7 @@ INITIAL_STATE: str = "title_screen"
 MAIN_STATES: set[str] = {"title_screen", "pre_main_menu", "main_menu", "settings_screen", "init_credits", "credits",
                          "character_menu"}
 SAVE_LOAD_STATES: set[str] = {"init_save_load_screen", "save_load_screen", "char_not_saved", "char_delete",
-                              "char_overwrite"}
+                              "char_overwrite", "loading_character"}
 CUSTOM_CHARACTER_STATES: set[str] = {"set_abilities", "show_abilities", "race_class_selection", "name_character",
                                      "spell_selection", "language_selection", "select_starting_money",
                                      "custom_input_money", "confirm_character", "create_character_sheet",

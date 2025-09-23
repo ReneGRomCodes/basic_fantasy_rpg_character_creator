@@ -9,7 +9,7 @@ from core.shared_data import shared_data as sd
 from core.settings import settings
 
 from .ui_helpers import draw_screen_title, draw_single_element_background_image, set_elements_pos_y_values
-from .screen_objects import TextField, Button, InteractiveText
+from .screen_objects import TextField, Button, InteractiveText, ProgressBar
 from .shared_data import ui_shared_data as uisd
 
 """
@@ -45,6 +45,7 @@ class SaveLoadScreen:
         title_size: int = ui_registry["title_size"]
         text_standard: int = int(screen_height / 50)
         text_medium: int = ui_registry["text_medium"]
+        text_large: int = ui_registry["text_large"]
 
         self.load_only: bool = uisd.load_only_flag
 
@@ -108,6 +109,13 @@ class SaveLoadScreen:
                                                           self.confirm_overwrite_button, self.cancel_button)
         for button in self.confirm_buttons_group:
             button.button_rect.width = int(screen.get_rect().width / 5)
+
+        # Loading character screen objects.
+        loading_bar_height: int | float = 15
+        loading_bar_length: int | float = 1.5
+        self.loading_bar: ProgressBar = ProgressBar(screen, loading_bar_height, loading_bar_length, 4)
+        self.loading_message: TextField = TextField(screen, "Loading Character", text_large,
+                                                    text_color=settings.light_text_color)
 
     def show_sl_screen(self, mouse_pos) -> None:
         """Draw save/load screen elements.
@@ -230,7 +238,7 @@ class SaveLoadScreen:
                     data = json.load(f)
                     sd.character.deserialize(data[self.selected_slot[0]])
                     uisd.is_loaded = self.selected_slot[0]
-                    return "init_character_sheet"
+                    return "loading_character"
             else:
                 return "char_not_saved"
 
@@ -326,3 +334,14 @@ class SaveLoadScreen:
 
         confirm.render_new_text_surface()
         self.position_confirm_message_elements(state)
+
+    def show_loading_character_screen(self) -> None:
+        """Show screen with progress bar when loading character."""
+        if not uisd.position_flag:
+            self.loading_bar.container_rect.centery = self.screen.get_rect().centery
+            self.loading_message.text_rect.center = self.loading_bar.container_rect.center
+
+            uisd.position_flag = True
+
+        self.loading_bar.draw_progress_bar()
+        self.loading_message.draw_text()

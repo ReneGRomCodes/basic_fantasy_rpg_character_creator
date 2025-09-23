@@ -72,6 +72,16 @@ def save_load_screen_state_manager(screen, state: str, mouse_pos) -> str:
         sd.save_load_screen.show_confirm_message(mouse_pos)
         state = eh.save_load_events(screen, state, mouse_pos)
 
+    elif state == "loading_character":
+        loading_bar = sd.save_load_screen.loading_bar
+        sd.save_load_screen.show_loading_character_screen()
+
+        if loading_bar.finished:
+            loading_bar.reset_progress_bar()
+            uisd.position_flag = False
+            return "init_character_sheet"
+
+
     return state
 
 
