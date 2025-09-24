@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0] - 24 Sep 2025
+## [1.0.0] - 24 Sep 2025
 **status:** Stable
 ### Added
 - Initial release
