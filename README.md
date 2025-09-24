@@ -95,11 +95,22 @@ project_root/
 ![Character Sheet](gui/art/screenshots/screenshot_character_sheet.png)
 
 ### Other Screens
+#### Main Menu
 ![Main Menu](gui/art/screenshots/screenshot_main_menu.png)
+
+#### Ability Scores
 ![Abilities](gui/art/screenshots/screenshot_abilities.png)
+
+#### Race/Class Selection
 ![Race/Class Selection](gui/art/screenshots/screenshot_rc_selection.png)
+
+#### Language Selection
 ![Languages](gui/art/screenshots/screenshot_languages.png)
+
+#### Character Confirmation
 ![Confirmation](gui/art/screenshots/screenshot_confirmation.png)
+
+#### Save/Load Screen
 ![Save/Load Screen](gui/art/screenshots/screenshot_save_load_screen.png)
 
 ## Adding New Features
