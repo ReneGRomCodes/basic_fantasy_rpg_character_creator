@@ -3,6 +3,8 @@
 
 **Current Version: v1.0**
 
+[Changelog](CHANGELOG.md)
+
 ## Overview
 
 Being more than just a character creator, this application serves as a lightweight, modular engine for building RPG
