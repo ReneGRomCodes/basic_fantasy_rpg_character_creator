@@ -1,7 +1,8 @@
 # "Basic Fantasy RPG" Character Creator 
 ### *"Character creation engine-lite" built for easy system swapping*
 
-**Current Version: v1.0.0**
+**Last Stable Release: v1.0.0**
+**Current Version (in development): v1.0.1**
 
 [Changelog](CHANGELOG.md)
 
