@@ -88,6 +88,20 @@ project_root/
 │
 └── README.md                 # You are here
 ```
+
+## Screenshots
+
+### Character Sheet
+![Character Sheet](gui/art/screenshots/screenshot_character_sheet.png)
+
+### Other Screens
+![Main Menu](gui/art/screenshots/screenshot_main_menu.png)
+![Abilities](gui/art/screenshots/screenshot_abilities.png)
+![Race/Class Selection](gui/art/screenshots/screenshot_rc_selection.png)
+![Languages](gui/art/screenshots/screenshot_languages.png)
+![Confirmation](gui/art/screenshots/screenshot_confirmation.png)
+![Save/Load Screen](gui/art/screenshots/screenshot_save_load_screen.png)
+
 ## Adding New Features
 
 The program is designed with expandability in mind, making it easy to introduce new attributes, UI elements, or even
