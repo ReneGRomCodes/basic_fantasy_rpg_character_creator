@@ -16,6 +16,8 @@ and `character_model.py`, and new screens can be added while reusing existing UI
 
 It works out of the box for Basic Fantasy RPG, but under the hood, it’s designed like a character creation engine.
 
+![Title Screen](gui/art/screenshots/screenshot_title.png)
+
 ## Key Features
 
 * **Modular Rule System** – Easily adapt to other RPG systems by editing `rules.py` and `character_model.py`.
