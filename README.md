@@ -1,8 +1,9 @@
 # "Basic Fantasy RPG" Character Creator 
 ### *"Character creation engine-lite" built for easy system swapping*
 
-**Last Stable Release: v1.0.0**
-**Current Version (in development): v1.0.1**
+[**Last Stable Release: v1.0.0**](https://github.com/ReneGRomCodes/basic_fantasy_rpg_character_creator/releases/tag/v1.0.0)
+
+*Current Version (in development): v1.0.1*
 
 [Changelog](CHANGELOG.md)
 
@@ -47,6 +48,9 @@ pygame 2.6.1
 pygame-textinput 1.0.1
 
 ### Installing Python packages:
+`pip install -r requirements.txt`
+
+or
 
 `pip install pygame pygame-textinput`
 
