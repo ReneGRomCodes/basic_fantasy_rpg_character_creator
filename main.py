@@ -13,7 +13,7 @@ from gui.ui_registry import initialize_ui_registry
 
 # Program states.
 INITIAL_STATE: str = "title_screen"
-MAIN_STATES: set[str] = {"title_screen", "pre_main_menu", "main_menu", "settings_screen", "init_credits", "credits",
+MAIN_STATES: set[str] = {INITIAL_STATE, "pre_main_menu", "main_menu", "settings_screen", "init_credits", "credits",
                          "character_menu"}
 SAVE_LOAD_STATES: set[str] = {"init_save_load_screen", "save_load_screen", "char_not_saved", "char_delete",
                               "char_overwrite", "loading_character"}

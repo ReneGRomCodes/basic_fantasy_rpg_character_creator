@@ -1,0 +1,40 @@
+name: Build executables (Windows + Linux)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build executable
+        run: |
+          if [ ${{ matrix.os }} == 'windows-latest' ]; then
+            pyinstaller --onefile --name "RPG_Character_Creator_v1.0.0_windows.exe" main.py
+          else
+            pyinstaller --onefile --name "RPG_Character_Creator_v1.0.0_linux" main.py
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: rpg-character-creator-${{ matrix.os }}
+          path: dist/*
