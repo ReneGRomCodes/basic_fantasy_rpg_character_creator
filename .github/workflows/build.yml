@@ -28,9 +28,17 @@ jobs:
       - name: Build executable
         run: |
           if [ ${{ matrix.os }} == 'windows-latest' ]; then
-            pyinstaller --onefile --name "RPG_Character_Creator_v1.0.0_windows.exe" main.py
+            pyinstaller --onefile --name "RPG_Character_Creator_v1.0.0_windows.exe" \
+              --add-data "gui/art/font;gui/art/font" \
+              --add-data "gui/art/;gui/art/" \
+              --add-data "save;save" \
+              main.py
           else
-            pyinstaller --onefile --name "RPG_Character_Creator_v1.0.0_linux" main.py
+            pyinstaller --onefile --name "RPG_Character_Creator_v1.0.0_linux" \
+              --add-data "gui/art/font:gui/art/font" \
+              --add-data "gui/art:gui/art" \
+              --add-data "save:save" \
+              main.py
           fi
 
       - name: Upload artifact
