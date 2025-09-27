@@ -464,7 +464,7 @@ class InfoPanel(TextField):
             slide = False
 
         # Background image.
-        bg_image_file_path: str = "gui/art/parchment03.png"
+        bg_image_file_path: str = settings.get_resource_path("gui/art/parchment03.png")
         self.bg_image, self.bg_rect = self.get_bg_image_and_rect(bg_image_file_path)
 
         self.slide: bool = slide
