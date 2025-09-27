@@ -4,8 +4,8 @@ import os
 block_cipher = None
 
 added_files = [
-         ( 'gui/art/font', 'font'),
-         ( 'gui/art', 'art'),
+         ( 'gui/art/font', 'gui/art/font'),
+         ( 'gui/art', 'gui/art'),
          ( 'save/characters.json', 'save')
          ]
 
