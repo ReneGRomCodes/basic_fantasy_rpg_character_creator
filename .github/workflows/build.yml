@@ -28,9 +28,9 @@ jobs:
       - name: Build executable
         run: |
           if [ ${{ matrix.os }} == 'windows-latest' ]; then
-            pyinstaller --onefile --name "RPG_Character_Creator_v1.0.1_windows.exe" build.spec
+            pyinstaller build_win.spec
           else
-            pyinstaller --onefile --name "RPG_Character_Creator_v1.0.1_linux" build.spec
+            pyinstaller build_linux.spec
           fi
 
       - name: Upload artifact
