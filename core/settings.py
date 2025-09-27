@@ -3,6 +3,8 @@ Settings class for pygame.
 Only instance of this class, 'settings', is created at the bottom of this module and imported/referenced throughout the
 program.
 """
+import sys
+import os
 
 
 class Settings:
@@ -10,7 +12,7 @@ class Settings:
 
     def __init__(self) -> None:
         """Initialize pygame's settings."""
-        self.program_version: str = "1.0"
+        self.program_version: str = "1.0.1"
 
         # Screen size options.
         self.small_screen: tuple[int, int] = (1280,720)
@@ -20,7 +22,7 @@ class Settings:
         self.frame_rate: int = 30
 
         # Fonts.
-        self.font: str = "gui/art/font/EagleLake-Regular.ttf"
+        self.font: str = self.get_resource_path("gui/art/font/EagleLake-Regular.ttf")
 
         # Background color for screen.
         self.bg_color: tuple[int, int, int] = (235, 210, 160)  # OBSOLETE.
@@ -49,11 +51,26 @@ class Settings:
         # is handled by 'set_default()' method.
         self.screen_size: tuple[int, int] | None = None
 
-        self.save_file = "save/characters.json"
+        self.save_file = self.get_resource_path("save/characters.json")
 
     def set_default(self) -> None:
         """Set all settings variables to default values as defined in 'self.default_settings'."""
         self.screen_size: tuple[tuple] = self.default_settings[0]
+
+    @staticmethod
+    def get_resource_path(relative_path: str) -> str:
+        """Return the absolute path to a resource, handling PyInstaller's temporary folder when the app is frozen.
+        ARGS:
+            relative_path: The relative path to the resource from the project root as string.
+        RETURNS:
+            str: Absolute path to the resource at runtime.
+        """
+        try:
+            base_path: str = sys._MEIPASS  # type: ignore[attr-defined]
+        except Exception:
+            base_path: str = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
 
 
 settings: Settings = Settings()

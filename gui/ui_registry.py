@@ -122,20 +122,22 @@ def initialize_ui_registry(screen) -> dict:
     spell_descr = spells.get_spell_descr()
 
     # Art assets.
-    path_bg_image: str = "gui/art/background.png"
-    path_bg_title_image: str = "gui/art/title_background.png"
-    path_wood_image: str = "gui/art/wood.png"
-    path_wood_ornate_image: str = "gui/art/wood_ornate.png"
-    path_parchment_images: tuple[str, ...] = ("gui/art/parchment01.png", "gui/art/parchment02.png",
-                                              "gui/art/parchment03.png")
+    path_bg_image: str = settings.get_resource_path("gui/art/background.png")
+    path_bg_title_image: str = settings.get_resource_path("gui/art/title_background.png")
+    path_wood_image: str = settings.get_resource_path("gui/art/wood.png")
+    path_wood_ornate_image: str = settings.get_resource_path("gui/art/wood_ornate.png")
+    path_parchment_01: str = settings.get_resource_path("gui/art/parchment01.png")
+    path_parchment_02: str = settings.get_resource_path("gui/art/parchment02.png")
+    path_parchment_03: str = settings.get_resource_path("gui/art/parchment03.png")
+    path_parchment_list: tuple[str, ...] = (path_parchment_01, path_parchment_02, path_parchment_03)
     # Background images are scaled to screen size, further images are scaled when used in functions.
     background_image = pygame.transform.scale(pygame.image.load(path_bg_image).convert(), (screen_width, screen_height))
     title_background_image = pygame.transform.scale(pygame.image.load(path_bg_title_image).convert(), (screen_width, screen_height))
     wood_image = pygame.image.load(path_wood_image)
     wood_ornate_image = pygame.image.load(path_wood_ornate_image)
-    parchment_image_00 = pygame.image.load(path_parchment_images[0])
-    parchment_image_01 = pygame.image.load(path_parchment_images[1])
-    parchment_image_02 = pygame.image.load(path_parchment_images[2])
+    parchment_image_00 = pygame.image.load(path_parchment_list[0])
+    parchment_image_01 = pygame.image.load(path_parchment_list[1])
+    parchment_image_02 = pygame.image.load(path_parchment_list[2])
 
 
     # Title screen.
