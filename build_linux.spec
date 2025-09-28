@@ -5,8 +5,7 @@ block_cipher = None
 
 added_files = [
          ( 'gui/art/font', 'gui/art/font'),
-         ( 'gui/art', 'gui/art'),
-         ( 'save/characters.json', 'save')
+         ( 'gui/art', 'gui/art')
          ]
 
 a = Analysis(['main.py'],

@@ -51,7 +51,8 @@ class Settings:
         # is handled by 'set_default()' method.
         self.screen_size: tuple[int, int] | None = None
 
-        self.save_file = self.get_resource_path("save/characters.json")
+        # Name of the save file created in project folder via class 'SaveLoadScreen' if not present.
+        self.save_file: str = "characters.sav"
 
     def set_default(self) -> None:
         """Set all settings variables to default values as defined in 'self.default_settings'."""

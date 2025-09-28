@@ -1,6 +1,8 @@
 """
 Class to organize and access save/load screen objects as attributes.
 """
+import os
+import sys
 import json
 
 import pygame
@@ -12,10 +14,9 @@ from .ui_helpers import draw_screen_title, draw_single_element_background_image,
 from .screen_objects import TextField, Button, InteractiveText, ProgressBar
 from .shared_data import ui_shared_data as uisd
 
-"""
-# Data structure for empty JSON file 'save/characters.json'.
 
-data = {
+# Constant with data structure for save file.
+DATA = {
     "slot_00": None,
     "slot_01": None,
     "slot_02": None,
@@ -26,9 +27,9 @@ data = {
     "slot_07": None,
     "slot_08": None,
 }
+# See 'Settings' instance attribute 'settings.save_file' to change name of the save file if necessary ("characters.sav"
+# by default).
 
-'Settings' instance attribute 'settings.save_file' is used to reference save file.
-"""
 
 class SaveLoadScreen:
     """A class to store and manage save/load screen elements."""
@@ -46,6 +47,9 @@ class SaveLoadScreen:
         text_standard: int = int(screen_height / 50)
         text_medium: int = ui_registry["text_medium"]
         text_large: int = ui_registry["text_large"]
+
+        # Initialize save file and get file path.
+        self.save_file_path: str = self.init_save_file()
 
         self.load_only: bool = uisd.load_only_flag
 
@@ -66,7 +70,7 @@ class SaveLoadScreen:
         for button in self.button_group:
             button.button_rect.width = ui_registry["default_button_width"]
 
-        # Character slots representing entries in file 'save/characters.json'.
+        # Character slots representing entries in save file.
         slot_00: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
         slot_01: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
         slot_02: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
@@ -76,7 +80,7 @@ class SaveLoadScreen:
         slot_06: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
         slot_07: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
         slot_08: InteractiveText = InteractiveText(screen, "", text_medium, select=True)
-        # Dict with slot elements assigned as values to keys which correspond to keys in 'save/characters.json'.
+        # Dict with slot elements assigned as values to keys which correspond to keys in save file.
         self.slots: dict[str, InteractiveText] = {
             "slot_00": slot_00,
             "slot_01": slot_01,
@@ -156,10 +160,31 @@ class SaveLoadScreen:
             else:
                 slot.interactive_rect.top = pos_y_start + pos_y_offset * index
 
+    @staticmethod
+    def init_save_file() -> str:
+        """Return full path to the persistent save file and ensure it exists. Create and populate save file with
+        contents of constant 'DATA' if it doesn't.
+        RETURNS:
+            file_path
+        """
+        if getattr(sys, "frozen", False):
+            base_path = os.path.dirname(sys.executable)
+        else:
+            base_path = os.path.abspath(".")
+
+        file_path = os.path.join(base_path, settings.save_file)
+
+        # create the file with default contents if it doesn't exist
+        if not os.path.exists(file_path):
+            with open(file_path, "w", encoding="utf-8") as f:
+                json.dump(DATA, f, indent=4)
+
+        return file_path
+
     def configure_character_slots(self) -> None:
         """Set rect size and assign text attribute to character slots."""
         for slot_id, slot in self.slots.items():
-            with open(settings.save_file) as f:
+            with open(self.save_file_path) as f:
                 data = json.load(f)
 
             if data[slot_id]:
@@ -211,13 +236,13 @@ class SaveLoadScreen:
         """
         if self.selected_slot:
             if self.empty_slot in self.selected_slot[1].text or state == "char_overwrite":
-                with open(settings.save_file) as f:
+                with open(self.save_file_path) as f:
                     data = json.load(f)
 
                     data[self.selected_slot[0]] = sd.character.serialize()
                     self.selected_slot[1].text = f"{sd.character.name} {sd.character.race_name} {sd.character.class_name}"
 
-                with open(settings.save_file, "w") as f:
+                with open(self.save_file_path, "w") as f:
                     json.dump(data, f)
                     state = "init_save_load_screen"
 
@@ -234,7 +259,7 @@ class SaveLoadScreen:
         """
         if self.selected_slot and self.empty_slot not in self.selected_slot[1].text:
             if uisd.load_only_flag or sd.cs_sheet.is_saved:
-                with open(settings.save_file) as f:
+                with open(self.save_file_path) as f:
                     data = json.load(f)
                     sd.character.deserialize(data[self.selected_slot[0]])
                     uisd.is_loaded = self.selected_slot[0]
@@ -258,11 +283,11 @@ class SaveLoadScreen:
                 if self.selected_slot[0] == sd.cs_sheet.is_saved:
                     sd.cs_sheet.is_saved = False
 
-            with open(settings.save_file) as f:
+            with open(self.save_file_path) as f:
                 data = json.load(f)
                 data[self.selected_slot[0]] = None
 
-            with open(settings.save_file, "w") as f:
+            with open(self.save_file_path, "w") as f:
                 json.dump(data, f)
 
             self.selected_slot: bool = False

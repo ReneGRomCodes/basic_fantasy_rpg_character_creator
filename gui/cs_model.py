@@ -49,7 +49,7 @@ class CharacterSheet:
         for button in self.button_group:
             button.button_rect.width = uisd.ui_registry["default_button_width"]
 
-        # Attribute indicating if character has been saved to 'save/characters.json'. Contains 'slot_id' string if so.
+        # Attribute indicating if character has been saved to save file. Contains 'slot_id' string if so.
         self.is_saved: str | bool = False
         # Confirmation message objects.
         self.confirmation_message: TextField = TextField(screen, "Exit without saving?", uisd.ui_registry["text_large"])
