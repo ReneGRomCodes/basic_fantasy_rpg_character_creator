@@ -1,7 +1,7 @@
 # "Basic Fantasy RPG" Character Creator 
 ### *"Character creation engine-lite" built for easy system swapping*
 
-**Last Stable Release: v1.0.1**
+[**Last Stable Release: v1.0.1**](https://github.com/ReneGRomCodes/basic_fantasy_rpg_character_creator/releases/tag/v1.0.1)
 
 *Current Version (in development): v1.x.x*
 

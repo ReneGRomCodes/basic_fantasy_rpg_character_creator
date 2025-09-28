@@ -12,7 +12,7 @@ class Settings:
 
     def __init__(self) -> None:
         """Initialize pygame's settings."""
-        self.program_version: str = "1.0.1"
+        self.program_version: str = "1.x.x"
 
         # Screen size options.
         self.small_screen: tuple[int, int] = (1280,720)
