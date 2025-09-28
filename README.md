@@ -1,9 +1,9 @@
 # "Basic Fantasy RPG" Character Creator 
 ### *"Character creation engine-lite" built for easy system swapping*
 
-[**Last Stable Release: v1.0.0**](https://github.com/ReneGRomCodes/basic_fantasy_rpg_character_creator/releases/tag/v1.0.0)
+**Last Stable Release: v1.0.1**
 
-*Current Version (in development): v1.0.1*
+*Current Version (in development): v1.x.x*
 
 [Changelog](CHANGELOG.md)
 
@@ -34,6 +34,7 @@ elements.
 * **Smart Context Handling** – UI options change based on state and context (e.g. load screen behaves differently
 depending on entry point).
 * **State-Driven Architecture** – Clear separation of application states ensures smooth navigation and interaction.
+* **Cross-Platform Executables** – Build ready-to-run Windows and Linux versions via GitHub Actions.
 
 ## Installation
 
@@ -90,8 +91,6 @@ project_root/
 │   ├── credits.py            # Credits screen logic
 │   ├── settings_gui.py       # Settings screen logic
 │   └── art/                  # Contains graphic assets
-│
-│── save/                     # Stores JSON file for saving/loading created characters.
 │
 └── README.md                 # You are here
 ```
